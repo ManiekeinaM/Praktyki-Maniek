@@ -3,34 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maniek - Mapa</title>
+    <title>Maniek - Info</title>
 
     <link rel="stylesheet" href="all.css">
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+
+        }
+    </style>
 </head>
 <body>
     <!-- Fixed logo [on every page] -->
     <div class="logo-container">
         <img class="logo" src="./assets/zsp9.png" alt="ZSP9">
-        <p>Parter - Budynki A i B</p>
+        <p>Informacje i historia szkoły</p>
     </div>
 
-    <!-- Map container -->
-    <div class="map-container xy-scroll">
-        <div class="scale">
-            <button class="plus">+</button>
-            <p>
-                Skala: <span class="scale-num">1.0x</span>
-            </p>
-            <button class="minus">-</button>
-        </div>
-
-        <!-- <div class="map-antihover">
-
-        </div> -->
-        <div class="map" style="cursor: grab;">
-            <img src="./assets/map/Floor0.jpg">
-            <img src="./assets/mapa.png">
-        </div>
+    <!-- Info container -->
+    <div class="info-container">
+        <p>ZSP9 Fajne</p>
     </div>
 
 
@@ -49,7 +43,6 @@
         </div>
     </div>
 
-    <script src="./js/map.js"></script>
     <script src="./js/navigation.js"></script>
 </body>
 </html>

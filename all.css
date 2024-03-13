@@ -1,3 +1,7 @@
+* {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -26,6 +30,9 @@ body {
     position: fixed;
     z-index: 10;
 
+    left: 2rem;
+    top: 2rem;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,27 +47,70 @@ body {
     animation: 6s spin infinite;
 }
 .logo-container p {
-    background-color: rgba(151, 151, 151, 0.1);
+    background-color: rgba(56, 92, 255, 0.05);
+    border: 2px solid rgba(56, 92, 255, 0.5);
+    backdrop-filter: blur(0.75px);
+
+    font-weight: bolder;
+    color: rgba(56, 92, 255, 0.9);
 
     padding: 0.7em;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 
 
 /* Map container */
 .map-container {
     position: relative;
-
     background-color: white;
 
     margin: 2rem;
     height: calc(100vh - 4rem);
+
+    z-index: 1;
+    overflow: hidden;
+}
+
+.map-antihover {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+
+    /* cursor: grab; */
+}
+
+.map {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    width: 150%;
+    height: 150%;
+
+    /* cursor: grab; */
+    transition: transform 0.05s;
+    /* transform: scale(0.5); */
+}
+
+
+.map img {
+    /* min-width: 25rem; */
+    /* max-width: 90vw; */
+    /* height: auto; */
+
+    user-select: none;
+    pointer-events: none;
+}
+
+*::selection {
+    background-color: transparent;
 }
 
 .scale {
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: fixed;
+    top: 2rem;
+    right: 3rem;
 
     display: flex;
     justify-content: center;
@@ -70,6 +120,8 @@ body {
     border: 2px solid gray;
     border-radius: 1rem;
     margin: 1rem;
+
+    z-index: 10;
 }
 .scale > * {
     margin: 5px;
@@ -102,9 +154,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    z-index: 5;
 }
 
-.navigation-container .button {
+.button {
+    position: relative;
+
     height: 4rem;
     width: 4rem;
     margin: 0.5rem;
@@ -113,8 +169,49 @@ body {
     background-color: lightgray;
     border: 2px solid gray;
     transition: 0.1s;
+
+    cursor: pointer;
 }
 
-.navigation-container .button:hover {
+.button::after { /* Hitbox */
+    position: absolute;
+    content: '';
+
+    /* background-color: red; */
+
+    width: 100%;
+    height: 100%;
+    top: 50%;
+}
+
+
+.button:hover {
     border: 0.5rem solid gray;
+}
+
+.scale button {
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.scale button:hover {
+    transform: scale(1.1);
+}
+
+
+
+/* Info */
+.info-container {
+    background-color: rgba(100,100,100,0.1);
+    min-width: 20rem;
+    width: 50%;
+
+    padding: 2rem;
+    margin: 2rem;
+
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

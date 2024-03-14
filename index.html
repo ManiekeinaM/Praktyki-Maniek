@@ -15,13 +15,18 @@
     </div>
 
     <!-- Map container -->
-    <div class="map-container xy-scroll">
+    <main class="map-container xy-scroll">
         <div class="scale">
-            <button class="plus">+</button>
+            <button class="plus">
+                <img src="./assets/add.png" alt="+">
+            </button>
             <p>
-                Skala: <span class="scale-num">1.0x</span>
+                <!-- Skala: <span class="scale-num">1.0x</span> -->
+                POWIĘKSZ <br> <span class="scale-num">1.0x</span>
             </p>
-            <button class="minus">-</button>
+            <button class="minus">
+                <img src="./assets/minus.png" alt="-">
+            </button>
         </div>
 
         <!-- <div class="map-antihover">
@@ -31,7 +36,7 @@
             <img src="./assets/map/Floor0.jpg">
             <img src="./assets/mapa.png">
         </div>
-    </div>
+    </main>
 
 
     <!-- Navigation button container / zakładki -->
@@ -49,7 +54,10 @@
         </div>
     </div>
 
+    <p class="dev-coordinates"></p>
+
     <script src="./js/map.js"></script>
+    <script src="./js/map-points.js"></script>
     <script src="./js/navigation.js"></script>
 </body>
 </html>

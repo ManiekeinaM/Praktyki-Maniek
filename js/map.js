@@ -50,10 +50,10 @@ function updateMap() {
     translateY = Math.min(3000, translateY);
 
     map.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
-    scaleText.textContent = `${scale.toPrecision(2)}x`;
+    scaleText.textContent = `${scale.toFixed(1)}x`;
 }
 
-function mouseDown(e) {
+function mouseDown(e, isMobile) {
     if (map_container.contains(e.target)) {
         isDragging = true;
         document.body.style.cursor = 'grabbing';
@@ -61,6 +61,11 @@ function mouseDown(e) {
 
         startX = e.clientX;
         startY = e.clientY;
+
+        if (isMobile) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }
     }
 }
 function mouseUp() {
@@ -74,19 +79,36 @@ function mouseUp() {
     start_translateY = translateY;
 }
 
-function mouseMove(e) {
+function mouseMove(e, isMobile) {
     if (!isDragging) return;
 
-    const deltaX = e.clientX - startX;
-    const deltaY = e.clientY - startY;
+    let deltaX = e.clientX - startX;
+    let deltaY = e.clientY - startY;
+    if (isMobile) {
+        deltaX = e.touches[0].clientX - startX;
+        deltaY = e.touches[0].clientY - startY;
+    }
+
+
     translateX = start_translateX + deltaX * (1/scale);
     translateY = start_translateY + deltaY * (1/scale);
 
     updateMap();
 }
 
+// PC
 document.addEventListener("mousedown", mouseDown);
 document.addEventListener("mouseup", mouseUp);
 document.addEventListener("mousemove", mouseMove);
+
+// Mobile
+document.addEventListener("touchstart", e => {
+    mouseDown(e, true);
+});
+document.addEventListener("touchend", mouseUp);
+document.addEventListener("touchmove", e => {
+    mouseMove(e, true);
+});
+
 
 document.addEventListener("dragstart", e => e.preventDefault());

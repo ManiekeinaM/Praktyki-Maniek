@@ -1,7 +1,7 @@
 const navigation = document.querySelector(".navigation-container");
 const buttons = navigation.querySelectorAll(".button");
 
-console.log(buttons);
+// console.log(buttons);
 
 buttons.forEach(button => {
     const target = button.dataset.tab;

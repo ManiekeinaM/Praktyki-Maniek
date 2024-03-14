@@ -1,5 +1,26 @@
+@font-face {
+    font-family: 'Raleway';
+    src: url('fonts/Raleway-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Raleway Italic';
+    src: url('fonts/Raleway-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
 * {
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    /* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
+    font-family: 'Raleway', fallback, sans-serif;
+}
+
+.copyable {
+    user-select: all;
+    pointer-events: all;
+    color: orange;
 }
 
 body, html {
@@ -49,7 +70,7 @@ body {
 .logo-container p {
     background-color: rgba(56, 92, 255, 0.05);
     border: 2px solid rgba(56, 92, 255, 0.5);
-    backdrop-filter: blur(0.75px);
+    backdrop-filter: blur(3px);
 
     font-weight: bolder;
     color: rgba(56, 92, 255, 0.9);
@@ -69,6 +90,15 @@ body {
 
     z-index: 1;
     overflow: hidden;
+}
+
+main {
+    position: relative;
+    background-color: white;
+    margin: 2rem;
+    height: calc(100vh - 4rem);
+
+    z-index: 1;
 }
 
 .map-antihover {
@@ -100,26 +130,28 @@ body {
     /* height: auto; */
 
     user-select: none;
-    pointer-events: none;
 }
 
-*::selection {
+img::selection {
     background-color: transparent;
 }
 
 .scale {
     position: fixed;
     top: 2rem;
-    right: 3rem;
+    right: 2rem;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    background-color: lightgray;
-    border: 2px solid gray;
-    border-radius: 1rem;
+    /* background-color: lightgray; */
+    /* border: 2px solid gray; */
+    background-color: rgba(100,100,100,0.1);
+    backdrop-filter: blur(2px);
+    border-radius: 4rem;
     margin: 1rem;
+    
 
     z-index: 10;
 }
@@ -127,8 +159,8 @@ body {
     margin: 5px;
 }
 .scale button {
-    width: 2rem;
-    height: 2rem;
+    width: 3rem;
+    height: 3rem;
 
     border: 2px solid gray;
     border-radius: 100%;
@@ -136,9 +168,32 @@ body {
 
     color: white;
     font-weight: bolder;
-    font-size: 1rem;
+    font-size: 2rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.scale button img {
+    width: 100;
+    height: 1.5rem;
+}
+
+.scale p {
+    font-weight: bolder;
+    color: rgba(100,100,100,0.75);
+    text-align: center;
+}
+
+button.plus {
+    background-color: rgb(100, 221, 186);
+    border: 3px solid rgba(62, 207, 147, 0.5);
+}
+button.minus {
+    background-color: rgb(234, 99, 96);
+    border: 3px solid rgba(173, 45, 45, 0.5);
+}
 
 /* Navigation container */
 .navigation-container {
@@ -198,8 +253,6 @@ body {
     transform: scale(1.1);
 }
 
-
-
 /* Info */
 .info-container {
     background-color: rgba(100,100,100,0.1);
@@ -208,10 +261,21 @@ body {
 
     padding: 2rem;
     margin: 2rem;
+    height: 50%;
 
     text-align: center;
 
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Developer */
+.dev-coordinates {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    margin: 3rem;
+
+    z-index: 10;
 }

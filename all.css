@@ -1,26 +1,5 @@
-@font-face {
-    font-family: 'Raleway';
-    src: url('fonts/Raleway-VariableFont_wght.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Raleway Italic';
-    src: url('fonts/Raleway-Italic-VariableFont_wght.ttf') format('truetype');
-    font-weight: normal;
-    font-style: italic;
-}
-
 * {
-    /* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
-    font-family: 'Raleway', fallback, sans-serif;
-}
-
-.copyable {
-    user-select: all;
-    pointer-events: all;
-    color: orange;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 body, html {
@@ -70,7 +49,7 @@ body {
 .logo-container p {
     background-color: rgba(56, 92, 255, 0.05);
     border: 2px solid rgba(56, 92, 255, 0.5);
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(0.75px);
 
     font-weight: bolder;
     color: rgba(56, 92, 255, 0.9);
@@ -90,15 +69,6 @@ body {
 
     z-index: 1;
     overflow: hidden;
-}
-
-main {
-    position: relative;
-    background-color: white;
-    margin: 2rem;
-    height: calc(100vh - 4rem);
-
-    z-index: 1;
 }
 
 .map-antihover {
@@ -130,28 +100,26 @@ main {
     /* height: auto; */
 
     user-select: none;
+    pointer-events: none;
 }
 
-img::selection {
+*::selection {
     background-color: transparent;
 }
 
 .scale {
     position: fixed;
     top: 2rem;
-    right: 2rem;
+    right: 3rem;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    /* background-color: lightgray; */
-    /* border: 2px solid gray; */
-    background-color: rgba(100,100,100,0.1);
-    backdrop-filter: blur(2px);
-    border-radius: 4rem;
+    background-color: lightgray;
+    border: 2px solid gray;
+    border-radius: 1rem;
     margin: 1rem;
-    
 
     z-index: 10;
 }
@@ -159,8 +127,8 @@ img::selection {
     margin: 5px;
 }
 .scale button {
-    width: 3rem;
-    height: 3rem;
+    width: 2rem;
+    height: 2rem;
 
     border: 2px solid gray;
     border-radius: 100%;
@@ -168,32 +136,9 @@ img::selection {
 
     color: white;
     font-weight: bolder;
-    font-size: 2rem;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 1rem;
 }
 
-.scale button img {
-    width: 100;
-    height: 1.5rem;
-}
-
-.scale p {
-    font-weight: bolder;
-    color: rgba(100,100,100,0.75);
-    text-align: center;
-}
-
-button.plus {
-    background-color: rgb(100, 221, 186);
-    border: 3px solid rgba(62, 207, 147, 0.5);
-}
-button.minus {
-    background-color: rgb(234, 99, 96);
-    border: 3px solid rgba(173, 45, 45, 0.5);
-}
 
 /* Navigation container */
 .navigation-container {
@@ -253,6 +198,8 @@ button.minus {
     transform: scale(1.1);
 }
 
+
+
 /* Info */
 .info-container {
     background-color: rgba(100,100,100,0.1);
@@ -261,7 +208,6 @@ button.minus {
 
     padding: 2rem;
     margin: 2rem;
-    height: 50%;
 
     text-align: center;
 
@@ -270,12 +216,99 @@ button.minus {
     align-items: center;
 }
 
-/* Developer */
-.dev-coordinates {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    margin: 3rem;
+/* Ulotka */
 
+.logo2 {
+    width: 100px;
+    height: 100px;
+    animation: 6s spin infinite;
+}
+
+.logo-container2 {
+    position: fixed;
     z-index: 10;
+
+    left: 1rem;
+    top: 0.8rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.5rem;
+}
+
+.ulotka-title-container {
+    margin: 1rem;
+    margin-bottom: 0px;
+    background-color: #1751A0;
+    border-bottom: 1rem solid #70b0f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.ulotka-title-container > p {
+    color: #CAB282;
+    font-weight: bolder;
+    margin-bottom: 0px;
+    font-size: 3rem;
+    margin-top: 1px;
+}
+.ulotka-title-container > h2 {
+    color: white;
+    margin-top: 0px;
+}
+.ulotka-main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 1rem;
+    margin-top: 0.5rem;
+}
+.zawody-grid {
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+}
+.zawody-item {
+    background-color: #70b0f8;
+    width: 95%;
+    height: fit-content;
+    text-align: center;
+    font-weight: bold;
+    border: 0.5rem solid #70b0f8;
+    border-left: none;
+    margin: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+.zawody-item-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #1751A0;
+    color: #CAB282;
+    padding: 1rem;
+    margin: 0px;
+}
+.zawody-item-side {
+    width: 65%;
+    float: left;
+}
+.item-side {
+    flex-direction: column;
+    margin-top: 0.5rem;
+    font-size: 1vw;
+}
+.item-side {
+    color: white;
+}
+.item-side > span {
+    color: #1751A0;
+}
+.zawody-item-logo >img {
+    height: fit-content;
+    width: 35%;
+    float: left;
 }

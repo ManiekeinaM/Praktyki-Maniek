@@ -96,17 +96,6 @@ imgContainers.forEach(container => {
 })
 
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// Usage:
-async function myFunction() {
-    console.log('Before sleep');
-    await sleep(2000); // Sleep for 2 seconds
-    console.log('After sleep');
-}
-
 
 // draw img paths
 
@@ -134,28 +123,9 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
         } else {
             img.onload = draw;
         }
-        
-        setTimeout(() => {
-            draw();
-        }, 1000);
     }
 
 }
-
-// for (const [dot, coords] of Object.entries(imgPaths.Floor0.dots)) {
-//     let floorContainer = document.querySelector("div.Floor0");
-//     let img = floorContainer.querySelector("img");
-//     let canvas = floorContainer.querySelector("canvas");
-
-//     let coordsPx = percentToPx(coords, img);
-    
-//     let ctx = canvas.getContext("2d");
-//     ctx.fillStyle = "red";
-//     ctx.beginPath();
-//     ctx.arc(coordsPx.x, coordsPx.y, 5, 0, 2 * Math.PI);
-//     ctx.fill();
-    
-// }
 
 
 // const img = document.querySelector(".map img");
@@ -175,12 +145,12 @@ let devMode = false;
 
 let iterator = 1;
 let fullString = `Enabled DEV MODE - Click on imgs for coordinates`
-let dotName = "";
+let commentString = "";
 
 let textX = 0, textY = 0;
 
 function updateCoordString() {
-    let coordString = fullString + `<br><span class='copyable' onclick='copy(this)'>"dot${iterator}": {x: ${textX}, y: ${textY}}, // ${dotName}</span>`;
+    let coordString = fullString + `<br><span class='copyable' onclick='copy(this)'>"dot${iterator}": {x: ${textX}, y: ${textY}}, // ${commentString}</span>`;
     devCoords.innerHTML = coordString;
 
 
@@ -207,12 +177,12 @@ document.addEventListener("keydown", e => {
         if (e.key === "Enter") {
             fullString = updateCoordString();
             
-            dotName = "";
+            commentString = "";
             iterator++;
         } else if (e.key === "Backspace") {
-            dotName = dotName.slice(0, -1);
+            commentString = commentString.slice(0, -1);
         } else {
-            dotName += e.key;
+            commentString += e.key;
         }
 
         updateCoordString();

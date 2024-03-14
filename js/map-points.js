@@ -28,6 +28,7 @@ const imgPaths = {
 
     },
 
+    /* Floor 1 is "connected", although you can't make your way through the gymnastics room
     "Floor1A": {
         dots: {
 
@@ -39,6 +40,13 @@ const imgPaths = {
 
         }
 
+    }, */
+
+    "Floor1": {
+        dots: {
+
+        }
+        
     },
 
     "Floor2A": {

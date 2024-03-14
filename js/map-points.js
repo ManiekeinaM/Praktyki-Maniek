@@ -96,23 +96,33 @@ imgContainers.forEach(container => {
 })
 
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Usage:
+async function myFunction() {
+    console.log('Before sleep');
+    await sleep(2000); // Sleep for 2 seconds
+    console.log('After sleep');
+}
+
+
 // draw img paths
 
 for (const [floorName, floorItems] of Object.entries(imgPaths)) {
+    let floorContainer = document.querySelector(`div.${floorName}`);
+    let img = floorContainer.querySelector("img");
+    let canvas = floorContainer.querySelector("canvas");
 
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    let ctx = canvas.getContext("2d");
     for (const [dot, coords] of Object.entries(floorItems.dots)) {
-        let floorContainer = document.querySelector(`div.${floorName}`);
-        let img = floorContainer.querySelector("img");
-        let canvas = floorContainer.querySelector("canvas");
-    
+        let coordsPx = percentToPx(coords, img);
 
         let draw = function() {
-            let coordsPx = percentToPx(coords, img);
-        
-            canvas.width = img.width;
-            canvas.height = img.height;
-        
-            let ctx = canvas.getContext("2d");
             ctx.fillStyle = "red";
             ctx.beginPath();
             ctx.arc(coordsPx.x, coordsPx.y, 5, 0, 2 * Math.PI);
@@ -125,24 +135,27 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
             img.onload = draw;
         }
         
+        setTimeout(() => {
+            draw();
+        }, 1000);
     }
 
 }
 
-for (const [dot, coords] of Object.entries(imgPaths.Floor0.dots)) {
-    let floorContainer = document.querySelector("div.Floor0");
-    let img = floorContainer.querySelector("img");
-    let canvas = floorContainer.querySelector("canvas");
+// for (const [dot, coords] of Object.entries(imgPaths.Floor0.dots)) {
+//     let floorContainer = document.querySelector("div.Floor0");
+//     let img = floorContainer.querySelector("img");
+//     let canvas = floorContainer.querySelector("canvas");
 
-    let coordsPx = percentToPx(coords, img);
+//     let coordsPx = percentToPx(coords, img);
     
-    let ctx = canvas.getContext("2d");
-    ctx.fillStyle = "red";
-    ctx.beginPath();
-    ctx.arc(coordsPx.x, coordsPx.y, 5, 0, 2 * Math.PI);
-    ctx.fill();
+//     let ctx = canvas.getContext("2d");
+//     ctx.fillStyle = "red";
+//     ctx.beginPath();
+//     ctx.arc(coordsPx.x, coordsPx.y, 5, 0, 2 * Math.PI);
+//     ctx.fill();
     
-}
+// }
 
 
 // const img = document.querySelector(".map img");

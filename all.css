@@ -115,22 +115,46 @@ main {
     align-items: center;
     flex-direction: column;
 
-    width: 150%;
-    height: 150%;
+    width: 100%;
+    height: 100%;
 
     /* cursor: grab; */
     transition: transform 0.05s;
     /* transform: scale(0.5); */
 }
 
+.image-canvas-container {
+    position: relative;
+}
 
-.map img {
+.image-canvas-container img, .image-canvas-container canvas {
     /* min-width: 25rem; */
     /* max-width: 90vw; */
     /* height: auto; */
 
     user-select: none;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
+
+.image-canvas-container canvas {
+    z-index: 2;
+
+    user-select: none;
+    pointer-events: none;
+    
+    width: 100%;
+    height: 100%;
+}
+
+/* canvas {
+    border: 1px solid black;
+} */
+
+
 
 img::selection {
     background-color: transparent;

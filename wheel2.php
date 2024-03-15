@@ -15,15 +15,28 @@
     </div>
     <button class="spin" data-wheelid="1" id="spin_button">SPIN</button>
     <p id="result"></p>
-
+    <p id="php-container" style="display:none;">
     <?php
-    $baza = new mysqli("localhost", "root", "", "baza_pula");
+        $db = new mysqli("localhost", "root", "", "baza_pula");
 
-    if($baza -> connect_error) {
-        die();
-    }else { echo "ok"}
-    
-    ?>
+        if($db -> connect_error) {
+            die();
+        }
+
+        $prizeName_array = array();
+        $prizeNumber_array = array();
+
+        $result = $db -> query("SELECT nazwaNagrody, iloscNagrody FROM nagrody_pula");
+
+        while($row = $result -> fetch_assoc()) {
+            array_push($prizeName_array, $row['nazwaNagrody']);
+            array_push($prizeNumber_array, $row['iloscNagrody']);
+        }
+
+        echo $prizeName_array;
+        echo $prizeNumber_array;
+        ?>
+    </p>
 
     <script>
         const result = document.getElementById("result");
@@ -33,11 +46,11 @@
             1: {
                 prizes: {
                     "Prize1": {weight: 10, color: '#CAB282'},
-                    "Prize2": {weight: 1, color: '#1434B4'},
+                    "Prize2": {weight: 1, color: '#1434F4'},
                     "Prize3": {weight: 1, color: '#CAB282'},
-                    "Prize4": {weight: 1, color: '#1434B4'},
+                    "Prize4": {weight: 1, color: '#1434F4'},
                     "Prize5": {weight: 1, color: '#CAB282'},
-                    "Prize6": {weight: 1, color: '#1434B4'}
+                    "Prize6": {weight: 1, color: '#1434F4'}
                 },
                 totalWeights: 0, // filled via code later
                 totalPrizes: 0,
@@ -95,7 +108,7 @@
                 const textX = Math.cos(textAngle * Math.PI / 180) * 200;
                 const textY = Math.sin(textAngle * Math.PI / 180) * 200;
 
-                wheelSvg += `<text x="${textX}" y="${textY + 8}" font-family="Arial" font-size="20" fill="black" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
+                wheelSvg += `<text class="prizeText" x="${textX}" y="${textY + 8}" font-family="Arial" font-weight="bold" font-size="20" fill="black" stroke-width="5" paint-order="stroke" stroke="white" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
 
                 i++;
             }

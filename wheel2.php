@@ -15,28 +15,15 @@
     </div>
     <button class="spin" data-wheelid="1" id="spin_button">SPIN</button>
     <p id="result"></p>
-    <p id="php-container" style="display:none;">
+
     <?php
-        $db = new mysqli("localhost", "root", "", "baza_pula");
+    $baza = new mysqli("localhost", "root", "", "baza_pula");
 
-        if($db -> connect_error) {
-            die();
-        }
-
-        $prizeName_array = array();
-        $prizeNumber_array = array();
-
-        $result = $db -> query("SELECT nazwaNagrody, iloscNagrody FROM nagrody_pula");
-
-        while($row = $result -> fetch_assoc()) {
-            array_push($prizeName_array, $row['nazwaNagrody']);
-            array_push($prizeNumber_array, $row['iloscNagrody']);
-        }
-
-        echo $prizeName_array;
-        echo $prizeNumber_array;
-        ?>
-    </p>
+    if($baza -> connect_error) {
+        die();
+    }else { echo "ok"}
+    
+    ?>
 
     <script>
         const result = document.getElementById("result");
@@ -45,12 +32,12 @@
         var wheels = {
             1: {
                 prizes: {
-                    "Prize1": {weight: 10, color: '#CAB282'},
-                    "Prize2": {weight: 1, color: '#1434F4'},
-                    "Prize3": {weight: 1, color: '#CAB282'},
-                    "Prize4": {weight: 1, color: '#1434F4'},
-                    "Prize5": {weight: 1, color: '#CAB282'},
-                    "Prize6": {weight: 1, color: '#1434F4'}
+                    "Prize1": {weight: 10, color: '#CAB282', darkcolor: '#b99a5a'},
+                    "Prize2": {weight: 1, color: '#1434B4', darkcolor: '#112b95'},
+                    "Prize3": {weight: 1, color: '#CAB282', darkcolor: '#b99a5a'},
+                    "Prize4": {weight: 1, color: '#1434B4', darkcolor: '#112b95'},
+                    "Prize5": {weight: 1, color: '#CAB282', darkcolor: '#b99a5a'},
+                    "Prize6": {weight: 1, color: '#1434B4', darkcolor: '#112b95'}
                 },
                 totalWeights: 0, // filled via code later
                 totalPrizes: 0,
@@ -103,13 +90,24 @@
                              A 250,250 0 0,1 ${Math.cos(endAngle * Math.PI / 180) * 250},${Math.sin(endAngle * Math.PI / 180) * 250} Z"
                              fill="${values.color}" stroke-width="8"/>`;
 
+                const innerArcRadius = 240; // Slightly less than the segment radius to simulate the stroke being on the inside
+                const startInnerX = Math.cos(startAngle * Math.PI / 180) * innerArcRadius;
+                const startInnerY = Math.sin(startAngle * Math.PI / 180) * innerArcRadius;
+                const endInnerX = Math.cos(endAngle * Math.PI / 180) * innerArcRadius;
+                const endInnerY = Math.sin(endAngle * Math.PI / 180) * innerArcRadius;
+
+                // Add an arc for the inner stroke
+                wheelSvg += `<path d="M${startInnerX},${startInnerY} A ${innerArcRadius},${innerArcRadius} 0 0,1 ${endInnerX},${endInnerY}"
+                             stroke="${values.darkcolor}" fill="none" stroke-width="16"/>`;   
+
                 // Place text
                 const textAngle = startAngle + segAngle / 2;
                 const textX = Math.cos(textAngle * Math.PI / 180) * 200;
                 const textY = Math.sin(textAngle * Math.PI / 180) * 200;
 
-                wheelSvg += `<text class="prizeText" x="${textX}" y="${textY + 8}" font-family="Arial" font-weight="bold" font-size="20" fill="black" stroke-width="5" paint-order="stroke" stroke="white" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
+                wheelSvg += `<text x="${textX}" y="${textY + 8}" font-family="Arial" font-size="20" fill="black" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
                 wheelSvg += `<circle cx="0" cy="0" r="250" fill="none" stroke="#9B8C64" stroke-width="8"/>`;
+                wheelSvg += `<circle cx="0" cy="0" r="25" fill="#9B8C64" stroke="#9B8C64" stroke-width="6"/>`;
                 i++;
             }
 

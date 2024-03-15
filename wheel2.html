@@ -9,7 +9,7 @@
 <body>
     <div>
     <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="160px" height="160px" style="transform: translateY(30px)" viewBox="0 0 24 24" fill="none">
-        <path d="M7 10L12 15L17 10 L7 10" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#FFFFFF"/>
+        <path d="M7 10L12 15L17 10 L7 10" stroke="#0e247c" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#1434B4"/>
     </svg>
     <div id="wheel-container"></div>
     </div>
@@ -25,12 +25,12 @@
         var wheels = {
             1: {
                 prizes: {
-                    "Prize1": {weight: 10, color: '#CAB282'},
-                    "Prize2": {weight: 1, color: '#1434B4'},
-                    "Prize3": {weight: 1, color: '#CAB282'},
-                    "Prize4": {weight: 1, color: '#1434B4'},
-                    "Prize5": {weight: 1, color: '#CAB282'},
-                    "Prize6": {weight: 1, color: '#1434B4'}
+                    "Prize1": {weight: 10, color: '#CAB282', darkcolor: '#b99a5a'},
+                    "Prize2": {weight: 1, color: '#1434B4', darkcolor: '#112b95'},
+                    "Prize3": {weight: 1, color: '#CAB282', darkcolor: '#b99a5a'},
+                    "Prize4": {weight: 1, color: '#1434B4', darkcolor: '#112b95'},
+                    "Prize5": {weight: 1, color: '#CAB282', darkcolor: '#b99a5a'},
+                    "Prize6": {weight: 1, color: '#1434B4', darkcolor: '#112b95'}
                 },
                 totalWeights: 0, // filled via code later
                 totalPrizes: 0,
@@ -83,13 +83,23 @@
                              A 250,250 0 0,1 ${Math.cos(endAngle * Math.PI / 180) * 250},${Math.sin(endAngle * Math.PI / 180) * 250} Z"
                              fill="${values.color}" stroke-width="8"/>`;
 
+                const innerArcRadius = 240; // Slightly less than the segment radius to simulate the stroke being on the inside
+                const startInnerX = Math.cos(startAngle * Math.PI / 180) * innerArcRadius;
+                const startInnerY = Math.sin(startAngle * Math.PI / 180) * innerArcRadius;
+                const endInnerX = Math.cos(endAngle * Math.PI / 180) * innerArcRadius;
+                const endInnerY = Math.sin(endAngle * Math.PI / 180) * innerArcRadius;
+
+                // Add an arc for the inner stroke
+                wheelSvg += `<path d="M${startInnerX},${startInnerY} A ${innerArcRadius},${innerArcRadius} 0 0,1 ${endInnerX},${endInnerY}"
+                             stroke="${values.darkcolor}" fill="none" stroke-width="16"/>`;             
                 // Place text
                 const textAngle = startAngle + segAngle / 2;
                 const textX = Math.cos(textAngle * Math.PI / 180) * 200;
                 const textY = Math.sin(textAngle * Math.PI / 180) * 200;
 
                 wheelSvg += `<text x="${textX}" y="${textY + 8}" font-family="Arial" font-size="20" fill="black" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
-                wheelSvg += `<circle cx="0" cy="0" r="250" fill="none" stroke="#9B8C64" stroke-width="8"/>`;
+                wheelSvg += `<circle cx="0" cy="0" r="250" fill="none" stroke="#817453" stroke-width="10"/>`;
+                wheelSvg += `<circle cx="0" cy="0" r="25" fill="#9B8C64" stroke="#9B8C64" stroke-width="6"/>`;
                 i++;
             }
 

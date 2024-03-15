@@ -27,7 +27,7 @@ const imgPaths = {
 
             // W dots: walk dots
             // You can not go back in this pathfinding system, so the connections are only one way
-            "Wdot0": {x: 0.23700, y: 0.57709, connections: ['Wdot1']}, // maniek
+            "Wdot0": {x: 0.23700, y: 0.49882, connections: ['Wdot1']}, // maniek
             "Wdot1": {x: 0.23667, y: 0.54481, connections: ['Wdot2', 'Wdot7']}, // maniek up
             "Wdot2": {x: 0.18500, y: 0.54481, connections: ['Wdot3', 'Wdot4', 'dot20']}, // leftA
             "Wdot3": {x: 0.18500, y: 0.46108, connections: ['dot2', 'dot3']}, // up doors A
@@ -179,26 +179,32 @@ function drawLine(floorName, from, path) {
 }
 
 // testing drawing a line
-drawLine("Floor0", "Wdot0", ['Wdot1', 'Wdot2', 'Wdot3', 'dot3']);
+// drawLine("Floor0", "Wdot0", ['Wdot1', 'Wdot2', 'Wdot3', 'dot3']);
 
 let allPaths = {};
 
-// Draw all the lines (testing)
+// PATHFIND ALL OF THE POSSIBLE DESTINATIONS - then you can draw to whichever one you like!
 for (const [floorName, floorItems] of Object.entries(imgPaths)) {
     let floorContainer = document.querySelector(`div.${floorName}`);
     if (!floorContainer) continue;
 
 
-    let currentPath = ['Wdot0'];
-    let lastBranchedPaths = [];
 
-    let checkNextConnection = function() {
+    let currentPath = ['Wdot0'];
+    let lastBranchedPath;
+
+    let checkNextConnection = function(currentPath) {
         let latestDotName = currentPath[currentPath.length - 1];
         let latestDot = floorItems.dots[latestDotName];
+        // console.log(latestDotName);
+        // console.log(latestDot);
 
-        if (!latestDot.connections || latestDot.connections.length == 0) {
+        if (!latestDot) return;
+
+        if (!latestDot.connections || latestDot.connections && latestDot.connections.length == 0) {
             // No connections, end of this path
             allPaths[latestDotName] = currentPath;
+            currentPath = lastBranchedPath;
             return;
         }
 
@@ -206,18 +212,27 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
         
         if (connections.length > 1) {
             // Branching path
-            lastBranchedPaths.push(currentPath);
+            lastBranchedPath = currentPath;
         }
 
-        // Go through the connections, and look at their connections
+        // Go through the connections, and look at THEIR connections
         connections.forEach(connection => {
-            // checkNextConnection();
+            let newPath = [...currentPath, connection];
+            checkNextConnection(newPath);
         })
     }
+
+    checkNextConnection(currentPath);
 
 }
 
 console.log(allPaths);
+// drawLine("Floor0", "Wdot0", allPaths['dot7']);
+
+for (const [dotName, path] of Object.entries(allPaths)) {
+    drawLine("Floor0", "Wdot0", path);
+
+}
 
 
 
@@ -255,22 +270,21 @@ document.addEventListener("keydown", e => {
     let x = e.key;
     
     if (x.length >= 2 && !(x == "Backspace" || x == "Enter")) return;
-    // if ( (/[a-zA-Z0-9 ]/).test(x) ) {
-        e.preventDefault();
 
-        if (e.key === "Enter") {
-            fullString = updateCoordString();
-            
-            commentString = "";
-            iterator++;
-        } else if (e.key === "Backspace") {
-            commentString = commentString.slice(0, -1);
-        } else {
-            commentString += e.key;
-        }
+    e.preventDefault();
 
-        updateCoordString();
-    // }
+    if (e.key === "Enter") {
+        fullString = updateCoordString();
+        
+        commentString = "";
+        iterator++;
+    } else if (e.key === "Backspace") {
+        commentString = commentString.slice(0, -1);
+    } else {
+        commentString += e.key;
+    }
+
+    updateCoordString();
 });
 
 

@@ -124,57 +124,100 @@ imgContainers.forEach(container => {
 
 
 
-// draw img paths
+// Draw a line from one point to the other
 
-for (const [floorName, floorItems] of Object.entries(imgPaths)) {
+function drawLine(floorName, from, path) {
+    // path: ['dot1', 'dot2', 'dot3', 'dot4', 'targetdot']
+    // from: 'Wdot0' (the starting dot Maniek)
+
     let floorContainer = document.querySelector(`div.${floorName}`);
-    if (!floorContainer) continue;
+    if (!floorContainer) return;
 
     let img = floorContainer.querySelector("img");
     let canvas = floorContainer.querySelector("canvas");
 
     let ctx = canvas.getContext("2d");
-    for (const [dot, values] of Object.entries(floorItems.dots)) {
-        // 'values' contains: {x, y, connections}
-        let coordsPx = percentToPx(values, img);
 
-        let draw = function() {
-            // Draw the dot
-            ctx.fillStyle = "red";
+    // Line things
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 4;
+
+    let floor = imgPaths[floorName];
+    let lastDot = floor.dots[from];
+    path.forEach(dot => {
+        let connectionDot = floor.dots[dot];
+        let coordsPx = percentToPx(lastDot, img);
+        let connectionCoordsPx = percentToPx(connectionDot, img);
+
+        // Draw line
+        ctx.beginPath();
+        ctx.moveTo(coordsPx.x, coordsPx.y);
+        ctx.lineTo(connectionCoordsPx.x, connectionCoordsPx.y);
+        ctx.stroke();
+        ctx.closePath();
+
+        // Draw dot
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.arc(connectionCoordsPx.x, connectionCoordsPx.y, 2, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        // Draw arrow
+        if (dot === path[path.length - 1]) {
+            // ctx.fillSt
+            
             ctx.beginPath();
-            ctx.arc(coordsPx.x, coordsPx.y, 5, 0, 2 * Math.PI);
+            ctx.arc(connectionCoordsPx.x, connectionCoordsPx.y, 6, 0, 2 * Math.PI);
             ctx.fill();
+            ctx.closePath();
 
-            // Connect all connection dots
-            if (values.connections && values.connections.length > 0) {
-                ctx.strokeStyle = "red";
-                ctx.lineWidth = 3;
-
-                values.connections.forEach(connectionName => {
-                    let connectionDot = floorItems.dots[connectionName];
-                    let connectionCoordsPx = percentToPx(connectionDot, img);
-
-                    ctx.beginPath();
-                    ctx.moveTo(coordsPx.x, coordsPx.y);
-                    ctx.lineTo(connectionCoordsPx.x, connectionCoordsPx.y);
-                    ctx.stroke();
-                });
-            }
-
-            // Name the dot
-            ctx.fillStyle = "black";
-            ctx.font = "12px Arial";
-            ctx.fillText(dot, coordsPx.x, coordsPx.y - 10);
-        };
-
-        if (img.complete) {
-            draw();
-        } else {
-            img.onload = draw;
         }
+
+        lastDot = connectionDot;
+    });
+}
+
+// testing drawing a line
+drawLine("Floor0", "Wdot0", ['Wdot1', 'Wdot2', 'Wdot3', 'dot3']);
+
+let allPaths = {};
+
+// Draw all the lines (testing)
+for (const [floorName, floorItems] of Object.entries(imgPaths)) {
+    let floorContainer = document.querySelector(`div.${floorName}`);
+    if (!floorContainer) continue;
+
+
+    let currentPath = ['Wdot0'];
+    let lastBranchedPaths = [];
+
+    let checkNextConnection = function() {
+        let latestDotName = currentPath[currentPath.length - 1];
+        let latestDot = floorItems.dots[latestDotName];
+
+        if (!latestDot.connections || latestDot.connections.length == 0) {
+            // No connections, end of this path
+            allPaths[latestDotName] = currentPath;
+            return;
+        }
+
+        let connections = latestDot.connections;
+        
+        if (connections.length > 1) {
+            // Branching path
+            lastBranchedPaths.push(currentPath);
+        }
+
+        // Go through the connections, and look at their connections
+        connections.forEach(connection => {
+            // checkNextConnection();
+        })
     }
 
 }
+
+console.log(allPaths);
 
 
 
@@ -212,7 +255,7 @@ document.addEventListener("keydown", e => {
     let x = e.key;
     
     if (x.length >= 2 && !(x == "Backspace" || x == "Enter")) return;
-    if ( (/[a-zA-Z0-9 ]/).test(x) ) {
+    // if ( (/[a-zA-Z0-9 ]/).test(x) ) {
         e.preventDefault();
 
         if (e.key === "Enter") {
@@ -227,7 +270,7 @@ document.addEventListener("keydown", e => {
         }
 
         updateCoordString();
-    }
+    // }
 });
 
 
@@ -253,3 +296,43 @@ document.addEventListener("mousedown", e => {
 });
 
 
+/*
+
+let coordsPx = percentToPx(values, img);
+
+        let draw = function() {
+            Draw the dot
+            ctx.fillStyle = "red";
+            ctx.beginPath();
+            ctx.arc(coordsPx.x, coordsPx.y, 5, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Connect all connection dots
+            if (values.connections && values.connections.length > 0) {
+                ctx.strokeStyle = "red";
+                ctx.lineWidth = 3;
+
+                values.connections.forEach(connectionName => {
+                    let connectionDot = floorItems.dots[connectionName];
+                    let connectionCoordsPx = percentToPx(connectionDot, img);
+
+                    ctx.beginPath();
+                    ctx.moveTo(coordsPx.x, coordsPx.y);
+                    ctx.lineTo(connectionCoordsPx.x, connectionCoordsPx.y);
+                    ctx.stroke();
+                });
+            }
+
+            // Name the dot
+            ctx.fillStyle = "black";
+            ctx.font = "12px Arial";
+            ctx.fillText(dot, coordsPx.x, coordsPx.y - 10);
+        };
+
+        if (img.complete) {
+            draw();
+        } else {
+            img.onload = draw;
+        }
+
+*/

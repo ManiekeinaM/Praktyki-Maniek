@@ -1,0 +1,175 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+body {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: hidden;
+}
+.arrow{
+    z-index: 10;
+    position: relative;
+    top: 6rem;
+}
+div {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+a:hover{
+    cursor: pointer;
+}
+
+#wheel {
+    transform-origin: center;
+}
+
+@keyframes Common_animation {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(922.5deg);
+    }
+}
+@keyframes Uncommon_animation {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(698.5deg);
+    } 
+}
+@keyframes Rare_animation {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(1012.5deg);
+    }
+}
+@keyframes Epic_animation {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(248.5deg);
+    }
+}
+@keyframes Mythic_animation {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(967.5deg);
+    }
+}
+@keyframes Legendary_animation {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(787.5deg);
+    }
+}
+@keyframes Common_animation1 {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(922.5deg);
+    }
+}
+@keyframes Uncommon_animation2 {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(698.5deg);
+    } 
+}
+@keyframes Rare_animation2 {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(1012.5deg);
+    }
+}
+@keyframes Epic_animation2 {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(248.5deg);
+    }
+}
+@keyframes Mythic_animation2 {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(967.5deg);
+    }
+}
+@keyframes Legendary_animation2 {
+    0% {
+        transform: rotate(0%);
+    }
+    20% {
+        transform: rotate(-60deg);
+    }
+    100% {
+        transform: rotate(787.5deg);
+    }
+}
+
+button {
+    z-index: 10;
+}
+
+.wheel-container {
+    position: relative;
+}
+

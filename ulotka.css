@@ -9,6 +9,7 @@ body, html {
 
 body {
     /* height: 200vh; */
+    height: 100vh;
     background-color: rgb(240,240,240);
 }
 
@@ -76,12 +77,16 @@ body {
     flex-direction: column;
     margin: 1rem;
     margin-top: 0.5rem;
+
+    overflow-y: auto;
 }
 .zawody-grid {
     background-color: white;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(4, 1fr);
+
+    overflow-y: auto;
 }
 .zawody-item {
     background-color: #70b0f8;

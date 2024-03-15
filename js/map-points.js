@@ -10,7 +10,7 @@ const imgPaths = {
             "dot5": {x: 0.24900, y: 0.87972}, // sala 10
             "dot6": {x: 0.10200, y: 0.87972}, // sala 13
             "dot7": {x: 0.10300, y: 0.65912}, // sekretariat uczniowski
-            "dot8": {x: 0.39300, y: 0.49646}, // sala 21
+            "dot8": {x: 0.39300, y: 0.49646}, // sala 22
             "dot9": {x: 0.53700, y: 0.49505}, // sala 24
             "dot10": {x: 0.76000, y: 0.56011}, // sala 46
             "dot11": {x: 0.83700, y: 0.63366}, // sala 45
@@ -108,10 +108,18 @@ imgContainers.forEach(container => {
     let img = container.querySelector("img")
     let canvas = container.querySelector("canvas");
 
-    container.style.width = `${img.width}px`;
-    container.style.height = `${img.height}px`;
-    canvas.width = img.width;
-    canvas.height = img.height;
+    let setSize = function() {
+        container.style.width = `${img.width}px`;
+        container.style.height = `${img.height}px`;
+        canvas.width = img.width;
+        canvas.height = img.height;
+    }
+
+    if (img.complete) {
+        setSize();
+    } else {
+        img.onload = setSize;
+    }
 })
 
 
@@ -124,9 +132,6 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
 
     let img = floorContainer.querySelector("img");
     let canvas = floorContainer.querySelector("canvas");
-
-    // canvas.width = img.width;
-    // canvas.height = img.height;
 
     let ctx = canvas.getContext("2d");
     for (const [dot, values] of Object.entries(floorItems.dots)) {
@@ -170,10 +175,6 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
     }
 
 }
-
-
-// const img = document.querySelector(".map img");
-// console.log( percentToPx({x: 0.1, y: 0.1}, img) );
 
 
 

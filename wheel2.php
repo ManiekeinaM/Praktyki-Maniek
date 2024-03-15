@@ -101,7 +101,7 @@
 
                 wheelSvg += `<path d="M0,0 L ${Math.cos(startAngle * Math.PI / 180) * 250}, ${Math.sin(startAngle * Math.PI / 180) * 250}
                              A 250,250 0 0,1 ${Math.cos(endAngle * Math.PI / 180) * 250},${Math.sin(endAngle * Math.PI / 180) * 250} Z"
-                             fill="${values.color}" stroke="#9B8C64" stroke-width="8"/>`;
+                             fill="${values.color}" stroke-width="8"/>`;
 
                 // Place text
                 const textAngle = startAngle + segAngle / 2;
@@ -109,7 +109,7 @@
                 const textY = Math.sin(textAngle * Math.PI / 180) * 200;
 
                 wheelSvg += `<text class="prizeText" x="${textX}" y="${textY + 8}" font-family="Arial" font-weight="bold" font-size="20" fill="black" stroke-width="5" paint-order="stroke" stroke="white" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
-
+                wheelSvg += `<circle cx="0" cy="0" r="250" fill="none" stroke="#9B8C64" stroke-width="8"/>`;
                 i++;
             }
 

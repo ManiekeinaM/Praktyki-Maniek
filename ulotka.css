@@ -1,0 +1,124 @@
+* {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* height: 200vh; */
+    background-color: rgb(240,240,240);
+}
+
+/* Fixed position div at the top left */
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    40% {
+        transform: rotate(360deg);
+    }
+    60% {
+        transform: rotate(0deg);
+    }
+}
+
+/* Ulotka */
+
+.logo2 {
+    width: 100px;
+    height: 100px;
+    animation: 6s spin infinite;
+}
+
+.logo-container2 {
+    position: fixed;
+    z-index: 10;
+
+    left: 1rem;
+    top: 0.8rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0.5rem;
+}
+
+.ulotka-title-container {
+    margin: 1rem;
+    margin-bottom: 0px;
+    background-color: #1751A0;
+    border-bottom: 1rem solid #70b0f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.ulotka-title-container > p {
+    color: #CAB282;
+    font-weight: bolder;
+    margin-bottom: 0px;
+    font-size: 3rem;
+    margin-top: 1px;
+}
+.ulotka-title-container > h2 {
+    color: white;
+    margin-top: 0px;
+}
+.ulotka-main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 1rem;
+    margin-top: 0.5rem;
+}
+.zawody-grid {
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+}
+.zawody-item {
+    background-color: #70b0f8;
+    width: 95%;
+    height: fit-content;
+    text-align: center;
+    font-weight: bold;
+    border: 0.5rem solid #70b0f8;
+    border-left: none;
+    margin: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+.zawody-item-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #1751A0;
+    color: #CAB282;
+    padding: 1rem;
+    margin: 0px;
+}
+.zawody-item-side {
+    width: 65%;
+    float: left;
+}
+.item-side {
+    flex-direction: column;
+    margin-top: 0.5rem;
+    font-size: 1vw;
+}
+.item-side {
+    color: white;
+}
+.item-side > span {
+    color: #1751A0;
+}
+.zawody-item-logo >img {
+    height: fit-content;
+    width: 35%;
+    float: left;
+}

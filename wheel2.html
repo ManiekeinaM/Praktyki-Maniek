@@ -97,7 +97,7 @@
                 const textX = Math.cos(textAngle * Math.PI / 180) * 200;
                 const textY = Math.sin(textAngle * Math.PI / 180) * 200;
 
-                wheelSvg += `<text x="${textX}" y="${textY + 8}" font-family="Arial" font-size="20" fill="black" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
+                wheelSvg += `<text class="prizeText" x="${textX}" y="${textY + 8}" font-family="Arial" font-weight="bold" font-size="20" fill="#b99a5a" stroke-width="8" paint-order="stroke" stroke="#112b95" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
                 wheelSvg += `<circle cx="0" cy="0" r="250" fill="none" stroke="#817453" stroke-width="10"/>`;
                 wheelSvg += `<circle cx="0" cy="0" r="25" fill="#9B8C64" stroke="#9B8C64" stroke-width="6"/>`;
                 i++;

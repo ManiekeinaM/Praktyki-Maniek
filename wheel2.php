@@ -15,15 +15,27 @@
     </div>
     <button class="spin" data-wheelid="1" id="spin_button">SPIN</button>
     <p id="result"></p>
-
+    <p id="php-container" style="display:none;">
     <?php
-    $baza = new mysqli("localhost", "root", "", "baza_pula");
+        $db = new mysqli("localhost", "root", "", "baza_pula");
 
-    if($baza -> connect_error) {
-        die();
-    }else { echo "ok"}
-    
-    ?>
+        if($db -> connect_error) {
+            die();
+        }
+
+        $prizeName_array = array();
+        $prizeNumber_array = array();
+
+        $result = $db -> query("SELECT nazwaNagrody, iloscNagrody FROM nagrody_pula");
+
+        while($row = $result -> fetch_assoc()) {
+            array_push($prizeName_array, $row['nazwaNagrody']);
+            array_push($prizeNumber_array, $row['iloscNagrody']);
+        }
+        echo $prizeName_array;
+        echo $prizeNumber_array;
+        ?>
+    </p>
 
     <script>
         const result = document.getElementById("result");
@@ -105,7 +117,7 @@
                 const textX = Math.cos(textAngle * Math.PI / 180) * 200;
                 const textY = Math.sin(textAngle * Math.PI / 180) * 200;
 
-                wheelSvg += `<text x="${textX}" y="${textY + 8}" font-family="Arial" font-size="20" fill="black" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
+                wheelSvg += `<text class="prizeText" x="${textX}" y="${textY + 8}" font-family="Arial" font-weight="bold" font-size="20" fill="#b99a5a" stroke-width="8" paint-order="stroke" stroke="#112b95" text-anchor="middle" transform="rotate(${textAngle + 90}, ${textX}, ${textY})">${prizeName}</text>`;
                 wheelSvg += `<circle cx="0" cy="0" r="250" fill="none" stroke="#9B8C64" stroke-width="8"/>`;
                 wheelSvg += `<circle cx="0" cy="0" r="25" fill="#9B8C64" stroke="#9B8C64" stroke-width="6"/>`;
                 i++;

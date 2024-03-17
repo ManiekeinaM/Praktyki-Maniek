@@ -248,6 +248,14 @@ function drawDotsEverywhere() {
 // drawDotsEverywhere();
 
 
+function clearAllCanvas() {
+    const allCanvas = document.querySelectorAll("canvas");
+    allCanvas.forEach(canvas => {
+        let ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+}
+
 // Draw a line from one point to the other
 
 function drawLine(floorName, from, path, shouldntClear = false) {
@@ -262,7 +270,8 @@ function drawLine(floorName, from, path, shouldntClear = false) {
 
     let ctx = canvas.getContext("2d");
     if (!shouldntClear) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        clearAllCanvas();
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     // Line things

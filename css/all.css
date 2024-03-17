@@ -1,19 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
-@font-face {
-    font-family: 'Raleway';
-    src: url('fonts/Raleway-VariableFont_wght.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Raleway Italic';
-    src: url('fonts/Raleway-Italic-VariableFont_wght.ttf') format('truetype');
-    font-weight: normal;
-    font-style: italic;
-}
-
 @keyframes popIn {
     0% {
         transform: scale(0.75);
@@ -25,7 +11,7 @@
 
 * {
     /* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
-    font-family: 'Raleway', fallback, sans-serif;
+    font-family: 'Raleway',  sans-serif;
 }
 
 .copyable {
@@ -144,7 +130,7 @@ main {
     /* transform: scale(0.5); */
 }
 
-.image-canvas-container {
+.layers {
     position: relative;
 }
 

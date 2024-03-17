@@ -1,0 +1,45 @@
+img {
+    padding: 1%;
+    scale: 80%;
+    margin-top: 0;
+}
+
+.QR{
+    transform: scale(0.2);
+}
+.swiperHeading{
+    display: flex;
+    flex-direction: row;
+}
+h1{
+    width: 100%;
+}
+h2{
+    margin-bottom: 0;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .swiper {
+    margin-left: auto;
+    margin-right: auto;
+  }

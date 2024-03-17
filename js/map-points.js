@@ -250,7 +250,7 @@ function drawDotsEverywhere() {
 
 // Draw a line from one point to the other
 
-function drawLine(floorName, from, path) {
+function drawLine(floorName, from, path, shouldntClear = false) {
     // path: ['dot1', 'dot2', 'dot3', 'dot4', 'targetdot']
     // from: 'Wdot0' (the starting dot Maniek)
 
@@ -261,6 +261,9 @@ function drawLine(floorName, from, path) {
     let canvas = floorContainer.querySelector("canvas");
 
     let ctx = canvas.getContext("2d");
+    if (!shouldntClear) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
 
     // Line things
     ctx.strokeStyle = "red";

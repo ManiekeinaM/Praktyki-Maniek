@@ -3,6 +3,7 @@ const map = document.querySelector('.map');
 
 const scaleUp = document.querySelector('.scale .plus');
 const scaleDown = document.querySelector('.scale .minus');
+const resetScale = document.querySelector('.scale .reset');
 const scaleText = document.querySelector('.scale-num');
 
 // Scaling of the items
@@ -21,6 +22,10 @@ scaleUp.addEventListener('click', e => {
 })
 scaleDown.addEventListener("click", e => {
     setScale(scale - 0.1);
+    updateMap();
+})
+resetScale.addEventListener("click", e => {
+    setScale(1);
     updateMap();
 })
 
@@ -90,8 +95,8 @@ function mouseMove(e, isMobile) {
     }
 
 
-    translateX = start_translateX + deltaX * (1/scale);
-    translateY = start_translateY + deltaY * (1/scale);
+    translateX = start_translateX + deltaX * (1 / scale);
+    translateY = start_translateY + deltaY * (1 / scale);
 
     updateMap();
 }

@@ -363,11 +363,11 @@ div.reset {
 
     padding: 2rem;
     margin: 2rem;
-    height: 50%;
 
     text-align: center;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }

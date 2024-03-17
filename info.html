@@ -6,6 +6,9 @@
     <title>Maniek - Info</title>
 
     <link rel="stylesheet" href="./css/all.css">
+    <link rel="stylesheet" href="./css/info.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
 
     <style>
         main {
@@ -24,7 +27,33 @@
     <!-- Info container -->
     <main>
         <div class="info-container">
-            <p>ZSP9 - Info</p>
+            <h1>Nasze media!</h1>
+
+            <section class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    
+                    <div class="swiper-slide">
+                        <div class="swiperHeading">
+                            <!-- <img src="./assets/QR codes/qr-fb.jpg" alt="QR" class="QR"> <!-- scaling doesn't work - why? how to fix? -->
+                            <h2>Facebook</h2>
+                        </div>
+                        <img src="./assets/QR codes/fb.png" alt="Facebook" class="social-preview">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <h2>Instagram</h2>
+                        <img src="./assets/QR codes/ig.png" alt="Instagram" class="social-preview">
+                    </div>
+
+                    <div class="swiper-slide">
+                        <h2>Strona</h2>
+                        <img src="./assets/QR codes/mainpage.png" alt="Strona Szkoły" class="social-preview">
+        
+                    </div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </section>
         </div>
     </main>
 
@@ -49,5 +78,23 @@
     </div>
 
     <script src="./js/navigation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      loop: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  </script>
 </body>
 </html>

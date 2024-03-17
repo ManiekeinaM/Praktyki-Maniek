@@ -38,6 +38,24 @@ map.querySelectorAll("img").forEach(img => {
 
 
 
+const mapThresholds = [
+    {
+        threshold: 1000,
+        titleName: "PARTER",
+        text: "Budynki A i B"
+    },
+    {
+        threshold: -350,
+        titleName: "PIĘTRO 1",
+        text: "Budynki A i B"
+    },
+    {
+        threshold: -1200,
+        titleName: "PIĘTRO 2",
+        text: "Budynki A i B"
+    },
+]
+
 
 // Listen to dragging
 let isDragging = false;
@@ -50,9 +68,23 @@ let start_translateX = translateX;
 let start_translateY = translateY;
 
 // Function to update the map! Always called when the map is updated
+
+const floorTitle = document.querySelector(".floorTitle");
+const floorText = document.querySelector(".floorText");
 function updateMap() {
     translateX = Math.min(3000, translateX);
     translateY = Math.min(3000, translateY);
+
+    for (let i = mapThresholds.length - 1; i >= 0; i--) {
+        if (translateY < mapThresholds[i].threshold) {
+            floorTitle.textContent = mapThresholds[i].titleName;
+            floorText.textContent = mapThresholds[i].text;
+            break;
+        }
+
+    }
+
+
 
     map.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
     scaleText.textContent = `${scale.toFixed(1)}x`;

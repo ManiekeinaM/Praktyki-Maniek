@@ -175,8 +175,6 @@ const mapIcons = {
     'machine': './assets/map/icons/Maniek.png',
 }
 
-
-
 function percentToPx(percentages, relativeElement) {
     const bounds = relativeElement.getBoundingClientRect();
     return {

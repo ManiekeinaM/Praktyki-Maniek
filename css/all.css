@@ -77,15 +77,36 @@ body {
     font-weight: bolder;
     color: rgba(56, 92, 255, 0.9);
 
+    width: 6rem;
+
     text-align: center;
-    padding: 0.7em;
+    padding: 0.75rem;
     border-radius: 1rem;
+    line-height: 1.75rem;
 }
 
 .floorTitle {
+    position: relative;
     text-align: center;
+    font-size: 1.25rem;
 }
 
+.floorTitle::after {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 1rem;
+    content: "";
+    width: 125%;
+    height: 3px;
+    background-color: rgba(56, 92, 255, 0.9);
+
+}
+
+.floorText {
+    white-space: nowrap;
+}
 
 /* Map container */
 .map-container {

@@ -5,12 +5,10 @@ img {
 }
 
 .QR{
-    transform: scale(0.2);
+    width: 20%;height: auto;
+    transform: scale(0.2) !important;
 }
-.swiperHeading{
-    display: flex;
-    flex-direction: row;
-}
+
 h1{
     width: 100%;
 }

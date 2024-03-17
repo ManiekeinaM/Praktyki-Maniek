@@ -180,8 +180,8 @@ const mapIcons = {
 function percentToPx(percentages, relativeElement) {
     const bounds = relativeElement.getBoundingClientRect();
     return {
-        x: percentages.x * bounds.width,
-        y: percentages.y * bounds.height
+        x: percentages.x * bounds.width / scale,
+        y: percentages.y * bounds.height / scale
     };
 }
 
@@ -255,6 +255,8 @@ function clearAllCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
 }
+
+
 
 // Draw a line from one point to the other
 

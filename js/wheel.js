@@ -4,12 +4,12 @@ const wheelContainer = document.querySelector(".wheel-container");
 var wheels = {
     1: {
         prizes: [
-            { name: "Prize1", weight: 3, color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "Prize1", weight: 7.5, color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "Prize2", weight: 1, color: '#1434B4', darkcolor: '#112b95' },
             { name: "Prize3", weight: 1, color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "Prize4", weight: 1, color: '#1434B4', darkcolor: '#112b95' },
-            { name: "Prize5", weight: 1, color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "Prize6", weight: 1, color: '#1434B4', darkcolor: '#112b95' },
+            // { name: "Prize5", weight: 1, color: '#CAB282', darkcolor: '#b99a5a' },
+            // { name: "Prize6", weight: 1, color: '#1434B4', darkcolor: '#112b95' },
         ],
         totalWeights: 0, // filled via code later
         totalPrizes: 0,
@@ -143,7 +143,7 @@ function randomByWeight(wheelId) {
             let endDegree = startDegree + (values.weight / totalWeights) * 360;
             console.log(random, startDegree, endDegree);
 
-            spin(wheelId, prizeName, startDegree, endDegree);
+            spin(wheelId, i, startDegree, endDegree);
 
             result.innerHTML = prizeName;
             return { prizeName, startDegree, endDegree };
@@ -163,25 +163,39 @@ spinButton.addEventListener("click", e => {
     randomByWeight(wheelId);
 });
 
-function spin(wheelId, prizeName, startDegree, endDegree) {
+function spin(wheelId, prizeId, startDegree, endDegree) {
     const totalSpins = 9; // Determines how many times the wheel will spin
 
     let pickedWheel = wheels[wheelId];
+    let prizeName = pickedWheel.prizes[prizeId].name;
+
+    let totalWeights = pickedWheel.totalWeights;
 
     let currentDegree = pickedWheel.currentDegree;
     let defaultDegree = pickedWheel.defaultDegree;
 
     // Calculate the degree to stop on the winning segment
     let realDegree = (currentDegree) % 360 // get the real degree without the 360s
-    let inbetween = (startDegree + endDegree) / 2; // get the middle of the target segment
 
-    let generalTarget = defaultDegree - inbetween;
-    let change = generalTarget - realDegree;
+    let cumulativeWeight = 0;
+    for (let i = 0; i < prizeId; i++) {
+        let prize = pickedWheel.prizes[i];
+        let weight = prize.weight;
 
-    console.log(`Real: ${realDegree} General: ${generalTarget} Change: ${change} Inbetween: ${inbetween}`);
+        cumulativeWeight += weight;
+    }
+    let leadingDegrees = (cumulativeWeight / totalWeights) * 360;
+    // console.log(`EDGE: ${leadingDegrees}`);
+
+
+    let generalTarget = leadingDegrees + (pickedWheel.prizes[prizeId].weight / totalWeights) * 360 / 2;
+    // console.log(`MIDDLE: ${generalTarget}`);
+
+
+    // console.log(`Real: ${realDegree} General: ${generalTarget} Change: ${change} Inbetween: ${inbetween}`);
 
     // Ensure smooth transition by adjusting for the current rotation
-    const finalDegree = realDegree + change + (360 * totalSpins);
+    const finalDegree = (270 - generalTarget) + (360 * totalSpins);
 
 
     // Update currentDegree to keep track of the wheel's state
@@ -192,7 +206,7 @@ function spin(wheelId, prizeName, startDegree, endDegree) {
     // Apply the spin animation
     const wheel = document.getElementById('wheel');
 
-    let time = Math.max(4, totalSpins / 1.5);
+    let time = Math.max(4, totalSpins / 1.5) / 5;
     wheel.style.transition = `transform ${time}s cubic-bezier(0.33, 1, 0.68, 1)`; // Smooth deceleration
     wheel.style.transform = `rotate(${pickedWheel.currentDegree}deg)`;
 

@@ -79,4 +79,55 @@ button {
     z-index: 10;
 }
 
+.wheel-legend {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    background-color: rgba(56, 92, 255, 0.05);
+    border: 2px solid rgba(56, 92, 255, 0.5);
+    backdrop-filter: blur(3px);
 
+    font-weight: bolder;
+    color: rgba(56, 92, 255, 0.9);
+
+    text-align: left;
+    padding: 0.7em;
+    border-radius: 1rem;
+}
+
+.legend-text {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.spin-holder{
+    display: flex;
+    justify-content: center;
+}
+
+.spin1 {
+    background-color: rgba(56, 92, 255, 0.05);
+    border: 2px solid rgba(56, 92, 255, 0.5);
+    backdrop-filter: blur(3px);
+
+    font-weight: bolder;
+    font-size: x-large;
+    color: rgba(56, 92, 255, 0.9);
+
+    padding: 0.4rem;
+    margin: 0.5rem;
+    border-radius: 1rem;
+}
+.spin2 {
+    background-color: rgba(255, 230, 0, 0.05);
+    border: 2px solid rgba(124, 122, 0, 0.5);
+    backdrop-filter: blur(3px);
+
+    font-weight: bolder;
+    font-size: x-large;
+    color: rgba(146, 136, 0, 0.9);
+
+    padding: 0.4rem;
+    margin: 0.5rem;
+    border-radius: 1rem;
+}

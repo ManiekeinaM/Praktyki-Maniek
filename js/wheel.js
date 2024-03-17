@@ -1,15 +1,19 @@
 const result = document.querySelector(".result");
 const wheelContainer = document.querySelector(".wheel-container");
 
+let php_data_text = document.getElementById("php-container").innerHTML;
+let php_amounts = php_data_text.split("_");
+php_amounts.pop();
+
 var wheels = {
     1: {
         prizes: [
-            { name: "Breloczki/Przypinki", weight: 10, color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "Prize2", weight: 1, color: '#1434B4', darkcolor: '#112b95' },
-            { name: "Prize3", weight: 1, color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "Prize4", weight: 1, color: '#1434B4', darkcolor: '#112b95' },
-            // { name: "Prize5", weight: 1, color: '#CAB282', darkcolor: '#b99a5a' },
-            // { name: "Prize6", weight: 1, color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", weight: 500, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", weight: 200, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🏖️", weight: 0, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫💻", weight: 0, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🛒", weight: 25, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎟️🛒", weight: 50, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
         ],
         totalWeights: 0, // filled via code later
         totalPrizes: 0,
@@ -20,10 +24,12 @@ var wheels = {
     },
     2: {
         prizes: [
-            { name: "Prize1", weight: 10, color: 'blue' },
-            { name: "Prize2", weight: 1, color: 'red' },
-            { name: "Prize3", weight: 1, color: 'lightgreen' },
-            { name: "Prize4", weight: 1, color: 'pink' },
+            { name: "🗝️🎖️", weight: 200, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", weight: 100, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🏖️", weight: 50, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫💻", weight: 100, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🛒", weight: 350, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎟️🛒", weight: 250, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
         ],
         totalWeights: 0, // filled via code later
         totalPrizes: 0,
@@ -32,8 +38,14 @@ var wheels = {
         actualWheel: null,
         debounce: false,
     }
-
 }
+
+console.log("Koło1", JSON.parse(JSON.stringify(wheels[1])));
+console.log("Koło2", JSON.parse(JSON.stringify(wheels[2])));
+
+wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount != 0);
+wheels[2].prizes = wheels[1].prizes.filter(prize => prize.amount != 0);
+console.log(wheels);
 
 
 // Set the necessary properties for each wheel
@@ -125,26 +137,45 @@ function generateWheel(wheelId) {
 
 function randomByWeight(wheelId) {
 
+    console.log("Koło", wheels[wheelId]);
     let pickedWheel = wheels[wheelId];
     let totalWeights = pickedWheel.totalWeights;
-
+    console.log("Wagi", totalWeights);
     // Random a number between [1, total]
     const random = Math.ceil(Math.random() * totalWeights); // [1,total]
-
     // Prize selecting logic
     let cursor = 0;
     for (const [i, values] of pickedWheel.prizes.entries()) {
         let prizeName = values.name;
 
         cursor += values.weight;
+        console.log(wheels);
         if (cursor >= random) {
+
+            values.amount--;
+            //php amount decreasing
+            console.log(i);
+            let decreasedAmount = {id: i, amount:values.amount};
+
+            fetch('decreaseAmount.php', {
+                method: 'POST',
+                body: JSON.stringify(decreasedAmount),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.log('Error:', error));
 
             let startDegree = (random / totalWeights) * 360 - 90;
             let endDegree = startDegree + (values.weight / totalWeights) * 360;
             // console.log(random, startDegree, endDegree);
 
             spin(wheelId, i, startDegree, endDegree);
-
+            wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount != 0);
+            wheels[2].prizes = wheels[1].prizes.filter(prize => prize.amount != 0); 
             result.innerHTML = prizeName;
             return { prizeName, startDegree, endDegree };
         }
@@ -153,10 +184,22 @@ function randomByWeight(wheelId) {
     return "never go here";
 }
 
-const spinButton = document.querySelector(".spin");
-spinButton.addEventListener("click", e => {
-    let wheelId = spinButton.dataset.wheelid;
-    // console.log(wheelId);
+const spinButton1 = document.querySelector(".spin1");
+console.log(spinButton1);
+spinButton1.addEventListener("click", e => {
+    let wheelId = spinButton1.dataset.wheelid;
+    console.log(wheelId);
+    if (wheels[wheelId].debounce) return;
+
+    wheels[wheelId].debounce = true;
+    randomByWeight(wheelId);
+});
+
+const spinButton2 = document.querySelector(".spin2");
+console.log(spinButton2);
+spinButton2.addEventListener("click", e => {
+    let wheelId = spinButton2.dataset.wheelid;
+    console.log(wheelId);
     if (wheels[wheelId].debounce) return;
 
     wheels[wheelId].debounce = true;

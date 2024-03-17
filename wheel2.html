@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wheel</title>
+    <link rel="stylesheet" href="./css/all.css">
     <link rel="stylesheet" href="./css/wheel.css">
 </head>
 <body>
@@ -22,8 +23,26 @@
     
     <p id="result"></p>
 
+    <!-- Navigation button container / zakładki -->
+    <div class="navigation-container">
+        <div class="button" data-tab="index.html">
+            <!-- Mapa -->
+            <img src="./assets/locationPin.png" alt="mapa">
+        </div> 
 
+        <div class="button" data-tab="info.html">
+            <!-- Info i historia szkoły -->
+            <img src="./assets/info.png" alt="mapa">
+        </div>
+
+        <div class="button selected" data-tab="wheel2.html">
+            <!-- Koło fortuny -->
+            <img src="./assets/wheel.png" alt="">
+            <img src="./assets/sparkle.png" alt="" class="decoration">
+        </div>
+    </div>
 
     <script src="./js/wheel.js"></script>
+    <script src="./js/navigation.js"></script>
 </body>
 </html>

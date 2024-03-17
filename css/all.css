@@ -12,6 +12,15 @@
     font-style: italic;
 }
 
+@keyframes popIn {
+    0% {
+        transform: scale(0.75);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 * {
     /* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
     font-family: 'Raleway', fallback, sans-serif;
@@ -63,6 +72,7 @@ body {
     align-items: center;
 
     padding: 0.5rem;
+    animation: popIn 0.25s;
 }
 .logo {
     width: 70px;
@@ -182,7 +192,7 @@ img::selection {
     border-radius: 4rem;
     margin: 1rem;
     
-
+    animation: popIn 0.25s;
     z-index: 10;
 }
 .scale > * {
@@ -224,6 +234,27 @@ button.minus {
     background-color: rgb(234, 99, 96);
     border: 3px solid rgba(173, 45, 45, 0.5);
 }
+button.reset {
+    position: absolute;
+    border-radius: 3rem;
+    border: 3px solid rgba(100,100,100,0.5);
+    top: 90%;
+    z-index: 1;
+}
+div.reset {
+    position: absolute;
+    margin: 0;
+    top: 100%;
+    background-color: rgba(100,100,100,0.1);
+    backdrop-filter: blur(2px);
+
+    width: 5rem;
+    height: 3.5rem;
+    border-bottom-left-radius: 3.5rem;
+    border-bottom-right-radius: 3.5rem;
+
+    z-index: 0;
+}
 
 /* Navigation container */
 .navigation-container {
@@ -242,6 +273,9 @@ button.minus {
 
     z-index: 5;
 }
+.navigation-container .selected {
+    animation: popIn 0.25s;
+}
 
 .button {
     position: relative;
@@ -256,6 +290,37 @@ button.minus {
     transition: 0.1s;
 
     cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button img {
+    z-index: 2;
+}
+
+@keyframes spinDecoration {
+    0% {
+        transform: rotate(10deg);
+    }
+    50% {
+        transform: rotate(20deg);
+    }
+    100% {
+        transform: rotate(10deg);
+    }
+}
+
+.button .decoration {
+    position: absolute;
+    top: -30%;
+    right: -30%;
+    z-index: 3;
+
+    width: 75%;
+    height: 75%;
+    animation: spinDecoration 3s ease-in-out infinite;
 }
 
 .button::after { /* Hitbox */

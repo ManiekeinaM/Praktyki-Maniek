@@ -26,10 +26,14 @@ body {
     animation: moveBackground 10s linear infinite;
 }
 
-.wheels {
+.wheels, .wheel-container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+
+    animation: popIn 0.25s;
 }
 
 .arrow{
@@ -40,13 +44,6 @@ body {
     top: 2rem;
     height: 7.5rem;
 
-}
-div {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
 }
 
 a:hover{

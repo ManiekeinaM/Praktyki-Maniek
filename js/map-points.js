@@ -260,7 +260,7 @@ function clearAllCanvas() {
 
 // Draw a line from one point to the other
 
-function drawLine(floorName, from, path, shouldntClear = false) {
+function drawLine(floorName, from, path) {
     // path: ['dot1', 'dot2', 'dot3', 'dot4', 'targetdot']
     // from: 'Wdot0' (the starting dot Maniek)
 
@@ -271,10 +271,6 @@ function drawLine(floorName, from, path, shouldntClear = false) {
     let canvas = floorContainer.querySelector("canvas");
 
     let ctx = canvas.getContext("2d");
-    if (!shouldntClear) {
-        clearAllCanvas();
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
 
     // Line things
     ctx.strokeStyle = "red";
@@ -420,8 +416,12 @@ function drawAllPaths() {
 // Draw a path to a specific point
 // provide: floor name, start dot, floor's destination dot
 
-function drawPath(floorName, startDot = 'Wdot0', destinationDot) {
+function drawPath(floorName, startDot = 'Wdot0', destinationDot, shouldntClear = false) {
     // Start dot of Floor0 is always 'Wdot0' 
+    if (!shouldntClear) {
+        clearAllCanvas();
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
 
     if (floorName != "Floor0") {
         let stairDot = "dot18";

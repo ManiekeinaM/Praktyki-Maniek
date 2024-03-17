@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 @font-face {
     font-family: 'Raleway';
     src: url('fonts/Raleway-VariableFont_wght.ttf') format('truetype');
@@ -89,8 +91,13 @@ body {
     font-weight: bolder;
     color: rgba(56, 92, 255, 0.9);
 
+    text-align: center;
     padding: 0.7em;
     border-radius: 1rem;
+}
+
+.floorTitle {
+    text-align: center;
 }
 
 
@@ -273,8 +280,22 @@ div.reset {
 
     z-index: 5;
 }
+
 .navigation-container .selected {
     animation: popIn 0.25s;
+}
+.navigation-container .selected::after {
+    content: "";
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
+    border-bottom: 1.1rem solid rgba(0,0,0,0.5);
+    z-index: 10;
 }
 
 .button {

@@ -157,6 +157,37 @@ main {
     height: 100%;
 }
 
+.button-layer {
+    z-index: 3;
+}
+
+.button-layer > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+
+    transition: 0.1s;
+}
+
+.button-layer img {
+    width: 2rem;
+    height: 2rem;
+}
+
+.button-layer button {
+    background-color: rgba(56, 92, 255, 0.5);
+    border: 2px solid rgba(56, 92, 255, 0.7);
+    border-radius: 1rem;
+    padding: 2px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.button-layer > *:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
 
 
 /* canvas {

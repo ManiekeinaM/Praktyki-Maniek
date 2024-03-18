@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="./css/wheel.css">
 </head>
 <body>
+    <audio id="win_sound">
+        <source src="prizeWon.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="categories">
         <button data-wheelid="1">Koło Standardowe (15+ Bingo)</button>
         <button data-wheelid="2" class="premium">Koło Premium (2x) (25 Bingo)</button>

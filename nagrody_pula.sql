@@ -39,13 +39,12 @@ CREATE TABLE `nagrody_pula` (
 --
 
 INSERT INTO `nagrody_pula` (`id`, `nazwaNagrody`, `iloscNagrody`, `typ_losowania`) VALUES
-(1, 'Brelok', 250, 0),
-(2, 'Przypinkę', 250, 0),
-(3, 'Voucher Dzień bez pytania', 50, 0),
-(4, 'Voucher na wycieczekę za free', 3, 1),
-(5, 'Voucher na sprzęt elektroniczny', 6, 1),
-(6, 'Voucher do sklepiku za 10zł', 10, 0),
-(7, 'Vocher do sklepiku za 5zł', 10, 0);
+(1, 'Brelok/{rzypinka', 250, 0),
+(2, 'Voucher Dzień bez pytania', 50, 0),
+(3, 'Voucher na wycieczekę za free', 3, 1),
+(4, 'Voucher na sprzęt elektroniczny', 6, 1),
+(5, 'Voucher do sklepiku za 10zł', 10, 0),
+(6, 'Vocher do sklepiku za 5zł', 10, 0);
 
 --
 -- Indeksy dla zrzutów tabel

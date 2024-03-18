@@ -72,8 +72,11 @@ let start_translateY = translateY;
 const floorTitle = document.querySelector(".floorTitle");
 const floorText = document.querySelector(".floorText");
 function updateMap() {
-    translateX = Math.min(3000, translateX);
-    translateY = Math.min(3000, translateY);
+    translateX = Math.min(800, translateX);
+    translateX = Math.max(-800, translateX);
+
+    translateY = Math.min(500, translateY);
+    translateY = Math.max(-1750, translateY);
 
     for (let i = mapThresholds.length - 1; i >= 0; i--) {
         if (translateY < mapThresholds[i].threshold) {

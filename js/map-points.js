@@ -14,7 +14,7 @@ const imgPaths = {
             "dot9": { x: 0.53700, y: 0.49505, desc: "Sala 24 (sumoboty)", label: "24" }, // sala 24
             "dot10": { x: 0.76000, y: 0.56011, desc: "Sala 46 (filozofia, religia)", label: "46" }, // sala 46
             "dot11": { x: 0.83700, y: 0.63366, desc: "Sala 45 (j. angielski)", label: "45" }, // sala 45
-            "dot12": { x: 0.89100, y: 0.54173, desc: "Toaleta A (1)" }, // kibel meski
+            "dot12": { x: 0.89100, y: 0.54173, desc: "Toaleta A (1)", icon: 'toilet' }, // kibel meski
             "dot13": { x: 0.75900, y: 0.36775, desc: "Psycholog", label: "Psycholog" }, // psycholog
             "dot14": { x: 0.76100, y: 0.21075, desc: "Sala 32 (chemia, biologia)", label: "32" }, // sala 32
             "dot15": { x: 0.76100, y: 0.10750, desc: "Sala 39 (technik energetyk*)", label: "39" }, // sala bez numerku raz byla na niemieckim i historii
@@ -24,7 +24,7 @@ const imgPaths = {
             "dot19": { x: 0.90900, y: 0.43706, desc: "SCHODY B - DÓL", icon: "stairsDown" }, // schody b dol
             "dot20": { x: 0.09200, y: 0.52900, desc: "SCHODY A - GÓRA", icon: "stairsUp" }, // schody a gora
             "dot21": { x: 0.62083, y: 0.55896, desc: "Praktyka zawodowa (Ryszard Mirys)" }, // mirys SALA
-            "dot22": { x: 0.10667, y: 0.46226, desc: "Toaleta A (2)" }, // wc A
+            "dot22": { x: 0.10667, y: 0.46226, desc: "Toaleta A (2)", icon: 'toilet'}, // wc A
             "dot23": {x: 0.10250, y: 0.75236, icon: "musicNote"}, // nuty
 
             // W dots: walk dots
@@ -71,8 +71,8 @@ const imgPaths = {
         dots: {
             "dot1A": { x: 0.17978, y: 0.37726 }, // sala 102
             "dot2A": { x: 0.25200, y: 0.44169 }, // sala 103
-            "dot3A": { x: 0.10422, y: 0.46370, desc: "Toaleta A (1)" }, // Toaleta meska A
-            "dot4A": { x: 0.10200, y: 0.63186, desc: "Toaleta A (2)" }, // Toaleta pracownicza A
+            "dot3A": { x: 0.10422, y: 0.46370, desc: "Toaleta A (1)", icon: 'toilet' }, // Toaleta meska A
+            "dot4A": { x: 0.10200, y: 0.63186, desc: "Toaleta A (2)", icon: 'toilet' }, // Toaleta pracownicza A
             "dot5A": { x: 0.10200, y: 0.68686, desc: "Sala 119", label: "119" }, // sala 119
             "dot6A": { x: 0.45644, y: 0.49513, desc: "Sala gimnastyczna", label: "Sala gimnastyczna" }, // Sala gimnastyczna
             "dot7A": { x: 0.26867, y: 0.71279, desc: "Pielęgniarka", icon: "pielegniarka" }, // Pielegniarka A
@@ -81,9 +81,9 @@ const imgPaths = {
             "dot8A": {x: 0.10250, y: 0.92807, icon: 'disco'}, // dyskoteka
             "dot7.5A": { x: 0.25083, y: 0.84552, desc: "Sala 113 (TRN)", label: "113" }, // Sala 113
 
-            "dot8B": { x: 0.75978, y: 0.53285, desc: "Sala 123 (technik programista)", label: "123" }, // Sala 123
-            "dot9B": { x: 0.83400, y: 0.61771, desc: "Sala 122 (technik programista)", label: "122" }, // Sala 122
-            "dot10B": { x: 0.90756, y: 0.37097, desc: "Toaleta B" }, // Toaleta pracownicza B
+            "dot8B": { x: 0.75978, y: 0.53285, desc: "Sala 123 (technik mechatronik)", label: "123" }, // Sala 123
+            "dot9B": { x: 0.83400, y: 0.61771, desc: "Sala 122 (technik programista, roboty)", label: "122" }, // Sala 122
+            "dot10B": { x: 0.90756, y: 0.37097, desc: "Toaleta B", icon: 'toilet' }, // Toaleta pracownicza B
             "dot11B": { x: 0.90867, y: 0.25310, desc: "Sala 138 (technik elektronik)", label: "138" }, // Sala 138
             "dot12B": { x: 0.90867, y: 0.14152, desc: "Sala 134 (technik elektryk)", label: "134" }, // Sala 134
             "dot13B": { x: 0.76311, y: 0.14466, desc: "Sala 135 (technik elektronik)", label: "135" }, // Sala 135
@@ -124,8 +124,8 @@ const imgPaths = {
     "Floor2A": {
         dots: {
             "dot1": { x: 0.53750, y: 0.21385, desc: "Sala 202 (j. angielski)", label: "202" }, // Sala 202
-            "dot2": { x: 0.31250, y: 0.30308 }, // WC meskie
-            "dot3": { x: 0.31250, y: 0.51692 }, // WC zenskie
+            "dot2": { x: 0.31250, y: 0.30308, icon: 'toilet' }, // WC meskie
+            "dot3": { x: 0.31250, y: 0.51692, icon: 'toilet' }, // WC zenskie
             "dot4": { x: 0.74500, y: 0.28308 }, // Sala 203
             "dot5": { x: 0.74500, y: 0.48923, desc: "Sala 204 (j. polski)", label: "204" }, // Sala 204
             "dot6": { x: 0.74500, y: 0.69077, desc: "Sala 205 (matematyka)", label: "205" }, // Sala 205
@@ -155,8 +155,8 @@ const imgPaths = {
             "dot6": { x: 0.29750, y: 0.23385, desc: "Sala 224 (technik informatyk)", label: "224" }, // Sala 224
             "dot7": { x: 0.70500, y: 0.23538, desc: "Sala 226 (technik informatyk)", label: "226" }, // Sala 226
             "dot8": { x: 0.69750, y: 0.37385 }, // Sala 227
-            "dot9": { x: 0.70500, y: 0.56154 }, // WC zenskie
-            "dot10": { x: 0.70500, y: 0.78769 }, // WC meskie
+            "dot9": { x: 0.70500, y: 0.56154, icon: 'toilet' }, // WC zenskie
+            "dot10": { x: 0.70500, y: 0.78769, icon: 'toilet' }, // WC meskie
 
             "Wdot1": { x: 0.71750, y: 0.65385, connections: ['Wdot2'], icon: 'stairsDown' }, // Schody w dol
             "Wdot2": { x: 0.50000, y: 0.65385, connections: ['Wdot4', 'Wdot3'] }, // mid B
@@ -178,7 +178,8 @@ const mapIcons = {
     'stairsDown': './assets/map/icons/stairs-down.png',
     'machine': './assets/map/icons/Maniek.png',
     'disco': './assets/map/icons/disco.png',
-    'musicNote': './assets/map/icons/musicNote.png'
+    'musicNote': './assets/map/icons/musicNote.png',
+    'toilet': './assets/map/icons/toilet.png'
 }
 
 function percentToPx(percentages, relativeElement) {
@@ -268,7 +269,7 @@ function drawLine(floorName, from, path) {
     // path: ['dot1', 'dot2', 'dot3', 'dot4', 'targetdot']
     // from: 'Wdot0' (the starting dot Maniek)
 
-    let floorContainer = document.querySelector(`div.${floorName}`);
+    let floorContainer = map_container.querySelector(`div.${floorName}`);
     if (!floorContainer) return;
 
     let img = floorContainer.querySelector("img");
@@ -284,7 +285,7 @@ function drawLine(floorName, from, path) {
     let lastDot = floor.dots[from];
     path.forEach(dot => {
         let connectionDot = floor.dots[dot];
-        console.log(floor.dots, from);
+        // console.log(floor.dots, from);
         let coordsPx = percentToPx(lastDot, img);
         let connectionCoordsPx = percentToPx(connectionDot, img);
 
@@ -420,8 +421,18 @@ function drawAllPaths() {
 // Draw a path to a specific point
 // provide: floor name, start dot, floor's destination dot
 
+const currentPath = document.querySelector(".currentPath");
+
+const roomSelection = document.querySelector('.room-selection');
+const navigationButton = document.querySelector(".room-selection-button");
+navigationButton.addEventListener('click', e => {
+    roomSelection.classList.toggle("hidden");
+})
+
 function drawPath(floorName, startDot = 'Wdot0', destinationDot, shouldntClear = false) {
     // Start dot of Floor0 is always 'Wdot0' 
+    currentPath.innerText = `Obecna droga: ${imgPaths[floorName].dots[destinationDot].desc}`;
+
     if (!shouldntClear) {
         clearAllCanvas();
         // ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -444,10 +455,14 @@ function drawPath(floorName, startDot = 'Wdot0', destinationDot, shouldntClear =
 
 // drawPath("Floor2B", floorStartPoints.Floor2B, "dot5");
 
+
 function createAllButtons() {
     for (const [floorName, floorItems] of Object.entries(imgPaths)) {
-        let floorContainer = document.querySelector(`div.${floorName}`);
+        let floorContainer = map_container.querySelector(`div.${floorName}`);
         if (!floorContainer) continue;
+
+        let roomSelectionP = roomSelection.querySelector(`div.${floorName}`);
+        console.log(roomSelectionP)
 
         let img = floorContainer.querySelector("img");
         let canvas = floorContainer.querySelector("canvas");
@@ -468,14 +483,6 @@ function createAllButtons() {
                 element.innerHTML = values.label;
             }
 
-            // Add a description/name to the button
-            if (values.desc) {
-                element.dataset.desc = values.desc;
-            }
-
-
-
-
             element.addEventListener("click", e => {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -490,9 +497,46 @@ function createAllButtons() {
                 drawPath(floorName, startPoint, dot);
             })
 
+            // Add a p element to the roomselection of that floor
+            if (values.desc) {
+                let newP = document.createElement('p');
+                newP.innerHTML = values.desc;
+                roomSelectionP.appendChild(newP);
+
+                newP.addEventListener("click", e => {
+                    let startPoint = floorStartPoints[floorName];
+                    if (floorName == "Floor1") {
+                        if (dot.includes("A")) {
+                            startPoint = floorStartPoints.Floor1.A;
+                        } else {
+                            startPoint = floorStartPoints.Floor1.B;
+                        }
+                    }
+
+                    drawPath(floorName, startPoint, dot);
+                })
+            }
+            
+
+
+
             let coordsPx = percentToPx(values, img);
             element.style.left = `${coordsPx.x}px`;
             element.style.top = `${coordsPx.y}px`;
+
+            let popup = document.createElement("div");
+            popup.classList.add("popup");
+            popup.innerText = values.desc;
+
+            // Add a description/name to the button
+            if (values.desc) {
+                let popup = document.createElement("p");
+                popup.classList.add("popup");
+                popup.innerText = values.desc;
+                element.dataset.desc = values.desc;
+
+                element.appendChild(popup);
+            }
 
             buttonLayer.appendChild(element);
         }

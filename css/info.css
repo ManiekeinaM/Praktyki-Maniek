@@ -60,13 +60,25 @@ h2{
 
   z-index: 5;
 }
-.partners > * {
-  max-width: 50%;
+.partners > *:not(.fujitsu, .veolia) {
+  max-width: 40%;
   height: auto;
 }
 
 .partners.left {
   left: 3.5rem;
+}
+
+.fujitsu {
+  margin-bottom: 1.5rem;
+  width: 16vw;
+  height: auto;
+}
+
+.veolia {
+  margin-bottom: 1.5rem;
+  width: 18vw;
+  height: auto;
 }
 
 .partners.right {

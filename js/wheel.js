@@ -27,8 +27,8 @@ var wheels = {
             { name: "📅🤐", desc: "Voucher: Dzień bez pytania", weight: 100, visualWeight: 2, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
             { name: "🎫🏖️", desc: "Voucher: Wycieczka integracyjna gratis", weight: 10, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "🎫💻", desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 20, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🛒", desc: "Voucher: Sklepik 5zł", weight: 100, visualWeight: 2, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎟️🛒", desc: "Voucher: Sklepik 10zł", weight: 100, visualWeight: 2, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🛒", desc: "Voucher: Sklepik 5zł", weight: 40, visualWeight: 2, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎟️🛒", desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
         ],
         totalWeights: 0, totalVisualWeights: 0,
         totalPrizes: 0,
@@ -228,6 +228,11 @@ function generateWheel(wheelId) {
     let svg = container.querySelector('svg');
     wheels[wheelId].actualWheel = svg;
 
+    let winScreen = document.createElement('p');
+    winScreen.classList.add('winResult');
+    winScreen.classList.add('hidden');
+    container.appendChild(winScreen);
+
     svg.addEventListener("click", () => {
         console.log(svg.dataset.debounce);
         if (svg.dataset.debounce == "true") return;
@@ -332,8 +337,6 @@ function spin(wheelId, prizeId, actualWheel) {
     wheel.style.transition = `transform ${time}s cubic-bezier(0.33, 1, 0.68, 1)`; // Smooth deceleration
     wheel.style.transform = `rotate(${currentDegree}deg)`;
 
-    const wheelHistory = document.querySelector(".wheel-history");
-
     let prizeValues = pickedWheel.prizes[prizeId];
     let entry = ``;
     if (wheelId == 2) {
@@ -346,21 +349,30 @@ function spin(wheelId, prizeId, actualWheel) {
     // result.innerHTML = `Winner is: ${prizeName}`;
 
     // Display the last 5 results
-    result.innerHTML = ``;
-    let newResult = ``;
+    
+    let newResult = `NOWE: `;
     for (let i=winHistory.length-1; i>winHistory.length-6 && i>=0; i--) {
 
         newResult += `${winHistory[i]} <br>`;
         
         
     }
-    result.innerHTML = newResult;
+    
 
-    console.log(wheels[wheelId].prizes);
+    // console.log(wheels[wheelId].prizes);
+    let winScreen = wheel.parentNode.querySelector('.winResult');
+    
     setTimeout(() => {
         wheel.style.transition = '';
-        wheel.dataset.debounce = "false";
-        // console.log(pickedWheel.prizes);     
+        result.innerHTML = newResult;
+    
+        winScreen.classList.remove("hidden");
+        winScreen.innerHTML = `${prizeValues.name} - ${prizeValues.desc}`;
+        winScreen.style.animation = `showPrize 8s`;
+        setTimeout(() => {
+            winScreen.classList.add("hidden");
+            wheel.dataset.debounce = "false";
+        }, 8000)
     }, time * 1000); // Matches the duration of the animation
 }
 

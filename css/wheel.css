@@ -16,6 +16,18 @@ text {
     }
 }
 
+@keyframes showPrize {
+    0% {
+        transform: translate(-50%,-50%) scale(100%);
+    }
+    50% {
+        transform: translate(-50%,-50%) scale(100%);
+    }
+    100% {
+        transform: translate(-50%,-50%) scale(0%);
+    }
+}
+
 body {
     margin: 0px;
     padding: 0px;
@@ -72,6 +84,26 @@ body {
     padding: 9rem;
     background-color: rgba(100,100,100,0.65);
     border-radius: 100%;
+}
+.winResult {
+    z-index: 12;
+    position: absolute;
+
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+
+    color: white;
+
+    padding: 3rem;
+    background-color: rgba(99, 89, 63, 0.5);
+    border: 0.5rem solid rgba(99, 89, 63, 0.9);
+
+    border-radius: 10rem;
+    font-size: 1.5rem;
+    font-weight: bolder;
+
+    white-space: nowrap;
 }
 
 

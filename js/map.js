@@ -77,8 +77,15 @@ function updateMap() {
 
     for (let i = mapThresholds.length - 1; i >= 0; i--) {
         if (translateY < mapThresholds[i].threshold) {
+            if (floorTitle.textContent == mapThresholds[i].titleName) break;
+
             floorTitle.textContent = mapThresholds[i].titleName;
             floorText.textContent = mapThresholds[i].text;
+
+            floorTitle.style = "font-size: 1rem";
+            setTimeout(() => {
+                floorTitle.style = "";
+            }, 100)
             break;
         }
 

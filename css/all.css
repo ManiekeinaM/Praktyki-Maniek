@@ -89,6 +89,8 @@ body {
     position: relative;
     text-align: center;
     font-size: 1.25rem;
+
+    transition: font-size 0.1s;
 }
 
 .floorTitle::after {
@@ -417,7 +419,7 @@ div.reset {
 
 /* Info */
 .info-container {
-    background-color: rgba(100,100,100,0.1);
+    background-color: rgba(100,100,100,0.15);
     min-width: 20rem;
     width: 50%;
 

@@ -101,7 +101,6 @@ body {
     width: 125%;
     height: 3px;
     background-color: rgba(56, 92, 255, 0.9);
-
 }
 
 .floorText {
@@ -166,6 +165,15 @@ main {
     top: 0;
     left: 0;
     z-index: 1;
+}
+
+.button-layer {
+    user-select: none;
+    pointer-events: none;
+}
+
+.button-layer > * {
+    pointer-events: all;
 }
 
 .canvas-layer {

@@ -25,6 +25,7 @@ const imgPaths = {
             "dot20": { x: 0.09200, y: 0.52900, desc: "SCHODY A - GÓRA", icon: "stairsUp" }, // schody a gora
             "dot21": { x: 0.62083, y: 0.55896, desc: "Praktyka zawodowa (Ryszard Mirys)" }, // mirys SALA
             "dot22": { x: 0.10667, y: 0.46226, desc: "Toaleta A (2)" }, // wc A
+            "dot23": {x: 0.10250, y: 0.75236, icon: "musicNote"}, // nuty
 
             // W dots: walk dots
             // You can not go back in this pathfinding system, so the connections are only one way
@@ -33,7 +34,7 @@ const imgPaths = {
             "Wdot2": { x: 0.18500, y: 0.54481, connections: ['Wdot3', 'Wdot4', 'dot20'] }, // leftA
             "Wdot3": { x: 0.18500, y: 0.46108, connections: ['dot2', 'dot3', 'dot22'] }, // up doors A
             "Wdot4": { x: 0.18500, y: 0.65920, connections: ['dot7', 'Wdot5'] }, // sekretariatSTAND
-            "Wdot5": { x: 0.18500, y: 0.74882, connections: ['dot4', 'Wdot6'] }, // dyrektorSTAND
+            "Wdot5": { x: 0.18500, y: 0.74882, connections: ['dot4', 'Wdot6', 'dot23'] }, // dyrektorSTAND
             "Wdot6": { x: 0.18500, y: 0.87972, connections: ['dot6', 'dot5'] }, // down doors A
             "Wdot7": { x: 0.32083, y: 0.54481, connections: ['Wdot8'] }, // maniek right turn
             "Wdot8": { x: 0.32083, y: 0.43868, connections: ['Wdot9'] }, // lacznik a up
@@ -72,10 +73,12 @@ const imgPaths = {
             "dot2A": { x: 0.25200, y: 0.44169 }, // sala 103
             "dot3A": { x: 0.10422, y: 0.46370, desc: "Toaleta A (1)" }, // Toaleta meska A
             "dot4A": { x: 0.10200, y: 0.63186, desc: "Toaleta A (2)" }, // Toaleta pracownicza A
-            "dot5A": { x: 0.10200, y: 0.68686, desc: "Sala 119 (wolontariat)", label: "119" }, // sala 119
+            "dot5A": { x: 0.10200, y: 0.68686, desc: "Sala 119", label: "119" }, // sala 119
             "dot6A": { x: 0.45644, y: 0.49513, desc: "Sala gimnastyczna", label: "Sala gimnastyczna" }, // Sala gimnastyczna
             "dot7A": { x: 0.26867, y: 0.71279, desc: "Pielęgniarka", icon: "pielegniarka" }, // Pielegniarka A
 
+            "dot7.1A": {x: 0.26750, y: 0.75590, desc: "Wolontariat", label: "wolontariat"}, // wolontariat
+            "dot8A": {x: 0.10250, y: 0.92807, icon: 'disco'}, // dyskoteka
             "dot7.5A": { x: 0.25083, y: 0.84552, desc: "Sala 113 (TRN)", label: "113" }, // Sala 113
 
             "dot8B": { x: 0.75978, y: 0.53285, desc: "Sala 123 (technik programista)", label: "123" }, // Sala 123
@@ -95,12 +98,13 @@ const imgPaths = {
             "Wdot6A": { x: 0.18000, y: 0.63225, connections: ['dot4A', 'Wdot7A'] }, // przed WC pracownicze A
             "Wdot7A": { x: 0.18000, y: 0.68600, connections: ['dot5A', 'Wdot8A'] }, // przed 119
             "Wdot8A": { x: 0.18000, y: 0.73267, connections: ['Wdot9A', 'Wdot8.5A'] }, // przed pielegniarka
-            "Wdot9A": { x: 0.22600, y: 0.73267, connections: ['Wdot10A'] }, // pielegniarka drzwi down
+            "Wdot9A": { x: 0.22600, y: 0.73267, connections: ['Wdot10A', 'dot7.1A'] }, // pielegniarka drzwi down
             "Wdot10A": { x: 0.22700, y: 0.71711, connections: ['dot7A'] }, // pielegniarka drzwi
             "Wdot11A": { x: 0.33400, y: 0.54031, connections: ['Wdot12A'] }, // szatnia sala gimnastyczna
             "Wdot12A": { x: 0.33400, y: 0.49505, connections: ['dot6A'] }, // szatnia przed sala gimnastyczna
 
-            "Wdot8.5A": { x: 0.18000, y: 0.84552, connections: ['dot7.5A'] }, // Sala 113 STAND
+            "Wdot8.5A": { x: 0.18000, y: 0.84552, connections: ['dot7.5A', 'Wdot8.9A'] }, // Sala 113 STAND
+            "Wdot8.9A": {x: 0.18167, y: 0.92925, connections: ['dot8A']}, // przed disco 
 
             "Wdot13B": { x: 0.92100, y: 0.43706, connections: ['Wdot15B'], icon: 'stairsDown' }, // schody dol B
             "Wdot14B": { x: 0.92200, y: 0.47666, connections: ['Wdot15B'], icon: 'stairsUp' }, // schody gora B
@@ -173,6 +177,8 @@ const mapIcons = {
     'stairsUp': './assets/map/icons/stairs-up.png',
     'stairsDown': './assets/map/icons/stairs-down.png',
     'machine': './assets/map/icons/Maniek.png',
+    'disco': './assets/map/icons/disco.png',
+    'musicNote': './assets/map/icons/musicNote.png'
 }
 
 function percentToPx(percentages, relativeElement) {
@@ -553,6 +559,7 @@ document.addEventListener("keydown", e => {
 
 document.addEventListener("mousedown", e => {
     if (!devMode) return;
+    console.log(e.target);
     if (e.target.tagName != "IMG") return;
     if (!map.contains(e.target)) return;
 
@@ -571,44 +578,3 @@ document.addEventListener("mousedown", e => {
     updateCoordString();
 });
 
-
-/*
-
-let coordsPx = percentToPx(values, img);
-
-        let draw = function() {
-            Draw the dot
-            ctx.fillStyle = "red";
-            ctx.beginPath();
-            ctx.arc(coordsPx.x, coordsPx.y, 5, 0, 2 * Math.PI);
-            ctx.fill();
-
-            // Connect all connection dots
-            if (values.connections && values.connections.length > 0) {
-                ctx.strokeStyle = "red";
-                ctx.lineWidth = 3;
-
-                values.connections.forEach(connectionName => {
-                    let connectionDot = floorItems.dots[connectionName];
-                    let connectionCoordsPx = percentToPx(connectionDot, img);
-
-                    ctx.beginPath();
-                    ctx.moveTo(coordsPx.x, coordsPx.y);
-                    ctx.lineTo(connectionCoordsPx.x, connectionCoordsPx.y);
-                    ctx.stroke();
-                });
-            }
-
-            // Name the dot
-            ctx.fillStyle = "black";
-            ctx.font = "12px Arial";
-            ctx.fillText(dot, coordsPx.x, coordsPx.y - 10);
-        };
-
-        if (img.complete) {
-            draw();
-        } else {
-            img.onload = draw;
-        }
-
-*/

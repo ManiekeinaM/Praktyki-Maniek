@@ -8,14 +8,14 @@ php_amounts.pop();
 var wheels = {
     1: {
         prizes: [
-            { name: "🗝️🎖️", weight: 500, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "📅🤐", weight: 200, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🏖️", weight: 0, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫💻", weight: 0, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🛒", weight: 25, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎟️🛒", weight: 50, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", desc: "Brelok/Przypinka", weight: 500, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", desc: "Voucher: Dzień bez pytania", weight: 200, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🏖️", desc: "Voucher: Wycieczka integracyjna gratis", weight: 0, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫💻", desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 0, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🛒", desc: "Voucher: Sklepik 5zł", weight: 25, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎟️🛒", desc: "Voucher: Sklepik 10zł", weight: 50, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
         ],
-        totalWeights: 0, // filled via code later
+        totalWeights: 0, totalVisualWeights: 0,
         totalPrizes: 0,
         defaultDegree: 0,
         currentDegree: 0,
@@ -24,14 +24,14 @@ var wheels = {
     },
     2: {
         prizes: [
-            { name: "🗝️🎖️", weight: 200, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "📅🤐", weight: 100, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🏖️", weight: 50, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫💻", weight: 100, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🛒", weight: 350, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎟️🛒", weight: 250, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", weight: 200, visualWeight: 1, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", weight: 100, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🏖️", weight: 50, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫💻", weight: 100, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🛒", weight: 350, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎟️🛒", weight: 250, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
         ],
-        totalWeights: 0, // filled via code later
+        totalWeights: 0, totalVisualWeights: 0,
         totalPrizes: 0,
         defaultDegree: 0,
         currentDegree: 0,
@@ -51,14 +51,16 @@ console.log(wheels);
 // Set the necessary properties for each wheel
 for (const [wheelId, wheelProperties] of Object.entries(wheels)) {
 
-    let totalWeight = 0, totalPrizes = 0;
+    let totalWeight = 0, totalVisualWeight = 0, totalPrizes = 0;
     for (const [i, prizeValues] of wheelProperties.prizes.entries()) {
         totalPrizes += 1;
         totalWeight += prizeValues.weight;
+        totalVisualWeight += prizeValues.visualWeight;
     }
 
     // Set the total weights and prizes
     wheels[wheelId].totalWeights = totalWeight;
+    wheels[wheelId].totalVisualWeights = totalVisualWeight;
     wheels[wheelId].totalPrizes = totalPrizes;
 
     // Calculate the starting current degree of the wheel, to be in the middle of the first segment
@@ -74,7 +76,7 @@ let currentDegree = 0;
 function generateWheel(wheelId) {
     let pickedWheel = wheels[wheelId];
 
-    let totalWeight = pickedWheel.totalWeights;
+    let totalWeight = pickedWheel.totalVisualWeights;
     let totalPrizes = pickedWheel.totalPrizes;
 
 
@@ -86,7 +88,7 @@ function generateWheel(wheelId) {
         // SEGMENT
         let prizeName = values.name;
 
-        let weight = values.weight;
+        let weight = values.visualWeight;
         let segPortion = weight / totalWeight;
         let segAngle = segPortion * 360;
 
@@ -133,6 +135,8 @@ function generateWheel(wheelId) {
 
     wheelSvg += `</g></svg>`;
     wheelContainer.innerHTML += wheelSvg;
+
+    return wheelContainer;
 }
 
 function randomByWeight(wheelId) {
@@ -206,13 +210,13 @@ spinButton2.addEventListener("click", e => {
     randomByWeight(wheelId);
 });
 
-function spin(wheelId, prizeId, startDegree, endDegree) {
+function spin(wheelId, prizeId) {
     const totalSpins = 9; // Determines how many times the wheel will spin
 
     let pickedWheel = wheels[wheelId];
     let prizeName = pickedWheel.prizes[prizeId].name;
 
-    let totalWeights = pickedWheel.totalWeights;
+    let totalWeights = pickedWheel.totalVisualWeights;
 
     let currentDegree = pickedWheel.currentDegree;
 
@@ -222,12 +226,12 @@ function spin(wheelId, prizeId, startDegree, endDegree) {
     let cumulativeWeight = 0;
     for (let i = 0; i < prizeId; i++) {
         let prize = pickedWheel.prizes[i];
-        let weight = prize.weight;
+        let weight = prize.visualWeight;
 
         cumulativeWeight += weight;
     }
     let leadingDegrees = (cumulativeWeight / totalWeights) * 360;
-    let generalTarget = leadingDegrees + (pickedWheel.prizes[prizeId].weight / totalWeights) * 360 / 2;
+    let generalTarget = leadingDegrees + (pickedWheel.prizes[prizeId].visualWeight / totalWeights) * 360 / 2;
 
     const finalDegree = (270 - generalTarget) + (360 * totalSpins);
 

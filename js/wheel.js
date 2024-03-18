@@ -1,5 +1,6 @@
 const result = document.querySelector(".result");
-const wheelContainer = document.querySelector(".wheel-container");
+const wheelsDiv = document.querySelector(".wheels");
+// const wheelContainers = document.querySelectorAll(".wheel-container");
 
 let php_data_text = document.getElementById("php-container").innerHTML;
 let php_amounts = php_data_text.split("_");
@@ -8,55 +9,120 @@ php_amounts.pop();
 var wheels = {
     1: {
         prizes: [
-            { name: "🗝️🎖️", desc: "Brelok/Przypinka", weight: 500, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "📅🤐", desc: "Voucher: Dzień bez pytania", weight: 200, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🏖️", desc: "Voucher: Wycieczka integracyjna gratis", weight: 0, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫💻", desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 0, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🛒", desc: "Voucher: Sklepik 5zł", weight: 25, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎟️🛒", desc: "Voucher: Sklepik 10zł", weight: 50, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", desc: "Brelok/Przypinka", weight: 250, visualWeight: 3, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            // { name: "🎫🏖️", desc: "Voucher: Wycieczka integracyjna gratis", weight: 0, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
+            // { name: "🎫💻", desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 0, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🛒", desc: "Voucher: Sklepik 5zł", weight: 10, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎟️🛒", desc: "Voucher: Sklepik 10zł", weight: 5, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
         ],
+
         totalWeights: 0, totalVisualWeights: 0,
         totalPrizes: 0,
-        defaultDegree: 0,
-        currentDegree: 0,
-        actualWheel: null,
-        debounce: false,
+        actualWheels: [],
     },
     2: {
         prizes: [
-            { name: "🗝️🎖️", weight: 200, visualWeight: 1, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "📅🤐", weight: 100, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🏖️", weight: 50, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫💻", weight: 100, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🛒", weight: 350, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎟️🛒", weight: 250, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", desc: "Brelok/Przypinka", weight: 100, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", desc: "Voucher: Dzień bez pytania", weight: 100, visualWeight: 2, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🏖️", desc: "Voucher: Wycieczka integracyjna gratis", weight: 10, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫💻", desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 20, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🛒", desc: "Voucher: Sklepik 5zł", weight: 100, visualWeight: 2, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎟️🛒", desc: "Voucher: Sklepik 10zł", weight: 100, visualWeight: 2, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
         ],
         totalWeights: 0, totalVisualWeights: 0,
         totalPrizes: 0,
-        defaultDegree: 0,
-        currentDegree: 0,
-        actualWheel: null,
-        debounce: false,
+        actualWheels: [],
     }
 }
 
-console.log("Koło1", JSON.parse(JSON.stringify(wheels[1])));
-console.log("Koło2", JSON.parse(JSON.stringify(wheels[2])));
+// console.log("Koło1", JSON.parse(JSON.stringify(wheels[1])));
+// console.log("Koło2", JSON.parse(JSON.stringify(wheels[2])));
 
 wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount != 0);
-wheels[2].prizes = wheels[1].prizes.filter(prize => prize.amount != 0);
+wheels[2].prizes = wheels[2].prizes.filter(prize => prize.amount != 0);
 console.log(wheels);
 
+let currentWheel = 1;
+
+const categories = document.querySelector(".categories");
+const categoryButtons = categories.querySelectorAll("button");
+categoryButtons.forEach(button => {
+    let id = button.dataset.wheelid;
+    button.addEventListener("click", e => {
+        e.preventDefault();
+
+        currentWheel = parseInt(id);
+        updateWheels();
+        // console.log("yo");
+    })
+})
+
+const wheelLegend = document.querySelector('.wheel-legend');
+
+function updateWheels() {
+    // Update legend
+    let legendPrizes = wheelLegend.querySelectorAll(".legend-container");
+
+    legendPrizes.forEach(div => {
+        let wheelid = div.dataset.wheelid;
+        // console.log(wheelid);
+        if (wheelid == currentWheel) {
+            div.classList.remove("hidden");
+        } else {
+            div.classList.add("hidden");
+        }
+    })
+
+    // Update scale
+    if (currentWheel == 2) {
+        wheelsDiv.style.transform = `scale(0.75)`;
+    } else {
+        wheelsDiv.style.transform = ``;
+    }
+
+    // Update wheels
+    let wheelcontainers = wheelsDiv.querySelectorAll('.wheel-container');
+    wheelcontainers.forEach(container => {
+        let wheelid = container.dataset.wheelid;
+
+        if (wheelid == currentWheel) {
+            container.classList.remove("hidden");
+            // console.log("removing hidden");
+        } else {
+            container.classList.add("hidden");
+            // console.log("adding hidden");
+        }
+    });
+}
+
+updateWheels();
 
 // Set the necessary properties for each wheel
 for (const [wheelId, wheelProperties] of Object.entries(wheels)) {
 
+    // Create an element for the wheel legend
+    let legendContainer = document.createElement("div")
+    legendContainer.classList.add("legend-container");
+    legendContainer.dataset.wheelid = wheelId;
+
     let totalWeight = 0, totalVisualWeight = 0, totalPrizes = 0;
     for (const [i, prizeValues] of wheelProperties.prizes.entries()) {
+        if (prizeValues.amount <= 0) continue;
+
         totalPrizes += 1;
         totalWeight += prizeValues.weight;
         totalVisualWeight += prizeValues.visualWeight;
+
+        // Fill up the legend
+        if (prizeValues.amount <= 0) continue;
+        let p = document.createElement("p");
+        p.textContent = `${prizeValues.name} - ${prizeValues.desc}`;
+
+        legendContainer.appendChild(p);
     }
+
+    wheelLegend.appendChild(legendContainer);
 
     // Set the total weights and prizes
     wheels[wheelId].totalWeights = totalWeight;
@@ -64,24 +130,43 @@ for (const [wheelId, wheelProperties] of Object.entries(wheels)) {
     wheels[wheelId].totalPrizes = totalPrizes;
 
     // Calculate the starting current degree of the wheel, to be in the middle of the first segment
-    let segmentDegree = (360 / totalPrizes);
-    let startDegree = segmentDegree * (totalPrizes - 2);
+    // wheels[wheelId].currentDegree = 270//startDegree + segmentDegree / 2; // Start in the edge of the first segment
 
-    wheels[wheelId].defaultDegree = startDegree;
-    wheels[wheelId].currentDegree = 270//startDegree + segmentDegree / 2; // Start in the edge of the first segment
+    if (wheelId != currentWheel) {
+        legendContainer.classList.add("hidden");
+    }
 }
 
 let currentDegree = 0;
 
+let wheelAmount = 0;
 function generateWheel(wheelId) {
+    // console.log(wheelId);
     let pickedWheel = wheels[wheelId];
 
     let totalWeight = pickedWheel.totalVisualWeights;
     let totalPrizes = pickedWheel.totalPrizes;
 
+    let container = document.createElement("div");
+    container.classList.add(`wheel-container`);
+    container.dataset.wheelid = wheelId;
+    container.dataset.otherwheelid = wheelAmount;
 
-    let wheelSvg = `<svg id="wheel" xmlns="http://www.w3.org/2000/svg" width="800" height="600" style="transform: rotate(${pickedWheel.currentDegree}deg)">
-            <g transform="translate(400,300)">`;
+    let arrow = document.createElement('img');
+    arrow.classList.add("arrow");
+    arrow.src = './assets/arrowDown.png';
+    arrow.alt = 'v';
+    container.appendChild(arrow);
+
+    let locked = document.createElement('img');
+    locked.src = './assets/locked3.png';
+    locked.classList.add("locked");
+    locked.classList.add("hidden");
+    container.appendChild(locked);
+
+
+    let wheelSvg = `<svg class="wheel" data-currentdegree="270" data-debounce="false" xmlns="http://www.w3.org/2000/svg" width="600" height="600" style="transform: rotate(${pickedWheel.currentDegree}deg)">
+            <g transform="translate(300,300)">`;
 
     let weightsUsed = 0;
     for (const [i, values] of pickedWheel.prizes.entries()) {
@@ -134,31 +219,53 @@ function generateWheel(wheelId) {
     wheelSvg += `<circle cx="0" cy="0" r="20" fill="#9B8C64" stroke="#9B8C64" stroke-width="6"/>`;
 
     wheelSvg += `</g></svg>`;
-    wheelContainer.innerHTML += wheelSvg;
 
-    return wheelContainer;
+    wheelsDiv.appendChild(container);
+    // console.log(container.innerHTML);
+
+    container.innerHTML += wheelSvg;
+
+    let svg = container.querySelector('svg');
+    wheels[wheelId].actualWheel = svg;
+
+    svg.addEventListener("click", () => {
+        console.log(svg.dataset.debounce);
+        if (svg.dataset.debounce == "true") return;
+
+        svg.dataset.debounce = "true";
+        // wheels[wheelId].debounce = true;
+        randomByWeight(wheelId, svg);
+    })
+
+    wheels[wheelId].actualWheels[wheelAmount] = svg;
+
+    wheelAmount++;
+
+    return container;
 }
 
-function randomByWeight(wheelId) {
+function randomByWeight(wheelId, actualWheel) {
+    // console.log("randomizin");
 
-    console.log("Koło", wheels[wheelId]);
     let pickedWheel = wheels[wheelId];
     let totalWeights = pickedWheel.totalWeights;
-    console.log("Wagi", totalWeights);
+
     // Random a number between [1, total]
     const random = Math.ceil(Math.random() * totalWeights); // [1,total]
     // Prize selecting logic
     let cursor = 0;
+    console.log(pickedWheel.prizes);
     for (const [i, values] of pickedWheel.prizes.entries()) {
         let prizeName = values.name;
 
         cursor += values.weight;
-        console.log(wheels);
+        // console.log(wheels);
+        console.log(cursor, random);
         if (cursor >= random) {
 
             values.amount--;
             //php amount decreasing
-            console.log(i);
+            // console.log(i);
             let decreasedAmount = {id: i, amount:values.amount};
 
             fetch('decreaseAmount.php', {
@@ -173,52 +280,31 @@ function randomByWeight(wheelId) {
             .then(data => console.log(data))
             .catch(error => console.log('Error:', error));
 
-            let startDegree = (random / totalWeights) * 360 - 90;
-            let endDegree = startDegree + (values.weight / totalWeights) * 360;
-            // console.log(random, startDegree, endDegree);
+            spin(wheelId, i, actualWheel);
 
-            spin(wheelId, i, startDegree, endDegree);
             wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount != 0);
-            wheels[2].prizes = wheels[1].prizes.filter(prize => prize.amount != 0); 
-            result.innerHTML = prizeName;
-            return { prizeName, startDegree, endDegree };
+            wheels[2].prizes = wheels[2].prizes.filter(prize => prize.amount != 0); 
+            // result.innerHTML = prizeName;
+            return { prizeName };
         }
     }
+
 
     return "never go here";
 }
 
-const spinButton1 = document.querySelector(".spin1");
-console.log(spinButton1);
-spinButton1.addEventListener("click", e => {
-    let wheelId = spinButton1.dataset.wheelid;
-    console.log(wheelId);
-    if (wheels[wheelId].debounce) return;
-
-    wheels[wheelId].debounce = true;
-    randomByWeight(wheelId);
-});
-
-const spinButton2 = document.querySelector(".spin2");
-console.log(spinButton2);
-spinButton2.addEventListener("click", e => {
-    let wheelId = spinButton2.dataset.wheelid;
-    console.log(wheelId);
-    if (wheels[wheelId].debounce) return;
-
-    wheels[wheelId].debounce = true;
-    randomByWeight(wheelId);
-});
-
-function spin(wheelId, prizeId) {
+let winHistory = [];
+function spin(wheelId, prizeId, actualWheel) {
     const totalSpins = 9; // Determines how many times the wheel will spin
 
     let pickedWheel = wheels[wheelId];
+    // console.log(pickedWheel.prizes);
     let prizeName = pickedWheel.prizes[prizeId].name;
 
     let totalWeights = pickedWheel.totalVisualWeights;
 
-    let currentDegree = pickedWheel.currentDegree;
+    let currentDegree = parseFloat(actualWheel.dataset.currentdegree);
+    // console.log(currentDegree);
 
     // Calculate the degree to stop on the winning segment
     let realDegree = (currentDegree) % 360 // get the real degree without the 360s
@@ -235,21 +321,51 @@ function spin(wheelId, prizeId) {
 
     const finalDegree = (270 - generalTarget) + (360 * totalSpins);
 
-    pickedWheel.currentDegree += finalDegree + (360 - realDegree);
+    currentDegree += finalDegree + (360 - realDegree);
+    actualWheel.dataset.currentdegree = currentDegree;
+    // actualWheel.dataset.currentdegree += finalDegree + (360 - realDegree);
 
     // Apply the spin animation
-    const wheel = document.getElementById('wheel');
+    const wheel = actualWheel;
 
     let time = Math.max(4, totalSpins / 1.5);
     wheel.style.transition = `transform ${time}s cubic-bezier(0.33, 1, 0.68, 1)`; // Smooth deceleration
-    wheel.style.transform = `rotate(${pickedWheel.currentDegree}deg)`;
+    wheel.style.transform = `rotate(${currentDegree}deg)`;
 
-    result.innerHTML = `Winner is: ${prizeName}`;
+    const wheelHistory = document.querySelector(".wheel-history");
 
+    let prizeValues = pickedWheel.prizes[prizeId];
+    let entry = ``;
+    if (wheelId == 2) {
+        entry += `<span class="premium">`
+    }
+    entry += `${prizeValues.name} - ${prizeValues.desc} </span>`;
+    
+
+    winHistory.push(entry);
+    // result.innerHTML = `Winner is: ${prizeName}`;
+
+    // Display the last 5 results
+    result.innerHTML = ``;
+    let newResult = ``;
+    for (let i=winHistory.length-1; i>winHistory.length-6 && i>=0; i--) {
+
+        newResult += `${winHistory[i]} <br>`;
+        
+        
+    }
+    result.innerHTML = newResult;
+
+    console.log(wheels[wheelId].prizes);
     setTimeout(() => {
         wheel.style.transition = '';
-        pickedWheel.debounce = false;
+        wheel.dataset.debounce = "false";
+        // console.log(pickedWheel.prizes);     
     }, time * 1000); // Matches the duration of the animation
 }
 
 generateWheel(1); // Call to generate the wheel on page load
+generateWheel(2);
+generateWheel(2);
+
+updateWheels();

@@ -19,7 +19,7 @@ var wheels = {
         ],
 
         totalWeights: 0, totalVisualWeights: 0,
-        totalPrizes: 0,
+        // totalPrizes: 0,
         actualWheels: [],
     },
     2: {
@@ -32,7 +32,7 @@ var wheels = {
             { name: "🎟️🛒", desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
         ],
         totalWeights: 0, totalVisualWeights: 0,
-        totalPrizes: 0,
+        // totalPrizes: 0,
         actualWheels: [],
     }
 }
@@ -107,11 +107,10 @@ for (const [wheelId, wheelProperties] of Object.entries(wheels)) {
     legendContainer.classList.add("legend-container");
     legendContainer.dataset.wheelid = wheelId;
 
-    let totalWeight = 0, totalVisualWeight = 0, totalPrizes = 0;
+    let totalWeight = 0, totalVisualWeight = 0;
     for (const [i, prizeValues] of wheelProperties.prizes.entries()) {
         if (prizeValues.amount <= 0) continue;
 
-        totalPrizes += 1;
         totalWeight += prizeValues.weight;
         totalVisualWeight += prizeValues.visualWeight;
 
@@ -128,7 +127,7 @@ for (const [wheelId, wheelProperties] of Object.entries(wheels)) {
     // Set the total weights and prizes
     wheels[wheelId].totalWeights = totalWeight;
     wheels[wheelId].totalVisualWeights = totalVisualWeight;
-    wheels[wheelId].totalPrizes = totalPrizes;
+    // wheels[wheelId].totalPrizes = totalPrizes;
 
     // Calculate the starting current degree of the wheel, to be in the middle of the first segment
     // wheels[wheelId].currentDegree = 270//startDegree + segmentDegree / 2; // Start in the edge of the first segment
@@ -146,7 +145,6 @@ function generateWheel(wheelId) {
     let pickedWheel = wheels[wheelId];
 
     let totalWeight = pickedWheel.totalVisualWeights;
-    let totalPrizes = pickedWheel.totalPrizes;
 
     let container = document.createElement("div");
     container.classList.add(`wheel-container`);

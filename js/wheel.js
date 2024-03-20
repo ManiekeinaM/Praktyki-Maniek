@@ -1,5 +1,6 @@
 const result = document.querySelector(".result");
 const wheelsDiv = document.querySelector(".wheels");
+const winSound = document.getElementById("win_sound");
 // const wheelContainers = document.querySelectorAll(".wheel-container");
 
 let php_data_text = document.getElementById("php-container").innerHTML;
@@ -368,6 +369,7 @@ function spin(wheelId, prizeId, actualWheel) {
     
         winScreen.classList.remove("hidden");
         winScreen.innerHTML = `${prizeValues.name} - ${prizeValues.desc}`;
+        winSound.play();
         winScreen.style.animation = `showPrize 8s`;
         setTimeout(() => {
             winScreen.classList.add("hidden");

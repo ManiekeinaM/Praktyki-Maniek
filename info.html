@@ -13,7 +13,8 @@
     <style>
         main {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
         }
         body {
             position: relative;
@@ -24,11 +25,20 @@
     <!-- Fixed logo [on every page] -->
     <div class="logo-container">
         <img class="logo" src="./assets/zsp9.png" alt="ZSP9">
-        <p>Informacje o szkole</p>
+        <div class="floor-info">
+            <p>Informacje o szkole</p>
+        </div>
     </div>
 
     <!-- Info container -->
     <main>
+        <div class="partners left">
+            <img src="./assets/Patron-icons/fujitsu-logo.png" alt="Fujitsu" class="fujitsu">
+            <img src="./assets/Patron-icons/better-logo.png" alt="Better Collective">
+            <img src="./assets/Patron-icons/bsh-logo.png" alt="B/S/H/">
+            <img src="./assets/Patron-icons/hydro-logo.png" alt="Hydro">
+        </div>
+
         <div class="info-container">
             <h1>Nasze media!</h1>
 
@@ -58,22 +68,16 @@
                 <div class="swiper-button-prev"></div>
             </section>
         </div>
+
+        <div class="partners right">
+            <!-- <img src="./assets/Patron-icons/pag.jpeg" alt="PAG"> -->
+            <img src="./assets/Patron-icons/veolia-logo.png" alt="Veolia" class="veolia">
+            <img src="./assets/Patron-icons/tomtom-logo.png" alt="TomTom">
+            <img src="./assets/Patron-icons/toya-logo.png" alt="Toya">
+            <img src="./assets/Patron-icons/pg-logo.png" alt="PG">
+        </div>
     </main>
 
-    <div class="partners left">
-        <img src="./assets/Patron-icons/fujitsu-logo.png" alt="Fujitsu" class="fujitsu">
-        <img src="./assets/Patron-icons/better-logo.png" alt="Better Collective">
-        <img src="./assets/Patron-icons/bsh-logo.png" alt="B/S/H/">
-        <img src="./assets/Patron-icons/hydro-logo.png" alt="Hydro">
-
-    </div>
-    <div class="partners right">
-        <!-- <img src="./assets/Patron-icons/pag.jpeg" alt="PAG"> -->
-        <img src="./assets/Patron-icons/veolia-logo.png" alt="Veolia" class="veolia">
-        <img src="./assets/Patron-icons/tomtom-logo.png" alt="TomTom">
-        <img src="./assets/Patron-icons/toya-logo.png" alt="Toya">
-        <img src="./assets/Patron-icons/pg-logo.png" alt="PG">
-    </div>
 
 
     <!-- Navigation button container / zakładki -->

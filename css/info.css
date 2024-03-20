@@ -46,10 +46,7 @@ h2{
 .partners {
   width: 20%;
   height: 100%;
-  position: absolute;
-
-  top: 50%;
-  transform: translateY(-50%);
+  position: relative;
 
   display: flex;
   justify-content: center;
@@ -65,9 +62,7 @@ h2{
   height: auto;
 }
 
-.partners.left {
-  left: 3.5rem;
-}
+
 
 .fujitsu {
   margin-bottom: 1.5rem;
@@ -79,8 +74,4 @@ h2{
   margin-bottom: 1.5rem;
   width: 18vw;
   height: auto;
-}
-
-.partners.right {
-  right: 3.5rem;
 }

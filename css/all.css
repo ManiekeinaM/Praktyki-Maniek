@@ -58,31 +58,40 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 
-    padding: 0.5rem;
+    background-color:rgba(56, 92, 255, 0.05);
+    border-radius: 1rem;
+
+    margin: 1rem;
     animation: popIn 0.25s;
 }
 .logo {
     width: 75px;
     height: 75px;
 
-    margin-right: 10px;
+    /* margin-right: 10px; */
     animation: 6s spin infinite;
 }
 .logo-container .floor-info p {
-    background-color: rgba(56, 92, 255, 0.05);
+    /* background-color: rgba(56, 92, 255, 0.05);
     border: 2px solid rgba(56, 92, 255, 0.5);
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px); */
 
     font-weight: bolder;
     color: rgba(56, 92, 255, 0.9);
 
     width: 6rem;
 
-    text-align: center;
+    text-align: left;
     padding: 0.75rem;
     border-radius: 1rem;
     line-height: 1.75rem;
+}
+
+/* Scale down  */
+@media (max-width: 800px) {
+    
 }
 
 .room-selection {
@@ -91,7 +100,7 @@ body {
     width: 150px;
 
     left: 0;
-    top: calc(85% + 3.5rem);
+    top: calc(85% + 4.5rem);
 
     background-color: rgba(56, 92, 255, 0.05);
     border: 0.125rem solid rgba(56, 92, 255, 0.5);
@@ -111,7 +120,7 @@ body {
 
 .room-selection-button {
     position: absolute;
-    top: calc(50% + 3rem);
+    top: calc(50% + 4rem);
     left: calc(0.5rem + 37.5px);
 
     transform: translateX(-50%);
@@ -171,6 +180,7 @@ body {
     background-color: rgba(56,92,255,0.1);
     padding: 5px;
     border-radius: 1rem;
+    transition: transform 0.05s
 }
 
 .floor p:not(.mainText):hover {
@@ -302,7 +312,7 @@ main {
 
 .button-layer button {
     background-color: rgba(56, 92, 255, 0.5);
-    border: 2px solid rgba(56, 92, 255, 0.7);
+    border: 2px solid rgb(56, 92, 255);
     border-radius: 1rem;
     padding: 2px;
     padding-right: 10px;
@@ -478,8 +488,11 @@ div.reset {
     margin: 0.5rem;
     border-radius: 100%;
 
-    background-color: lightgray;
-    border: 2px solid gray;
+    background-color: #EBEEFF/* rgba(56, 92, 255, 0.1) */;
+    border: 2px solid rgba(56, 92, 255, 0.5);
+    backdrop-filter: blur(2px);
+    /* background-color: lightgray;
+    border: 2px solid gray; */
     transition: 0.1s;
 
     cursor: pointer;
@@ -487,6 +500,10 @@ div.reset {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.button:hover {
+    border: 0.5rem solid rgba(56,92,255,0.6);
 }
 
 .button img {
@@ -498,7 +515,7 @@ div.reset {
         transform: rotate(10deg);
     }
     50% {
-        transform: rotate(20deg);
+        transform: rotate(20deg) scale(1.1);
     }
     100% {
         transform: rotate(10deg);
@@ -513,7 +530,7 @@ div.reset {
 
     width: 75%;
     height: 75%;
-    animation: spinDecoration 3s ease-in-out infinite;
+    animation: spinDecoration 2.5s ease-in-out infinite;
 }
 
 .button::after { /* Hitbox */
@@ -528,9 +545,6 @@ div.reset {
 }
 
 
-.button:hover {
-    border: 0.5rem solid gray;
-}
 
 .scale button {
     cursor: pointer;
@@ -544,8 +558,9 @@ div.reset {
 /* Info */
 .info-container {
     background-color: rgba(100,100,100,0.15);
-    min-width: 20rem;
-    width: 50%;
+    min-width: 10rem;
+    max-width: 50%;
+    max-height: 90%;
 
     padding: 2rem;
     margin: 2rem;

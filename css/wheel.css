@@ -43,7 +43,7 @@ body {
 }
 
 .wheels, .wheel-container {
-    position: relative;
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -247,4 +247,12 @@ span.premium {
 
 .categories button:hover {
     transform: scale(1.1);
+}
+
+.confetti{
+    width: 100vw;
+    display: absolute;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    user-select: none;
 }

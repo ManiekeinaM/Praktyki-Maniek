@@ -4,17 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wheel</title>
-    <link rel="stylesheet" href="wheel.css">
+    <link rel="stylesheet" href="./css/all.css">
+    <link rel="stylesheet" href="./css/wheel.css">
 </head>
 <body>
-    <div>
-    <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="160px" height="160px" style="transform: translateY(30px)" viewBox="0 0 24 24" fill="none">
-        <path d="M7 10L12 15L17 10 L7 10" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" fill="#FFFFFF"/>
-    </svg>
-    <div id="wheel-container"></div>
+    <audio id="win_sound">
+        <source src="prizeWon.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="categories">
+        <button data-wheelid="1">Koło Standardowe (15+ Bingo)</button>
+        <button data-wheelid="2" class="premium">Koło Premium (2x) (25 Bingo)</button>
     </div>
-    <button class="spin" data-wheelid="1" id="spin_button">SPIN</button>
-    <p id="result"></p>
+
+    <div class="wheel-legend">
+        <p><span class="legend-text">Legenda</span></p>
+    </div>
+
+    <div class="wheel-history">
+        <p><span class="history-text">Historia losów</span></p>
+        <p class="result"></p>
+    </div>
+
+    <div class="wheels">
+
+    </div>
+
+    
+    
+    <p class="result"></p>
+
+    <!-- PHP -->
     <p id="php-container" style="display:none;">
     <?php
         $db = new mysqli("localhost", "root", "", "baza_pula");
@@ -23,22 +43,39 @@
             die();
         }
 
-        $prizeName_array = array();
-        $prizeNumber_array = array();
+        $prizeAmount_array = [];
 
-        $result = $db -> query("SELECT nazwaNagrody, iloscNagrody FROM nagrody_pula");
+        $result = $db -> query("SELECT iloscNagrody FROM nagrody_pula");
 
         while($row = $result -> fetch_assoc()) {
-            array_push($prizeName_array, $row['nazwaNagrody']);
-            array_push($prizeNumber_array, $row['iloscNagrody']);
+            array_push($prizeAmount_array, $row['iloscNagrody']);
         }
-        echo $prizeName_array;
-        echo $prizeNumber_array;
-        ?>
+        foreach($prizeAmount_array as $prizeAmount) {
+            echo $prizeAmount.'_';
+        }
+    ?>
     </p>
 
-    <script src="./js/wheel.js">
-        
-    </script>
+    <!-- Navigation button container / zakładki -->
+    <div class="navigation-container">
+        <div class="button" data-tab="index.html">
+            <!-- Mapa -->
+            <img src="./assets/locationPin.png" alt="mapa">
+        </div> 
+
+        <div class="button" data-tab="info.html">
+            <!-- Info i historia szkoły -->
+            <img src="./assets/info.png" alt="mapa">
+        </div>
+
+        <div class="button selected" data-tab="wheel2.php">
+            <!-- Koło fortuny -->
+            <img src="./assets/wheel.png" alt="">
+            <img src="./assets/sparkle.png" alt="" class="decoration">
+        </div>
+    </div>
+
+    <script src="./js/wheel.js"></script>
+    <script src="./js/navigation.js"></script>
 </body>
 </html>

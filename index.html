@@ -19,10 +19,34 @@
                 <span class="floorText">Budynki A i B</span>
             </p>
         </div>
+
+        <div class="room-selection hidden">
+            <div class="floor Floor0">
+                <p class="mainText">Parter</p>
+                <!-- <p>hi</p>
+                <p>dwa</p> -->
+            </div>
+            <div class="floor Floor1">
+                <p class="mainText">Piętro 1</p>
+                <!-- <p>Sala 122 (technik programista, roboty)</p> -->
+            </div>
+            <div class="floor Floor2A">
+                <p class="mainText">Piętro 2 (A)</p>
+            </div>
+            <div class="floor Floor2B">
+                <p class="mainText">Piętro 2 (B)</p>
+            </div>
+            
+        </div>
+
+        <img class="room-selection-button" src="./assets/locationPin.png">
+
     </div>
 
+    <p class="currentPath">> Wybierz drogę <</p>
+
     <!-- Map container -->
-    <main class="map-container xy-scroll">
+    <main class="map-container">
         <div class="scale">
             <button class="plus">
                 <img src="./assets/add.png" alt="+">
@@ -59,7 +83,7 @@
                 <div class="button-layer"></div>
             </div>
 
-            <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <div style="display: flex; justify-content: center; align-items: center; width: 100%; gap: 25rem;">
                 <div class="layers Floor2A">
                     <img class="map-layer" src="./assets/map/Floor2A.jpg">
                     <canvas class="canvas-layer"></canvas>
@@ -90,7 +114,7 @@
             <img src="./assets/info.png" alt="mapa">
         </div>
 
-        <div class="button" data-tab="wheel2.html">
+        <div class="button" data-tab="wheel2.php">
             <!-- Koło fortuny -->
             <img src="./assets/wheel.png" alt="">
             <img src="./assets/sparkle.png" alt="" class="decoration">

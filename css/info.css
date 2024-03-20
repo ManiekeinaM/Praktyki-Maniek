@@ -1,4 +1,4 @@
-img {
+.social-preview {
     padding: 1%;
     scale: 80%;
     margin-top: 0;
@@ -41,3 +41,46 @@ h2{
     margin-left: auto;
     margin-right: auto;
   }
+
+
+.partners {
+  width: 20%;
+  height: 100%;
+  position: absolute;
+
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  gap: 3rem;
+
+  z-index: 5;
+}
+.partners > *:not(.fujitsu, .veolia) {
+  max-width: 40%;
+  height: auto;
+}
+
+.partners.left {
+  left: 3.5rem;
+}
+
+.fujitsu {
+  margin-bottom: 1.5rem;
+  width: 16vw;
+  height: auto;
+}
+
+.veolia {
+  margin-bottom: 1.5rem;
+  width: 18vw;
+  height: auto;
+}
+
+.partners.right {
+  right: 3.5rem;
+}

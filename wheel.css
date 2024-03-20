@@ -1,0 +1,258 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+text {
+    font-family: sans-serif;
+}
+
+@keyframes moveBackground {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 200px 200px;
+    }
+}
+
+@keyframes showPrize {
+    0% {
+        transform: translate(-50%,-50%) scale(100%);
+    }
+    50% {
+        transform: translate(-50%,-50%) scale(100%);
+    }
+    100% {
+        transform: translate(-50%,-50%) scale(0%);
+    }
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow-y: hidden;
+
+    background-image: url('../assets/tile-zsp9.png');
+    background-repeat: repeat;
+    animation: moveBackground 10s linear infinite;
+}
+
+.wheels, .wheel-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    animation: popIn 0.25s;
+    transition: 0.1s;
+}
+
+
+.wheel-container {
+    width: 600px;
+    height: 600px;
+}
+.wheel-container.hidden {
+    display: none;
+}
+
+
+
+
+.arrow{
+    z-index: 11;
+    position: absolute;
+
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 2rem;
+    height: 7.5rem;
+}
+.locked {
+    z-index: 10;
+    position: absolute;
+
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+
+    padding: 9rem;
+    background-color: rgba(100,100,100,0.65);
+    border-radius: 100%;
+}
+.winResult {
+    z-index: 12;
+    position: absolute;
+
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+
+    color: white;
+
+    padding: 3rem;
+    background-color: rgba(99, 89, 63, 0.5);
+    border: 0.5rem solid rgba(99, 89, 63, 0.9);
+
+    border-radius: 10rem;
+    font-size: 1.5rem;
+    font-weight: bolder;
+
+    white-space: nowrap;
+}
+
+
+a:hover{
+    cursor: pointer;
+}
+
+.wheel {
+    transform-origin: center;
+}
+
+.prizeText {
+    color: white;
+}
+
+button {
+    z-index: 10;
+}
+
+.wheel-legend {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    background-color: rgba(56, 92, 255, 0.05);
+    border: 2px solid rgba(56, 92, 255, 0.5);
+    backdrop-filter: blur(3px);
+
+    font-weight: bolder;
+    color: rgba(56, 92, 255, 0.9);
+
+    text-align: center;
+    padding: 0.7em;
+    border-radius: 1rem;
+}
+
+
+.wheel-history {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: rgba(56, 92, 255, 0.05);
+    border: 2px solid rgba(56, 92, 255, 0.5);
+    backdrop-filter: blur(3px);
+
+    font-weight: bolder;
+    color: rgba(56, 92, 255, 0.9);
+
+    text-align: center;
+    padding: 0.7em;
+    border-radius: 1rem;
+}
+
+.wheel-history p, .wheel-legend p {
+    text-align: left;
+}
+
+span.premium {
+    color: rgba(255, 136, 56, 0.9);
+}
+
+
+
+.legend-text, .history-text {
+    font-size: larger;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.spin-holder{
+    display: flex;
+    justify-content: center;
+}
+
+.spin1 {
+    background-color: rgba(56, 92, 255, 0.05);
+    border: 2px solid rgba(56, 92, 255, 0.5);
+    backdrop-filter: blur(3px);
+
+    font-weight: bolder;
+    font-size: x-large;
+    color: rgba(56, 92, 255, 0.9);
+
+    padding: 0.4rem;
+    margin: 0.5rem;
+    border-radius: 1rem;
+}
+.spin2 {
+    background-color: rgba(255, 230, 0, 0.05);
+    border: 2px solid rgba(124, 122, 0, 0.5);
+    backdrop-filter: blur(3px);
+
+    font-weight: bolder;
+    font-size: x-large;
+    color: rgba(146, 136, 0, 0.9);
+
+    padding: 0.4rem;
+    margin: 0.5rem;
+    border-radius: 1rem;
+}
+
+
+.categories {
+    position: fixed;
+    transform: translateX(-50%);
+    left: 50%;
+    top: 1rem;
+
+    background-color: rgba(255, 175, 56, 0.05);
+    border: 4px solid rgba(255, 175, 56, 0.25);
+    backdrop-filter: blur(3px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+
+    padding: 0.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+
+    border-radius: 10rem;
+}
+
+.categories button {
+    background-color: rgba(56,92,255, 0.35);
+    border: 4px solid rgba(56,92,255, 0.25);
+    padding: 0.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    border-radius: 10rem;
+
+    font-weight: bolder;
+    transition: 0.1s;
+}
+
+.categories button.premium {
+    background-color: rgba(255, 129, 56, 0.35);
+    border: 4px solid rgba(255, 129, 56, 0.25);
+}
+
+.categories button:hover {
+    transform: scale(1.1);
+}
+
+.confetti{
+    width: 100vw;
+    display: absolute;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    user-select: none;
+}

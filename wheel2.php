@@ -30,7 +30,7 @@
 
     </div>
 
-    
+    <canvas class="confetti" id="canvas"></canvas>
     
     <p class="result"></p>
 

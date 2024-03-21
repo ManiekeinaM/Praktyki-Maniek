@@ -155,6 +155,10 @@ body {
     z-index: 100;
     font-weight: bold;
     text-align: center;
+
+    background: transparent;
+    text-shadow: 1px 1px 10px #8acaff;
+    color: rgb(34, 39, 61);
 }
 
 .room-selection .floor .mainText {

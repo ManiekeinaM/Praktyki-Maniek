@@ -369,11 +369,11 @@ function spin(wheelId, prizeId, actualWheel) {
         winScreen.innerHTML = `${prizeValues.name} - ${prizeValues.desc}`;
         winSound.play();
         initConfetti();
-        winScreen.style.animation = `showPrize 8s`;
+        winScreen.style.animation = `showPrize 5.1s`;
         setTimeout(() => {
             winScreen.classList.add("hidden");
             wheel.dataset.debounce = "false";
-        }, 8000)
+        }, 5000)
     }, time * 1000); // Matches the duration of the animation
 }
 

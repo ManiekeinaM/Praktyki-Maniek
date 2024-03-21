@@ -49,6 +49,8 @@ const imgPaths = {
             "Wdot17": { x: 0.83700, y: 0.21226, connections: ['dot14', 'Wdot18'] }, // sala 32 STAND
             "Wdot18": { x: 0.83700, y: 0.16038, connections: ['dot16', 'Wdot19'] }, // sala 40 STAND
             "Wdot19": { x: 0.83700, y: 0.10750, connections: ['dot15'] }, // upmost B door STAND
+
+            "Xdot1": {x: 0.38000, y: 0.87500, icon: 'bigArrow', destination: mapThresholds[1].threshold}, // PIĘTRO 1 STRZAŁKA DO DOLU
         }
 
     },
@@ -120,8 +122,7 @@ const imgPaths = {
             "Wdot19B": { x: 0.83400, y: 0.25300, connections: ['dot11B', 'Wdot20B'] }, // przed 138
             "Wdot20B": { x: 0.83400, y: 0.14427, connections: ['dot12B', 'dot13B'] }, // przed 132 i 134
 
-
-
+            "Xdot1": {x: 0.38000, y: 0.87500, icon: 'bigArrow', destination: mapThresholds[2].threshold}, // PIĘTRO 2 STRZAŁKA DO DOLU
         }
 
     },
@@ -184,7 +185,8 @@ const mapIcons = {
     'machine': './assets/map/icons/Maniek.png',
     'disco': './assets/map/icons/disco.png',
     'musicNote': './assets/map/icons/musicNote.png',
-    'toilet': './assets/map/icons/toilet.png'
+    'toilet': './assets/map/icons/toilet.png',
+    'bigArrow': './assets/map/icons/bigArrow.png',
 }
 
 function percentToPx(percentages, relativeElement) {
@@ -505,12 +507,28 @@ function createAllButtons() {
                 if (values.icon) {
                     element = document.createElement("img");
                     element.src = mapIcons[values.icon];
+
+                    if (values.icon == "bigArrow") {
+                        element.style = `width: 10rem; height: 10rem;`
+                    }
                 } else if (values.label) {
                     element = document.createElement("button");
                     element.innerHTML = values.label;
                 }
     
                 element.addEventListener("click", e => {
+                    // Xdot - does something cool
+                    if (dot.includes('Xdot')) {
+                        if (values.destination) {
+                            // Get the real destination, it is a bit lower than the threshold
+                            let realDestination = values.destination - 450;
+                            updateMap(false, realDestination);
+                        }
+                        return;
+                    }
+
+                    // Draw the path for this destination
+
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
                     let startPoint = floorStartPoints[floorName];

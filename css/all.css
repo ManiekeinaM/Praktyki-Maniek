@@ -60,10 +60,12 @@ body {
     align-items: center;
     gap: 10px;
 
+    /* border: 0.125rem solid rgba(56, 92, 255, 0.25); */
     background-color:rgba(56, 92, 255, 0.05);
     border-radius: 1rem;
 
     margin: 1rem;
+    padding-left: 0.5rem; padding-right: 0.5rem;
     animation: popIn 0.25s;
 }
 .logo {
@@ -159,6 +161,8 @@ body {
     background: transparent;
     text-shadow: 1px 1px 10px #8acaff;
     color: rgb(34, 39, 61);
+
+    user-select: none;
 }
 
 .room-selection .floor .mainText {

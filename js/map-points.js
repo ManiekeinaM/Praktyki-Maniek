@@ -81,14 +81,17 @@ const imgPaths = {
             "dot8A": {x: 0.10250, y: 0.92807, icon: 'disco', desc: "Dyskoteka!"}, // dyskoteka
             "dot7.5A": { x: 0.25083, y: 0.84552, desc: "Sala 113 (TRN)", label: "113" }, // Sala 113
 
-            "dot8B": { x: 0.75978, y: 0.53285, desc: "Sala 123 (technik mechatronik)", label: "123" }, // Sala 123
+            
+            "dot8B": { x: 0.76125, y: 0.55542, desc: "Sala 123 (technik mechatronik)", label: "123" }, // Sala 123
             "dot9B": { x: 0.83400, y: 0.61771, desc: "Sala 122 (technik programista, roboty)", label: "122" }, // Sala 122
             "dot10B": { x: 0.90756, y: 0.37097, desc: "Toaleta B", icon: 'toilet' }, // Toaleta pracownicza B
             "dot11B": { x: 0.90867, y: 0.25310, desc: "Sala 138 (technik elektronik)", label: "138" }, // Sala 138
             "dot12B": { x: 0.90867, y: 0.14152, desc: "Sala 134 (technik elektryk)", label: "134" }, // Sala 134
-            "dot13B": { x: 0.76311, y: 0.14466, desc: "Sala 135 (technik elektronik)", label: "135" }, // Sala 135
-            "dot13.5B": { x: 0.75917, y: 0.43868 }, // Sala 131
-            "dot14B": { x: 0.76311, y: 0.26882 }, // Sala 132
+            "dot13B": { x: 0.76542, y: 0.14466, desc: "Sala 135 (technik elektronik)", label: "135" }, // Sala 135
+            "dot13.5B": { x: 0.76542, y: 0.46108 }, // Sala 131
+            "dot14B": { x: 0.76542, y: 0.32311 }, // Sala 132
+            "dot15B": {x: 0.76542, y: 0.24175}, // Sala 133
+
 
             "Wdot1A": { x: 0.07700, y: 0.57426, connections: ['Wdot3A'], icon: 'stairsDown', desc: "SCHODY A - DÓŁ" }, // schody dol A
             "Wdot2A": { x: 0.07500, y: 0.53041, connections: ['Wdot3A'], icon: 'stairsUp', desc: "SCHODY A - GÓRA" }, // schody gora A
@@ -105,14 +108,16 @@ const imgPaths = {
 
             "Wdot8.5A": { x: 0.18000, y: 0.84552, connections: ['dot7.5A', 'Wdot8.9A'] }, // Sala 113 STAND
             "Wdot8.9A": {x: 0.18167, y: 0.92925, connections: ['dot8A']}, // przed disco 
+            
 
             "Wdot13B": { x: 0.92100, y: 0.43706, connections: ['Wdot15B'], icon: 'stairsDown', desc: "SCHODY B - DÓŁ" }, // schody dol B
             "Wdot14B": { x: 0.92200, y: 0.47666, connections: ['Wdot15B'], icon: 'stairsUp', desc: "SCHODY B - GÓRA" }, // schody gora B
-            "Wdot15B": { x: 0.83400, y: 0.43706, connections: ['Wdot16B', 'Wdot17B', 'dot13.5B'] }, // mid B
-            "Wdot16B": { x: 0.83400, y: 0.53285, connections: ['dot8B', 'dot9B'] }, // dol triple B
-            "Wdot17B": { x: 0.83400, y: 0.37341, connections: ['dot10B', 'Wdot18B'] }, // przed WC pracownicze B
+            "Wdot15B": { x: 0.83400, y: 0.46344, connections: ['Wdot16B', 'Wdot17B', 'dot13.5B'] }, // mid B
+            "Wdot16B": { x: 0.83400, y: 0.55778, connections: ['dot8B', 'dot9B'] }, // dol triple B
+            "Wdot17B": { x: 0.83400, y: 0.37341, connections: ['dot10B', 'Wdot17.5B'] }, // przed WC pracownicze B
+            "Wdot17.5B": {x: 0.83400, y: 0.32429, connections: ['dot14B', 'Wdot18B']}, // Przed 132 (Wdot17.5B)
             "Wdot18B": { x: 0.83400, y: 0.26874, connections: ['dot14B', 'Wdot19B'] }, // przed 131
-            "Wdot19B": { x: 0.83400, y: 0.25318, connections: ['dot11B', 'Wdot20B'] }, // przed 138
+            "Wdot19B": { x: 0.83400, y: 0.25300, connections: ['dot11B', 'Wdot20B'] }, // przed 138
             "Wdot20B": { x: 0.83400, y: 0.14427, connections: ['dot12B', 'dot13B'] }, // przed 132 i 134
 
 
@@ -225,7 +230,7 @@ imgContainers.forEach(container => {
 // Draw dots on each thingy
 function drawDotsEverywhere() {
     for (const [floorName, floorItems] of Object.entries(imgPaths)) {
-        let floorContainer = document.querySelector(`div.${floorName}`);
+        let floorContainer = map_container.querySelector(`div.${floorName}`);
         if (!floorContainer) continue;
 
         let img = floorContainer.querySelector("img");

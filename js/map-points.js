@@ -493,6 +493,8 @@ function createAllButtons() {
             for (const [dot, values] of Object.entries(floorItems.dots)) {
                 let element = document.createElement("button");
                 if (!values.icon && !values.label) continue;
+
+                let desc = values.desc;
     
                 // Set the icon of the button
                 if (values.icon) {
@@ -517,8 +519,8 @@ function createAllButtons() {
                     drawPath(floorName, startPoint, dot);
                 })
     
-                // Add a p element to the roomselection of that floor
-                if (values.desc) {
+                // Add a p button element to the roomSelection container of that floor
+                if (desc && !desc.includes('DÓ')) {
                     let newP = document.createElement('p');
                     newP.innerHTML = values.desc;
                     roomSelectionP.appendChild(newP);

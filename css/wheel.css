@@ -37,13 +37,14 @@ body {
     flex-direction: column;
     overflow-y: hidden;
 
+    background-color: ghostwhite;
     background-image: url('../assets/tile-zsp9.png');
     background-repeat: repeat;
     animation: moveBackground 10s linear infinite;
 }
 
 .wheels, .wheel-container {
-    position: absolute;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -251,8 +252,9 @@ span.premium {
 
 .confetti{
     width: 100vw;
-    display: absolute;
+    position: absolute;
     margin: 0 auto;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     user-select: none;
+    pointer-events: none;
 }

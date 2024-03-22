@@ -29,6 +29,8 @@ Instrukcje użytku:
 
 
 > Zablokowanie koła
-    - Automatycznie koła są zablokowane.
+    - Automatycznie na starcie koła są zablokowane.
         klawisz 1 - zablokuj obecnie widoczne koła
         klawisz 2 - odblokuj obecnie widoczne koła
+    - Po każdym kręceniu koła, samo się blokuje.
+    - Użytkownik może tylko kręcić koło jeżeli prowadzący je odblokuje.

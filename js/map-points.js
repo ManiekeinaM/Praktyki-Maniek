@@ -633,6 +633,12 @@ document.addEventListener("keydown", e => {
     }
     if (!devMode) return;
 
+    if (e.key == "F3") {
+        e.preventDefault();
+        drawDotsEverywhere();
+        return;
+    }
+
     let x = e.key;
 
     if (x.length >= 2 && !(x == "Backspace" || x == "Enter")) return;

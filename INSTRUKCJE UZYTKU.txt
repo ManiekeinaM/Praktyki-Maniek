@@ -26,3 +26,9 @@ Instrukcje użytku:
     - W trybie DEVELOPERA (klawisz F2 na mapie)
         klawisz F2 - wyłącz ponownie tryb DEV
         klawisz F3 - pokaż nazwę wszystkich kropek
+
+
+> Zablokowanie koła
+    - Automatycznie koła są zablokowane.
+        klawisz 1 - zablokuj obecnie widoczne koła
+        klawisz 2 - odblokuj obecnie widoczne koła

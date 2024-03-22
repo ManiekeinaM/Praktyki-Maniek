@@ -161,11 +161,11 @@ function generateWheel(wheelId) {
     let locked = document.createElement('img');
     locked.src = './assets/locked3.png';
     locked.classList.add("locked");
-    locked.classList.add("hidden");
+    // locked.classList.add("hidden");
     container.appendChild(locked);
 
 
-    let wheelSvg = `<svg class="wheel" data-currentdegree="270" data-debounce="false" xmlns="http://www.w3.org/2000/svg" width="600" height="600" style="transform: rotate(${pickedWheel.currentDegree}deg)">
+    let wheelSvg = `<svg class="wheel" data-currentdegree="270" data-debounce="false" data-locked="true" xmlns="http://www.w3.org/2000/svg" width="600" height="600" style="transform: rotate(${pickedWheel.currentDegree}deg)">
             <g transform="translate(300,300)">`;
 
     let weightsUsed = 0;
@@ -236,6 +236,7 @@ function generateWheel(wheelId) {
     svg.addEventListener("click", () => {
         console.log(svg.dataset.debounce);
         if (svg.dataset.debounce == "true") return;
+        if (svg.dataset.locked == "true") return;
 
         svg.dataset.debounce = "true";
         // wheels[wheelId].debounce = true;
@@ -376,6 +377,7 @@ function spin(wheelId, prizeId, actualWheel) {
         setTimeout(() => {
             winScreen.classList.add("hidden");
             wheel.dataset.debounce = "false";
+            lockWheel(wheel);
             currentSpinningWheels -= 1;
         }, 5000)
     }, time * 1000); // Matches the duration of the animation
@@ -387,117 +389,46 @@ generateWheel(2);
 
 updateWheels();
 
-//Confetti
+// Locking wheels (DEV TOOLS)
+function lockWheel(wheelSvg) {
+    let container = wheelSvg.parentNode;
+    
+    wheelSvg.dataset.locked = true;
+    let lock = container.querySelector('.locked');
+    lock.classList.remove('hidden');
 
-canvas = document.getElementById("canvas");
-ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-cx = ctx.canvas.width / 2;
-cy = ctx.canvas.height /2;
+}
 
-let confetti = [];
-const confettiCount = 300;
-const gravity = 0.8;
-const terminalVelocity = 7.5;
-const drag = 1;
-const colors = [
-    { front: 'red', back: 'darkred' },
-    { front: 'green', back: 'darkgreen' },
-    { front: 'blue', back: 'darkblue' },
-    { front: 'yellow', back: 'darkyellow' },
-    { front: 'orange', back: 'darkorange' },
-    { front: 'pink', back: 'darkpink' },
-    { front: 'purple', back: 'darkpurple' },
-    { front: 'turquoise', back: 'darkturquoise' }];
-        
-        //-----------Functions--------------
-resizeCanvas = () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  cx = ctx.canvas.width / 2;
-  cy = ctx.canvas.height / 2;
-};
+function lockWheels() {
+    let wheelContainers = wheelsDiv.querySelectorAll(`[data-wheelid="${currentWheel}"]`);
 
-randomRange = (min, max) => Math.random() * (max - min) + min;
+    for (let i=0; i<wheelContainers.length; i++) {
+        let container = wheelContainers[i];
 
-initConfetti = () => {
-  for (let i = 0; i < confettiCount; i++) {
-    confetti.push({
-      color: colors[Math.floor(randomRange(0, colors.length))],
-      dimensions: {
-        x: randomRange(10, 20),
-        y: randomRange(10, 30) },
+        let wheel = container.querySelector('.wheel');
+        wheel.dataset.locked = true;
 
-      position: {
-        x: randomRange(0, canvas.width),
-        y: canvas.height - 1 },
+        let lock = container.querySelector('.locked');
+        lock.classList.remove('hidden');
+    }
+}
 
-      rotation: randomRange(0, 2 * Math.PI),
-      scale: {
-        x: 1,
-        y: 1},
+function unlockWheels() {
+    let wheelContainers = wheelsDiv.querySelectorAll(`[data-wheelid="${currentWheel}"]`);
 
-      velocity: {
-        x: randomRange(-25, 25),
-        y: randomRange(0, -50) } });
+    for (let i=0; i<wheelContainers.length; i++) {
+        let container = wheelContainers[i];
 
+        let wheel = container.querySelector('.wheel');
+        wheel.dataset.locked = false;
 
-  }
-};
+        let lock = container.querySelector('.locked');
+        lock.classList.add('hidden');
+    }
+}
 
-//---------Render-----------
-render = () => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  confetti.forEach((confetto, index) => {
-    let width = confetto.dimensions.x * confetto.scale.x/2;
-    let height = confetto.dimensions.y * confetto.scale.y/2;
-
-    // Move canvas to position and rotate
-    ctx.translate(confetto.position.x, confetto.position.y);
-    ctx.rotate(confetto.rotation);
-
-    // Apply forces to velocity
-    confetto.velocity.x -= confetto.velocity.x * drag;
-    confetto.velocity.y = Math.min(confetto.velocity.y + gravity, terminalVelocity);
-    confetto.velocity.x += Math.random() > 0.5 ? Math.random() : -Math.random();
-
-    // Set position
-    confetto.position.x += confetto.velocity.x;
-    confetto.position.y += confetto.velocity.y;
-
-    // Delete confetti when out of frame
-    if (confetto.position.y >= canvas.height) confetti.splice(index, 1);
-
-    // Loop confetto x position
-    if (confetto.position.x > canvas.width) confetto.position.x = 0;
-    if (confetto.position.x < 0) confetto.position.x = canvas.width;
-
-    // Spin confetto by scaling y
-    confetto.scale.y = Math.cos(confetto.position.y * 0.1);
-    ctx.fillStyle = confetto.scale.y > 0 ? confetto.color.front : confetto.color.back;
-
-    // Draw confetti
-    ctx.fillRect(-width / 2, -height / 2, width, height);
-
-    // Reset transform matrix
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-  });
-
-  window.requestAnimationFrame(render);
-};
-
-//---------Execution--------
-//initConfetti();
-render();
-
-//----------Resize----------
-window.addEventListener('resize', function () {
-  resizeCanvas();
-});
-
-//------------Click------------
-window.addEventListener('click', function () {
-  //initConfetti();
-});
+document.addEventListener('keydown', e => {
+    let key = e.key;
+    if (key == "1") lockWheels();
+    if (key == "2") unlockWheels();
+})

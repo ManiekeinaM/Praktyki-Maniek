@@ -10,7 +10,7 @@ php_amounts.pop();
 var wheels = {
     1: {
         prizes: [
-            { name: "🗝️🎖️", desc: "Brelok/Przypinka", weight: 250, visualWeight: 3, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🗝️🎖️", desc: "Brelok/Przypinka", weight: 200, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "📅🤐", desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
             // { name: "🎫🏖️", desc: "Voucher: Wycieczka integracyjna gratis", weight: 0, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
             // { name: "🎫💻", desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 0, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
@@ -37,8 +37,7 @@ var wheels = {
     }
 }
 
-// console.log("Koło1", JSON.parse(JSON.stringify(wheels[1])));
-// console.log("Koło2", JSON.parse(JSON.stringify(wheels[2])));
+let currentSpinningWheels = 0;
 
 wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount != 0);
 wheels[2].prizes = wheels[2].prizes.filter(prize => prize.amount != 0);
@@ -52,6 +51,8 @@ categoryButtons.forEach(button => {
     let id = button.dataset.wheelid;
     button.addEventListener("click", e => {
         e.preventDefault();
+
+        if (currentSpinningWheels > 0) return;
 
         currentWheel = parseInt(id);
         updateWheels();
@@ -361,6 +362,8 @@ function spin(wheelId, prizeId, actualWheel) {
     // console.log(wheels[wheelId].prizes);
     let winScreen = wheel.parentNode.querySelector('.winResult');
     
+    currentSpinningWheels += 1;
+
     setTimeout(() => {
         wheel.style.transition = '';
         result.innerHTML = newResult;
@@ -373,6 +376,7 @@ function spin(wheelId, prizeId, actualWheel) {
         setTimeout(() => {
             winScreen.classList.add("hidden");
             wheel.dataset.debounce = "false";
+            currentSpinningWheels -= 1;
         }, 5000)
     }, time * 1000); // Matches the duration of the animation
 }
@@ -394,7 +398,7 @@ cy = ctx.canvas.height /2;
 
 let confetti = [];
 const confettiCount = 300;
-const gravity = 0.5;
+const gravity = 0.8;
 const terminalVelocity = 7.5;
 const drag = 1;
 const colors = [

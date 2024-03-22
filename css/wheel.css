@@ -145,6 +145,7 @@ button {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
+    width: 20rem;
     background-color: rgba(56, 92, 255, 0.05);
     border: 2px solid rgba(56, 92, 255, 0.5);
     backdrop-filter: blur(3px);
@@ -212,16 +213,16 @@ span.premium {
     left: 50%;
     top: 1rem;
 
-    background-color: rgba(255, 175, 56, 0.05);
+    /* background-color: rgba(255, 175, 56, 0.05);
     border: 4px solid rgba(255, 175, 56, 0.25);
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px); */
 
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.75rem;
 
-    padding: 0.5rem;
+    padding: 0.25rem;
     padding-left: 2rem;
     padding-right: 2rem;
 
@@ -231,19 +232,20 @@ span.premium {
 .categories button {
     background-color: rgba(56,92,255, 0.35);
     border: 4px solid rgba(56,92,255, 0.25);
-    padding: 0.5rem;
+    padding: 0.75rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
 
     border-radius: 10rem;
 
     font-weight: bolder;
+    font-size: 1rem;
     transition: 0.1s;
 }
 
 .categories button.premium {
     background-color: rgba(255, 129, 56, 0.35);
-    border: 4px solid rgba(255, 129, 56, 0.25);
+    border: 4px solid #ff813840;
 }
 
 .categories button:hover {

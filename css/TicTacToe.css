@@ -1,11 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: 'Raleway',  sans-serif;
+}
+
 html, body {
     margin: 0px;
     padding: 0px;
 }
+body {
+    display: flex;
+    min-height: 100svh;
+}
 main {
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+.maniek-box {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    background-color: black;
+    color: green;
 }
 header {
     text-align: center;
@@ -13,24 +34,53 @@ header {
 .game-container {
     width: 600px;
     height: 600px;
-    border: 2px solid blue;
+    border: 1rem solid #817453;
+    background-color: #817453;
 
+    gap: 1.5rem;
     display: grid;
-    gap: 1rem;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    
-
 }
 
 .game-container div {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 0.2rem solid black;
 }
 
 .game-container div img {
     width: 75%;
     height: 75%;
+}
+
+.game-container div:nth-child(odd) {
+    background-color: #CAB282;
+    border: 1rem solid #b99a5a;
+}
+
+.game-container div:nth-child(even) {
+    background-color: #1434B4;
+    border: 1rem solid #112b95;
+}
+.back-btn{
+    position: fixed;
+    left: 2rem;
+    top: 2rem;
+    font-weight: bold;
+
+    border: 0.125rem solid rgba(56, 92, 255, 0.25);
+    background-color:rgba(202, 212, 255, 0.2);
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+h1 {
+    position: fixed;
+    top: 1rem;
 }

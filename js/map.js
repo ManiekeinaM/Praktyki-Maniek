@@ -157,6 +157,7 @@ document.addEventListener("touchstart", e => {
 });
 document.addEventListener("touchend", mouseUp);
 document.addEventListener("touchmove", e => {
+    e.preventDefault();
     mouseMove(e, true);
 });
 

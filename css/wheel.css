@@ -34,8 +34,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    overflow-y: hidden;
 
     background-color: ghostwhite;
     background-image: url('../assets/tile-zsp9.png');

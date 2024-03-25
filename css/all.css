@@ -27,6 +27,7 @@
 body, html {
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 body {
@@ -179,7 +180,8 @@ body {
     font-weight: bolder;
     text-align: center;
 
-    background-color: rgba(202, 212, 255, 0.2);
+    /* background-color: rgba(202, 212, 255, 0.2); */
+    background-color: #F4F6FF;
     border: 0.2rem solid rgba(202, 212, 255, 0.2);
     border-radius: 1rem;
     padding: 0.5rem;
@@ -341,8 +343,8 @@ main {
 }
 
 .button-layer img {
-    width: 2rem;
-    height: 2rem;
+    width: 2em;
+    height: 2em;
 }
 
 .button-layer button {

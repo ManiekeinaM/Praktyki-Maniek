@@ -19,5 +19,18 @@ header {
     gap: 1rem;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    
 
+}
+
+.game-container div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.2rem solid black;
+}
+
+.game-container div img {
+    width: 75%;
+    height: 75%;
 }

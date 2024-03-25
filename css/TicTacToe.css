@@ -1,0 +1,23 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+header {
+    text-align: center;
+}
+.game-container {
+    width: 600px;
+    height: 600px;
+    border: 2px solid blue;
+
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+
+}

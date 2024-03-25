@@ -74,7 +74,7 @@ const floorText = document.querySelector(".floorText");
 function updateMap(x, y) {
     if (x) {start_translateX = x; translateX = x};
     if (y) {start_translateY = y; translateY = y};
-    console.log(translateX, translateY);
+    // console.log(translateX, translateY);
     translateX = Math.min(800, translateX);
     translateX = Math.max(-800, translateX);
 
@@ -167,6 +167,6 @@ document.addEventListener("dragstart", e => e.preventDefault());
 window.addEventListener("load",function() {
     setTimeout(function(){
         // This will scroll page slightly down
-        window.scrollTo(0,10);
-    }, 0);
+        window.scrollTo(0,1000);
+    }, 100);
 });

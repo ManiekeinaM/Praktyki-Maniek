@@ -163,3 +163,10 @@ document.addEventListener("touchmove", e => {
 
 
 document.addEventListener("dragstart", e => e.preventDefault());
+
+window.addEventListener("load",function() {
+    setTimeout(function(){
+        // This will scroll page slightly down
+        window.scrollTo(0,10);
+    }, 0);
+});

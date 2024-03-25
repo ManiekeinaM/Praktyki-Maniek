@@ -15,6 +15,7 @@ const imgPaths = {
             "dot10": { x: 0.76000, y: 0.56011, desc: "Sala 46 (filozofia, religia)", label: "46" }, // sala 46
             "dot11": { x: 0.83700, y: 0.63366, desc: "Sala 45 (j. angielski)", label: "45" }, // sala 45
             "dot12": { x: 0.89100, y: 0.54173, desc: "Toaleta B", icon: 'toilet' }, // kibel meski
+            // "dot12.5": {x: 0.88833, y: 0.37697, desc: "Toaleta nauczycielska (B)", icon: 'toilet'}, // Toaleta dla nauczycieli (parter B)
             "dot13": { x: 0.75900, y: 0.36775, desc: "Psycholog", label: "Psycholog" }, // psycholog
             "dot14": { x: 0.76100, y: 0.21075, desc: "Sala 32 (chemia, biologia)", label: "32" }, // sala 32
             "dot15": { x: 0.76100, y: 0.10750, desc: "Sala 39 (technik energetyk)", label: "39" }, // sala bez numerku raz byla na niemieckim i historii
@@ -82,6 +83,8 @@ const imgPaths = {
             "dot7.1A": {x: 0.26750, y: 0.75590, desc: "Wolontariat", label: "wolontariat"}, // wolontariat
             "dot8A": {x: 0.10250, y: 0.92807, icon: 'disco', desc: "Dyskoteka!"}, // dyskoteka
             "dot7.5A": { x: 0.25083, y: 0.84552, desc: "Sala 113 (TRN)", label: "113" }, // Sala 113
+            "dot7.6A": {x: 0.24833, y: 0.92748, desc: "Pokój nauczycielski", label: "Nauczycielski"}, // Pokój nauczycielski
+            "dot7.7A": {x: 0.10667, y: 0.83608, desc: "Wicedyrektor", label: "Wicedyrektor"}, // Wicedyrektor
 
             
             "dot8B": { x: 0.76125, y: 0.55542, desc: "Sala 123 (technik mechatronik)", label: "123" }, // Sala 123
@@ -108,8 +111,8 @@ const imgPaths = {
             "Wdot11A": { x: 0.33400, y: 0.54031, connections: ['Wdot12A'] }, // szatnia sala gimnastyczna
             "Wdot12A": { x: 0.33400, y: 0.49505, connections: ['dot6A'] }, // szatnia przed sala gimnastyczna
 
-            "Wdot8.5A": { x: 0.18000, y: 0.84552, connections: ['dot7.5A', 'Wdot8.9A'] }, // Sala 113 STAND
-            "Wdot8.9A": {x: 0.18167, y: 0.92925, connections: ['dot8A']}, // przed disco 
+            "Wdot8.5A": { x: 0.18000, y: 0.84552, connections: ['dot7.5A', 'dot7.7A', 'Wdot8.9A'] }, // Sala 113 STAND
+            "Wdot8.9A": {x: 0.18167, y: 0.92925, connections: ['dot8A', 'dot7.6A']}, // przed disco 
             
 
             "Wdot13B": { x: 0.92100, y: 0.43706, connections: ['Wdot15B'], icon: 'stairsDown', desc: "SCHODY B - DÓŁ" }, // schody dol B

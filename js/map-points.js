@@ -25,7 +25,7 @@ const imgPaths = {
             "dot22": { x: 0.10667, y: 0.46226, desc: "Toaleta A", icon: 'toilet'}, // wc A
             "dot23": {x: 0.10250, y: 0.75236, icon: "musicNote", desc: "Muzyka!"}, // nuty
             "dot18": { x: 0.91000, y: 0.47524, desc: "SCHODY B - GÓRA", icon: "stairsUp" }, // schody b gora
-            "dot19": { x: 0.90900, y: 0.43706, desc: "SCHODY B - DÓL", icon: "stairsDown" }, // schody b dol
+            "dot19": { x: 0.91000, y: 0.43706, desc: "SCHODY B - DÓL", icon: "stairsDown" }, // schody b dol
             "dot20": { x: 0.09200, y: 0.52900, desc: "SCHODY A - GÓRA", icon: "stairsUp" }, // schody a gora
 
             // W dots: walk dots
@@ -98,7 +98,7 @@ const imgPaths = {
             "dot15B": {x: 0.76125, y: 0.24175, desc: "Sala 133", label: "133"}, // Sala 133
 
 
-            "Wdot1A": { x: 0.07700, y: 0.57426, connections: ['Wdot3A'], icon: 'stairsDown', desc: "SCHODY A - DÓŁ" }, // schody dol A
+            "Wdot1A": { x: 0.07500, y: 0.57426, connections: ['Wdot3A'], icon: 'stairsDown', desc: "SCHODY A - DÓŁ" }, // schody dol A
             "Wdot2A": { x: 0.07500, y: 0.53041, connections: ['Wdot3A'], icon: 'stairsUp', desc: "SCHODY A - GÓRA" }, // schody gora A
             "Wdot3A": { x: 0.18000, y: 0.53890, connections: ['Wdot11A', 'Wdot4A', 'Wdot6A'] }, // mid A
             "Wdot4A": { x: 0.18000, y: 0.46393, connections: ['Wdot5A', 'dot3A'] }, // gora triple A
@@ -315,7 +315,7 @@ function drawLine(floorName, from, path) {
         ctx.closePath();
 
         // Draw arrow
-        if (dot === path[path.length - 1]) {
+        if (dot === path[path.length - 1] || dot === path[0]) {
             // ctx.fillSt
 
             ctx.beginPath();
@@ -476,6 +476,16 @@ function drawPath(floorName, startDot = 'Wdot0', destinationDot, shouldntClear =
 
         let stairPath = allPaths.Floor0[stairDot];
         drawLine("Floor0", 'Wdot0', stairPath);
+
+        if (floorName != "Floor1") {
+            let stairDot = "Wdot1A";
+            let stairDestination = "Wdot2A";
+            if (floorName.includes("B")) {
+                stairDot = "Wdot13B";
+                stairDestination = "Wdot14B";
+            }
+            drawLine("Floor1", stairDot, [stairDestination]);
+        }
     }
 
 

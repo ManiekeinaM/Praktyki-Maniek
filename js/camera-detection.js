@@ -1,0 +1,1 @@
+// https://medium.com/hackernoon/motion-detection-in-javascript-2614adea9325

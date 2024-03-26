@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: 'Raleway',  sans-serif;
+}
+
+html, body {
+    margin: 0px;
+    padding: 0px;
+}
+body {
+    display: flex;
+    min-height: calc(100svh - 3rem);
+    background-color: rgb(230,230,230);
+    padding: 1.5rem;
+}
+main {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    background-color: #CAB282;
+    border: 1rem solid #817453;
+}
+.maniek-box {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    border: 1rem solid #112b95;
+    background-color: #1434B4;
+    color: green;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+header {
+    text-align: center;
+}
+.game-container {
+    width: 600px;
+    height: 600px;
+    background-color: #817453;
+
+    border-radius: calc(25px + 1rem);
+    border: 1rem solid #b99a5a;
+
+    gap: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.game-container div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.game-container div:nth-child(1) {
+    border-top-left-radius: 25px;
+}
+.game-container div:nth-child(3) {
+    border-top-right-radius: 25px;
+}
+.game-container div:nth-child(7) {
+    border-bottom-left-radius: 25px;
+}
+.game-container div:nth-child(9) {
+    border-bottom-right-radius: 25px;
+}
+
+.game-container div img {
+    width: 75%;
+    height: 75%;
+    user-select: none;
+}
+
+h1 {
+    position: fixed;
+    top: 0.5rem;
+    font-size: 4.5rem;
+}
+
+.win-popup {
+    position: fixed;
+    display: none;
+    border-radius: 25px;
+    border: 0.5rem solid #112b95;
+    background-color: #1434B4;
+    color: white;
+    font-weight: bold;
+    font-size: 3rem;
+    padding: 2rem;
+}
+
+.popup-btns {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.popup-btns button {
+    border-radius: 25px;
+    border: 0.5rem solid grey;
+    background-color: white;
+}
+
+.popup-btns img {
+    width: 3rem;
+}

@@ -1,0 +1,36 @@
+Instrukcje użytku:
+
+> Dodawanie punktu, lub zmiana punktu na mapie (DLA PROGRAMISTY)
+    - Na górze "map-points.js" jest wielka tablica z "kropkami" dla każdego piętra.
+    - Organizacyjne nazwy kropek to:
+        'dot' - kropka z miejscem docelowym (niewymagana nazwa),
+        'Wdot' - kropka dla nawigacji, np. przed salami (niewymagana nazwa),
+        'Xdot' - kropka pełniąca specyficzną funkcję, obecnie tylko dla strzałek 
+                (musi mieć nazwę 'Xdot' i parametr 'destination' równy ilości pikseli do przesunięcia na mapie)
+    - Każda kropka 'Wdot' ma zazwyczaj parametr 'connections', który zawiera nazwy kropek do których się łączy kropka.
+    
+    - Na stronie mapy: Wciśnij F2 aby otworzyć narzędzie dodawania kropek (dolny lewy róg).
+        1) Kliknij na mapę, wypełnią się koordynaty. 
+            Można wpisywać z klawiatury komentarz do kropki.
+            klawisz ENTER - zatwierdzenie kropki
+        2) Po zatwierdzeniu, wciśnij pomarańczowy tekst twojej kropki, automatycznie się skopiuje do schowka.
+            klawisze WINDOWS+V - historia schowka (jakby się przekopiowało złą rzecz)
+        3) Wklej zawartość do tablicy z kropkami, na tym samym piętrze na którym występuje. 
+            'Floor0' - parter, 
+            'Floor1' - piętro 1, 
+            'Floor2A' - piętro 2A, 
+            'Floor2B' - piętro 2B
+        4) Zmień nazwę kropki zgodnie z instrukcjami (aby utrzymać porządek w kodzie)
+        5) Dodaj/zmień potrzebne połączenia ('connections')
+
+    - W trybie DEVELOPERA (klawisz F2 na mapie)
+        klawisz F2 - wyłącz ponownie tryb DEV
+        klawisz F3 - pokaż nazwę wszystkich kropek
+
+
+> Zablokowanie koła
+    - Automatycznie na starcie koła są zablokowane.
+        klawisz 1 - zablokuj obecnie widoczne koła
+        klawisz 2 - odblokuj obecnie widoczne koła
+    - Po każdym kręceniu koła, samo się blokuje.
+    - Użytkownik może tylko kręcić koło jeżeli prowadzący je odblokuje.

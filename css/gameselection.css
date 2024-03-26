@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: 'Raleway',  sans-serif;
+}
+
+html,body{
+    background-color: lightgray;
+}
+
+main {
+    margin: 1rem;
+    background-color: white;
+    border-radius: 25px;
+    min-height: 96svh;
+    text-align: center;
+}
+h1{
+    padding-top: 1rem;
+}
+.minigames-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    padding: 2rem;
+}
+
+.minigame {
+    background-color: rgba(202, 212, 255, 0.2);
+    border: 0.125rem solid rgba(56, 92, 255, 0.25);
+    border-radius: 25px;
+    min-height: 20svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}

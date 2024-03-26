@@ -9,7 +9,7 @@
 </head>
 <body>
     <audio id="win_sound">
-        <source src="prizeWon.mp3" type="audio/mpeg">
+        <source src="./sounds/prizeWon.mp3" type="audio/mpeg">
     </audio>
 
     <div class="categories">
@@ -75,6 +75,7 @@
         </div>
     </div>
 
+    <script src="./js/include-confetti.js"></script>
     <script src="./js/wheel.js"></script>
     <script src="./js/navigation.js"></script>
 </body>

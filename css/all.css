@@ -32,6 +32,7 @@ body, html {
 
 body {
     /* height: 200vh; */
+    height: 100vh;
     background-color: rgb(230,230,230);
 }
 

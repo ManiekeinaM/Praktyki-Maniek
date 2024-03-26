@@ -1,5 +1,8 @@
+const winnerBox = document.getElementById("winPopup");
+const winnerText = document.getElementById("popupText");
 let gameBoard = document.getElementById("game-board");
 current_player = 1;
+let MovesCount = 0;
 
 let board = [[],[],[]];
 cleanBoard();
@@ -56,6 +59,13 @@ function setSquare(x, y, number) {
             showWinner(winner);
         }, 10);
     }
+    MovesCount++;
+    if(MovesCount==9) {
+        setTimeout(e => {
+            showWinner(0);
+        }, 10);
+    }
+    console.log(MovesCount);
 }
 
 function checkWin() {
@@ -121,8 +131,10 @@ function botMove(board) {
 }
 
 function showWinner(winner) {
-    const winnerBox = document.getElementById("winPopup");
-    const winnerText = document.getElementById("popupText")
-    winnerText.innerHTML = `Gracz ${winner} wygrywa!`;
     winnerBox.style.display = "block";
+    if(winner == 0){
+        winnerText.innerHTML = "Remis";
+        return;
+    }
+    winnerText.innerHTML = `Gracz ${winner} wygrywa!`;
 }

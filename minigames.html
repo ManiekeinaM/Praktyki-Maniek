@@ -4,18 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maniek - Minigry</title>
+    <link rel="stylesheet" href="./css/all.css">
     <link rel="stylesheet" href="./css/TicTacToe.css">
 </head>
 <body>
-    <header>
-        <h1>Kółko i krzyżyk z mańkiem</h1>
-    </header>
     <main>
+        <h1>Kółko i krzyżyk</h1>
         <!--GAME BOARD-->
+        <div class="win-popup" id="winPopup">
+            <p id="popupText"></p>
+            <div>
+                <div class="popup-btns">
+                    <button><img src="./assets/retry.png"></button>
+                    <button><img src="./assets/cross.png"></button>
+                </div>
+            </div>
+        </div>
         <div class="game-container" id="game-board">
         </div>
     </main>
+    <!--Maniek-->
+    <div class="maniek-box">
+        <img src="./assets/PlaceholderFace.gif">
+    </div>
+
+    <!-- Navigation button container / zakładki -->
+    <div class="navigation-container">
+        <div class="button selected" data-tab="index.html">
+            <!-- Mapa -->
+            <img src="./assets/locationPin.png" alt="mapa">
+        </div> 
+
+        <div class="button" data-tab="info.html">
+            <!-- Info i historia szkoły -->
+            <img src="./assets/info.png" alt="info">
+        </div>
+
+        <div class="button" data-tab="minigames.html">
+            <!-- Minigierki -->
+            <img src="./assets/minigames.png" alt="minigry">
+        </div>
+
+        <div class="button" data-tab="wheel2.php">
+            <!-- Koło fortuny -->
+            <img src="./assets/wheel.png" alt="koło">
+            <img src="./assets/sparkle.png" alt="" class="decoration">
+        </div>
+    </div>
 
     <script src="./js/tictactoe.js"></script>
+    <script src="./js/navigation.js"></script>
 </body>
 </html>

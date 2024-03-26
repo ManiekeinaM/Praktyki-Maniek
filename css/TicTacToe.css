@@ -13,6 +13,7 @@ body {
     min-height: calc(100svh - 3rem);
     background-color: rgb(230,230,230);
     padding: 1.5rem;
+    height: auto;
 }
 main {
     width: 50%;
@@ -20,10 +21,16 @@ main {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    border-radius: 0px;
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
     background-color: #CAB282;
     border: 1rem solid #817453;
+
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+
 }
 .maniek-box {
     width: 50%;

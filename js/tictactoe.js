@@ -38,8 +38,8 @@ for(let i=0; i<3; i++) {
 }
 
 let icons = {
-    1: './assets/cross.png',
-    2: './assets/circle.png',
+    1: './assets/krzyzyk.png',
+    2: './assets/kolko.png',
 }
 function setSquare(x, y, number) {
     let square = document.getElementById(`${x}_${y}`);

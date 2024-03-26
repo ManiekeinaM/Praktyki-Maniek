@@ -81,9 +81,14 @@ header {
 }
 
 h1 {
-    position: fixed;
-    top: 3rem;
     font-size: 2rem;
+    background-color: white;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    border: 1rem solid #b99a5a;
+    margin: 0px;
+    margin-bottom: -1rem;
+    padding: 1rem;
 }
 
 .win-popup {

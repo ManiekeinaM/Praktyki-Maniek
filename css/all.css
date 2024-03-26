@@ -258,6 +258,8 @@ body {
     margin: 2rem;
     height: calc(100vh - 4rem);
 
+    background-image: url('../assets/kratka.png');
+
     z-index: 1;
     overflow: hidden;
 }
@@ -596,26 +598,6 @@ div.reset {
 
 .scale button:hover {
     transform: scale(1.1);
-}
-
-/* Info */
-.info-container {
-    background-color: #EBEEFF;
-    min-width: 10rem;
-    max-width: 50%;
-    max-height: calc(100vh - 10rem);
-
-    padding: 2rem;
-    margin: 2rem;
-
-    border-radius: 2rem;
-
-    text-align: center;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 /* Developer */

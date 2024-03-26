@@ -10,12 +10,12 @@ php_amounts.pop();
 var wheels = {
     1: {
         prizes: [
-            { name: "🗝️🎖️", desc: "Brelok/Przypinka", weight: 200, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "📅🤐", desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
-            // { name: "🎫🏖️", desc: "Voucher: Wycieczka integracyjna gratis", weight: 0, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
-            // { name: "🎫💻", desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 0, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🛒", desc: "Voucher: Sklepik 5zł", weight: 10, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎟️🛒", desc: "Voucher: Sklepik 10zł", weight: 5, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", id: 1, desc: "Brelok/Przypinka", weight: 200, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            // { name: "🎫🏖️", id: 3, desc: "Voucher: Wycieczka integracyjna gratis", weight: 0, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
+            // { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 0, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 5, visualWeight: 1, amount: php_amounts[4], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 10, visualWeight: 1, amount: php_amounts[5], color: '#CAB282', darkcolor: '#b99a5a' },
         ],
 
         totalWeights: 0, totalVisualWeights: 0,
@@ -24,12 +24,12 @@ var wheels = {
     },
     2: {
         prizes: [
-            { name: "🗝️🎖️", desc: "Brelok/Przypinka", weight: 100, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "📅🤐", desc: "Voucher: Dzień bez pytania", weight: 100, visualWeight: 2, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🏖️", desc: "Voucher: Wycieczka integracyjna gratis", weight: 10, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫💻", desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 20, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🛒", desc: "Voucher: Sklepik 5zł", weight: 40, visualWeight: 2, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎟️🛒", desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", id: 1, desc: "Brelok/Przypinka", weight: 100, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 100, visualWeight: 2, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🏖️", id: 3, desc: "Voucher: Wycieczka integracyjna gratis", weight: 10, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 20, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: php_amounts[4], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 40, visualWeight: 2, amount: php_amounts[5], color: '#CAB282', darkcolor: '#b99a5a' },
         ],
         totalWeights: 0, totalVisualWeights: 0,
         // totalPrizes: 0,
@@ -272,7 +272,7 @@ function randomByWeight(wheelId, actualWheel) {
             values.amount--;
             //php amount decreasing
             // console.log(i);
-            let decreasedAmount = {id: i, amount:values.amount};
+            let decreasedAmount = {id: values.id, amount: values.amount};
 
             fetch('decreaseAmount.php', {
                 method: 'POST',

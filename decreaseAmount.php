@@ -16,7 +16,7 @@ $json = file_get_contents('php://input');
 $decreasedAmounts = json_decode($json, true);
 
 $item_id = $decreasedAmounts['id'];
-$item_id++;
+// $item_id++;
 $amount = $decreasedAmounts['amount'];
 
 // Prepare SQL statement for updating amounts

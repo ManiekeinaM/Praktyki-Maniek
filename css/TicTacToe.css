@@ -4,45 +4,43 @@
     font-family: 'Raleway',  sans-serif;
 }
 
-html, body {
-    margin: 0px;
-    padding: 0px;
-}
 body {
     display: flex;
-    min-height: calc(100svh - 3rem);
     background-color: rgb(230,230,230);
     padding: 1.5rem;
+    height: 95svh;
 }
-main {
+.games-side {
     width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    border-radius: 0px;
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
     background-color: #CAB282;
     border: 1rem solid #817453;
+    margin: 0;
 }
+
 .maniek-box {
     width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100%;
-    border: 1rem solid #112b95;
-    background-color: #1434B4;
-    color: green;
+    flex-direction: column;
+    border-radius: 0px;
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
+    background-color: #1434B4;
+    border: 1rem solid #112b95;
 }
+
 header {
     text-align: center;
 }
 .game-container {
-    width: 600px;
-    height: 600px;
     background-color: #817453;
 
     border-radius: calc(25px + 1rem);
@@ -50,6 +48,8 @@ header {
 
     gap: 1rem;
     display: grid;
+    height: 40rem;
+    width: 40rem;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
 }
@@ -81,9 +81,14 @@ header {
 }
 
 h1 {
-    position: fixed;
-    top: 0.5rem;
-    font-size: 4.5rem;
+    font-size: 2rem;
+    background-color: white;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    border: 1rem solid #b99a5a;
+    margin: 0px;
+    margin-bottom: -1rem;
+    padding: 1rem;
 }
 
 .win-popup {
@@ -91,11 +96,12 @@ h1 {
     display: none;
     border-radius: 25px;
     border: 0.5rem solid #112b95;
-    background-color: #1434B4;
+    background-color: #1434b4de;
     color: white;
     font-weight: bold;
     font-size: 3rem;
     padding: 2rem;
+    text-align: center;
 }
 
 .popup-btns {

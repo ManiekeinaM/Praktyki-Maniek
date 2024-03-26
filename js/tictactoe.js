@@ -2,13 +2,15 @@ let gameBoard = document.getElementById("game-board");
 current_player = 1;
 
 let board = [[],[],[]];
+cleanBoard();
 
-for(let i=0; i<3; i++) {
-    for(let j=0; j<3; j++) {
-        board[i][j] = 0;
+function cleanBoard() {
+    for(let i=0; i<3; i++) {
+        for(let j=0; j<3; j++) {
+            board[i][j] = 0;
+        }
     }
 }
-
 
 for(let i=0; i<3; i++) {
     for(let j=0; j<3; j++) {
@@ -51,7 +53,7 @@ function setSquare(x, y, number) {
     if (winner > 0) {
         // lekki delay
         setTimeout(e => {
-            alert(`Gracz ${winner} wygrał!`);
+            showWinner(winner);
         }, 10);
     }
 }
@@ -116,4 +118,11 @@ function botMove(board) {
     if (move) {
         setSquare(move.i, move.j, 2);
     }
+}
+
+function showWinner(winner) {
+    const winnerBox = document.getElementById("winPopup");
+    const winnerText = document.getElementById("popupText")
+    winnerText.innerHTML = `Gracz ${winner} wygrywa!`;
+    winnerBox.style.display = "block";
 }

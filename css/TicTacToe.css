@@ -10,7 +10,9 @@ html, body {
 }
 body {
     display: flex;
-    min-height: 100svh;
+    min-height: calc(100svh - 3rem);
+    background-color: rgb(230,230,230);
+    padding: 1.5rem;
 }
 main {
     width: 50%;
@@ -18,6 +20,10 @@ main {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    background-color: #CAB282;
+    border: 1rem solid #817453;
 }
 .maniek-box {
     width: 50%;
@@ -25,8 +31,11 @@ main {
     justify-content: center;
     align-items: center;
     min-height: 100%;
-    background-color: black;
+    border: 1rem solid #112b95;
+    background-color: #1434B4;
     color: green;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
 }
 header {
     text-align: center;
@@ -34,10 +43,12 @@ header {
 .game-container {
     width: 600px;
     height: 600px;
-    border: 1rem solid #817453;
     background-color: #817453;
 
-    gap: 1.5rem;
+    border-radius: calc(25px + 1rem);
+    border: 1rem solid #b99a5a;
+
+    gap: 1rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -47,40 +58,57 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: white;
+}
+
+.game-container div:nth-child(1) {
+    border-top-left-radius: 25px;
+}
+.game-container div:nth-child(3) {
+    border-top-right-radius: 25px;
+}
+.game-container div:nth-child(7) {
+    border-bottom-left-radius: 25px;
+}
+.game-container div:nth-child(9) {
+    border-bottom-right-radius: 25px;
 }
 
 .game-container div img {
     width: 75%;
     height: 75%;
-}
-
-.game-container div:nth-child(odd) {
-    background-color: #CAB282;
-    border: 1rem solid #b99a5a;
-}
-
-.game-container div:nth-child(even) {
-    background-color: #1434B4;
-    border: 1rem solid #112b95;
-}
-.back-btn{
-    position: fixed;
-    left: 2rem;
-    top: 2rem;
-    font-weight: bold;
-
-    border: 0.125rem solid rgba(56, 92, 255, 0.25);
-    background-color:rgba(202, 212, 255, 0.2);
-    padding: 2rem;
-    border-radius: 1rem;
-}
-
-a {
-    text-decoration: none;
-    color: black;
+    user-select: none;
 }
 
 h1 {
     position: fixed;
-    top: 1rem;
+    top: 0.5rem;
+    font-size: 4.5rem;
+}
+
+.win-popup {
+    position: fixed;
+    display: none;
+    border-radius: 25px;
+    border: 0.5rem solid #112b95;
+    background-color: #1434B4;
+    color: white;
+    font-weight: bold;
+    font-size: 3rem;
+    padding: 2rem;
+}
+
+.popup-btns {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.popup-btns button {
+    border-radius: 25px;
+    border: 0.5rem solid grey;
+    background-color: white;
+}
+
+.popup-btns img {
+    width: 3rem;
 }

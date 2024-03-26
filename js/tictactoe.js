@@ -47,15 +47,12 @@ function setSquare(x, y, number) {
     let winner = checkWin();
     if (winner > 0) {
         // lekki delay
-        setTimeout(e => {
-            showWinner(winner);
-        }, 10);
+        return showWinner(winner);
     }
+
     MovesCount++;
     if(MovesCount==9) {
-        setTimeout(e => {
-            showWinner(0);
-        }, 10);
+        showWinner(0);
     }
 }
 

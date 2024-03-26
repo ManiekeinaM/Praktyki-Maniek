@@ -4,16 +4,7 @@ let gameBoard = document.getElementById("game-board");
 current_player = 1;
 let MovesCount = 0;
 
-let board = [[],[],[]];
-cleanBoard();
-
-function cleanBoard() {
-    for(let i=0; i<3; i++) {
-        for(let j=0; j<3; j++) {
-            board[i][j] = 0;
-        }
-    }
-}
+let board = [[0,0,0],[0,0,0],[0,0,0]];
 
 for(let i=0; i<3; i++) {
     for(let j=0; j<3; j++) {
@@ -45,6 +36,7 @@ let icons = {
     2: './assets/kolko.png',
 }
 function setSquare(x, y, number) {
+    if(winnerBox.style.display == "block") return;
     let square = document.getElementById(`${x}_${y}`);
 
     let img = square.querySelector("img");
@@ -65,7 +57,6 @@ function setSquare(x, y, number) {
             showWinner(0);
         }, 10);
     }
-    console.log(MovesCount);
 }
 
 function checkWin() {
@@ -131,6 +122,7 @@ function botMove(board) {
 }
 
 function showWinner(winner) {
+    MovesCount = 0;
     winnerBox.style.display = "block";
     if(winner == 0){
         winnerText.innerHTML = "Remis";
@@ -138,3 +130,15 @@ function showWinner(winner) {
     }
     winnerText.innerHTML = `Gracz ${winner} wygrywa!`;
 }
+
+document.getElementById("resetBtn").addEventListener("click", e => {
+    let imgs = document.querySelectorAll(".game-container div img");
+    for(let i=0; i<3; i++) {
+        for(let j=0; j<3; j++) {
+            imgs[i*3+j].src = "./assets/empty.png";
+            board[i][j] = 0;
+        }
+    }    
+    winnerBox.style.display = "none";
+}
+)

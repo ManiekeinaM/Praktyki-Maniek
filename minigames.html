@@ -9,23 +9,44 @@
 </head>
 <body>
     <div class="games-side">
-        <h1>Kółko i krzyżyk</h1>
-        <!--GAME BOARD-->
+        <h1>
+            <span class="blue">Fraktał</span> i <span class="brown">Tarcza</span>
+        </h1>
+
+        <!-- Win popup -->
         <div class="win-popup" id="winPopup">
             <p id="popupText"></p>
-            <div>
-                <div class="popup-btns">
-                    <button id="resetBtn"><img src="./assets/retry.png"></button>
-                </div>
+
+            <div class="popup-btns">
+                <button id="resetBtn"><img src="./assets/retry.png"></button>
             </div>
         </div>
-        <div class="game-container" id="game-board">
+
+        <!-- Main tic tac toe board -->
+        <div class="game-container" id="game-board"></div>
+
+        <!-- Icons at the bottom/top -->
+        <div class="legend">
+            <div class="player">
+                <img src="./assets/krzyzyk.png" alt="X">
+                <span class="blue">Gracz</span>
+            </div>
+            <div class="opponent">
+                <img src="./assets/kolko.png" alt="O">
+                <span class="brown">Maniek</span>
+            </div>
         </div>
     </div>
+
     <!--Maniek-->
     <div class="maniek-box">
         <img src="./assets/Maniek Faces/tiktactoe/thinking.gif">
     </div>
+
+
+
+
+
 
     <!-- Navigation button container / zakładki -->
     <div class="navigation-container">

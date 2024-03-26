@@ -459,9 +459,18 @@ function drawPath(floorName, startDot = 'Wdot0', destinationDot, shouldntClear =
         }
     }
 
-
+    // update currentPath path
     currentPath.innerHTML = `> ${floor} <
     <br>${imgPaths[floorName].dots[destinationDot].desc}`;
+
+    // update currentPath color as a cool lil transition
+    currentPath.style.color = 'purple';
+    currentPath.style.transform = 'translate(-50%, 0%) scale(1.1)';
+    setTimeout(() => {
+        currentPath.style.color = '';
+        currentPath.style.transform = '';
+    }, 250);
+    
 
     if (!shouldntClear) {
         clearAllCanvas();

@@ -190,6 +190,8 @@ body {
     color: rgb(81, 91, 138);
 
     user-select: none;
+
+    transition: color 0.25s, transform 0.25s;
 }
 
 .room-selection .floor .mainText {

@@ -58,7 +58,7 @@
 
     <!-- Navigation button container / zakładki -->
     <div class="navigation-container">
-        <div class="button selected" data-tab="index.html">
+        <div class="button" data-tab="index.html">
             <!-- Mapa -->
             <img src="./assets/locationPin.png" alt="mapa">
         </div> 
@@ -73,7 +73,7 @@
             <img src="./assets/minigames.png" alt="minigry">
         </div>
 
-        <div class="button" data-tab="wheel2.php">
+        <div class="button selected" data-tab="wheel2.php">
             <!-- Koło fortuny -->
             <img src="./assets/wheel.png" alt="koło">
             <img src="./assets/sparkle.png" alt="" class="decoration">

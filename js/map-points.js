@@ -182,15 +182,15 @@ const imgPaths = {
 }
 
 const mapIcons = {
-    'pielegniarka': './assets/map/icons/pielegniarka.png',
-    'stairsUp': './assets/map/icons/stairs-up.png',
-    'stairsDown': './assets/map/icons/stairs-down.png',
-    'machine': './assets/map/icons/Maniek.png',
-    'disco': './assets/map/icons/disco.png',
-    'musicNote': './assets/map/icons/musicNote.png',
-    'toilet': './assets/map/icons/toilet.png',
-    'arrowDown': './assets/map/icons/arrowDown.png',
-    'arrowUp': './assets/map/icons/arrowUp.png'
+    'pielegniarka': 'assets/map/icons/pielegniarka.png',
+    'stairsUp': 'assets/map/icons/stairs-up.png',
+    'stairsDown': 'assets/map/icons/stairs-down.png',
+    'machine': 'assets/map/icons/Maniek.png',
+    'disco': 'assets/map/icons/disco.png',
+    'musicNote': 'assets/map/icons/musicNote.png',
+    'toilet': 'assets/map/icons/toilet.png',
+    'arrowDown': 'assets/map/icons/arrowDown.png',
+    'arrowUp': 'assets/map/icons/arrowUp.png'
 }
 
 function percentToPx(percentages, relativeElement) {

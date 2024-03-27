@@ -6,6 +6,18 @@ const scoreTexts = {
     2: document.querySelector('.score.maniek .wins'),
 }
 
+const maniekFaces = {
+    'default': './assets/maniek-faces/thinking.gif',
+    'loss': './assets/maniek-faces/sad.gif',
+    'win': './assets/maniek-faces/happy.gif',
+}
+
+const maniek = document.querySelector('img.maniek');
+function setManiekMood(face) {
+    let maniekFace = maniekFaces[face] || maniekFaces.default;
+    maniek.src = maniekFace;
+}
+
 let PLAYER_COOKIE_NAME = 'tic_winsPlayer';
 let MANIEK_COOKIE_NAME = 'tic_winsManiek'
 
@@ -188,6 +200,12 @@ function showWinner(winner) {
     winnerBox.style.display = "block";
     winnerText.innerHTML = winnerTexts[winner];
 
+    // Set maniek face
+    if (winner == 1)
+        setManiekMood("loss");
+    if (winner == 2)
+        setManiekMood("win");
+
     // Increment winner's score
     if (winner == 0) { // remis
         // incrementScore(1);
@@ -206,6 +224,8 @@ document.getElementById("resetBtn").addEventListener("click", e => {
     round += 1;
     MovesCount = 0;
     current_player = 1;
+
+    setManiekMood("default");
 
     let imgs = document.querySelectorAll(".game-container div img");
     for (let i = 0; i < 3; i++) {

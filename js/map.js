@@ -191,9 +191,7 @@ document.addEventListener("touchstart", e => {
 });
 
 document.addEventListener("touchend", e => {
-    if (e.touches.length === 1) {
-        mouseUp();
-    }
+    mouseUp();
 });
 
 document.addEventListener("touchmove", e => {

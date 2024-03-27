@@ -63,7 +63,8 @@ body {
     gap: 10px;
 
     /* border: 0.125rem solid rgba(56, 92, 255, 0.25); */
-    background-color:rgba(202, 212, 255, 0.2);
+    /* background-color:rgba(202, 212, 255, 0.2); */
+    background-color: rgba(213, 227, 255, 0.4);
     border-radius: 1rem;
 
     margin: 1rem;
@@ -128,6 +129,8 @@ body {
     text-align: center;
 
     overflow-y: auto;
+
+    user-select: none;
 }
 
 .room-selection-button {
@@ -182,8 +185,8 @@ body {
     text-align: center;
 
     /* background-color: rgba(202, 212, 255, 0.2); */
-    background-color: #F4F6FF;
-    border: 0.2rem solid rgba(202, 212, 255, 0.2);
+    background-color: #ebefff;
+    border: 0.2rem solid rgba(141, 162, 255, 0.2);
     border-radius: 1rem;
     padding: 0.5rem;
     /* text-shadow: 1px 1px 10px #8acaff; */

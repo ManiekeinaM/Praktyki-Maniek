@@ -653,6 +653,7 @@ document.addEventListener("keydown", e => {
     if (e.key == "F2") {
         devMode = !devMode;
         devCoords.innerHTML = fullString;
+        if (!devMode) devCoords.innerHTML = ``;
     }
     if (!devMode) return;
 

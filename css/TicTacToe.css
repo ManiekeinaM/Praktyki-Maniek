@@ -51,9 +51,9 @@ header {
     border-radius: calc(25px + 1rem);
     border: 1rem solid #b99a5a;
 
-    width: 40rem;
+    width: 30rem;
     aspect-ratio: 1/1;
-    max-width: 100%;
+    max-width: calc(100% - 2rem);
     max-height: auto;
 
     display: grid;
@@ -149,7 +149,7 @@ span {
 
     margin-top: 1rem;
 
-    width: 40rem;
+    width: 30rem;
     max-width: 100%;
     height: 3rem;
 }

@@ -146,19 +146,63 @@ function mouseMove(e, isMobile) {
     updateMap();
 }
 
+function wheel(e) {
+    if (!map_container.contains(e.target)) return;
+
+    e.preventDefault();
+    const delta = Math.sign(e.deltaY);
+    if (delta > 0) {
+        setScale(scale - 0.1);
+    } else {
+        setScale(scale + 0.1);
+    }
+    updateMap();
+}
+
+
+
+
+
 // PC
 document.addEventListener("mousedown", mouseDown);
 document.addEventListener("mouseup", mouseUp);
 document.addEventListener("mousemove", mouseMove);
+document.addEventListener("wheel", wheel);
+
+
 
 // Mobile
 document.addEventListener("touchstart", e => {
-    mouseDown(e, true);
+    if (e.touches.length === 2) {
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        const distance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+        initialDistance = distance;
+        initialScale = scale;
+    } else {
+        mouseDown(e, true);
+    }
 });
-document.addEventListener("touchend", mouseUp);
+
+document.addEventListener("touchend", e => {
+    if (e.touches.length === 1) {
+        mouseUp();
+    }
+});
+
 document.addEventListener("touchmove", e => {
-    e.preventDefault();
-    mouseMove(e, true);
+    if (e.touches.length === 2) {
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        const distance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+        const scaleChange = (distance - initialDistance) / 100;
+        const newScale = initialScale + scaleChange;
+        setScale(newScale);
+        updateMap();
+    } else {
+        e.preventDefault();
+        mouseMove(e, true);
+    }
 });
 
 

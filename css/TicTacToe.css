@@ -1,7 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-
 * {
-    font-family: 'Raleway',  sans-serif;
+    font-family:'Courier New', Courier, monospace;
+}
+
+:root {
+    --blue: #1434B4;
+    --darkblue: #112b95;
+
+    --brown: #CAB282;
+    --darkbrown: #817453;
 }
 
 body {
@@ -19,8 +25,8 @@ body {
     border-radius: 0px;
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
-    background-color: #CAB282;
-    border: 1rem solid #817453;
+    background-color: var(--brown);
+    border: 1rem solid var(--darkbrown);
     margin: 0;
 }
 
@@ -33,8 +39,8 @@ body {
     border-radius: 0px;
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
-    background-color: #1434B4;
-    border: 1rem solid #112b95;
+    background-color: var(--blue);
+    border: 1rem solid var(--darkblue);
 }
 
 .maniek-box img {
@@ -42,11 +48,16 @@ body {
     height: auto;
 }
 
+.games-side, .maniek-box {
+    position: relative;
+    animation: popIn 0.25s;
+}
+
 header {
     text-align: center;
 }
 .game-container {
-    background-color: #817453;
+    background-color: var(--darkbrown);
 
     border-radius: calc(25px + 1rem);
     border: 1rem solid #b99a5a;
@@ -99,6 +110,9 @@ h1 {
     margin: 0px;
     margin-bottom: -1rem;
     padding: 1rem;
+
+    text-align: center;
+    white-space: nowrap;
 }
 
 .win-popup {
@@ -112,6 +126,8 @@ h1 {
     font-size: 3rem;
     padding: 2rem;
     text-align: center;
+
+    z-index: 100;
 }
 
 .popup-btns {
@@ -177,4 +193,43 @@ span {
 .legend div span {
     font-size: 1.5rem;
     font-weight: bolder;
+}
+
+.games-side .score {
+    background-color: var(--blue);
+    border: 0.25rem solid var(--darkblue);
+}
+
+.score {
+    position: relative;
+
+    background-color: var(--brown);
+    border: 0.25rem solid var(--darkbrown);
+    padding: 0.75rem;
+    border-radius: 10rem;
+
+    color: ghostwhite;
+    font-weight: bolder;
+    
+    position: absolute;
+    top: 1.5rem;
+
+    font-size: 1.5rem;
+}
+
+.score img {
+    position: absolute;
+    height: 100%;
+    width: auto;
+
+    top: 0;
+}
+
+.score img:nth-child(1) {
+    left: 0;
+    transform: translateX(-125%);
+}
+.score img:nth-child(3) {
+    right: 0;
+    transform: translateX(125%);
 }

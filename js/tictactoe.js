@@ -1,6 +1,18 @@
 const winnerBox = document.getElementById("winPopup");
 const winnerText = document.getElementById("popupText");
 
+const scoreTexts = {
+    1: document.querySelector('.score.player .wins'),
+    2: document.querySelector('.score.maniek .wins'),
+}
+
+// Set the scores here - 
+let scores = {
+    1: 0,
+    2: 0,
+}
+
+
 let gameBoard = document.getElementById("game-board");
 
 let current_player = 1;
@@ -139,14 +151,33 @@ function botMove(board) {
     }
 }
 
+
+function incrementScore(player) {
+    scores[player] += 1;
+    scoreTexts[player].innerText = `${scores[player]} wygranych`;
+}
+
 let winnerTexts = {
     0: "Remis",
     1: "Gracz wygrał!",
     2: "Maniek wygrał!"
 }
 function showWinner(winner) {
+    // Show winner text
     winnerBox.style.display = "block";
     winnerText.innerHTML = winnerTexts[winner];
+
+    // Increment winner's score
+    if (winner == 0) { // remis
+        // incrementScore(1);
+        // incrementScore(2);
+        return;
+    }
+
+    incrementScore(winner);
+    
+
+
     // winnerText.innerHTML = `Gracz ${winner} wygrywa!`;
 }
 

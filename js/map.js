@@ -146,19 +146,68 @@ function mouseMove(e, isMobile) {
     updateMap();
 }
 
+function wheel(e) {
+    if (!map_container.contains(e.target)) return;
+
+    e.preventDefault();
+    const delta = Math.sign(e.deltaY);
+    if (delta > 0) {
+        setScale(scale - 0.1);
+    } else {
+        setScale(scale + 0.1);
+    }
+    updateMap();
+}
+
+
+
+
+
 // PC
 document.addEventListener("mousedown", mouseDown);
 document.addEventListener("mouseup", mouseUp);
 document.addEventListener("mousemove", mouseMove);
+document.addEventListener("wheel", wheel);
+
+
 
 // Mobile
+
+let initialDistance, initialScale;
+
 document.addEventListener("touchstart", e => {
-    mouseDown(e, true);
+    if (!map_container.contains(e.target)) return;
+
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        const distance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+        initialDistance = distance;
+        initialScale = scale;
+    } else {
+        mouseDown(e, true);
+    }
 });
-document.addEventListener("touchend", mouseUp);
+
+document.addEventListener("touchend", e => {
+    mouseUp();
+});
+
 document.addEventListener("touchmove", e => {
-    e.preventDefault();
-    mouseMove(e, true);
+    if (e.touches.length === 2 && map_container.contains(e.target)) {
+        e.preventDefault();
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        const distance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+        const scaleChange = (distance - initialDistance) / 100;
+        const newScale = initialScale + scaleChange;
+        setScale(newScale);
+        updateMap();
+    } else {
+        e.preventDefault();
+        mouseMove(e, true);
+    }
 });
 
 

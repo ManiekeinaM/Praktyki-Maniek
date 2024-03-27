@@ -1,15 +1,18 @@
 const winnerBox = document.getElementById("winPopup");
 const winnerText = document.getElementById("popupText");
+
 let gameBoard = document.getElementById("game-board");
-current_player = 1;
+
+let current_player = 1;
 let MovesCount = 0;
+let round = 1;
 
-let board = [[0,0,0],[0,0,0],[0,0,0]];
+let board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 
-for(let i=0; i<3; i++) {
-    for(let j=0; j<3; j++) {
+for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
         let area = document.createElement("div");
-        area.id = i+'_'+j;
+        area.id = i + '_' + j;
 
         let img = document.createElement("img");
         img.src = './assets/empty.png';
@@ -17,13 +20,18 @@ for(let i=0; i<3; i++) {
         // Click on a button!
         area.addEventListener("click", e => {
             if (board[i][j] != 0) return;
+            if (current_player == 2) return;
+            let rememberedRound = round;
 
             setSquare(i, j, current_player);
+            switchPlayer();
 
-            botMove(board);
-            // Switch player
-            // if (current_player == 1) current_player = 2;
-            // else current_player = 1;
+            setTimeout(() => {
+                if (rememberedRound != round) return;
+
+                botMove(board);
+                switchPlayer();
+            }, Math.random() * 500 + 500);
         })
 
         gameBoard.append(area);
@@ -31,51 +39,61 @@ for(let i=0; i<3; i++) {
     }
 }
 
+function switchPlayer() {
+    if (current_player == 1) current_player = 2;
+    else current_player = 1;
+
+    return current_player;
+}
+
+
 let icons = {
     1: './assets/krzyzyk.png',
     2: './assets/kolko.png',
 }
 function setSquare(x, y, number) {
-    if(winnerBox.style.display == "block") return;
+    if (winnerBox.style.display == "block") return;
     let square = document.getElementById(`${x}_${y}`);
 
     let img = square.querySelector("img");
     img.src = icons[number];
 
+    // animacja
+    img.style.transform = `scale(1.1)`;
+    setTimeout(() => {
+        img.style.transform = ``;
+    }, 100);
+
     board[x][y] = number;
 
     let winner = checkWin();
-    if (winner > 0) {
-        // lekki delay
-        setTimeout(e => {
-            showWinner(winner);
-        }, 10);
-    }
+    if (winner > 0)
+        return showWinner(winner);
+
+
     MovesCount++;
-    if(MovesCount==9) {
-        setTimeout(e => {
-            showWinner(0);
-        }, 10);
+    if (MovesCount >= 9) {
+        showWinner(0);
     }
 }
 
 function checkWin() {
     // Rows and columns
-    for(let i=0; i<3; i++) {
+    for (let i = 0; i < 3; i++) {
         // horizontal
-        if(board[0][i] == board[1][i] && board[0][i] == board[2][i]) {
+        if (board[0][i] == board[1][i] && board[0][i] == board[2][i]) {
             return board[0][i];
         }
 
         // vertical
-        if(board[i][0] == board[i][1] && board[i][0] == board[i][2]) {
+        if (board[i][0] == board[i][1] && board[i][0] == board[i][2]) {
             return board[i][0];
         }
     }
 
     // Diagonals
-    if(board[0][0] == board[1][1] && board[1][1] == board[2][2]) return board[0][0];
-    if(board[0][2] == board[1][1] && board[0][2] == board[2][0]) return board[0][2];
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) return board[0][0];
+    if (board[0][2] == board[1][1] && board[0][2] == board[2][0]) return board[0][2];
 
     // No one won yet
     return 0;
@@ -90,7 +108,7 @@ function findWinningMove(pseudoBoard, player) {
                 pseudoBoard[i][j] = player;
                 if (checkWin(pseudoBoard) == player) {
                     pseudoBoard[i][j] = 0;
-                    return {i, j};
+                    return { i, j };
                 }
                 pseudoBoard[i][j] = 0;
             }
@@ -104,7 +122,7 @@ function findRandomMove(board) {
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             if (board[i][j] === 0) {
-                availableMoves.push({i, j});
+                availableMoves.push({ i, j });
             }
         }
     }
@@ -121,24 +139,29 @@ function botMove(board) {
     }
 }
 
+let winnerTexts = {
+    0: "Remis",
+    1: "Gracz wygrał!",
+    2: "Maniek wygrał!"
+}
 function showWinner(winner) {
-    MovesCount = 0;
     winnerBox.style.display = "block";
-    if(winner == 0){
-        winnerText.innerHTML = "Remis";
-        return;
-    }
-    winnerText.innerHTML = `Gracz ${winner} wygrywa!`;
+    winnerText.innerHTML = winnerTexts[winner];
+    // winnerText.innerHTML = `Gracz ${winner} wygrywa!`;
 }
 
 document.getElementById("resetBtn").addEventListener("click", e => {
+    round += 1;
+    MovesCount = 0;
+    current_player = 1;
+
     let imgs = document.querySelectorAll(".game-container div img");
-    for(let i=0; i<3; i++) {
-        for(let j=0; j<3; j++) {
-            imgs[i*3+j].src = "./assets/empty.png";
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            imgs[i * 3 + j].src = "./assets/empty.png";
             board[i][j] = 0;
         }
-    }    
+    }
     winnerBox.style.display = "none";
 }
 )

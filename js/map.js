@@ -172,8 +172,14 @@ document.addEventListener("wheel", wheel);
 
 
 // Mobile
+
+let initialDistance, initialScale;
+
 document.addEventListener("touchstart", e => {
+    if (!map_container.contains(e.target)) return;
+
     if (e.touches.length === 2) {
+        e.preventDefault();
         const touch1 = e.touches[0];
         const touch2 = e.touches[1];
         const distance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
@@ -191,7 +197,8 @@ document.addEventListener("touchend", e => {
 });
 
 document.addEventListener("touchmove", e => {
-    if (e.touches.length === 2) {
+    if (e.touches.length === 2 && map_container.contains(e.target)) {
+        e.preventDefault();
         const touch1 = e.touches[0];
         const touch2 = e.touches[1];
         const distance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);

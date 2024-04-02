@@ -176,7 +176,7 @@ document.addEventListener("wheel", wheel);
 let initialDistance, initialScale;
 
 document.addEventListener("touchstart", e => {
-    if (!map_container.contains(e.target)) return;
+    if (!map_container.contains(e.target) || roomSelection.contains(e.target)) return;
 
     if (e.touches.length === 2) {
         e.preventDefault();

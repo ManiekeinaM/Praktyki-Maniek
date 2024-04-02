@@ -104,7 +104,7 @@ function updateMap(x, y) {
 }
 
 function mouseDown(e, isMobile) {
-    if (map_container.contains(e.target)) {
+    if (map_container.contains(e.target) && !roomSelection.contains(e.target)) {
         isDragging = true;
         document.body.style.cursor = 'grabbing';
         map_container.style.cursor = 'grabbing';

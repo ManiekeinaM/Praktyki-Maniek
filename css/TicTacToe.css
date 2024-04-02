@@ -11,52 +11,77 @@
 }
 
 body {
-    display: flex;
     background-color: rgb(230,230,230);
-    padding: 1.5rem;
-    height: 95svh;
 }
-.games-side {
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.games-side, .maniek-box {
     width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     border-radius: 0px;
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
+    margin: 0;
+    height: calc(100% - 2rem);
+
+    position: relative;
+    animation: popIn 0.25s;
+}
+
+.games-side {
     background-color: var(--brown);
     border: 1rem solid var(--darkbrown);
-    margin: 0;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
 }
 
 .maniek-box {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 0px;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
     background-color: var(--blue);
     border: 1rem solid var(--darkblue);
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
 }
+
+@media (max-width: 500px) {
+    main {
+        flex-direction: column;
+    }
+
+    .games-side, .maniek-box {
+        width: calc(100% - 2rem);
+        border-radius: 0px;
+        height: 50%;
+    }
+
+    .games-side {
+        border-top-right-radius: 25px;
+        border-top-left-radius: 25px;
+    }
+
+    .maniek-box {
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+}
+
+
 
 .maniek-box img {
     max-width: 100%;
     height: auto;
 }
 
-.games-side, .maniek-box {
-    position: relative;
-    animation: popIn 0.25s;
-}
-
 header {
     text-align: center;
 }
 .game-container {
+    position: relative;
     background-color: var(--darkbrown);
 
     border-radius: calc(25px + 1rem);
@@ -80,16 +105,16 @@ header {
     background-color: white;
 }
 
-.game-container div:nth-child(1) {
+.game-container div:nth-child(2) {
     border-top-left-radius: 25px;
 }
-.game-container div:nth-child(3) {
+.game-container div:nth-child(4) {
     border-top-right-radius: 25px;
 }
-.game-container div:nth-child(7) {
+.game-container div:nth-child(8) {
     border-bottom-left-radius: 25px;
 }
-.game-container div:nth-child(9) {
+.game-container div:nth-child(10) {
     border-bottom-right-radius: 25px;
 }
 
@@ -101,14 +126,23 @@ header {
     transition: transform 0.1s;
 }
 
-h1 {
+h1.game-name {
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+
+    width: 55%;
+
     font-size: 2rem;
+
+    /* font-size: 2rem; */
     background-color: white;
     border-top-left-radius: 2rem;
     border-top-right-radius: 2rem;
     border: 1rem solid #b99a5a;
     margin: 0px;
-    margin-bottom: -1rem;
     padding: 1rem;
 
     text-align: center;

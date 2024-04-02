@@ -10,52 +10,58 @@
     <script src="./js/cookies.js"></script>
 </head>
 <body>
-    <div class="games-side">
-        <h1>
-            <span class="blue">Logo</span> i <span class="brown">Tarcza</span>
-        </h1>
 
-        <!-- Win popup -->
-        <div class="win-popup" id="winPopup">
-            <p id="popupText"></p>
-
-            <div class="popup-btns">
-                <button id="resetBtn"><img src="./assets/retry.png"></button>
+    <main>
+        <div class="games-side">
+        
+    
+            <!-- Win popup -->
+            <div class="win-popup" id="winPopup">
+                <p id="popupText"></p>
+    
+                <div class="popup-btns">
+                    <button id="resetBtn"><img src="./assets/retry.png"></button>
+                </div>
+            </div>
+    
+            <!-- Main tic tac toe board -->
+            <div class="game-container" id="game-board">
+                <h1 class="game-name">
+                    <span class="blue">Logo</span> i <span class="brown">Tarcza</span>
+                </h1>
+            </div>
+    
+            <!-- Icons at the bottom/top -->
+            <div class="legend">
+                <div class="player">
+                    <img src="./assets/krzyzyk.png" alt="X">
+                    <span class="blue">Gracz</span>
+                </div>
+                <div class="opponent">
+                    <img src="./assets/kolko.png" alt="O">
+                    <span class="brown">Maniek</span>
+                </div>
+            </div>
+    
+            <div class="score player">
+                <img src="./assets/krzyzyk.png">
+                <span class="wins">0 wygranych</span>
+                <img src="./assets/krzyzyk.png">
             </div>
         </div>
-
-        <!-- Main tic tac toe board -->
-        <div class="game-container" id="game-board"></div>
-
-        <!-- Icons at the bottom/top -->
-        <div class="legend">
-            <div class="player">
-                <img src="./assets/krzyzyk.png" alt="X">
-                <span class="blue">Gracz</span>
-            </div>
-            <div class="opponent">
-                <img src="./assets/kolko.png" alt="O">
-                <span class="brown">Maniek</span>
+    
+        <!--Maniek-->
+        <div class="maniek-box">
+            <img class="maniek" src="./assets/maniek-faces/thinking.gif">
+    
+            <div class="score maniek">
+                <img src="./assets/kolko.png">
+                <span class="wins">0 wygranych</span>
+                <img src="./assets/kolko.png">
             </div>
         </div>
-
-        <div class="score player">
-            <img src="./assets/krzyzyk.png">
-            <span class="wins">0 wygranych</span>
-            <img src="./assets/krzyzyk.png">
-        </div>
-    </div>
-
-    <!--Maniek-->
-    <div class="maniek-box">
-        <img class="maniek" src="./assets/maniek-faces/thinking.gif">
-
-        <div class="score maniek">
-            <img src="./assets/kolko.png">
-            <span class="wins">0 wygranych</span>
-            <img src="./assets/kolko.png">
-        </div>
-    </div>
+    </main>
+    
 
 
 

@@ -36,6 +36,64 @@ body {
     background-color: rgb(230,230,230);
 }
 
+.enter-fullscreen {
+    position: fixed;
+    display: none;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+    z-index: 500;
+}
+
+.enter-fullscreen .background {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    background-color: rgba(0,0,0,0.5);
+
+    z-index: 500;
+}
+
+.enter-fullscreen  button {
+    /* display: none; */
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    font-size: 2rem;
+    font-weight: bolder;
+
+    background-color: #EBEEFF;
+    border: 0.5rem solid #474d72;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    border-radius: 5rem;
+
+    width: 100%;
+    text-align: center;
+
+    text-wrap: nowrap;
+
+    z-index: 501;
+}
+
+.enter-fullscreen  button .big {
+    font-size: 3rem;
+    font-weight: 900;
+}
+.enter-fullscreen  button .blue {
+    color: rgb(56, 92, 255);
+}
+
 /* Fixed position div at the top left */
 
 @keyframes spin {
@@ -176,7 +234,7 @@ body {
 
 .currentPath {
     position: absolute;
-    top: 2rem;
+    top: 0rem;
     left: 50%;
     transform: translate(-50%, 0%);
 
@@ -507,7 +565,7 @@ div.reset {
     justify-content: center;
     align-items: center;
 
-    z-index: 5;
+    z-index: 1000;
 }
 
 .navigation-container .selected {

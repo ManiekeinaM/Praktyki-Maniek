@@ -7,48 +7,57 @@
 
     <link rel="stylesheet" href="./css/all.css">
     <!-- <script src="./js/request-fullscreen.js"></script> -->
+
+    <style>
+        body { min-height:540px; }     
+        body[orient="portrait"] { min-height:540px; }
+        body[orient="landscape"] { min-height:400px; }
+    </style>
 </head>
 <body>
     <!-- Fixed logo [on every page] -->
-    <div class="logo-container">
-        <img class="logo" src="assets/zsp9.png" alt="ZSP9">
+    
 
-
-        <div class="floor-info">
-            <p>
-                <span class="floorTitle">PARTER</span> <br>
-                <span class="floorText">Budynki A i B</span>
-            </p>
-        </div>
-
-        <div class="room-selection scrollable hidden">
-            <div class="floor Floor0">
-                <p class="mainText">Parter</p>
-            </div>
-            <div class="floor Floor1">
-                <p class="mainText">Piętro 1</p>
-            </div>
-            <div class="floor Floor2A">
-                <p class="mainText">Piętro 2 (A)</p>
-            </div>
-            <div class="floor Floor2B">
-                <p class="mainText">Piętro 2 (B)</p>
-            </div>
-            
-        </div>
-
-        <div class="room-selection-button">
-            <img src="./assets/locationPin.png">
-            <p class="room-selection-text">Nawigacja</p>
-        </div>
-
-
-    </div>
-
-    <p class="currentPath">> Wybierz drogę <</p>
 
     <!-- Map container -->
     <main class="map-container">
+        <div class="logo-container">
+            <img class="logo" src="assets/zsp9.png" alt="ZSP9">
+    
+    
+            <div class="floor-info">
+                <p>
+                    <span class="floorTitle">PARTER</span> <br>
+                    <span class="floorText">Budynki A i B</span>
+                </p>
+            </div>
+    
+            <div class="room-selection scrollable hidden">
+                <div class="floor Floor0">
+                    <p class="mainText">Parter</p>
+                </div>
+                <div class="floor Floor1">
+                    <p class="mainText">Piętro 1</p>
+                </div>
+                <div class="floor Floor2A">
+                    <p class="mainText">Piętro 2 (A)</p>
+                </div>
+                <div class="floor Floor2B">
+                    <p class="mainText">Piętro 2 (B)</p>
+                </div>
+                
+            </div>
+    
+            <div class="room-selection-button">
+                <img src="./assets/locationPin.png">
+                <p class="room-selection-text">Nawigacja</p>
+            </div>
+    
+    
+        </div>
+
+        <p class="currentPath">> Wybierz drogę <</p>
+
         <div class="scale">
             <button class="plus">
                 <img src="./assets/add.png" alt="+">
@@ -101,6 +110,15 @@
             
         </div>
 
+        <div class="enter-fullscreen">
+            <div class="background"></div>
+            <button>
+                <span class="big blue"> Włącz pełny ekran </span> <br>
+                <br> > aby poprawnie korzystać z mapy <
+                <br> <span class="blue">(wciśnij ten przycisk)</span>
+            </button>
+        </div>
+
     </main>
 
 
@@ -130,9 +148,12 @@
 
     <p class="dev-coordinates"></p>
 
+    
+
     <script src="./js/map.js"></script>
     <script src="./js/map-points.js"></script>
     <script src="./js/navigation.js"></script>
     <script src="./js/scrollable.js"></script>
+    <script src="./js/enter-fullscreen.js"></script>
 </body>
 </html>

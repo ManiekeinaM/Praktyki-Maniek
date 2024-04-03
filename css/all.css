@@ -741,4 +741,5 @@ div.reset {
     /* font-weight: 600; */
     text-align: left;
     font-family: 'Determination Mono', monospace;
+    margin: 1rem;
 }

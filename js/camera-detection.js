@@ -24,15 +24,74 @@ if (!screensaver) {
     dialog = dialogScreen.querySelector('p');
 }
 
-screensaver.style.display = 'none';
+// screensaver.style.display = 'none';
+function updateScreensaverVisibility() {
+    if (INACTIVITY_TIMER <= 0) {
+        screensaver.style.display = 'none';
+    } else {
+        screensaver.style.display = 'block'
+    }
+}
+
+// Inactivity timer
 
 let INACTIVITY_TIMER = 90;
 function decrementTimer() {
     INACTIVITY_TIMER -= 1;
     console.log(INACTIVITY_TIMER);
+    updateScreensaverVisibility();
+
     setTimeout(decrementTimer, 1000);
 }
 setTimeout(decrementTimer, 1000);
+
+
+let delay = 90 // between characters, milliseconds
+
+
+let dialogQueue = []; // Queue of dialog strings
+let isDialogRunning = false; // Flag to check if dialog is currently running
+
+function setDialog(dialogStrings) {
+    dialogQueue = dialogQueue.concat(dialogStrings); // Add new strings to the end of the queue
+    if (!isDialogRunning) {
+        processDialogQueue(); // Start processing the queue if not already doing so
+    }
+}
+
+function processDialogQueue(characterPos = 0) {
+    if (dialogQueue.length === 0) {
+        isDialogRunning = false; // No more dialog strings in the queue
+        return;
+    }
+
+    isDialogRunning = true;
+    let goalString = dialogQueue[0]; // Get the first string in the queue
+    let endCharacter = goalString.length;
+
+    let newText = `* ${goalString.substring(0, characterPos)}`;
+    dialog.innerHTML = newText;
+
+    let sansVoice = new Audio('./sounds/voice_sans.mp3');
+    sansVoice.volume = 0.1;
+    sansVoice.play();
+
+    if (characterPos == endCharacter) {
+        dialogQueue.shift(); // Remove the first string from the queue
+        processDialogQueue(); // Start processing the next string
+    } else {
+        setTimeout(() => {
+            processDialogQueue(characterPos + 1);
+        }, delay);
+    }
+}
+
+function recursetext() {
+    setDialog("skibidi bop bop bop yes yes");
+    setDialog("skibidi bii bii");
+    setTimeout(recursetext, 1000);
+}
+recursetext();
 
 
 // ================== //

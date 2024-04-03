@@ -8,6 +8,12 @@ let threshold = 80;
 // sample color every 50 pixels
 let sample_size = 2;
 
+// This function gets called whenever X or more pixels change at once. Change this until it's good at detecting humans
+let changeThreshold = 400;
+function detectHumanMovement() {
+    console.log("HUMAN MOVEMENT DETECTED");
+}
+
 
 function initializeCamera() {
     canvas = document.getElementById("canvas")
@@ -118,6 +124,11 @@ function motionDetection() {
         
             }
         }
+    }
+
+    if (motion.length > changeThreshold) {
+        // console.log(motion.length);
+        detectHumanMovement();
     }
 
     return motion;

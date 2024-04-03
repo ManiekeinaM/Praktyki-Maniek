@@ -621,7 +621,7 @@ function createAllButtons() {
     }
 }
 
-createAllButtons();
+setTimeout(createAllButtons, 50);
 
 
 

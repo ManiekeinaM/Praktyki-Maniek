@@ -149,7 +149,7 @@ function mouseMove(e, isMobile) {
 function wheel(e) {
     if (!map_container.contains(e.target) || roomSelection.contains(e.target)) return;
 
-    e.preventDefault();
+    // e.preventDefault();
     const delta = Math.sign(e.deltaY);
     if (delta > 0) {
         setScale(scale - 0.1);

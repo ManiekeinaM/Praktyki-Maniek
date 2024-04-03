@@ -674,3 +674,71 @@ div.reset {
 
     z-index: 10;
 }
+
+/* Screensaver */
+.screensaver {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0,0,0,0.75);
+
+    z-index: 1000;
+
+}
+
+@keyframes border-anim {
+    0% {
+        border: 1rem solid #13f00bab;
+    }
+    50% {
+        border: 1rem solid #13f00b73;
+    }
+    100% {
+        border: 1rem solid #13f00bab;
+    }
+}
+
+@font-face {
+    font-family: 'Determination Mono';
+    src: url('../fonts/DeterminationMono.ttf') format('truetype'),
+        url('../fonts/DeterminationMono.woff2') format('woff2');
+}
+
+.dialog {
+    font-family: 'Determination Mono', monospace;
+
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    background-color: rgb(2, 17, 0);
+    /* border: 1rem solid #13f00b98; */
+    border: 0.75rem solid ghostwhite;
+    /* border-radius: 1rem; */
+
+    height: 15rem;
+
+    animation: 4s border-anim linear infinite;
+}
+
+.dialog img {
+    height: 12rem;
+}
+.dialog p {
+    width: 30rem;
+    color: ghostwhite;
+
+    font-size: 2.5rem;
+    /* font-weight: 600; */
+    text-align: left;
+    font-family: 'Determination Mono', monospace;
+}

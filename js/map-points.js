@@ -51,6 +51,9 @@ const imgPaths = {
             "Wdot18": { x: 0.83700, y: 0.16038, connections: ['dot16', 'Wdot19'] }, // sala 40 STAND
             "Wdot19": { x: 0.83700, y: 0.10750, connections: ['dot15'] }, // upmost B door STAND
 
+            // "stairdot1": {x: 0.87833, y: 0.44418}, // stairdot1 floor0
+            // "stairdot2": {x: 0.87833, y: 0.47484}, // stairdot2 floor0
+
             "Xdot1": { x: 0.38000, y: 0.87500, icon: 'arrowDown', destination: mapThresholds[1].threshold }, // PIĘTRO 1 STRZAŁKA DO DOLU
         }
 
@@ -98,8 +101,8 @@ const imgPaths = {
             "dot15B": { x: 0.76125, y: 0.24175, desc: "Sala 133", label: "133" }, // Sala 133
 
 
-            "Wdot1A": { x: 0.07500, y: 0.57426, connections: ['Wdot3A'], icon: 'stairsDown', desc: "SCHODY A - DÓŁ" }, // schody dol A
-            "Wdot2A": { x: 0.07500, y: 0.53041, connections: ['Wdot3A'], icon: 'stairsUp', desc: "SCHODY A - GÓRA" }, // schody gora A
+            "Wdot1A": { x: 0.07500, y: 0.57426, connections: ['Wdot3A', 'stairdot1'], icon: 'stairsDown', desc: "SCHODY A - DÓŁ" }, // schody dol A
+            "Wdot2A": { x: 0.07500, y: 0.53041, icon: 'stairsUp', desc: "SCHODY A - GÓRA" }, // schody gora A
             "Wdot3A": { x: 0.18000, y: 0.53890, connections: ['Wdot11A', 'Wdot4A', 'Wdot6A'] }, // mid A
             "Wdot4A": { x: 0.18000, y: 0.46393, connections: ['Wdot5A', 'dot3A'] }, // gora triple A
             "Wdot5A": { x: 0.18000, y: 0.44272, connections: ['dot1A', 'dot2A'] }, // gora A przed prawa sala
@@ -115,8 +118,8 @@ const imgPaths = {
             "Wdot8.9A": { x: 0.18167, y: 0.92925, connections: ['dot8A', 'dot7.6A'] }, // przed disco 
 
 
-            "Wdot13B": { x: 0.92100, y: 0.43706, connections: ['Wdot15B'], icon: 'stairsDown', desc: "SCHODY B - DÓŁ" }, // schody dol B
-            "Wdot14B": { x: 0.92200, y: 0.47666, connections: ['Wdot15B'], icon: 'stairsUp', desc: "SCHODY B - GÓRA" }, // schody gora B
+            "Wdot13B": { x: 0.92100, y: 0.43706, connections: ['Wdot15B', 'stairdot3'], icon: 'stairsDown', desc: "SCHODY B - DÓŁ" }, // schody dol B
+            "Wdot14B": { x: 0.92200, y: 0.47666, icon: 'stairsUp', desc: "SCHODY B - GÓRA" }, // schody gora B
             "Wdot15B": { x: 0.83400, y: 0.46344, connections: ['Wdot16B', 'Wdot17B', 'dot13.5B'] }, // mid B
             "Wdot16B": { x: 0.83400, y: 0.55778, connections: ['dot8B', 'dot9B'] }, // dol triple B
             "Wdot17B": { x: 0.83400, y: 0.37341, connections: ['dot10B', 'Wdot17.5B'] }, // przed WC pracownicze B
@@ -124,6 +127,12 @@ const imgPaths = {
             "Wdot18B": { x: 0.83400, y: 0.26874, connections: ['Wdot19B'] }, // przed 131
             "Wdot19B": { x: 0.83400, y: 0.25300, connections: ['dot11B', 'Wdot20B', 'dot15B'] }, // przed 138
             "Wdot20B": { x: 0.83400, y: 0.14427, connections: ['dot12B', 'dot13B'] }, // przed 132 i 134
+
+            "stairdot1": {x: 0.11694, y: 0.57426, connections: ['stairdot2']}, // stairdot1 floor1A
+            "stairdot2": {x: 0.11694, y: 0.53041, connections: ['Wdot2A']}, // stairdot2 floor1A
+
+            "stairdot3": {x: 0.88824, y: 0.43706, connections: ['stairdot4']}, // stairdot3 floor1B
+            "stairdot4": {x: 0.88824, y: 0.47666, connections: ['Wdot14B']}, // stairdot4 floor1B
 
             "Xdot1": { x: 0.38000, y: 0.87500, icon: 'arrowDown', destination: mapThresholds[2].threshold }, // PIĘTRO 2 STRZAŁKA DO DOLU
         }
@@ -294,6 +303,7 @@ function drawLine(floorName, from, path) {
 
     let floor = imgPaths[floorName];
     let lastDot = floor.dots[from];
+    // console.log(path);
     path.forEach(dot => {
         let connectionDot = floor.dots[dot];
         // console.log(floor.dots, from);
@@ -493,7 +503,7 @@ function drawPath(floorName, startDot = 'Wdot0', destinationDot, shouldntClear =
                 stairDot = "Wdot13B";
                 stairDestination = "Wdot14B";
             }
-            drawLine("Floor1", stairDot, [stairDestination]);
+            drawLine("Floor1", stairDot, allPaths["Floor1"][stairDestination]);
         }
     }
 

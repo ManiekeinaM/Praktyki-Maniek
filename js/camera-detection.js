@@ -1,3 +1,43 @@
+let screensaver = document.querySelector('.screensaver');
+let dialogScreen, maniekFace, dialog;
+
+if (!screensaver) {
+    screensaver = document.createElement('div');
+    screensaver.classList.add('screensaver')
+
+    dialogScreen = document.createElement('div');
+    dialogScreen.classList.add('dialog');
+    screensaver.appendChild(dialogScreen);
+
+    maniekFace = document.createElement('img');
+    maniekFace.src = 'assets/maniek-faces/big eyes.gif';
+    dialogScreen.appendChild(maniekFace);
+
+    dialog = document.createElement('p');
+    dialog.innerHTML = `* skibidi bop bop bop yes yes💩🚽`;
+    dialogScreen.appendChild(dialog);
+
+    document.body.appendChild(screensaver);
+} else {
+    dialogScreen = screensaver.querySelector('.dialog');
+    maniekFace = dialogScreen.querySelector('img');
+    dialog = dialogScreen.querySelector('p');
+}
+
+screensaver.style.display = 'none';
+
+let INACTIVITY_TIMER = 90;
+function decrementTimer() {
+    INACTIVITY_TIMER -= 1;
+    console.log(INACTIVITY_TIMER);
+    setTimeout(decrementTimer, 1000);
+}
+setTimeout(decrementTimer, 1000);
+
+
+// ================== //
+// CAMERA DETECTION V //
+
 let canvas, ctx, video;
 
 let previous_frame = [];
@@ -7,6 +47,12 @@ let threshold = 80;
 
 // sample color every 50 pixels
 let sample_size = 2;
+
+// This function gets called whenever X or more pixels change at once. Change this until it's good at detecting humans
+let changeThreshold = 400;
+function detectHumanMovement() {
+    INACTIVITY_TIMER = 90;
+}
 
 
 function initializeCamera() {
@@ -118,6 +164,11 @@ function motionDetection() {
         
             }
         }
+    }
+
+    if (motion.length > changeThreshold) {
+        // console.log(motion.length);
+        detectHumanMovement();
     }
 
     return motion;

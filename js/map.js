@@ -72,8 +72,8 @@ let start_translateY = translateY;
 const floorTitle = document.querySelector(".floorTitle");
 const floorText = document.querySelector(".floorText");
 function updateMap(x, y) {
-    if (x) {start_translateX = x; translateX = x};
-    if (y) {start_translateY = y; translateY = y};
+    if (x) { start_translateX = x; translateX = x };
+    if (y) { start_translateY = y; translateY = y };
     // console.log(translateX, translateY);
     translateX = Math.min(800, translateX);
     translateX = Math.max(-800, translateX);
@@ -104,7 +104,7 @@ function updateMap(x, y) {
 }
 
 function mouseDown(e, isMobile) {
-    if (map_container.contains(e.target)) {
+    if (map_container.contains(e.target) && !roomSelection.contains(e.target)) {
         isDragging = true;
         document.body.style.cursor = 'grabbing';
         map_container.style.cursor = 'grabbing';
@@ -147,9 +147,9 @@ function mouseMove(e, isMobile) {
 }
 
 function wheel(e) {
-    if (!map_container.contains(e.target)) return;
+    if (!map_container.contains(e.target) || roomSelection.contains(e.target)) return;
 
-    e.preventDefault();
+    // e.preventDefault();
     const delta = Math.sign(e.deltaY);
     if (delta > 0) {
         setScale(scale - 0.1);
@@ -176,7 +176,7 @@ document.addEventListener("wheel", wheel);
 let initialDistance, initialScale;
 
 document.addEventListener("touchstart", e => {
-    if (!map_container.contains(e.target)) return;
+    if (!map_container.contains(e.target) || roomSelection.contains(e.target)) return;
 
     if (e.touches.length === 2) {
         e.preventDefault();
@@ -213,9 +213,14 @@ document.addEventListener("touchmove", e => {
 
 document.addEventListener("dragstart", e => e.preventDefault());
 
-window.addEventListener("load",function() {
-    setTimeout(function(){
+
+// Fullscreen on mobile
+
+
+window.addEventListener("load", function () {
+    setTimeout(function () {
         // This will scroll page slightly down
-        window.scrollTo(0,1000);
+        window.scrollTo(0, 1);
+        console.log("scrolled");
     }, 100);
 });

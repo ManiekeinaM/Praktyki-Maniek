@@ -6,10 +6,39 @@ const scoreTexts = {
     2: document.querySelector('.score.maniek .wins'),
 }
 
-// Set the scores here - 
+const maniekFaces = {
+    'default': './assets/maniek-faces/thinking.gif',
+    'loss': './assets/maniek-faces/sad.gif',
+    'win': './assets/maniek-faces/happy.gif',
+}
+
+const maniek = document.querySelector('img.maniek');
+function setManiekMood(face) {
+    let maniekFace = maniekFaces[face] || maniekFaces.default;
+    maniek.src = maniekFace;
+}
+
+let PLAYER_COOKIE_NAME = 'tic_winsPlayer';
+let MANIEK_COOKIE_NAME = 'tic_winsManiek'
+
+let PLAYER_COOKIE = getCookie(PLAYER_COOKIE_NAME);
+let MANIEK_COOKIE = getCookie(MANIEK_COOKIE_NAME);
+
+// Set the scores here - 0 or automatically remembered thru cookies
 let scores = {
-    1: 0,
-    2: 0,
+    1: (PLAYER_COOKIE == '') ? 0 : PLAYER_COOKIE,
+    2: (MANIEK_COOKIE == '') ? 0 : MANIEK_COOKIE,
+}
+
+scores[1] = parseInt(scores[1]);
+scores[2] = parseInt(scores[2]);
+updateScore(1); updateScore(2);
+
+
+function updateCookie() {
+    setCookie(PLAYER_COOKIE_NAME, scores[1], 9999);
+    setCookie(MANIEK_COOKIE_NAME, scores[2], 9999);
+    // console.log(document.cookie);
 }
 
 
@@ -151,21 +180,31 @@ function botMove(board) {
     }
 }
 
-
+function updateScore(player) {
+    scoreTexts[player].innerText = `${scores[player]} wygranych`;
+}
 function incrementScore(player) {
     scores[player] += 1;
-    scoreTexts[player].innerText = `${scores[player]} wygranych`;
+    updateScore(player);
+
+    updateCookie();
 }
 
 let winnerTexts = {
     0: "Remis",
-    1: "Gracz wygrał!",
-    2: "Maniek wygrał!"
+    1: "Gracz wygrywa!",
+    2: "Maniek wygrywa!"
 }
 function showWinner(winner) {
     // Show winner text
     winnerBox.style.display = "block";
     winnerText.innerHTML = winnerTexts[winner];
+
+    // Set maniek face
+    if (winner == 1)
+        setManiekMood("loss");
+    if (winner == 2)
+        setManiekMood("win");
 
     // Increment winner's score
     if (winner == 0) { // remis
@@ -185,6 +224,8 @@ document.getElementById("resetBtn").addEventListener("click", e => {
     round += 1;
     MovesCount = 0;
     current_player = 1;
+
+    setManiekMood("default");
 
     let imgs = document.querySelectorAll(".game-container div img");
     for (let i = 0; i < 3; i++) {

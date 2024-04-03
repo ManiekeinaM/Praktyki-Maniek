@@ -65,8 +65,13 @@ main {
     }
 
     .maniek-box {
+        z-index: 2;
         border-bottom-left-radius: 25px;
         border-bottom-right-radius: 25px;
+    }
+
+    .maniek-box {
+        justify-content: end;
     }
 }
 

@@ -147,7 +147,7 @@ function mouseMove(e, isMobile) {
 }
 
 function wheel(e) {
-    if (!map_container.contains(e.target)) return;
+    if (!map_container.contains(e.target) || roomSelection.contains(e.target)) return;
 
     e.preventDefault();
     const delta = Math.sign(e.deltaY);

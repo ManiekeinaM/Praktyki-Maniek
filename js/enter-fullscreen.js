@@ -17,6 +17,16 @@ enterfullscreen_button.addEventListener('click', () => {
     enterfullscreen.style.display = 'none';
 });
 
-if (/Mobi|Android/i.test(navigator.userAgent)) {
+
+let isMobile = /Mobi|Android/i.test(navigator.userAgent);
+if (isMobile) {
     enterfullscreen.style.display = 'block';
 }
+
+document.addEventListener('fullscreenchange', () => {
+    if (!isMobile) return;
+
+    if (!document.fullscreenElement) {
+        enterfullscreen.style.display = 'block';
+    }
+});

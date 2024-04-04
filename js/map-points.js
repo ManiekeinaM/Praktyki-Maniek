@@ -422,6 +422,7 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
         }
     }
 
+    // Musiałem to zrobic, bo inaczej 50% czasu na telefonie/slabszym internecie sie psulo
     if (img.complete) {
         start();
     } else {

@@ -1,3 +1,11 @@
+// Has user interacted?
+let userHasInteracted = false;
+document.addEventListener('click', e => {
+    userHasInteracted = true;
+})
+
+// Creating / finding the screensaver
+
 let screensaver = document.querySelector('.screensaver');
 let dialogScreen, maniekFace, dialog;
 
@@ -24,30 +32,118 @@ if (!screensaver) {
     dialog = dialogScreen.querySelector('p');
 }
 
-// screensaver.style.display = 'none';
-function updateScreensaverVisibility() {
-    if (INACTIVITY_TIMER <= 0) {
-        screensaver.style.display = 'none';
-    } else {
-        screensaver.style.display = 'block'
+// Creating the bouncing screensaver face
+let screensaverFace = document.createElement('img');
+screensaverFace.src = `assets/maniek-faces/screensaver-face.png`;
+screensaverFace.classList.add('screensaver-face');
+screensaver.appendChild(screensaverFace);
+
+const faceColors = [ // Filter to change a black pixel into the desired color
+    'filter: invert(17%) sepia(99%) saturate(6710%) hue-rotate(359deg) brightness(95%) contrast(114%);', // red
+    'filter: invert(66%) sepia(54%) saturate(5118%) hue-rotate(358deg) brightness(99%) contrast(108%);', // orange
+    'filter: invert(89%) sepia(53%) saturate(4147%) hue-rotate(359deg) brightness(102%) contrast(101%);', // yellow
+    'filter: invert(63%) sepia(49%) saturate(4868%) hue-rotate(83deg) brightness(115%) contrast(128%);', // lime
+    'filter: invert(88%) sepia(93%) saturate(5057%) hue-rotate(100deg) brightness(105%) contrast(106%);', // teal
+    'filter: invert(31%) sepia(51%) saturate(3798%) hue-rotate(198deg) brightness(104%) contrast(104%);', // lightblue
+    'filter: invert(9%) sepia(91%) saturate(7488%) hue-rotate(246deg) brightness(93%) contrast(145%);', // blue
+    'filter: invert(8%) sepia(100%) saturate(7444%) hue-rotate(271deg) brightness(113%) contrast(125%);', // purple
+    'filter: invert(21%) sepia(63%) saturate(4305%) hue-rotate(292deg) brightness(110%) contrast(135%);', // magenta
+    'filter: invert(20%) sepia(99%) saturate(7498%) hue-rotate(325deg) brightness(104%) contrast(103%);', // pink
+]
+
+function getRandomFaceColor() {
+    return faceColors[Math.floor(Math.random() * faceColors.length)];
+}
+
+
+
+// Bouncing Screensaver Face
+let xIncrement = 1, yIncrement = 1;
+
+let currentFilter = '';
+
+function init_bounce() {
+    update_color();
+
+    setInterval(frame, 5);
+}
+
+function update_color() {
+    currentFilter = getRandomFaceColor();
+}
+
+function handle_collision() {
+    let height = screensaverFace.offsetHeight;
+    let width = screensaverFace.offsetWidth;
+    let top = screensaverFace.offsetTop;
+    let left = screensaverFace.offsetLeft;
+
+    let window_height = window.innerHeight;
+    let window_width = window.innerWidth;
+
+    let flipsDone = 0;
+    if (left < 0 || left + width > window_width) {
+        // flip x incrementation
+        xIncrement *= -1;
+        flipsDone += 1;
+    }
+
+    if (top < 0 || top + height > window_height) {
+        // flip y incrementation
+        yIncrement *= -1;
+        flipsDone += 1;
+    }
+
+    if (flipsDone > 0) update_color();
+
+    if (flipsDone == 2) {
+        // It hit a corner!
+
+        console.log("HIT CORNER");
     }
 }
 
-// Inactivity timer
+function frame() {
+    handle_collision();
+    let newTop = screensaverFace.offsetTop + yIncrement;
+    let newLeft = screensaverFace.offsetLeft + xIncrement;
+
+    // console.log(newTop, newLeft);
+    screensaverFace.style = `top: ${newTop}px; left: ${newLeft}px; ${currentFilter}`;
+}
+
+init_bounce();
+
+
+
+
+// Screensaver visibility
+let screensaverEnabled = false;
+function updateScreensaverVisibility() {
+    if (INACTIVITY_TIMER >= 90) {
+        screensaverEnabled = true;
+        screensaver.style.transform = 'scale(1)';
+    } else {
+        screensaverEnabled = false;
+        screensaver.style.transform = 'scale(0)'
+    }
+}
+
+// Inactivity timer [starts at 0, appears after it reaches 90]
 
 let INACTIVITY_TIMER = 90;
-function decrementTimer() {
-    INACTIVITY_TIMER -= 1;
+function incrementTimer() {
+    INACTIVITY_TIMER += 1;
     console.log(INACTIVITY_TIMER);
     updateScreensaverVisibility();
 
-    setTimeout(decrementTimer, 1000);
+    setTimeout(incrementTimer, 1000);
 }
-setTimeout(decrementTimer, 1000);
+setTimeout(incrementTimer, 1000);
 
 
+// Dialog
 let delay = 90 // between characters, milliseconds
-
 
 let dialogQueue = []; // Queue of dialog strings
 let isDialogRunning = false; // Flag to check if dialog is currently running
@@ -72,13 +168,18 @@ function processDialogQueue(characterPos = 0) {
     let newText = `* ${goalString.substring(0, characterPos)}`;
     dialog.innerHTML = newText;
 
-    let sansVoice = new Audio('./sounds/voice_sans.mp3');
-    sansVoice.volume = 0.1;
-    sansVoice.play();
+    if (userHasInteracted) {
+        // new scope to garbage collect it faster
+        let sansVoice = new Audio('./sounds/voice_sans.mp3');
+        sansVoice.volume = 0.1;
+        sansVoice.play();
+    }
+
 
     if (characterPos == endCharacter) {
         dialogQueue.shift(); // Remove the first string from the queue
-        processDialogQueue(); // Start processing the next string
+        
+        setTimeout(processDialogQueue, 1000); // Start processing the next string
     } else {
         setTimeout(() => {
             processDialogQueue(characterPos + 1);
@@ -86,12 +187,20 @@ function processDialogQueue(characterPos = 0) {
     }
 }
 
+screensaver.addEventListener('click', () => {
+    INACTIVITY_TIMER = 0;
+    updateScreensaverVisibility();
+});
+
 function recursetext() {
     setDialog("skibidi bop bop bop yes yes");
     setDialog("skibidi bii bii");
     setTimeout(recursetext, 1000);
 }
 recursetext();
+
+
+
 
 
 // ================== //
@@ -104,13 +213,14 @@ let previous_frame = [];
 // brightness threshold to detect movement
 let threshold = 80;
 
-// sample color every 50 pixels
+// sample color every X pixels [resolution]
 let sample_size = 2;
 
 // This function gets called whenever X or more pixels change at once. Change this until it's good at detecting humans
 let changeThreshold = 400;
 function detectHumanMovement() {
-    INACTIVITY_TIMER = 90;
+    console.log("HEY YOU! I see you moving!");
+    // TODO add random dialogs that start when it detects people moving
 }
 
 

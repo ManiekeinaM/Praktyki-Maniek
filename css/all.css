@@ -686,18 +686,18 @@ div.reset {
     background-color: rgba(0,0,0,0.75);
 
     z-index: 1000;
-
+    transition: transform 2s;
 }
 
 @keyframes border-anim {
     0% {
-        border: 1rem solid #13f00bab;
+        border-color: #13f00baf;
     }
     50% {
-        border: 1rem solid #13f00b73;
+        border-color: #13f00b63;
     }
     100% {
-        border: 1rem solid #13f00bab;
+        border-color: #13f00baf;
     }
 }
 
@@ -723,7 +723,7 @@ div.reset {
     background-color: rgb(2, 17, 0);
     /* border: 1rem solid #13f00b98; */
     border: 0.75rem solid ghostwhite;
-    /* border-radius: 1rem; */
+    border-radius: 1rem;
 
     height: 15rem;
 
@@ -742,4 +742,10 @@ div.reset {
     text-align: left;
     font-family: 'Determination Mono', monospace;
     margin: 1rem;
+}
+
+.screensaver-face {
+    height: 100px;
+    width: auto;
+    position: absolute;
 }

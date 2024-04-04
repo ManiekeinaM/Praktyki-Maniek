@@ -137,7 +137,7 @@ function updateScreensaverVisibility() {
 
 // Inactivity timer [starts at 0, appears after it reaches 90]
 
-let INACTIVITY_TIMER = 90;
+let INACTIVITY_TIMER = 80;
 function incrementTimer() {
     INACTIVITY_TIMER += 1;
     console.log(INACTIVITY_TIMER);
@@ -162,8 +162,9 @@ function setDialog(dialogStrings) {
 }
 
 function processDialogQueue(characterPos = 0) {
-    if (dialogQueue.length === 0) {
+    if (!screensaverEnabled || dialogQueue.length === 0) {
         isDialogRunning = false; // No more dialog strings in the queue
+        dialogQueue = []; // Clear the queue (in case dialog is halted)
         return;
     }
 

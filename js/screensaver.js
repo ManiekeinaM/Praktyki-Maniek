@@ -186,7 +186,7 @@ function processDialogQueue(characterPos = 0) {
     if (navigator.userActivation.hasBeenActive) {
         // new scope to garbage collect it faster
         let sansVoice = new Audio('./sounds/voice_sans.mp3');
-        sansVoice.volume = 0.08;
+        sansVoice.volume = 0.05;
         sansVoice.play();
     }
 

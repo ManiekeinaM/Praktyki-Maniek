@@ -124,7 +124,7 @@ init_bounce();
 
 
 // Screensaver visibility
-let screensaverRequirement = 20;
+let screensaverRequirement = 90;
 
 let screensaverEnabled = false;
 function updateScreensaverVisibility() {

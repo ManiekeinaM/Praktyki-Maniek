@@ -366,57 +366,66 @@ const floorNames = {
 
 // PATHFIND ALL OF THE POSSIBLE DESTINATIONS - then you can draw to whichever one you like!
 for (const [floorName, floorItems] of Object.entries(imgPaths)) {
-    let floorContainer = document.querySelector(`div.${floorName}`);
+    let floorContainer = map.querySelector(`div.${floorName}`);
     if (!floorContainer) continue;
 
+    let img = floorContainer.querySelector("img");
 
-    let pathfind = function (startDot) {
-        // console.log(startDot);
-
-        let currentPath = [startDot];
-        let lastBranchedPath;
-
-        let checkNextConnection = function (currentPath) {
-            // console.log(floorName);
-            let latestDotName = currentPath[currentPath.length - 1];
-            let latestDot = floorItems.dots[latestDotName];
-            // console.log(latestDotName);
-            // console.log(latestDot);
-
-            if (!latestDot) return;
-
-            if (!latestDot.connections || latestDot.connections && latestDot.connections.length == 0) {
-                // No connections, end of this path
-                allPaths[floorName][latestDotName] = currentPath;
-                currentPath = lastBranchedPath;
-                return;
+    let start = function() {
+        let pathfind = function (startDot) {
+            // console.log(startDot);
+    
+            let currentPath = [startDot];
+            let lastBranchedPath;
+    
+            let checkNextConnection = function (currentPath) {
+                // console.log(floorName);
+                let latestDotName = currentPath[currentPath.length - 1];
+                let latestDot = floorItems.dots[latestDotName];
+                // console.log(latestDotName);
+                // console.log(latestDot);
+    
+                if (!latestDot) return;
+    
+                if (!latestDot.connections || latestDot.connections && latestDot.connections.length == 0) {
+                    // No connections, end of this path
+                    allPaths[floorName][latestDotName] = currentPath;
+                    currentPath = lastBranchedPath;
+                    return;
+                }
+    
+                let connections = latestDot.connections;
+    
+                if (connections.length > 1) {
+                    // Branching path
+                    lastBranchedPath = currentPath;
+                }
+    
+                // Go through the connections, and look at THEIR connections
+                connections.forEach(connection => {
+                    let newPath = [...currentPath, connection];
+                    checkNextConnection(newPath);
+                })
             }
-
-            let connections = latestDot.connections;
-
-            if (connections.length > 1) {
-                // Branching path
-                lastBranchedPath = currentPath;
-            }
-
-            // Go through the connections, and look at THEIR connections
-            connections.forEach(connection => {
-                let newPath = [...currentPath, connection];
-                checkNextConnection(newPath);
-            })
+    
+            checkNextConnection(currentPath);
         }
-
-        checkNextConnection(currentPath);
+    
+        let startDot = floorStartPoints[floorName];
+        if (typeof startDot === "object") {
+            // Przejdz przez obydwa wejscia
+            pathfind(startDot.A);
+            pathfind(startDot.B);
+        } else {
+            // Przejdz przez jedno wejscie
+            pathfind(startDot);
+        }
     }
 
-    let startDot = floorStartPoints[floorName];
-    if (typeof startDot === "object") {
-        // Przejdz przez obydwa wejscia
-        pathfind(startDot.A);
-        pathfind(startDot.B);
+    if (img.complete) {
+        start();
     } else {
-        // Przejdz przez jedno wejscie
-        pathfind(startDot);
+        img.onload = start;
     }
 }
 

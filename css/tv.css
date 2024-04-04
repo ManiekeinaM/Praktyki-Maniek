@@ -1,0 +1,13 @@
+body {
+    margin: 0px;
+    overflow: hidden;
+}
+
+#data-pass {
+    display: none;
+}
+
+video {
+    min-height: 100svh;
+    scroll-margin: 0;
+}

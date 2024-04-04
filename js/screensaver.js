@@ -156,7 +156,7 @@ document.addEventListener('click', e => {
 
 
 // Dialog
-let delay = 80 // between characters, milliseconds
+let delay = 100 // between characters, milliseconds
 
 let dialogQueue = []; // Queue of dialog strings
 let isDialogRunning = false; // Flag to check if dialog is currently running
@@ -248,8 +248,8 @@ let sample_size = 2;
 let changeThreshold = 400;
 
 let maniekChats = [
-    "👈 Widze Ciebie!",
-    "NIE UCIEKAJ ODE MNIE",
+    "👈 Widze Ciebie! Zagraj ze mna!",
+    "PRZYJDZ TU, I NIE UCIEKAJ ODE MNIE",
     "Ladnie wygladasz, chodz tu natychmiast!",
     "KAZDEGO WIDZĘ, NAWET CIEBIE",
     "Zostaw to, co robisz i dotknij ekranu!!",

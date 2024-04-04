@@ -156,7 +156,7 @@ document.addEventListener('click', e => {
 
 
 // Dialog
-let delay = 100 // between characters, milliseconds
+let delay = 110 // between characters, milliseconds
 
 let dialogQueue = []; // Queue of dialog strings
 let isDialogRunning = false; // Flag to check if dialog is currently running

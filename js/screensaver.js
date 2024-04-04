@@ -264,7 +264,9 @@ let maniekNoCamChats = [
     "Czy ktos mnie widzi? :(",
 ]
 
+let forceDisable = false;
 setInterval(() => {
+    if (forceDisable) return;
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
     
     let randomChat = maniekNoCamChats[Math.floor(Math.random() * maniekNoCamChats.length)];
@@ -274,6 +276,7 @@ setInterval(() => {
 
 let chattingDebounce = false;
 function detectHumanMovement() {
+    forceDisable = true;
     if (chattingDebounce) return;
     chattingDebounce = true;
 

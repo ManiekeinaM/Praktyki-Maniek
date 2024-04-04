@@ -337,7 +337,7 @@ function initializeCamera() {
     video.addEventListener("play", function() {
         var draw = function() {
             if(video.paused || video.ended) return;
-            if (!screensaverEnabled) return;
+            if (!screensaverEnabled) {console.log('disabled screensaver'); return;}
 
             ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
             let motion = motionDetection();

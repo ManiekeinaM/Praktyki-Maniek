@@ -1,3 +1,8 @@
+@font-face {
+    font-family: digital;
+    src: url(../fonts/digital.regular.ttf);
+}
+
 body {
     margin: 0px;
     overflow: hidden;
@@ -7,8 +12,45 @@ body {
     display: none;
 }
 
+.additional-events {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+}
+
+.additional-events > * {
+    width: 33%;
+}
+
+.tv-clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: green;
+    font-size: 200%;
+    font-weight: bold;
+    font-family: "digital";
+    height: min-content;
+}
+
+.tv-clock p {
+    margin: 0;
+}
+
+.maniek-face > img {
+    width: 100%;
+    height: auto;
+}
+
+.bell-schedule {
+    height: min-content;
+    font-size: 50%;
+    color: green;
+    font-family: "digital"; 
+}
+
 video {
     height: auto;
     width: 100%;
-    scroll-margin: 0;
 }

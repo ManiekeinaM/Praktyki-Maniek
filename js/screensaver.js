@@ -1,8 +1,4 @@
-// Has user interacted?
-let userHasInteracted = false;
-document.addEventListener('click', e => {
-    userHasInteracted = true;
-})
+
 
 // Creating / finding the screensaver
 
@@ -22,7 +18,7 @@ if (!screensaver) {
     dialogScreen.appendChild(maniekFace);
 
     dialog = document.createElement('p');
-    dialog.innerHTML = `* skibidi bop bop bop yes yes💩🚽`;
+    dialog.innerHTML = `* Testing 123`;
     dialogScreen.appendChild(dialog);
 
     document.body.appendChild(screensaver);
@@ -32,11 +28,15 @@ if (!screensaver) {
     dialog = dialogScreen.querySelector('p');
 }
 
+screensaver.style.transform = `scale(0)`; // Hide the screensaver by default
+
 // Creating the bouncing screensaver face
 let screensaverFace = document.createElement('img');
 screensaverFace.src = `assets/maniek-faces/screensaver-face.png`;
 screensaverFace.classList.add('screensaver-face');
 screensaver.appendChild(screensaverFace);
+
+
 
 const faceColors = [ // Filter to change a black pixel into the desired color
     'filter: invert(17%) sepia(99%) saturate(6710%) hue-rotate(359deg) brightness(95%) contrast(114%);', // red
@@ -124,9 +124,11 @@ init_bounce();
 
 
 // Screensaver visibility
+let screensaverRequirement = 20;
+
 let screensaverEnabled = false;
 function updateScreensaverVisibility() {
-    if (INACTIVITY_TIMER >= 90) {
+    if (INACTIVITY_TIMER >= screensaverRequirement) {
         screensaverEnabled = true;
         screensaver.style.transform = 'scale(1)';
     } else {
@@ -147,9 +149,14 @@ function incrementTimer() {
 }
 setTimeout(incrementTimer, 1000);
 
+// Reset inactivity timer
+document.addEventListener('click', e => {
+    INACTIVITY_TIMER = 0;
+})
+
 
 // Dialog
-let delay = 90 // between characters, milliseconds
+let delay = 80 // between characters, milliseconds
 
 let dialogQueue = []; // Queue of dialog strings
 let isDialogRunning = false; // Flag to check if dialog is currently running
@@ -172,16 +179,30 @@ function processDialogQueue(characterPos = 0) {
     let goalString = dialogQueue[0]; // Get the first string in the queue
     let endCharacter = goalString.length;
 
+
     let newText = `* ${goalString.substring(0, characterPos)}`;
     dialog.innerHTML = newText;
 
     if (navigator.userActivation.hasBeenActive) {
         // new scope to garbage collect it faster
         let sansVoice = new Audio('./sounds/voice_sans.mp3');
-        sansVoice.volume = 0.1;
+        sansVoice.volume = 0.08;
         sansVoice.play();
     }
 
+    // Capital letters, punctuation and spaces
+    let currentChar = goalString.charAt(characterPos);
+    let currentDelay = delay;
+
+    if (currentChar === ' ') {
+        currentDelay = 10;
+    } else if (currentChar === currentChar.toUpperCase()) {
+        currentDelay /= 2;
+    } else if (currentChar === ',') {
+        currentDelay *= 1.5;
+    } else if (currentChar === '.') {
+        currentDelay *= 2;
+    }
 
     if (characterPos == endCharacter) {
         dialogQueue.shift(); // Remove the first string from the queue
@@ -190,7 +211,7 @@ function processDialogQueue(characterPos = 0) {
     } else {
         setTimeout(() => {
             processDialogQueue(characterPos + 1);
-        }, delay);
+        }, currentDelay);
     }
 }
 
@@ -199,12 +220,12 @@ screensaver.addEventListener('click', () => {
     updateScreensaverVisibility();
 });
 
-function recursetext() {
-    setDialog("skibidi bop bop bop yes yes");
-    setDialog("skibidi bii bii");
-    setTimeout(recursetext, 1000);
-}
-recursetext();
+// function recursetext() {
+//     setDialog("skibidi bop bop bop yes yes");
+//     setDialog("skibidi bii bii");
+//     setTimeout(recursetext, 1000);
+// }
+// recursetext();
 
 
 
@@ -225,9 +246,46 @@ let sample_size = 2;
 
 // This function gets called whenever X or more pixels change at once. Change this until it's good at detecting humans
 let changeThreshold = 400;
+
+let maniekChats = [
+    "👈 Widze Ciebie!",
+    "NIE UCIEKAJ ODE MNIE",
+    "Ladnie wygladasz, chodz tu natychmiast!",
+    "KAZDEGO WIDZĘ, NAWET CIEBIE",
+    "Zostaw to, co robisz i dotknij ekranu!!",
+    "Ja, wszechmocny Maniek, proszę Ciebie do ekranu.",
+]
+
+let maniekNoCamChats = [
+    "Nie widze nikogo.. :(",
+    "Gdzie jestescie? :(",
+    "Czy ktos tam jest? :(",
+    "Czy ktos mnie slyszy? :(",
+    "Czy ktos mnie widzi? :(",
+]
+
+setInterval(() => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+    
+    let randomChat = maniekNoCamChats[Math.floor(Math.random() * maniekNoCamChats.length)];
+    setDialog(randomChat);
+}, 16000)
+
+
+let chattingDebounce = false;
 function detectHumanMovement() {
+    if (chattingDebounce) return;
+    chattingDebounce = true;
+
     console.log("HEY YOU! I see you moving!");
-    // TODO add random dialogs that start when it detects people moving
+
+
+    let randomChat = maniekChats[Math.floor(Math.random() * maniekChats.length)];
+    setDialog(randomChat);
+
+    setTimeout(() => {
+        chattingDebounce = false;
+    }, 10000);
 }
 
 
@@ -276,6 +334,7 @@ function initializeCamera() {
     video.addEventListener("play", function() {
         var draw = function() {
             if(video.paused || video.ended) return;
+            if (!screensaverEnabled) return;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
             let motion = motionDetection();

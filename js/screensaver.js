@@ -65,6 +65,10 @@ let currentFilter = '';
 function init_bounce() {
     update_color();
 
+    let randomTop = Math.floor(Math.random() * 200);
+    let randomLeft = Math.floor(Math.random() * 200);
+    screensaverFace.style = `top: ${randomTop}px; left: ${randomLeft}px; ${currentFilter}`;
+
     setInterval(frame, 5);
 }
 
@@ -104,6 +108,8 @@ function handle_collision() {
 }
 
 function frame() {
+    if (!screensaverEnabled) return;
+
     handle_collision();
     let newTop = screensaverFace.offsetTop + yIncrement;
     let newLeft = screensaverFace.offsetLeft + xIncrement;
@@ -168,7 +174,7 @@ function processDialogQueue(characterPos = 0) {
     let newText = `* ${goalString.substring(0, characterPos)}`;
     dialog.innerHTML = newText;
 
-    if (userHasInteracted) {
+    if (navigator.userActivation.hasBeenActive) {
         // new scope to garbage collect it faster
         let sansVoice = new Audio('./sounds/voice_sans.mp3');
         sansVoice.volume = 0.1;

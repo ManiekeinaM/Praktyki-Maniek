@@ -249,11 +249,13 @@ let changeThreshold = 400;
 
 let maniekChats = [
     "👈 Widze Ciebie! Zagraj ze mna!",
-    "PRZYJDZ TU, I NIE UCIEKAJ ODE MNIE",
+    "Przychodz tu, I NIE UCIEKAJ ODE MNIE!!!",
     "Ladnie wygladasz, chodz tu natychmiast!",
-    "KAZDEGO WIDZĘ, NAWET CIEBIE",
+    "KAZDEGO WIDZE. Nawet CIEBIE.",
     "Zostaw to, co robisz i dotknij ekranu!!",
-    "Ja, wszechmocny Maniek, proszę Ciebie do ekranu.",
+    "Ja, wszechmocny Maniek, prosze Ciebie do ekranu.",
+    "Co innego robisz, czemu nie mozesz ze mna grac? :(",
+    "Nie czekaj na odbicie z rogu - jest za rzadkie. Ale w sumie, co by sie stalo..?",
 ]
 
 let maniekNoCamChats = [

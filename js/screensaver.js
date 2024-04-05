@@ -1,9 +1,13 @@
 
+let CORNERBOUNCE_COOKIE_NAME = "cornerbounces";
+let cornerBounces = getCookie(CORNERBOUNCE_COOKIE_NAME) || 0;
+cornerBounces = parseInt(cornerBounces);
+// console.log(cornerBounces);
 
 // Creating / finding the screensaver
 
 let screensaver = document.querySelector('.screensaver');
-let dialogScreen, maniekFace, dialog;
+let dialogScreen, maniekFace, dialog, score;
 
 if (!screensaver) {
     screensaver = document.createElement('div');
@@ -20,6 +24,11 @@ if (!screensaver) {
     dialog = document.createElement('p');
     dialog.innerHTML = `* Testing 123`;
     dialogScreen.appendChild(dialog);
+
+    score = document.createElement('p');
+    score.innerHTML = `Odbicia od rogu: 0`;
+    score.classList.add("score");
+    screensaver.appendChild(score);
 
     document.body.appendChild(screensaver);
 } else {
@@ -104,6 +113,8 @@ function handle_collision() {
         // It hit a corner!
 
         console.log("HIT CORNER");
+        cornerBounces += 1;
+        updateCornerBounces();
     }
 }
 
@@ -124,7 +135,7 @@ init_bounce();
 
 
 // Screensaver visibility
-let screensaverRequirement = 90;
+let screensaverRequirement = 60;
 
 let screensaverEnabled = false;
 function updateScreensaverVisibility() {
@@ -137,9 +148,9 @@ function updateScreensaverVisibility() {
     }
 }
 
-// Inactivity timer [starts at 0, appears after it reaches 90]
+// Inactivity timer [starts at 0, appears after it reaches screensaverRequirement]
 
-let INACTIVITY_TIMER = 80;
+let INACTIVITY_TIMER = screensaverRequirement - 5;
 function incrementTimer() {
     INACTIVITY_TIMER += 1;
     console.log(INACTIVITY_TIMER);
@@ -220,6 +231,12 @@ function processDialogQueue(characterPos = 0, nextDelay = delay) {
         }, currentDelay);
     }
 }
+
+function updateCornerBounces() {
+    score.innerHTML = `Odbicia od rogu: <span>${cornerBounces}</span>`;
+    setCookie(CORNERBOUNCE_COOKIE_NAME, cornerBounces, 9999);
+}
+updateCornerBounces();
 
 screensaver.addEventListener('click', () => {
     INACTIVITY_TIMER = 0;

@@ -691,13 +691,13 @@ div.reset {
 
 @keyframes border-anim {
     0% {
-        border-color: #13f00baf;
+        border-color: #13f00b07;
     }
     50% {
-        border-color: #13f00b63;
+        border-color: #09ff00a9;
     }
     100% {
-        border-color: #13f00baf;
+        border-color: #13f00b07;
     }
 }
 
@@ -734,7 +734,7 @@ div.reset {
     height: 12rem;
 }
 .dialog p {
-    width: 30rem;
+    width: 33rem;
     color: ghostwhite;
 
     font-size: 2.5rem;
@@ -748,6 +748,22 @@ div.reset {
     height: 100px;
     width: auto;
     position: absolute;
+}
+
+p.score {
+    font-family: 'Determination Mono', monospace;
+    position: absolute;
+    color: white;
+    font-size: 2rem;
+    left: 50%;
+    top: 0.5rem;
+    transform: translate(-50%, 0);
+}
+p.score span {
+    font-family: 'Determination Mono', monospace;
+    color: #13f00b;
+    font-size: 3rem;
+    font-weight: bolder;
 }
 
 /* Camera */

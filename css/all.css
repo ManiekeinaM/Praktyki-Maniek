@@ -750,7 +750,7 @@ div.reset {
     position: absolute;
 }
 
-p.score {
+.cornerscore {
     font-family: 'Determination Mono', monospace;
     position: absolute;
     color: white;
@@ -759,7 +759,7 @@ p.score {
     top: 0.5rem;
     transform: translate(-50%, 0);
 }
-p.score span {
+.cornerscore span {
     font-family: 'Determination Mono', monospace;
     color: #13f00b;
     font-size: 3rem;

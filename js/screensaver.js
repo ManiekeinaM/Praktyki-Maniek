@@ -27,7 +27,7 @@ if (!screensaver) {
 
     score = document.createElement('p');
     score.innerHTML = `Odbicia od rogu: 0`;
-    score.classList.add("score");
+    score.classList.add("cornerscore");
     screensaver.appendChild(score);
 
     document.body.appendChild(screensaver);

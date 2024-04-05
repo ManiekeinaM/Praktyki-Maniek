@@ -22,7 +22,7 @@ if (!screensaver) {
     dialogScreen.appendChild(maniekFace);
 
     dialog = document.createElement('p');
-    dialog.innerHTML = `* Testing 123`;
+    dialog.innerHTML = `* Jestem wygaszaczem ekranu. Kliknij mnie, by mnie wyłączyć.`;
     dialogScreen.appendChild(dialog);
 
     score = document.createElement('p');
@@ -197,7 +197,7 @@ function processDialogQueue(characterPos = 0, nextDelay = delay) {
     if (navigator.userActivation.hasBeenActive) {
         // new scope to garbage collect it faster
         let sansVoice = new Audio('./sounds/voice_sans.mp3');
-        sansVoice.volume = 0.05;
+        sansVoice.volume = 0.08;
         sansVoice.play();
     }
 
@@ -271,24 +271,24 @@ let sample_size = 2;
 let changeThreshold = 400;
 
 let maniekChats = [
-    "Widze Ciebie! Zagraj ze mna!",
-    "Przyjdz tu, NIE UCIEKAJ ODE MNIE!!!",
-    "Ladnie wygladasz, chodz tu natychmiast!",
-    "KAZDEGO WIDZE. Nawet CIEBIE.",
+    "Widzę Ciebie! Zagraj ze mną!",
+    "Przyjdź tu, NIE UCIEKAJ ODE MNIE!!!",
+    "Ładnie wyglądasz, chodź tu natychmiast!",
+    "KAŻDEGO WIDZĘ. Nawet CIEBIE.",
     "Zostaw to, co robisz i dotknij ekranu!!",
-    "Ja, wszechmocny Maniek, prosze Ciebie do ekranu.",
-    "Co innego robisz, czemu nie mozesz ze mna grac? :(",
-    "Legenda mowi, ze cos sie stanie, jak Maniek odbije sie od rogu...",
+    "Ja, wszechmocny Maniek, proszę Ciebie do ekranu.",
+    "Co innego robisz, czemu nie możesz ze mną grać? :(",
+    "Legenda mówi, że coś się stanie, jak Maniek odbije się od rogu...",
     "Fajna fryzura!",
-    "Reaguje na dotyk ekranu! Nie chcesz mnie widziec, masz wyjscie :(",
+    "Reaguję na dotyk ekranu! Jak nie chcesz mnie widziec, masz wyjście. :(",
 ]
 
 let maniekNoCamChats = [
-    "Nie widze nikogo.. :(",
-    "Gdzie jestescie? :(",
-    "Czy ktos tam jest? :(",
-    "Czy ktos mnie slyszy? :(",
-    "Czy ktos mnie widzi? :(",
+    "Nie widzę nikogo.. :(",
+    "Gdzie jesteście? :(",
+    "Czy ktoś tam jest? :(",
+    "Czy ktoś mnie słyszy? :(",
+    "Czy ktoś mnie widzi? :(",
 ]
 
 let forceDisable = false;

@@ -168,7 +168,7 @@ function setDialog(dialogStrings) {
     }
 }
 
-function processDialogQueue(characterPos = 0) {
+function processDialogQueue(characterPos = 0, nextDelay = delay) {
     if (!screensaverEnabled || dialogQueue.length === 0) {
         isDialogRunning = false; // No more dialog strings in the queue
         dialogQueue = []; // Clear the queue (in case dialog is halted)
@@ -192,17 +192,23 @@ function processDialogQueue(characterPos = 0) {
 
     // Capital letters, punctuation and spaces
     let currentChar = goalString.charAt(characterPos);
-    let currentDelay = delay;
+    let currentDelay = nextDelay || delay;
 
+    // Calculate the next letter's delay
+    nextDelay = delay;
+    // console.log(currentChar);
     if (currentChar === ' ') {
-        currentDelay = 10;
-    } else if (currentChar === currentChar.toUpperCase()) {
-        currentDelay /= 2;
+        nextDelay = 10;
     } else if (currentChar === ',') {
-        currentDelay *= 1.5;
+        nextDelay *= 3;
     } else if (currentChar === '.') {
-        currentDelay *= 2;
+        nextDelay *= 5;
+    } else if (currentChar === '?' || currentChar === '!') {
+        nextDelay *= 2;
+    } else if (currentChar === currentChar.toUpperCase()) {
+        nextDelay /= 2;
     }
+    // console.log(currentChar, currentDelay);
 
     if (characterPos == endCharacter) {
         dialogQueue.shift(); // Remove the first string from the queue
@@ -210,7 +216,7 @@ function processDialogQueue(characterPos = 0) {
         setTimeout(processDialogQueue, 1000); // Start processing the next string
     } else {
         setTimeout(() => {
-            processDialogQueue(characterPos + 1);
+            processDialogQueue(characterPos + 1, nextDelay);
         }, currentDelay);
     }
 }
@@ -248,14 +254,16 @@ let sample_size = 2;
 let changeThreshold = 400;
 
 let maniekChats = [
-    "👈 Widze Ciebie! Zagraj ze mna!",
-    "Przychodz tu, I NIE UCIEKAJ ODE MNIE!!!",
+    "Widze Ciebie! Zagraj ze mna!",
+    "Przyjdz tu, NIE UCIEKAJ ODE MNIE!!!",
     "Ladnie wygladasz, chodz tu natychmiast!",
     "KAZDEGO WIDZE. Nawet CIEBIE.",
     "Zostaw to, co robisz i dotknij ekranu!!",
     "Ja, wszechmocny Maniek, prosze Ciebie do ekranu.",
     "Co innego robisz, czemu nie mozesz ze mna grac? :(",
-    "Nie czekaj na odbicie z rogu - jest za rzadkie. Ale w sumie, co by sie stalo..?",
+    "Legenda mowi, ze cos sie stanie, jak Maniek odbije sie od rogu...",
+    "Fajna fryzura!",
+    "Reaguje na dotyk ekranu! Nie chcesz mnie widziec, masz wyjscie :(",
 ]
 
 let maniekNoCamChats = [
@@ -295,9 +303,15 @@ function detectHumanMovement() {
 
 
 function initializeCamera() {
-    canvas = document.getElementById("canvas")
+    canvas = document.querySelector('.camera-canvas') || document.querySelector('#camera-canvas')
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.classList.add('camera-canvas');
+        document.body.appendChild(canvas);
+    }
+
     ctx = canvas.getContext("2d", {willReadFrequently: true});
-    video = document.createElement("video")
+    video = document.createElement("video");
 
     var videoObj = { video: true },
         errBack = function(error) {
@@ -339,7 +353,7 @@ function initializeCamera() {
     video.addEventListener("play", function() {
         var draw = function() {
             if(video.paused || video.ended) return;
-            console.log('draw');
+            // console.log('draw');
 
             ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
             let motion = motionDetection();

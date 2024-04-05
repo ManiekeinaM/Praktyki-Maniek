@@ -749,3 +749,8 @@ div.reset {
     width: auto;
     position: absolute;
 }
+
+/* Camera */
+.camera-canvas {
+    display: none;
+}

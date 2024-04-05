@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TV Player</title>
     <link rel="stylesheet" href="./css/tv.css">
+
+    <script src="./js/cookies.js"></script>
 </head>
 <body>
     <video id="vidplayer" autoplay muted>

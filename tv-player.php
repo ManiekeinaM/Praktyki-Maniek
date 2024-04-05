@@ -9,9 +9,29 @@
     <script src="./js/cookies.js"></script>
 </head>
 <body>
-    <video id="vidplayer" autoplay muted>
-        <source id="vidsource" src="./example-videos/LEGO1.mp4" type="video/mp4">
-    </video>
+    <div class="controls">
+        <video id="vidplayer" autoplay muted>
+            <source id="vidsource" src="./example-videos/LEGO1.mp4" type="video/mp4">
+        </video>
+        <div class="bell-schedule">
+            <table>
+                <tr><th>Lekcja</th><th>godz</th></tr>
+                <tr><td>1</td><td>8:00 - 8:45</td></tr>
+                <tr><td>2</td><td>8:55 - 9:40</td></tr>
+                <tr><td>3</td><td>9:50 - 10:35</td></tr>
+                <tr><td>4</td><td>10:55 - 11:40</td></tr>
+                <tr><td>5</td><td>11:50 - 12:35</td></tr>
+                <tr><td>6</td><td>12:45 - 13:30</td></tr>
+                <tr><td>7</td><td>13:40 - 14:25</td></tr>
+                <tr><td>8</td><td>14:35 - 15:20</td></tr>
+                <tr><td>9</td><td>15:25 - 16:10</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="tv-clock">
+        <p id="ClockTime">11:57</p>
+    </div>
 
     <div id="data-pass"><?php
             $dir = './example-videos';
@@ -22,7 +42,7 @@
             }
     ?></div>
 
-    <div class="additional-events">
+    <!--<div class="additional-events">
         <div class="tv-clock">
             <p id="ClockTime">11:57</p>
         </div>
@@ -32,18 +52,18 @@
         <div class="bell-schedule">
             <table>
                 <tr><th>Lekcja</th><th>godz</th></tr>
-             <!--   <tr><td>1</td><td>8:00 - 8:45</td></tr>
+                <tr><td>1</td><td>8:00 - 8:45</td></tr>
                 <tr><td>2</td><td>8:55 - 9:40</td></tr>
                 <tr><td>3</td><td>9:50 - 10:35</td></tr>
-                <tr><td>4</td><td>10:55 - 11:40</td></tr>-->
+                <tr><td>4</td><td>10:55 - 11:40</td></tr>
                 <tr><td>5</td><td>11:50 - 12:35</td></tr>
                 <tr><td>6</td><td>12:45 - 13:30</td></tr>
                 <tr><td>7</td><td>13:40 - 14:25</td></tr>
-             <!--   <tr><td>8</td><td>14:35 - 15:20</td></tr>
-                <tr><td>9</td><td>15:25 - 16:10</td></tr>-->
+                <tr><td>8</td><td>14:35 - 15:20</td></tr>
+                <tr><td>9</td><td>15:25 - 16:10</td></tr>
             </table>
         </div>
-    </div>
+    </div>-->
 
     <script>
         let dir = '/example-videos';
@@ -68,8 +88,6 @@
             VideoPlayer.load();
             VideoPlayer.play();
         });
-
-
     </script>
 </body>
 </html>

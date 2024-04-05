@@ -6,10 +6,43 @@
 body {
     margin: 0px;
     overflow: hidden;
+    background-color: black;
 }
 
 #data-pass {
     display: none;
+}
+
+.controls {
+    display: flex;
+}
+
+.bell-schedule {
+    font-size: 3rem;
+    color: green;
+    font-family: "digital"; 
+    display: flex;
+    justify-content: center;
+    border: 0.2rem solid green;
+    padding: 0 5rem;
+    text-wrap: nowrap;
+}
+
+.bell-schedule > table {
+    text-align: center;
+}
+
+.bell-schedule tr:nth-child(7) {
+    color: lawngreen;
+    font-weight: bold;
+}
+
+video {
+    display: block;
+    height: auto;
+    width: 75%;
+    border: 0.2rem rgb(44, 44, 44) solid;
+    border-right: 0.2rem rgb(44, 44, 44) solid;
 }
 
 .additional-events {
@@ -41,16 +74,4 @@ body {
 .maniek-face > img {
     width: 100%;
     height: auto;
-}
-
-.bell-schedule {
-    height: min-content;
-    font-size: 50%;
-    color: green;
-    font-family: "digital"; 
-}
-
-video {
-    height: auto;
-    width: 100%;
 }

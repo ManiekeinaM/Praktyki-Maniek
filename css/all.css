@@ -284,6 +284,8 @@ body {
     user-select: none;
 
     transition: color 0.25s, transform 0.25s;
+
+    /* font-family: var(--maniek-font); */
 }
 
 .room-selection .floor .mainText {

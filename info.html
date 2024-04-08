@@ -50,33 +50,85 @@
         </div>
 
         <div class="info-container">
-            <h1>Nasze media!</h1>
+            <div class="socials">
+                <img src="assets/sm-facebook.png" alt="Facebook" data-link="https://www.facebook.com/zsp9lodz">
+                <img src="assets/sm-insta.png" alt="Instagram" data-link="https://www.instagram.com/zsp9_im.ken_w_lodzi">
+                <img src="assets/sm-zsp.png" alt="ZSP" data-link="https://zsp9.pl/">
+            </div>
 
-            <section class="swiper mySwiper">
-                <div class="swiper-wrapper">
+            
+
+            <div class="screenshots">
+                <p class="description">Facebook</p>
+                <img src="assets/page-previews/facebook.png" alt="">
+            </div>
+
+            <script>
+                let socials = document.querySelectorAll('.socials img');
+                let screenshots = document.querySelector('.screenshots');
+
+                let screenshotDesc = screenshots.querySelector('.description');
+                let screenshot = screenshots.querySelector('img');
+            
+                const altToSrc = {
+                    'Facebook': 'assets/page-previews/facebook.png',
+                    'Instagram': 'assets/page-previews/insta.png',
+                    'ZSP': 'assets/page-previews/zsp.png'
+                }
+
+                function animateScreenshots() {
+                    screenshots.style.transform = `scale(0.85)`;
+                    setTimeout(e => {
+                        screenshots.style.transform = ``;
+                    }, 100)
+                }
+
+                socials.forEach(social => {
+                    let name = social.getAttribute('alt');
+                    let link = social.getAttribute('data-link');
                     
-                    <div class="swiper-slide">
-                        <div class="swiperHeading">
-                            <!-- <img src="./assets/QR codes/qr-fb.jpg" alt="QR" class="QR"> <!-- scaling doesn't work - why? how to fix? -->
-                            <h2>Facebook</h2>
-                        </div>
-                        <img src="./assets/QR codes/fb.png" alt="Facebook" class="social-preview">
-                    </div>
+                    let src = altToSrc[name];
 
-                    <div class="swiper-slide">
-                        <h2>Instagram</h2>
-                        <img src="./assets/QR codes/ig.png" alt="Instagram" class="social-preview">
-                    </div>
+                    social.addEventListener('click', () => {
+                        screenshotDesc.innerText = name;
+                        screenshot.src = src;    
 
-                    <div class="swiper-slide">
-                        <h2>Strona</h2>
-                        <img src="./assets/QR codes/mainpage.png" alt="Strona Szkoły" class="social-preview">
-        
-                    </div>
+                        animateScreenshots();
+
+                    })
+
+                    social.addEventListener('dblclick', e => {
+                        // TODO this should only happen if this is not a kiosk machine (no maniek cookie)
+                        if (0==1) {
+                            window.open(link, '_blank');
+                        }
+                    })
+                })
+
+            </script>
+
+
+            <div class="authors">
+                <p class="authors-title">Twórcy Mańka - 3E 2024</p>
+
+                <div class="list">
+                    <p class="author"> <span class="whomst">Mikołaj Lisowski</span> - <span class="what-for">główne oprogramowanie & wygląd</span></p>
+                    <p class="author"> <span class="whomst">Antoni Maciejewski</span> - <span class="what-for">oprogramowanie & back-end</span></p>
+                    <p class="author"> <span class="whomst">Laura Kołodziejczyk</span> - <span class="what-for">grafika mapy, Mańka & grafika zewnętrzna</span></p>
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </section>
+
+                <p>Projekt wykonany w miesiąc w ramach praktyk</p>
+
+
+                <script>
+                    let authors = document.querySelector('.authors');
+                    let title = authors.querySelector('.authors-title');
+
+
+                    // get current date
+
+                </script>
+            </div>
         </div>
 
         <div class="partners right">
@@ -121,25 +173,6 @@
     </div>
 
     <script src="./js/navigation.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-  <!-- Initialize Swiper -->
-  <script>
-    var swiper = new Swiper(".mySwiper", {
-      slidesPerView: 1,
-      spaceBetween: 30,
-      loop: true,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-    });
-  </script>
-
     <script src="./js/screensaver.js"></script>
 </body>
 </html>

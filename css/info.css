@@ -1,3 +1,7 @@
+.logo-container {
+  top: 2rem;
+}
+
 /* Info */
 .info-container {
     background-color: var(--lightblue-bg);

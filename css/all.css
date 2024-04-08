@@ -707,8 +707,10 @@ div.reset {
 
 @font-face {
     font-family: 'Determination Mono';
-    src: url('../fonts/DeterminationMono.ttf') format('truetype'),
-        url('../fonts/DeterminationMono.woff2') format('woff2');
+    /* src: url('../fonts/DeterminationMono.ttf') format('truetype'), */
+        /* url('../fonts/DeterminationMono.woff2') format('woff2'); */
+
+    src: url(../fonts/DeterminationMonoPolish.otf);
 }
 
 .dialog {

@@ -53,27 +53,35 @@
             <div class="socials">
                 <img src="assets/sm-facebook.png" alt="Facebook" data-link="https://www.facebook.com/zsp9lodz">
                 <img src="assets/sm-insta.png" alt="Instagram" data-link="https://www.instagram.com/zsp9_im.ken_w_lodzi">
-                <img src="assets/sm-zsp.png" alt="ZSP" data-link="https://zsp9.pl/">
+                <img src="assets/sm-zsp.png" alt="ZSP" data-link="https://zsp9.pl">
             </div>
 
             
 
             <div class="screenshots">
-                <p class="description">Facebook</p>
-                <img src="assets/page-previews/facebook.png" alt="">
+                <div class="description">
+                    <img src="assets/page-previews/qr-facebook.png" alt="qr">
+                    <p>Facebook</p>
+                    <img src="assets/page-previews/qr-facebook.png" alt="qr">
+                </div>
+                
+                <img class="screenshot" src="assets/page-previews/facebook.png" alt="screenshot">
             </div>
 
             <script>
                 let socials = document.querySelectorAll('.socials img');
                 let screenshots = document.querySelector('.screenshots');
 
-                let screenshotDesc = screenshots.querySelector('.description');
-                let screenshot = screenshots.querySelector('img');
+                let descriptionDiv = screenshots.querySelector('.description');
+                let description = descriptionDiv.querySelector('p');
+                let qrCodes = descriptionDiv.querySelectorAll('img');
+
+                let screenshot = screenshots.querySelector('.screenshot');
             
-                const altToSrc = {
-                    'Facebook': 'assets/page-previews/facebook.png',
-                    'Instagram': 'assets/page-previews/insta.png',
-                    'ZSP': 'assets/page-previews/zsp.png'
+                const altToSrc = { // [0] = src, [1] = qr src
+                    'Facebook': ['assets/page-previews/facebook.png', 'assets/page-previews/qr-facebook.png'],
+                    'Instagram': ['assets/page-previews/insta.png', 'assets/page-previews/qr-insta.png'],
+                    'ZSP': ['assets/page-previews/zsp.png', 'assets/page-previews/qr-zsp.png']
                 }
 
                 function animateScreenshots() {
@@ -87,11 +95,17 @@
                     let name = social.getAttribute('alt');
                     let link = social.getAttribute('data-link');
                     
-                    let src = altToSrc[name];
+                    let src = altToSrc[name][0];
+                    let qrSrc = altToSrc[name][1];
 
                     social.addEventListener('click', () => {
-                        screenshotDesc.innerText = name;
-                        screenshot.src = src;    
+                        description.innerText = name;
+                        screenshot.src = src;  
+                        console.log(screenshot);
+
+                        qrCodes.forEach(qr => {
+                            qr.src = qrSrc;
+                        })
 
                         animateScreenshots();
 
@@ -113,7 +127,7 @@
 
                 <div class="list">
                     <p class="author"> <span class="whomst">Mikołaj Lisowski</span> - <span class="what-for">główne oprogramowanie & wygląd</span></p>
-                    <p class="author"> <span class="whomst">Antoni Maciejewski</span> - <span class="what-for">oprogramowanie & back-end</span></p>
+                    <p class="author"> <span class="whomst">Antoni Maciejewski</span> - <span class="what-for">oprogramowanie & system</span></p>
                     <p class="author"> <span class="whomst">Laura Kołodziejczyk</span> - <span class="what-for">grafika mapy, Mańka & grafika zewnętrzna</span></p>
                 </div>
 

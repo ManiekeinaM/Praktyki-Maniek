@@ -6,6 +6,8 @@
     <title>Wheel</title>
     <link rel="stylesheet" href="./css/all.css">
     <link rel="stylesheet" href="./css/wheel.css">
+
+    <script src="./js/cookies.js"></script>
 </head>
 <body>
     <audio id="win_sound">

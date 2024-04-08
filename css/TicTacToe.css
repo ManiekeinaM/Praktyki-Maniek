@@ -48,35 +48,6 @@ main {
     border-bottom-right-radius: 25px;
 }
 
-@media (max-width: 500px) {
-    main {
-        flex-direction: column;
-    }
-
-    .games-side, .maniek-box {
-        width: calc(100% - 2rem);
-        border-radius: 0px;
-        height: 50%;
-    }
-
-    .games-side {
-        border-top-right-radius: 25px;
-        border-top-left-radius: 25px;
-    }
-
-    .maniek-box {
-        z-index: 2;
-        border-bottom-left-radius: 25px;
-        border-bottom-right-radius: 25px;
-    }
-
-    .maniek-box {
-        justify-content: end;
-    }
-}
-
-
-
 .maniek-box img {
     max-width: 100%;
     height: auto;
@@ -146,7 +117,7 @@ h1.game-name {
     background-color: white;
     border-top-left-radius: 2rem;
     border-top-right-radius: 2rem;
-    border: 1rem solid #b99a5a;
+    border: 0.5rem solid #b99a5a;
     margin: 0px;
     padding: 1rem;
 
@@ -202,7 +173,7 @@ span {
     justify-content: space-between;
     align-items: center;
 
-    margin-top: 1rem;
+    margin-top: 1.5rem;
 
     width: 30rem;
     max-width: 100%;
@@ -251,7 +222,7 @@ span {
     font-weight: bolder;
     
     position: absolute;
-    top: 1.5rem;
+    top: 0.25rem;
 
     font-size: 1.5rem;
 }
@@ -271,4 +242,41 @@ span {
 .score img:nth-child(3) {
     right: 0;
     transform: translateX(125%);
+}
+
+@media (max-width: 500px) {
+    main {
+        flex-direction: column;
+    }
+
+    .games-side, .maniek-box {
+        width: calc(100% - 2rem);
+        border-radius: 0px;
+        height: 50%;
+    }
+
+    .games-side {
+        border-top-right-radius: 25px;
+        border-top-left-radius: 25px;
+    }
+
+    .maniek-box {
+        z-index: 2;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+    .maniek-box {
+        justify-content: end;
+    }
+
+    .score {
+        top: 92%;
+    }
+    .score.maniek {
+        top: 0%;
+    }
+    .legend {
+        margin-top: 1rem;
+    }
 }

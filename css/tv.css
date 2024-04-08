@@ -1,0 +1,89 @@
+@font-face {
+    font-family: digital;
+    src: url(../fonts/digital.regular.ttf);
+}
+
+body {
+    margin: 0px;
+    overflow: hidden;
+    background-color: black;
+    font-family: "digital";
+    color: green;
+}
+
+#data-pass {
+    display: none;
+}
+
+.upper-controls {
+    display: flex;
+}
+
+.bottom-controls {
+    font-size: 4rem;
+    display: flex;
+    justify-content: space-around;
+    border: 0.2rem solid green;
+    padding: 0.8rem;
+}
+
+.bell-schedule {
+    display: flex;
+    justify-content: center;
+    border: 0.2rem solid green;
+    border-bottom: none;
+    text-wrap: nowrap;
+    width: 20%;
+    font-size: 3rem;
+}
+
+.bell-schedule > table {
+    text-align: center;
+}
+
+.big {
+    font-size: 5rem;
+}
+
+.light-green {
+    color: lawngreen;
+}
+
+video {
+    display: block;
+    height: auto;
+    width: 80%;
+    border: 0.2rem rgb(44, 44, 44) solid;
+    border-right: 0.2rem rgb(44, 44, 44) solid;
+}
+
+.additional-events {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+}
+
+.additional-events > * {
+    width: 33%;
+}
+
+.tv-clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: green;
+    font-size: 200%;
+    font-weight: bold;
+    font-family: "digital";
+    height: min-content;
+}
+
+.tv-clock p {
+    margin: 0;
+}
+
+.maniek-face > img {
+    width: 100%;
+    height: auto;
+}

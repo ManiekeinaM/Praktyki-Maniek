@@ -50,33 +50,99 @@
         </div>
 
         <div class="info-container">
-            <h1>Nasze media!</h1>
+            <div class="socials">
+                <img src="assets/sm-facebook.png" alt="Facebook" data-link="https://www.facebook.com/zsp9lodz">
+                <img src="assets/sm-insta.png" alt="Instagram" data-link="https://www.instagram.com/zsp9_im.ken_w_lodzi">
+                <img src="assets/sm-zsp.png" alt="ZSP" data-link="https://zsp9.pl">
+            </div>
 
-            <section class="swiper mySwiper">
-                <div class="swiper-wrapper">
-                    
-                    <div class="swiper-slide">
-                        <div class="swiperHeading">
-                            <!-- <img src="./assets/QR codes/qr-fb.jpg" alt="QR" class="QR"> <!-- scaling doesn't work - why? how to fix? -->
-                            <h2>Facebook</h2>
-                        </div>
-                        <img src="./assets/QR codes/fb.png" alt="Facebook" class="social-preview">
-                    </div>
+            
 
-                    <div class="swiper-slide">
-                        <h2>Instagram</h2>
-                        <img src="./assets/QR codes/ig.png" alt="Instagram" class="social-preview">
-                    </div>
-
-                    <div class="swiper-slide">
-                        <h2>Strona</h2>
-                        <img src="./assets/QR codes/mainpage.png" alt="Strona Szkoły" class="social-preview">
-        
-                    </div>
+            <div class="screenshots">
+                <div class="description">
+                    <img src="assets/page-previews/qr-facebook.png" alt="qr">
+                    <p>Facebook</p>
+                    <img src="assets/page-previews/qr-facebook.png" alt="qr">
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </section>
+                
+                <img class="screenshot" src="assets/page-previews/facebook.png" alt="screenshot">
+            </div>
+
+            <script>
+                let socials = document.querySelectorAll('.socials img');
+                let screenshots = document.querySelector('.screenshots');
+
+                let descriptionDiv = screenshots.querySelector('.description');
+                let description = descriptionDiv.querySelector('p');
+                let qrCodes = descriptionDiv.querySelectorAll('img');
+
+                let screenshot = screenshots.querySelector('.screenshot');
+            
+                const altToSrc = { // [0] = src, [1] = qr src
+                    'Facebook': ['assets/page-previews/facebook.png', 'assets/page-previews/qr-facebook.png'],
+                    'Instagram': ['assets/page-previews/insta.png', 'assets/page-previews/qr-insta.png'],
+                    'ZSP': ['assets/page-previews/zsp.png', 'assets/page-previews/qr-zsp.png']
+                }
+
+                function animateScreenshots() {
+                    screenshots.style.transform = `scale(0.85)`;
+                    setTimeout(e => {
+                        screenshots.style.transform = ``;
+                    }, 100)
+                }
+
+                socials.forEach(social => {
+                    let name = social.getAttribute('alt');
+                    let link = social.getAttribute('data-link');
+                    
+                    let src = altToSrc[name][0];
+                    let qrSrc = altToSrc[name][1];
+
+                    social.addEventListener('click', () => {
+                        description.innerText = name;
+                        screenshot.src = src;  
+                        console.log(screenshot);
+
+                        qrCodes.forEach(qr => {
+                            qr.src = qrSrc;
+                        })
+
+                        animateScreenshots();
+
+                    })
+
+                    social.addEventListener('dblclick', e => {
+                        // TODO this should only happen if this is not a kiosk machine (no maniek cookie)
+                        if (0==1) {
+                            window.open(link, '_blank');
+                        }
+                    })
+                })
+
+            </script>
+
+
+            <div class="authors">
+                <p class="authors-title">Twórcy Mańka - 3E 2024</p>
+
+                <div class="list">
+                    <p class="author"> <span class="whomst">Mikołaj Lisowski</span> - <span class="what-for">główne oprogramowanie & infrastruktura</span></p>
+                    <p class="author"> <span class="whomst">Antoni Maciejewski</span> - <span class="what-for">oprogramowanie & system</span></p>
+                    <p class="author"> <span class="whomst">Laura Kołodziejczyk</span> - <span class="what-for">zdjęcia mapy, Mańka & grafika zewnętrzna</span></p>
+                </div>
+
+                <p>Projekt wykonany w miesiąc w ramach praktyk</p>
+
+
+                <script>
+                    let authors = document.querySelector('.authors');
+                    let title = authors.querySelector('.authors-title');
+
+
+                    // get current date
+
+                </script>
+            </div>
         </div>
 
         <div class="partners right">
@@ -121,25 +187,6 @@
     </div>
 
     <script src="./js/navigation.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-  <!-- Initialize Swiper -->
-  <script>
-    var swiper = new Swiper(".mySwiper", {
-      slidesPerView: 1,
-      spaceBetween: 30,
-      loop: true,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-    });
-  </script>
-
     <script src="./js/screensaver.js"></script>
 </body>
 </html>

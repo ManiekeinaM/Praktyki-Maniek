@@ -9,6 +9,8 @@ cornerBounces = parseInt(cornerBounces);
 let screensaver = document.querySelector('.screensaver');
 let dialogScreen, maniekFace, dialog, score;
 
+let defaultDialogText = `* Jestem wygaszaczem ekranu. Kliknij mnie, by mnie wyłączyć.`;
+
 if (!screensaver) {
     screensaver = document.createElement('div');
     screensaver.classList.add('screensaver')
@@ -22,7 +24,7 @@ if (!screensaver) {
     dialogScreen.appendChild(maniekFace);
 
     dialog = document.createElement('p');
-    dialog.innerHTML = `* Jestem wygaszaczem ekranu. Kliknij mnie, by mnie wyłączyć.`;
+    dialog.innerHTML = defaultDialogText;
     dialogScreen.appendChild(dialog);
 
     score = document.createElement('p');
@@ -135,13 +137,19 @@ init_bounce();
 
 
 // Screensaver visibility
-let screensaverRequirement = 60;
+let screensaverRequirement = 75;
 
 let screensaverEnabled = false;
 function updateScreensaverVisibility() {
     if (INACTIVITY_TIMER >= screensaverRequirement) {
+        if (!screensaverEnabled) {
+            // The moment this change was made!
+            dialog.innerHTML = defaultDialogText;
+        }
+
         screensaverEnabled = true;
         screensaver.style.transform = 'scale(1)';
+
     } else {
         screensaverEnabled = false;
         screensaver.style.transform = 'scale(0)'
@@ -150,7 +158,7 @@ function updateScreensaverVisibility() {
 
 // Inactivity timer [starts at 0, appears after it reaches screensaverRequirement]
 
-let INACTIVITY_TIMER = screensaverRequirement - 5;
+let INACTIVITY_TIMER = 0;
 function incrementTimer() {
     INACTIVITY_TIMER += 1;
     console.log(INACTIVITY_TIMER);

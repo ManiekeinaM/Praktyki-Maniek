@@ -10,9 +10,12 @@
 </head>
 <body>
     <div class="upper-controls">
+        <!-- Video container -->
         <video id="vidplayer" autoplay muted>
             <source id="vidsource" src="./example-videos/LEGO1.mp4" type="video/mp4">
         </video>
+
+        <!-- Bell schedule with highlight -->
         <div class="bell-schedule">
             <table>
                 <tr><th>Lekcja godz</th></tr>
@@ -30,6 +33,7 @@
         </div>
     </div>
 
+    <!-- Timer and clock -->
     <div class="bottom-controls">
         <div class="break">
             <p id="timer">Koniec przerwy za: <span class="light-green">10MIN</span></p>
@@ -39,6 +43,7 @@
         </div>  
     </div>
 
+    <!-- Videos from file transfer -->
     <div id="data-pass"><?php
             $dir = './example-videos';
             $videos = scandir($dir,1);
@@ -49,12 +54,14 @@
     ?></div>
 
     <script>
+        //Retrieving videos
         let dir = '/example-videos';
         let passed_data = document.getElementById("data-pass").innerHTML;
         let VideosList = passed_data.split(' ');
         VideosList.pop();
         console.log(VideosList);
 
+        //Videos changer
         let VideoPlayer = document.getElementById("vidplayer");
         let VideoSource = document.getElementById("vidsource");
 
@@ -75,10 +82,11 @@
         const clock = document.getElementById("clock");
         const timer = document.getElementById("timer");
         let timeLeft;
-
         startTime();
 
         function startTime() {
+
+            //Clock handler
             const currentTime = new Date();
             let currentHour = currentTime.getHours();
             let currentMinute = currentTime.getMinutes();
@@ -87,17 +95,27 @@
             if(currentMinute < 10) currentMinute = `0${currentMinute}`;
             clock.innerHTML = `${currentHour}:${currentMinute}`;
 
-            //Podkreślenie obecnej lekcji
             
+            //Bell schedule highlight
             document.getElementById(lessonCheck(currentHour, currentMinute)).classList.add("light-green");
             if(document.getElementById(lessonCheck(currentHour, currentMinute)-1).classList.contains("light-green"));
             document.getElementById(lessonCheck(currentHour, currentMinute)-1).classList.remove("light-green");
             
+            //Remaining time counter, changes in lessonCheck
             timer.innerHTML = timeLeft;
+
             setTimeout(startTime, 1000);
         }
 
+        //Function to estimate current lesson and change time left on timer
         function lessonCheck(currentHour, currentMinute) {
+            //What it does: 
+            //- looks for current lesson based on current time
+            //- it takes advantage of the fact that each lesson compared to previous ends 5 minutes sooner, only if we look at the minutes. 
+            //- It's worth mentioning that longer break makes the lesson end 5 minutes later than other, which forces checking if lesson == 3 in some places
+            //- vHour and vMinute store closest lesson ending compared to currrent time
+            //- rest is just simple math
+
             let currentLesson = 0;
             let vHour = 7;
             let vMinute = 50;
@@ -106,6 +124,7 @@
                     timeLeft = vMinute-currentMinute;
                     if(timeLeft < 0) timeLeft+=60;
                     timeLeft = `Koniec lekcji za: <span class="light-green"><span class="big">${timeLeft}</span>min</span>`;
+
                     return currentLesson;
                 }else if(currentHour == vHour) {
                     timeLeft = vMinute+10;
@@ -122,6 +141,7 @@
                     return ++currentLesson;
                 }
 
+                //Skiping to next lesson
                 if(currentLesson!=3){
                     vMinute-=5;
                     vHour++;
@@ -129,7 +149,6 @@
                     vMinute+=5;
                     vHour++;
                 }
-                breakFinished = false;
                 currentLesson++;
             }while(true)
         }

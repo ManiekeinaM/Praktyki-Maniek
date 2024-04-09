@@ -23,7 +23,7 @@ const imgPaths = {
             "dot17": { x: 0.91100, y: 0.29562, desc: "Sala 41 (technik mechatronik)", label: "41", dni_otwarte: "technik mechatronik" }, // sala 41
             "dot21": { x: 0.62083, y: 0.55896, desc: "Praktyka zawodowa (Ryszard Mirys)", label: "Praktyka" }, // mirys SALA
             "dot22": { x: 0.10667, y: 0.46226, desc: "Toaleta A", icon: 'toilet' }, // wc A
-            "dot23": { x: 0.10250, y: 0.75236, icon: "musicNote", desc: "Muzyka!" }, // nuty
+            "dot23": { x: 0.10250, y: 0.75236, icon: "musicNote", desc: "Muzyka!", dni_otwarte: "Muzyka"}, // nuty
             "dot18": { x: 0.91000, y: 0.47524, desc: "SCHODY B - GÓRA", icon: "stairsUp" }, // schody b gora
             "dot19": { x: 0.91000, y: 0.43706, desc: "SCHODY B - DÓL", icon: "stairsDown" }, // schody b dol
             "dot20": { x: 0.09200, y: 0.52900, desc: "SCHODY A - GÓRA", icon: "stairsUp" }, // schody a gora
@@ -550,6 +550,8 @@ function createAllButtons() {
 
                 // Set the icon of the button
                 if (values.icon) {
+                    if (values.dni_otwarte && !IS_DNI_OTWARTE) continue;
+
                     element = document.createElement("img");
                     element.src = mapIcons[values.icon];
 
@@ -620,7 +622,7 @@ function createAllButtons() {
                     percentage += 110;
                 }
 
-                if (values.dni_otwarte) {
+                if (values.dni_otwarte && IS_DNI_OTWARTE) {
                     if (percentage == 0) percentage = 60;
 
                     let sparkle = document.createElement("img");

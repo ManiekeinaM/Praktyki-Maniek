@@ -39,3 +39,5 @@ function isMachineManiek() {
 const IS_MANIEK = isMachineManiek();
 
 // Figure out whether today are the open days
+
+const IS_DNI_OTWARTE = true;

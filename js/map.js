@@ -79,7 +79,7 @@ function updateMap(x, y) {
     translateX = Math.max(-800, translateX);
 
     translateY = Math.min(500, translateY);
-    translateY = Math.max(-1750, translateY);
+    translateY = Math.max(-1950, translateY);
 
     for (let i = mapThresholds.length - 1; i >= 0; i--) {
         if (translateY < mapThresholds[i].threshold) {

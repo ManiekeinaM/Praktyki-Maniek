@@ -151,7 +151,7 @@
                     vHour++;
                 }
                 currentLesson++;
-            }while(true)
+            }while(true);
         }
         
     </script>

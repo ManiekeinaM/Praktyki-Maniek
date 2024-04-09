@@ -22,3 +22,20 @@ function getCookie(cname) {
 
     return "";
 }
+
+// Figure out whether the machine is Maniek
+function isMachineManiek() {
+    let cookie = getCookie('isManiek');
+
+    if (cookie == '' || !cookie) {
+      console.log('MACHINE IS NOT MANIEK');
+      return false;
+    }
+
+    console.log('MACHINE IS MANIEK!!!');
+    return true;
+}
+
+const IS_MANIEK = isMachineManiek();
+
+// Figure out whether today are the open days

@@ -22,7 +22,8 @@ body {
 .bottom-controls {
     font-size: 4rem;
     display: flex;
-    justify-content: space-around;
+    position: relative;
+    justify-content: space-between;
     border: 0.2rem solid green;
     padding: 0.5rem;
 }
@@ -40,6 +41,12 @@ body {
 .bell-schedule > table {
     text-align: center;
 }
+
+.maniek-face{
+  width: 10%;
+  height: auto;
+}
+
 
 .big {
     font-size: 5rem;

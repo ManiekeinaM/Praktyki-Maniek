@@ -637,7 +637,7 @@ div.reset {
     position: fixed;
     font-size: 16px;
 
-    top: calc(100% - 0.5rem);
+    top: calc(100% - 1rem);
     left: 50%;
     transform: translate(-50%, -100%);
 
@@ -664,7 +664,7 @@ div.reset {
     height: 0;
     border-left: 0.5em solid transparent;
     border-right: 0.5em solid transparent;
-    border-bottom: 1.1em solid rgba(0,0,0,0.5);
+    border-bottom: 1.7em solid rgba(0,0,0,0.5);
     z-index: 10;
 }
 
@@ -722,18 +722,27 @@ div.reset {
 
 .button .label {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 50%;
 
-    transform: translate(-50%, -140%);
+    transform: translate(-50%, 30%);
 
     /* white-space: nowrap; */
     margin: 0;
-    color: var(--zsp-blue-dark);
-    font-weight: bolder;
+    /* color: var(--zsp-blue-dark); */
+    color: white;
+    text-shadow: 1px 1px 10px black,
+                0 0 10px black;
+
+    line-height: 1em;
+
+    font-size: 1.2em;
+    font-weight: bold;
     text-align: center;
 
     font-family: var(--maniek-font);
+
+    z-index: 100;
 }
 
 .button::after { /* Hitbox */

@@ -35,35 +35,39 @@
 
         <div class="games-side">
         
-    
-            <!-- Win popup -->
-            <div class="win-popup" id="winPopup">
-                <p id="popupText"></p>
-    
-                <div class="popup-btns">
-                    <button id="resetBtn"><img src="./assets/retry.png"></button>
+            <!-- =========== -->
+            <!-- TIC TAC TOE -->
+
+            <section class="tic-tac-toe">
+                <!-- Win popup -->
+                <div class="win-popup" id="winPopup">
+                    <p class="popupText" id="popupText"></p>
+
+                    <div class="popup-btns">
+                        <button id="resetBtn"><img src="./assets/retry.png"></button>
+                    </div>
                 </div>
-            </div>
-    
-            <!-- Main tic tac toe board -->
-            <div class="game-container" id="game-board">
-                <h1 class="game-name">
-                    <span class="blue">Logo</span> i <span class="brown">Tarcza</span>
-                </h1>
-            </div>
-    
-            <!-- Icons at the bottom/top -->
-            <div class="legend">
-                <div class="player">
-                    <img src="./assets/krzyzyk.png" alt="X">
-                    <span class="blue">Gracz</span>
+
+                <!-- Main tic tac toe board -->
+                <div class="game-container" id="game-board">
+                    <h1 class="game-name">
+                        <span class="blue">Logo</span> i <span class="brown">Tarcza</span>
+                    </h1>
                 </div>
-                <div class="opponent">
-                    <img src="./assets/kolko.png" alt="O">
-                    <span class="brown">Maniek</span>
+
+                <!-- Icons at the bottom/top -->
+                <div class="legend">
+                    <div class="player">
+                        <img src="./assets/krzyzyk.png" alt="X">
+                        <span class="blue">Gracz</span>
+                    </div>
+                    <div class="opponent">
+                        <img src="./assets/kolko.png" alt="O">
+                        <span class="brown">Maniek</span>
+                    </div>
                 </div>
-            </div>
-    
+            </section>
+
             <div class="score player">
                 <img src="./assets/krzyzyk.png">
                 <span class="wins">0 wygranych</span>
@@ -71,8 +75,8 @@
             </div>
         </div>
     
-        <!--Maniek-->
-        <div class="maniek-box">
+        <!-- Maniek -->
+        <div class="maniek-side">
             <img class="maniek" src="./assets/maniek-faces/thinking.gif">
     
             <div class="score maniek">
@@ -113,10 +117,16 @@
         </div>
     </div>
 
-    <script src="./js/tictactoe.js"></script>
-    <script src="./js/navigation.js"></script>
-    <script src="./js/enter-fullscreen.js"></script>
+    <!-- Game scripts -->
+    <script src="js/games/game-navigation.js"></script>
 
-    <script src="./js/screensaver.js"></script>
+    <script src="js/games/tictactoe.js"></script>
+    <script src="js/games/flappymaniek.js"></script>
+
+
+    <script src="js/navigation.js"></script>
+    <script src="js/enter-fullscreen.js"></script>
+
+    <script src="js/screensaver.js"></script>
 </body>
 </html>

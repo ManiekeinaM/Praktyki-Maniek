@@ -38,9 +38,10 @@
         <div class="break">
             <p id="timer">Koniec przerwy za: <span class="light-green">10MIN</span></p>
         </div>
+        <img class="maniek-face" src="./assets/maniek-faces/wink.gif">
         <div class="timer">
             <p id="clock">09:46</p>
-        </div>  
+        </div>
     </div>
 
     <!-- Videos from file transfer -->

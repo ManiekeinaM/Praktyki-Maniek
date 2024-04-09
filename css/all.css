@@ -216,6 +216,8 @@ body {
     overflow-y: auto;
 
     user-select: none;
+
+    transition: 0.25s;
 }
 
 .room-selection-button {
@@ -233,7 +235,7 @@ body {
 
 .room-selection-button img {
     background-color: #ebefff;
-    border: 4px solid rgba(56, 92, 255, 0.5);
+    border: 0.2rem solid rgba(56, 92, 255, 0.5);
     border-radius: 100rem;
 
     width: 3rem;
@@ -252,11 +254,11 @@ body {
     background-color: #ebefff;
     padding: 0.5rem;
     border-radius: 1rem;
-    border: 2px solid rgba(56, 92, 255, 0.5); 
+    border: 0.2rem solid rgba(56, 92, 255, 0.5); 
 }
 
 .room-selection.hidden {
-    display: none;
+    transform: scale(0) translateY(-75%);
 }
 
 .room-selection-button img:hover {
@@ -480,6 +482,10 @@ main {
     padding-left: 20px;
     padding-right: 20px;
     color: black;
+
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, 0%);
     
     background-color: lightgray;
     border: 2px solid gray;
@@ -489,6 +495,43 @@ main {
 
     z-index: 100;
 }
+
+.popup.dni-otwarte {
+    background-color: pink;
+    border: 2px solid lightcoral;
+    color: lightcoral;
+}
+
+.popup.dni-otwarte::before {
+    color: lightcoral;
+    content: 'DNI OTWARTE';
+    position: absolute;
+
+    background-color: pink;
+    border: 1px solid lightcoral;
+    border-radius: 1rem;
+    padding: 0.2rem;
+
+    font-family: var(--maniek-font);
+    font-weight: 100;
+
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -110%);
+    
+    /* width: 100%; */
+}
+
+img.dni-otwarte {
+    position: absolute;
+    top: -75%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+
+
 .button-layer > *:hover .popup {
     display: block;
 }

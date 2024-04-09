@@ -22,9 +22,10 @@ body {
 .bottom-controls {
     font-size: 4rem;
     display: flex;
-    justify-content: space-around;
+    position: relative;
+    justify-content: space-between;
     border: 0.2rem solid green;
-    padding: 0.8rem;
+    padding: 0.5rem;
 }
 
 .bell-schedule {
@@ -40,6 +41,12 @@ body {
 .bell-schedule > table {
     text-align: center;
 }
+
+.maniek-face{
+  width: 10%;
+  height: auto;
+}
+
 
 .big {
     font-size: 5rem;
@@ -57,33 +64,6 @@ video {
     border-right: 0.2rem rgb(44, 44, 44) solid;
 }
 
-.additional-events {
-    display: flex;
-    justify-content: center;
-    background-color: black;
-}
-
-.additional-events > * {
-    width: 33%;
-}
-
-.tv-clock {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    color: green;
-    font-size: 200%;
-    font-weight: bold;
-    font-family: "digital";
-    height: min-content;
-}
-
-.tv-clock p {
-    margin: 0;
-}
-
-.maniek-face > img {
-    width: 100%;
-    height: auto;
+.break>p, .timer>p {
+    margin: 3rem;
 }

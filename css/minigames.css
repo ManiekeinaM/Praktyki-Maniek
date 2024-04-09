@@ -1,0 +1,311 @@
+/* OGÓLNE */
+
+* {
+    font-family:'Courier New', Courier, monospace;
+}
+
+:root {
+    --blue: #1434B4;
+    --darkblue: #112b95;
+
+    --brown: #CAB282;
+    --darkbrown: #817453;
+}
+
+body {
+    background-color: rgb(230,230,230);
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-navigation {
+    position: absolute;
+    top: 0;
+    left: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transform: translate(-50%, 0%);
+
+    z-index: 50
+}
+
+
+
+/* LOGO I TARCZA (GRA) */
+
+.games-side, .maniek-box {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 0px;
+    margin: 0;
+    height: calc(100% - 2rem);
+
+    position: relative;
+    animation: popIn 0.25s;
+}
+
+.games-side {
+    background-color: var(--brown);
+    border: 1rem solid var(--darkbrown);
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.maniek-box {
+    background-color: var(--blue);
+    border: 1rem solid var(--darkblue);
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.maniek-box img {
+    max-width: 100%;
+    height: auto;
+}
+
+header {
+    text-align: center;
+}
+.game-container {
+    position: relative;
+    background-color: var(--darkbrown);
+
+    border-radius: calc(25px + 1rem);
+    border: 1rem solid #b99a5a;
+
+    width: 30rem;
+    aspect-ratio: 1/1;
+    max-width: calc(100% - 2rem);
+    max-height: auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.game-container div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.game-container div:nth-child(2) {
+    border-top-left-radius: 25px;
+}
+.game-container div:nth-child(4) {
+    border-top-right-radius: 25px;
+}
+.game-container div:nth-child(8) {
+    border-bottom-left-radius: 25px;
+}
+.game-container div:nth-child(10) {
+    border-bottom-right-radius: 25px;
+}
+
+.game-container div img {
+    width: 75%;
+    height: 75%;
+    user-select: none;
+
+    transition: transform 0.1s;
+}
+
+h1.game-name {
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+
+    width: 55%;
+
+    font-size: 2rem;
+
+    /* font-size: 2rem; */
+    background-color: white;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    border: 0.5rem solid #b99a5a;
+    margin: 0px;
+    padding: 1rem;
+
+    text-align: center;
+    white-space: nowrap;
+}
+
+.win-popup {
+    position: fixed;
+    display: none;
+    border-radius: 25px;
+    border: 0.5rem solid #112b95;
+    background-color: #1434b4de;
+    color: white;
+    font-weight: bold;
+    font-size: 3rem;
+    padding: 2rem;
+    text-align: center;
+
+    z-index: 100;
+}
+
+.popup-btns {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.popup-btns button {
+    border-radius: 25px;
+    border: 0.5rem solid grey;
+    background-color: white;
+}
+
+.popup-btns img {
+    width: 3rem;
+}
+
+span.blue {
+    color: #2247dd;
+}
+span.brown {
+    color: #b99a5a;
+}
+span {
+    font-weight: bolder;
+}
+
+
+.legend {
+    position: relative;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 1.5rem;
+
+    width: 30rem;
+    max-width: 100%;
+    height: 3rem;
+}
+
+.legend div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+
+    padding: 0.75rem;
+
+    height: 100%;
+    min-width: 20%;
+
+    background-color: rgba(255, 255, 255, 0.267);
+    border: 0.25rem solid #b99a5a;
+    border-radius: 5rem;
+}
+
+.legend div img {
+    height: 100%;
+    width: auto;
+}
+.legend div span {
+    font-size: 1.5rem;
+    font-weight: bolder;
+}
+
+.games-side .score {
+    background-color: var(--blue);
+    border: 0.25rem solid var(--darkblue);
+}
+
+.score {
+    position: relative;
+
+    background-color: var(--brown);
+    border: 0.25rem solid var(--darkbrown);
+    padding: 0.75rem;
+    border-radius: 10rem;
+
+    color: ghostwhite;
+    font-weight: bolder;
+    
+    position: absolute;
+    top: 0.25rem;
+
+    font-size: 1.5rem;
+}
+
+.score img {
+    position: absolute;
+    height: 100%;
+    width: auto;
+
+    top: 0;
+}
+
+.score img:nth-child(1) {
+    left: 0;
+    transform: translateX(-125%);
+}
+.score img:nth-child(3) {
+    right: 0;
+    transform: translateX(125%);
+}
+
+/* FLAPPY MANIEK */
+
+
+
+/* KOMPATYBILNOŚĆ MOBILNA */
+
+@media (max-width: 500px) {
+    main {
+        flex-direction: column;
+    }
+
+    .games-side, .maniek-box {
+        width: calc(100% - 2rem);
+        border-radius: 0px;
+        height: 50%;
+    }
+
+    .games-side {
+        border-top-right-radius: 25px;
+        border-top-left-radius: 25px;
+    }
+
+    .maniek-box {
+        z-index: 2;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+    .maniek-box {
+        justify-content: end;
+    }
+
+    .score {
+        top: 92%;
+    }
+    .score.maniek {
+        top: 0%;
+    }
+    .legend {
+        margin-top: 1rem;
+    }
+}
+
+
+/*  */

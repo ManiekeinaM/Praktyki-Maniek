@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maniek - Minigry</title>
     <link rel="stylesheet" href="./css/all.css">
-    <link rel="stylesheet" href="./css/TicTacToe.css">
+    <link rel="stylesheet" href="./css/minigames.css">
 
     <script src="./js/cookies.js"></script>
 </head>
@@ -21,6 +21,17 @@
                 <br> <span class="blue">(wciśnij ten przycisk)</span>
             </button>
         </div>
+
+        <div class="game-navigation">
+            <div class="button" data-game="logoitarcza">
+                <img src="assets/kolko.png" alt="Logo i Tarcza">
+            </div>
+    
+            <div class="button" data-game="flappymaniek">
+                <img src="assets/sparkle.png" alt="Flappy Maniek">
+            </div>
+        </div>
+
 
         <div class="games-side">
         
@@ -76,28 +87,28 @@
 
 
 
-
+    
 
     <!-- Navigation button container / zakładki -->
     <div class="navigation-container">
-        <div class="button" data-tab="index.html">
+        <div class="button" data-tab="index.html" data-name="Mapa">
             <!-- Mapa -->
-            <img src="./assets/locationPin.png" alt="mapa">
+            <img src="./assets/locationPin.png" alt="Mapa">
         </div> 
 
-        <div class="button" data-tab="info.html">
+        <div class="button" data-tab="info.html" data-name="Info">
             <!-- Info i historia szkoły -->
-            <img src="./assets/info.png" alt="info">
+            <img src="./assets/info.png" alt="Info">
         </div>
 
-        <div class="button selected" data-tab="minigames.html">
+        <div class="button selected" data-tab="minigames.html" data-name="Minigry">
             <!-- Minigierki -->
-            <img src="./assets/minigames.png" alt="minigry">
+            <img src="./assets/minigames.png" alt="Minigry">
         </div>
 
-        <div class="button" data-tab="wheel2.php">
+        <div class="button" data-tab="wheel.php" data-name="Koło fortuny">
             <!-- Koło fortuny -->
-            <img src="./assets/wheel.png" alt="koło">
+            <img src="./assets/wheel.png" alt="Koło fortuny">
             <img src="./assets/sparkle.png" alt="" class="decoration">
         </div>
     </div>

@@ -5,8 +5,19 @@ const buttons = navigation.querySelectorAll(".button");
 
 buttons.forEach(button => {
     const target = button.dataset.tab;
+    let name = button.dataset.name;
 
     button.addEventListener("click", e => {
         window.location.href = target;
     })
+
+    // Add a label above the button
+    if (name) {
+        let label = document.createElement('p');
+        label.classList.add('label');
+        label.innerText = name;
+    
+        button.appendChild(label);
+    }
+
 })

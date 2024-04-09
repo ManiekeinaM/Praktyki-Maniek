@@ -24,6 +24,7 @@
     --blue-bg-border: rgba(100, 129, 255, 0.2);
 
     --zsp-blue: rgba(56, 92, 255, 0.9);
+    --zsp-blue-dark: #617eff;
 
     --blue: #1434B4;
     --darkblue: #112b95;
@@ -527,6 +528,9 @@ img.dni-otwarte {
     top: -75%;
     left: 50%;
 
+    height: 90%;
+    width: auto;
+
     transform: translate(-50%, -50%);
 }
 
@@ -714,6 +718,22 @@ div.reset {
     width: 75%;
     height: 75%;
     animation: spinDecoration 2.5s ease-in-out infinite;
+}
+
+.button .label {
+    position: absolute;
+    top: 0;
+    left: 50%;
+
+    transform: translate(-50%, -140%);
+
+    /* white-space: nowrap; */
+    margin: 0;
+    color: var(--zsp-blue-dark);
+    font-weight: bolder;
+    text-align: center;
+
+    font-family: var(--maniek-font);
 }
 
 .button::after { /* Hitbox */

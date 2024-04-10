@@ -29,8 +29,12 @@
     --blue: #1434B4;
     --darkblue: #112b95;
 
+
     --brown: #CAB282;
     --darkbrown: #817453;
+    --green: rgb(87, 172, 39);
+    --lightgreen: rgb(153, 243, 101);
+
 
     --zsp-font: 'Raleway', 'sans-serif';
     --maniek-font: 'Determination Mono', monospace;

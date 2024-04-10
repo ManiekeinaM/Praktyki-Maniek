@@ -24,14 +24,14 @@ main {
 
 .game-navigation {
     position: absolute;
-    top: 0;
+    top: 5%;
     left: 50%;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    transform: translate(-50%, 0%);
+    transform: translate(-50%, -50%);
 
     z-index: 50
 }
@@ -39,6 +39,20 @@ main {
 .game-navigation .button {
     border-radius: 10px;
 
+}
+
+.game-navigation .button.selected::after {
+    content: "";
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 0.5em solid transparent;
+    border-right: 0.5em solid transparent;
+    border-bottom: 1.1em solid var(--zsp-blue);
+    z-index: 10;
 }
 
 .game-navigation .button .workinprogress {
@@ -82,7 +96,43 @@ main {
     border: 1rem solid var(--darkbrown);
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
+
+    transition: background-color 0.5s, border-color 0.5s;
 }
+
+.logoitarcza {
+    transition: 0.5s;
+}
+.logoitarcza.hidden {
+    display: block;
+    transform: scale(0);
+}
+
+/* Kolory gier */
+.games-side.logoitarcza {
+    background-color: var(--brown);
+    border-color: var(--darkbrown)
+}
+
+.games-side.flappymaniek {
+    background-color: var(--lightgreen);
+    border-color: var(--green);
+}
+
+/* Animacja zmiany gier */
+.games-side section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.5s;
+}
+
+.games-side section.hidden {
+    display: block;
+    transform: translate(-50%, -50%) scale(0);
+}
+
 
 .maniek-side {
     background-color: var(--blue);
@@ -304,6 +354,15 @@ h1 span {
 
 /* FLAPPY MANIEK */
 
+section.flappymaniek .screen {
+    background-color: var(--lightblue-bg);
+    border: 1rem solid var(--lightblue-bg-border);
+
+    width: 40vw;
+    height: 30vw;
+
+    border-radius: 2rem;
+}
 
 
 /* KOMPATYBILNOŚĆ MOBILNA */

@@ -23,23 +23,23 @@
         </div>
 
         <div class="game-navigation">
-            <div class="button" data-game="logoitarcza">
+            <div class="button selected" data-game="logoitarcza" data-name="Logo i Tarcza">
                 <img src="assets/logoitarcza.png" alt="Logo i Tarcza">
             </div>
     
-            <div class="button" data-game="flappymaniek">
+            <div class="button" data-game="flappymaniek" data-name="Flappy Maniek">
                 <img src="assets/flappymaniek.png" alt="Flappy Maniek">
                 <p class="workinprogress">WIP</p>
             </div>
         </div>
 
 
-        <div class="games-side">
+        <div class="games-side logoitarcza">
         
             <!-- =========== -->
             <!-- TIC TAC TOE -->
 
-            <section class="tic-tac-toe">
+            <section class="logoitarcza">
                 
 
                 <!-- Main tic tac toe board -->
@@ -77,7 +77,16 @@
                 </div>
             </section>
 
-            <div class="score player">
+            <!-- ============= -->
+            <!-- FLAPPY MANIEK -->
+
+            <section class="flappymaniek hidden">
+                <div class="screen">
+
+                </div>
+            </section>
+
+            <div class="score player logoitarcza">
                 <img src="./assets/krzyzyk.png">
                 <span class="wins">0 wygranych</span>
                 <img src="./assets/krzyzyk.png">
@@ -88,7 +97,7 @@
         <div class="maniek-side">
             <img class="maniek" src="./assets/maniek-faces/thinking.gif">
     
-            <div class="score maniek">
+            <div class="score maniek logoitarcza">
                 <img src="./assets/kolko.png">
                 <span class="wins">0 wygranych</span>
                 <img src="./assets/kolko.png">

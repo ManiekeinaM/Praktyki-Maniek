@@ -42,7 +42,7 @@ function updateCookie() {
 }
 
 
-let gameBoard = document.getElementById("game-board");
+let gameBoard = document.querySelector('.tiles');
 
 let current_player = 1;
 let MovesCount = 0;
@@ -54,6 +54,7 @@ for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
         let area = document.createElement("div");
         area.id = i + '_' + j;
+        area.classList.add("tile");
 
         let img = document.createElement("img");
         img.src = './assets/empty.png';
@@ -227,7 +228,7 @@ document.getElementById("resetBtn").addEventListener("click", e => {
 
     setManiekMood("default");
 
-    let imgs = document.querySelectorAll(".game-container div img");
+    let imgs = document.querySelectorAll(".tiles .tile img");
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             imgs[i * 3 + j].src = "./assets/empty.png";

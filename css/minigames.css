@@ -113,34 +113,39 @@ header {
     aspect-ratio: 1/1;
     max-width: calc(100% - 2rem);
     max-height: auto;
+}
 
+.game-container .tiles {
+    width: 100%;
+    height: 100%;
+    
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 1rem;
 }
 
-.game-container div {
+.tiles .tile {
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: white;
 }
 
-.game-container div:nth-child(2) {
+.tiles div:nth-child(1) {
     border-top-left-radius: 25px;
 }
-.game-container div:nth-child(4) {
+.tiles div:nth-child(3) {
     border-top-right-radius: 25px;
 }
-.game-container div:nth-child(8) {
+.tiles div:nth-child(7) {
     border-bottom-left-radius: 25px;
 }
-.game-container div:nth-child(10) {
+.tiles div:nth-child(9) {
     border-bottom-right-radius: 25px;
 }
 
-.game-container div img {
+.tiles .tile img {
     width: 75%;
     height: 75%;
     user-select: none;
@@ -172,8 +177,12 @@ h1.game-name {
 }
 
 .win-popup {
-    position: fixed;
+    position: absolute;
     display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
     border-radius: 25px;
     border: 0.5rem solid #112b95;
     background-color: #1434b4de;

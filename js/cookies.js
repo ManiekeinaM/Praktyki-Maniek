@@ -25,6 +25,11 @@ function getCookie(cname) {
 
 // Figure out whether the machine is Maniek
 function isMachineManiek() {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      console.log("Mobilne!");
+      return false;
+    }
+
     let cookie = getCookie('isManiek');
 
     if (cookie == '' || !cookie) {

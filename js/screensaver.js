@@ -101,6 +101,7 @@ function handle_collision() {
         // flip x incrementation
         xIncrement *= -1;
         flipsDone += 1;
+        // initConfetti();
     }
 
     if (top < 0 || top + height > window_height) {
@@ -115,6 +116,7 @@ function handle_collision() {
         // It hit a corner!
 
         console.log("HIT CORNER");
+        initConfetti();
         cornerBounces += 1;
         updateCornerBounces();
     }

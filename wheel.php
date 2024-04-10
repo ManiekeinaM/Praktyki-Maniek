@@ -82,8 +82,8 @@
         </div>
     </div>
 
-    <script src="./js/include-confetti.js"></script>
-    <script src="./js/wheel.js"></script>
-    <script src="./js/navigation.js"></script>
+    <script src="js/include-confetti.js"></script>
+    <script src="js/wheel.js"></script>
+    <script src="js/navigation.js"></script>
 </body>
 </html>

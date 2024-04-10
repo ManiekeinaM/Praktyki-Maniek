@@ -866,3 +866,16 @@ div.reset {
 .camera-canvas {
     display: none;
 }
+
+
+.confetti {
+    top: 0;
+    width: 100vw;
+    position: absolute;
+    margin: 0 auto;
+    /* border: 1px solid #ddd; */
+    user-select: none;
+    pointer-events: none;
+
+    z-index: 10000;
+}

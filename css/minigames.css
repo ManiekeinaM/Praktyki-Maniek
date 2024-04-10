@@ -41,6 +41,24 @@ main {
 
 }
 
+.game-navigation .button .workinprogress {
+    color: orange;
+    font-family: var(--maniek-font);
+    font-size: 2rem;
+
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 0 0 5px black,
+                0 0 5px black,
+                0 0 5px black;
+
+    z-index: 101;
+
+}
+
 
 
 /* LOGO I TARCZA (GRA) */

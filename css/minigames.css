@@ -402,6 +402,12 @@ section.flappymaniek .screen {
     .legend {
         margin-top: 1rem;
     }
+
+    section.flappymaniek .screen {
+        width: 75vw;
+        height: 30vh;
+
+    }
 }
 
 

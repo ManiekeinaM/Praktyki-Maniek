@@ -1,3 +1,5 @@
+let screensaverRequirement = 75; // How many seconds until it appears?
+let screensaverEnabled = false;
 
 let CORNERBOUNCE_COOKIE_NAME = "cornerbounces";
 let cornerBounces = getCookie(CORNERBOUNCE_COOKIE_NAME) || 0;
@@ -69,7 +71,7 @@ function getRandomFaceColor() {
 
 
 // Bouncing Screensaver Face
-let xIncrement = 1, yIncrement = 1;
+let xIncrement = 3, yIncrement = 3;
 
 let currentFilter = '';
 
@@ -80,7 +82,8 @@ function init_bounce() {
     let randomLeft = Math.floor(Math.random() * 200);
     screensaverFace.style = `top: ${randomTop}px; left: ${randomLeft}px; ${currentFilter}`;
 
-    setInterval(frame, 5);
+    frame();
+    // setInterval(frame, 5);
 }
 
 function update_color() {
@@ -123,7 +126,10 @@ function handle_collision() {
 }
 
 function frame() {
-    if (!screensaverEnabled) return;
+    if (!screensaverEnabled) {
+        requestAnimationFrame(frame);
+        return
+    };
 
     handle_collision();
     let newTop = screensaverFace.offsetTop + yIncrement;
@@ -131,6 +137,8 @@ function frame() {
 
     // console.log(newTop, newLeft);
     screensaverFace.style = `top: ${newTop}px; left: ${newLeft}px; ${currentFilter}`;
+
+    requestAnimationFrame(frame);
 }
 
 init_bounce();
@@ -139,9 +147,7 @@ init_bounce();
 
 
 // Screensaver visibility
-let screensaverRequirement = 75;
 
-let screensaverEnabled = false;
 function updateScreensaverVisibility() {
     if (INACTIVITY_TIMER >= screensaverRequirement) {
         if (!screensaverEnabled) {

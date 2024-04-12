@@ -83,6 +83,7 @@
         const clock = document.getElementById("clock");
         const timer = document.getElementById("timer");
         let timeLeft;
+
         startTime();
 
         function startTime() {
@@ -92,20 +93,30 @@
             let currentHour = currentTime.getHours();
             let currentMinute = currentTime.getMinutes();
 
-            if(currentHour < 10) currentHour = `0${currentHour}`;
-            if(currentMinute < 10) currentMinute = `0${currentMinute}`;
-            clock.innerHTML = `${currentHour}:${currentMinute}`;
-
-            
-            //Bell schedule highlight
-            document.getElementById(lessonCheck(currentHour, currentMinute)).classList.add("light-green");
-            if(document.getElementById(lessonCheck(currentHour, currentMinute)-1).classList.contains("light-green"));
-            document.getElementById(lessonCheck(currentHour, currentMinute)-1).classList.remove("light-green");
-            
-            //Remaining time counter, changes in lessonCheck
-            timer.innerHTML = timeLeft;
+            let displayHour = (currentHour < 10) ? `0${currentHour}` : currentHour;
+            let displayMinute = (currentMinute < 10) ? `0${currentMinute}` : currentMinute;
+            clock.innerHTML = `${displayHour}:${displayMinute}`;
 
             setTimeout(startTime, 1000);
+            
+            let totalMinutes = currentHour * 60 + currentMinute;
+            let lessonStartTime = 7 * 60 + 5;
+            let lessonEndTime = 16 * 60 + 15;
+
+            if(totalMinutes < lessonStartTime || totalMinutes >= lessonEndTime){
+                timer.innerHTML = "<span class='light-green'>BRAK LEKCJI</span>";
+                return;
+            }
+
+            let currentLesson = lessonCheck(currentHour, currentMinute);
+            //Bell schedule highlight
+            document.getElementById(currentLesson).classList.add("light-green");
+            if(currentLesson != 0){
+            if(document.getElementById(currentLesson-1).classList.contains("light-green"));
+            document.getElementById(currentLesson-1).classList.remove("light-green");
+            } 
+            //Remaining time counter, changes in lessonCheck
+            timer.innerHTML = timeLeft;  
         }
 
         //Function to estimate current lesson and change time left on timer

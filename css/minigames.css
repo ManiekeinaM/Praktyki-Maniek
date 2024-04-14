@@ -89,15 +89,16 @@ main {
 
     position: relative;
     animation: popIn 0.25s;
+
+    transition: 0.5s;
 }
 
 .games-side {
+    /* width: 60%; */
     background-color: var(--brown);
     border: 1rem solid var(--darkbrown);
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
-
-    transition: background-color 0.5s, border-color 0.5s;
 }
 
 .logoitarcza {
@@ -139,6 +140,7 @@ main {
     border: 1rem solid var(--darkblue);
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
+    /* width: 40%; */
 }
 
 .maniek-side img {
@@ -354,16 +356,164 @@ h1 span {
 
 /* FLAPPY MANIEK */
 
-section.flappymaniek .screen {
-    background-color: var(--lightblue-bg);
-    border: 1rem solid var(--lightblue-bg-border);
-
-    width: 40vw;
-    height: 30vw;
-
-    border-radius: 2rem;
+@keyframes moveBackground {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: 100%;
+    }
 }
 
+
+section.flappymaniek .screen {
+    position: relative;
+    background-color: var(--lightblue-bg);
+    border: 1em solid var(--lightblue-bg-border);
+    border-top: 0;
+    border-bottom: 0;
+
+    width: 40vw;
+    height: 60vh;
+
+    border-radius: 2rem;
+    background-image: url('../assets/flappymaniek-bg.png');
+    background-repeat: repeat-x;
+    background-size: 50% 100%;
+
+    animation: moveBackground 4s linear infinite;
+
+    overflow: hidden;
+}
+
+@media (max-aspect-ratio: 5/4) and (min-width: 501px) {
+    section.flappymaniek .screen {
+        font-size: .9rem;
+        width: 58vw;
+    }
+
+    .games-side.flappymaniek {
+        width: 70%;
+    }
+    .games-side.flappymaniek + .maniek-side {
+        width: 30%;
+    }
+}
+
+.screen > * {
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+}
+
+.screen .pipes {
+    z-index: 0;
+}
+
+.pipe-container {
+    position: absolute;
+    height: auto;
+    width: 5em;
+
+    transform: translate(0%, -50%);
+    top: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 13em;
+}
+
+.pipe {
+    width: 100%;
+    height: auto;
+}
+
+.screen .bird {
+    position: absolute;
+    width: 4em;
+    height: auto;
+
+    right: 70%;
+    transform: translate(0%, -50%);
+}
+
+.bird.falling {
+    transition: transform 0.75s;
+
+    transform: translate(0%, -50%) rotate(15deg);
+}
+
+.screen .titlescreen {
+    position: absolute;
+    bottom: 0;
+    left: 0%;
+    transform: translate(10%, -10%);
+
+    font-family: var(--maniek-font);
+    text-align: center;
+
+    color: rgb(73, 199, 73);
+    font-size: 2rem;
+    margin: 0;
+
+    user-select: none;
+    pointer-events: none;
+}
+
+.screen .gameover {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+
+    color: white;
+    font-weight: bolder;
+    font-size: 6rem;
+    font-family: var(--maniek-font);
+
+    white-space: nowrap;
+    margin: 0;
+
+    transition: 0.3s ease-in;
+
+    text-shadow: 3px 3px 0 black,
+                3px -3px 0 black,
+                -3px 3px 0 black,
+                -3px -3px 0 black;
+}
+
+.screen .highscore {
+    position: absolute;
+    transform: translate(-50%, 0%);
+    top: calc(50% + 4rem);
+    left: 50%;
+
+    color: white;
+    font-size: 6rem;
+    font-family: var(--maniek-font);
+
+    white-space: nowrap;
+    margin: 0;
+
+    text-shadow: 3px 3px 0 black,
+                3px -3px 0 black,
+                -3px 3px 0 black,
+                -3px -3px 0 black;
+
+    transition: 0.3s ease-in;
+}
+
+.screen .highscore.playing {
+    top: 0%;
+}
+
+
+.screen .gameover.hidden {
+    display: block;
+    transform: translate(-50%, -50%) scale(0) rotate(280deg);
+}
 
 /* KOMPATYBILNOŚĆ MOBILNA */
 
@@ -411,4 +561,50 @@ section.flappymaniek .screen {
 }
 
 
-/*  */
+/* Highscores */
+.highscores {
+    background-color: var(--lightblue-bg);
+    border: 0.5rem solid var(--lightblue-bg-border);
+    padding: 0.5rem;
+    border-radius: 1rem;
+    transition: 0.5s;
+
+    text-align: center;
+}
+
+.highscores.hidden {
+    display: block;
+    transform: scale(0);
+}
+
+.highscores p {
+    font-family: var(--maniek-font);
+    font-size: 2rem;
+    color: white;
+    text-shadow: 0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black;
+}
+
+#highscoresList p {
+    font-family: var(--maniek-font);
+    font-size: 2rem;
+    margin: 0;
+
+    color: white;
+    text-shadow: 0 0 5px black,
+                0 0 5px black,
+                0 0 5px black;
+
+}
+#highscoresList p:nth-child(even) {
+    background-color: var(--lightblue-bg);
+}
+#highscoresList p:nth-child(odd) {
+    background-color: var(--lightblue-bg-border);
+}
+

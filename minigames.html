@@ -29,7 +29,7 @@
     
             <div class="button" data-game="flappymaniek" data-name="Flappy Maniek">
                 <img src="assets/flappymaniek.png" alt="Flappy Maniek">
-                <p class="workinprogress">WIP</p>
+                <!-- <p class="workinprogress">WIP</p> -->
             </div>
         </div>
 
@@ -82,7 +82,12 @@
 
             <section class="flappymaniek hidden">
                 <div class="screen">
+                    <p class="titlescreen">Flappy Maniek</p>
 
+                    <p class="highscore playing">0</p>
+                    <p class="gameover hidden">GAME OVER</p>
+
+                    <div class="pipes"></div>
                 </div>
             </section>
 
@@ -101,6 +106,13 @@
                 <img src="./assets/kolko.png">
                 <span class="wins">0 wygranych</span>
                 <img src="./assets/kolko.png">
+            </div>
+
+            <div class="flappymaniek highscores hidden">
+                <p>Najlepsze wyniki</p>
+                <div id="highscoresList">
+
+                </div>
             </div>
         </div>
     </main>

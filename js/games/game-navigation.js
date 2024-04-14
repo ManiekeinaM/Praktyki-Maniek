@@ -4,10 +4,14 @@ let gamesSide = document.querySelector('.games-side');
 let games = gamenavigation.querySelectorAll('.button');
 let lastGame = "logoitarcza";
 
+let CURRENT_GAME = "logoitarcza";
+
 games.forEach(button => {
     let game = button.dataset.game;
 
     button.addEventListener('click', e => {
+        CURRENT_GAME = game;
+
         // Change the style of the gameboard
         gamesSide.classList.remove(lastGame);
         gamesSide.classList.add(game);
@@ -18,7 +22,7 @@ games.forEach(button => {
         lastGameObjects.forEach(object => {
             object.classList.add('hidden');
         })
-        
+
         let newGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
         newGameObjects.forEach(object => {
             object.classList.remove('hidden');

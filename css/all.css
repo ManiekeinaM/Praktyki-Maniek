@@ -858,6 +858,8 @@ div.reset {
     left: 50%;
     top: 0.5rem;
     transform: translate(-50%, 0);
+
+    text-align: center;
 }
 .cornerscore span {
     font-family: 'Determination Mono', monospace;

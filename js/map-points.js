@@ -434,7 +434,7 @@ function setupPathfinding() {
             start();
             console.log("already completed loading");
         } else {
-            img.onload = setTimeout(start, 250);
+            img.onload = setTimeout(start, 500);
             console.log("onload");
         }
     }
@@ -443,7 +443,7 @@ function setupPathfinding() {
 document.addEventListener('DOMContentLoaded', () => {
     setupPathfinding();
     // setupPathfinding();
-    console.log(allPaths);
+    // console.log(allPaths);
     setTimeout(() => {
         console.log("after 1s");
         console.log(allPaths);
@@ -683,7 +683,7 @@ function createAllButtons() {
         if (img.complete) {
             setButtons();
         } else {
-            img.onload = setButtons;
+            img.onload = setTimeout(setButtons, 600);
         }
 
 

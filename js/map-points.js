@@ -417,10 +417,12 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
 
         let startDot = floorStartPoints[floorName];
         if (typeof startDot === "object") {
+            console.log("is object");
             // Przejdz przez obydwa wejscia
             pathfind(startDot.A);
             pathfind(startDot.B);
         } else {
+            console.log("is not object");
             // Przejdz przez jedno wejscie
             pathfind(startDot);
         }

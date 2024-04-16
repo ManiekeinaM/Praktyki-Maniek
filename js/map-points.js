@@ -4,7 +4,7 @@ const imgPaths = {
         // List of all dot coordinates placed around the map. Scaled to the image, then converted back into pixels.
         // Each dot needs a unique name
         dots: {
-            "dot2": { x: 0.18500, y: 0.38048, desc: "Sala 2 (j. polski)", label: "2", dni_otwarte: "j. polski"}, // sala 2
+            "dot2": { x: 0.18500, y: 0.38048, desc: "Sala 2 (j. polski)", label: "2", dni_otwarte: "j. polski" }, // sala 2
             "dot3": { x: 0.25200, y: 0.46108, desc: "Sala 3 (historia, wos)", label: "3" }, // sala 3
             "dot4": { x: 0.25100, y: 0.74882, desc: "Dyrektor", label: "Dyrektor" }, // dyrektor
             "dot5": { x: 0.24900, y: 0.87972, desc: "Sala 10 (j. polski)", label: "10" }, // sala 10
@@ -17,13 +17,13 @@ const imgPaths = {
             "dot12": { x: 0.89100, y: 0.54173, desc: "Toaleta B", icon: 'toilet' }, // kibel meski
             // "dot12.5": {x: 0.88833, y: 0.37697, desc: "Toaleta nauczycielska (B)", icon: 'toilet'}, // Toaleta dla nauczycieli (parter B)
             "dot13": { x: 0.75900, y: 0.36775, desc: "Psycholog, pedagog", label: "Psycholog" }, // psycholog
-            "dot14": { x: 0.76100, y: 0.21075, desc: "Sala 32 (chemia, biologia, fizyka)", label: "32", dni_otwarte: "chemia, biologia, fizyka"}, // sala 32
+            "dot14": { x: 0.76100, y: 0.21075, desc: "Sala 32 (chemia, biologia, fizyka)", label: "32", dni_otwarte: "chemia, biologia, fizyka" }, // sala 32
             "dot15": { x: 0.76100, y: 0.10750, desc: "Sala 39 (technik energetyk)", label: "39", dni_otwarte: "technik energetyk" }, // sala bez numerku raz byla na niemieckim i historii
             "dot16": { x: 0.91300, y: 0.16124, desc: "Sala 40 (technik mechatronik)", label: "40", dni_otwarte: "technik mechatronik" }, // sala 40 znak zapytania
             "dot17": { x: 0.91100, y: 0.29562, desc: "Sala 41 (technik mechatronik)", label: "41", dni_otwarte: "technik mechatronik" }, // sala 41
             "dot21": { x: 0.62083, y: 0.55896, desc: "Praktyka zawodowa (Ryszard Mirys)", label: "Praktyka" }, // mirys SALA
             "dot22": { x: 0.10667, y: 0.46226, desc: "Toaleta A", icon: 'toilet' }, // wc A
-            "dot23": { x: 0.10250, y: 0.75236, icon: "musicNote", desc: "Muzyka!", dni_otwarte: "Muzyka"}, // nuty
+            "dot23": { x: 0.10250, y: 0.75236, icon: "musicNote", desc: "Muzyka!", dni_otwarte: "Muzyka" }, // nuty
             "dot18": { x: 0.91000, y: 0.47524, desc: "SCHODY B - GÓRA", icon: "stairsUp" }, // schody b gora
             "dot19": { x: 0.91000, y: 0.43706, desc: "SCHODY B - DÓL", icon: "stairsDown" }, // schody b dol
             "dot20": { x: 0.09200, y: 0.52900, desc: "SCHODY A - GÓRA", icon: "stairsUp" }, // schody a gora
@@ -128,11 +128,11 @@ const imgPaths = {
             "Wdot19B": { x: 0.83400, y: 0.25300, connections: ['dot11B', 'Wdot20B', 'dot15B'] }, // przed 138
             "Wdot20B": { x: 0.83400, y: 0.14427, connections: ['dot12B', 'dot13B'] }, // przed 132 i 134
 
-            "stairdot1": {x: 0.11694, y: 0.57426, connections: ['stairdot2']}, // stairdot1 floor1A
-            "stairdot2": {x: 0.11694, y: 0.53041, connections: ['Wdot2A']}, // stairdot2 floor1A
+            "stairdot1": { x: 0.11694, y: 0.57426, connections: ['stairdot2'] }, // stairdot1 floor1A
+            "stairdot2": { x: 0.11694, y: 0.53041, connections: ['Wdot2A'] }, // stairdot2 floor1A
 
-            "stairdot3": {x: 0.88824, y: 0.43706, connections: ['stairdot4']}, // stairdot3 floor1B
-            "stairdot4": {x: 0.88824, y: 0.47666, connections: ['Wdot14B']}, // stairdot4 floor1B
+            "stairdot3": { x: 0.88824, y: 0.43706, connections: ['stairdot4'] }, // stairdot3 floor1B
+            "stairdot4": { x: 0.88824, y: 0.47666, connections: ['Wdot14B'] }, // stairdot4 floor1B
 
             "Xdot1": { x: 0.38000, y: 0.87500, icon: 'arrowDown', destination: mapThresholds[2].threshold }, // PIĘTRO 2 STRZAŁKA DO DOLU
         }
@@ -371,46 +371,47 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
 
     let img = floorContainer.querySelector("img");
 
-    let start = function() {
+    let start = function () {
+        console.log("starting map ");
         let pathfind = function (startDot) {
             // console.log(startDot);
-    
+
             let currentPath = [startDot];
             let lastBranchedPath;
-    
+
             let checkNextConnection = function (currentPath) {
                 // console.log(floorName);
                 let latestDotName = currentPath[currentPath.length - 1];
                 let latestDot = floorItems.dots[latestDotName];
                 // console.log(latestDotName);
                 // console.log(latestDot);
-    
+
                 if (!latestDot) return;
-    
+
                 if (!latestDot.connections || latestDot.connections && latestDot.connections.length == 0) {
                     // No connections, end of this path
                     allPaths[floorName][latestDotName] = currentPath;
                     currentPath = lastBranchedPath;
                     return;
                 }
-    
+
                 let connections = latestDot.connections;
-    
+
                 if (connections.length > 1) {
                     // Branching path
                     lastBranchedPath = currentPath;
                 }
-    
+
                 // Go through the connections, and look at THEIR connections
                 connections.forEach(connection => {
                     let newPath = [...currentPath, connection];
                     checkNextConnection(newPath);
                 })
             }
-    
+
             checkNextConnection(currentPath);
         }
-    
+
         let startDot = floorStartPoints[floorName];
         if (typeof startDot === "object") {
             // Przejdz przez obydwa wejscia
@@ -425,10 +426,13 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
     // Musiałem to zrobic, bo inaczej 50% czasu na telefonie/slabszym internecie sie psulo
     if (img.complete) {
         start();
+        console.log("already completed loading");
     } else {
         img.onload = start;
+        console.log("onload");
     }
 }
+
 
 console.log(allPaths);
 // drawLine("Floor0", "Wdot0", allPaths['dot7']);

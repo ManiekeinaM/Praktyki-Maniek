@@ -373,8 +373,11 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
 
     let start = function () {
         console.log("starting map ");
+
         let pathfind = function (startDot) {
             // console.log(startDot);
+
+            console.log("pathfinding something");
 
             let currentPath = [startDot];
             let lastBranchedPath;
@@ -430,10 +433,6 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
     } else {
         img.onload = start;
         console.log("onload");
-        if (img.complete) {
-            console.log("img complte after onload");
-            start();
-        }
     }
 }
 

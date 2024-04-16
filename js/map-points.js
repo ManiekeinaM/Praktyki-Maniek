@@ -365,81 +365,87 @@ const floorNames = {
 }
 
 // PATHFIND ALL OF THE POSSIBLE DESTINATIONS - then you can draw to whichever one you like!
-for (const [floorName, floorItems] of Object.entries(imgPaths)) {
-    let floorContainer = map.querySelector(`div.${floorName}`);
-    if (!floorContainer) continue;
+function setupPathfinding() {
+    for (const [floorName, floorItems] of Object.entries(imgPaths)) {
+        let floorContainer = map.querySelector(`div.${floorName}`);
+        if (!floorContainer) continue;
 
-    let img = floorContainer.querySelector("img");
+        let img = floorContainer.querySelector("img");
 
-    let start = function () {
-        console.log("starting map ");
+        let start = function () {
+            console.log("starting map ");
 
-        let pathfind = function (startDot) {
-            // console.log(startDot);
+            let pathfind = function (startDot) {
+                // console.log(startDot);
 
-            console.log("pathfinding something");
+                console.log("pathfinding something");
 
-            let currentPath = [startDot];
-            let lastBranchedPath;
+                let currentPath = [startDot];
+                let lastBranchedPath;
 
-            let checkNextConnection = function (currentPath) {
-                // console.log(floorName);
-                let latestDotName = currentPath[currentPath.length - 1];
-                let latestDot = floorItems.dots[latestDotName];
-                // console.log(latestDotName);
-                // console.log(latestDot);
+                let checkNextConnection = function (currentPath) {
+                    // console.log(floorName);
+                    let latestDotName = currentPath[currentPath.length - 1];
+                    let latestDot = floorItems.dots[latestDotName];
+                    // console.log(latestDotName);
+                    // console.log(latestDot);
 
-                if (!latestDot) return;
+                    if (!latestDot) return;
 
-                if (!latestDot.connections || latestDot.connections && latestDot.connections.length == 0) {
-                    // No connections, end of this path
-                    allPaths[floorName][latestDotName] = currentPath;
-                    currentPath = lastBranchedPath;
-                    return;
+                    if (!latestDot.connections || latestDot.connections && latestDot.connections.length == 0) {
+                        // No connections, end of this path
+                        allPaths[floorName][latestDotName] = currentPath;
+                        currentPath = lastBranchedPath;
+                        return;
+                    }
+
+                    let connections = latestDot.connections;
+
+                    if (connections.length > 1) {
+                        // Branching path
+                        lastBranchedPath = currentPath;
+                    }
+
+                    // Go through the connections, and look at THEIR connections
+                    connections.forEach(connection => {
+                        let newPath = [...currentPath, connection];
+                        checkNextConnection(newPath);
+                    })
                 }
 
-                let connections = latestDot.connections;
-
-                if (connections.length > 1) {
-                    // Branching path
-                    lastBranchedPath = currentPath;
-                }
-
-                // Go through the connections, and look at THEIR connections
-                connections.forEach(connection => {
-                    let newPath = [...currentPath, connection];
-                    checkNextConnection(newPath);
-                })
+                checkNextConnection(currentPath);
             }
 
-            checkNextConnection(currentPath);
+            let startDot = floorStartPoints[floorName];
+            if (typeof startDot === "object") {
+                console.log("is object");
+                // Przejdz przez obydwa wejscia
+                pathfind(startDot.A);
+                pathfind(startDot.B);
+            } else {
+                console.log("is not object");
+                // Przejdz przez jedno wejscie
+                pathfind(startDot);
+            }
         }
 
-        let startDot = floorStartPoints[floorName];
-        if (typeof startDot === "object") {
-            console.log("is object");
-            // Przejdz przez obydwa wejscia
-            pathfind(startDot.A);
-            pathfind(startDot.B);
+        // Musiałem to zrobic, bo inaczej 50% czasu na telefonie/slabszym internecie sie psulo
+        if (img.complete) {
+            start();
+            console.log("already completed loading");
         } else {
-            console.log("is not object");
-            // Przejdz przez jedno wejscie
-            pathfind(startDot);
+            img.onload = start;
+            console.log("onload");
         }
-    }
-
-    // Musiałem to zrobic, bo inaczej 50% czasu na telefonie/slabszym internecie sie psulo
-    if (img.complete) {
-        start();
-        console.log("already completed loading");
-    } else {
-        img.onload = start;
-        console.log("onload");
     }
 }
 
-
+document.addEventListener('DOMContentLoaded', () => {
+    setupPathfinding();
+    console.log(allPaths);
+});
 console.log(allPaths);
+
 // drawLine("Floor0", "Wdot0", allPaths['dot7']);
 
 function drawAllPaths() {

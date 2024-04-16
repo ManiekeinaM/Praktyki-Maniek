@@ -430,6 +430,10 @@ for (const [floorName, floorItems] of Object.entries(imgPaths)) {
     } else {
         img.onload = start;
         console.log("onload");
+        if (img.complete) {
+            console.log("img complte after onload");
+            start();
+        }
     }
 }
 

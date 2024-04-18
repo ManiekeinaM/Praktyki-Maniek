@@ -226,12 +226,14 @@ imgContainers.forEach(container => {
     let buttonLayer = container.querySelector(".button-layer");
 
     let setSize = function () {
+        console.log("Setting size", img);
         container.style.width = `${img.width}px`;
         container.style.height = `${img.height}px`;
         canvas.width = img.width;
         canvas.height = img.height;
         buttonLayer.style.width = `${img.width}px`;
         buttonLayer.style.height = `${img.height}px`;
+        console.log("Set size successfully", img);
     }
 
     if (img.complete) {

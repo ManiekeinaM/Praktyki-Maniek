@@ -218,35 +218,6 @@ function pxToPercent(pixels, relativeElement) {
     }
 }
 
-// for each img, resize the image-canvas-container to the img's dimensions
-const imgContainers = document.querySelectorAll(".layers");
-imgContainers.forEach(container => {
-    let img = container.querySelector("img")
-    let canvas = container.querySelector("canvas");
-    let buttonLayer = container.querySelector(".button-layer");
-
-    let setSize = function () {
-        console.log("Setting size", img);
-        container.style.width = `${img.width}px`;
-        container.style.height = `${img.height}px`;
-        canvas.width = img.width;
-        canvas.height = img.height;
-        buttonLayer.style.width = `${img.width}px`;
-        buttonLayer.style.height = `${img.height}px`;
-        console.log("Set size successfully", img);
-    }
-
-    if (img.complete) {
-        setSize();
-    } else {
-        img.onload = () => {
-            setSize();
-            setTimeout(setSize, 100);
-        }
-    }
-})
-
-
 // Draw dots on each thingy
 function drawDotsEverywhere() {
     for (const [floorName, floorItems] of Object.entries(imgPaths)) {
@@ -447,9 +418,38 @@ function setupPathfinding() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // for each img, resize the image-canvas-container to the img's dimensions
+    const imgContainers = document.querySelectorAll(".layers");
+    imgContainers.forEach(container => {
+        let img = container.querySelector("img")
+        let canvas = container.querySelector("canvas");
+        let buttonLayer = container.querySelector(".button-layer");
+
+        let setSize = function () {
+            console.log("Setting size", img);
+            container.style.width = `${img.width}px`;
+            container.style.height = `${img.height}px`;
+            canvas.width = img.width;
+            canvas.height = img.height;
+            buttonLayer.style.width = `${img.width}px`;
+            buttonLayer.style.height = `${img.height}px`;
+            console.log("Set size successfully", img);
+        }
+
+        if (img.complete) {
+            setSize();
+        } else {
+            img.onload = () => {
+                setSize();
+                setTimeout(setSize, 100);
+            }
+        }
+    })
+
+
+    // set up the pathfinding
     setupPathfinding();
-    // setupPathfinding();
-    // console.log(allPaths);
+
     setTimeout(() => {
         console.log("after 1s");
         console.log(allPaths);
@@ -459,8 +459,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("after 5s");
         console.log(allPaths);
     }, 5000);
+
+    console.log(allPaths);
 });
-console.log(allPaths);
 
 // drawLine("Floor0", "Wdot0", allPaths['dot7']);
 

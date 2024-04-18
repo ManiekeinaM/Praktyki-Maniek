@@ -371,6 +371,8 @@ const floorNames = {
 function setupPathfinding() {
     for (const [floorName, floorItems] of Object.entries(imgPaths)) {
         let floorContainer = map.querySelector(`div.${floorName}`);
+
+        console.log("looping through", floorName, floorContainer);
         if (!floorContainer) continue;
 
         let img = floorContainer.querySelector("img");

@@ -376,7 +376,7 @@ function setupPathfinding() {
         let img = floorContainer.querySelector("img");
 
         let start = function () {
-            console.log("starting map ");
+            console.log("starting map ", floorName);
 
             let pathfind = function (startDot) {
                 // console.log(startDot);

@@ -420,7 +420,8 @@ function setupPathfinding() {
 document.addEventListener('DOMContentLoaded', () => {
     // for each img, resize the image-canvas-container to the img's dimensions
     const imgContainers = document.querySelectorAll(".layers");
-    imgContainers.forEach(container => {
+
+    let loadPromises = Array.from(imgContainers).map(container => {
 
         let img = container.querySelector("img")
         let canvas = container.querySelector("canvas");
@@ -436,41 +437,38 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.height = img.height;
             buttonLayer.style.width = `${img.width}px`;
             buttonLayer.style.height = `${img.height}px`;
-            console.log("Set size successfully", container);
+            console.log("Set size successfully", container, canvas, buttonLayer);
         }
 
-        img.addEventListener('load', () => {
-            console.log("onload occurred");
-            setSize();
-            setTimeout(setSize, 100);
+        return new Promise((resolve) => {
+            img.addEventListener('load', () => {
+                console.log("onload occurred");
+                setSize();
+                setTimeout(setSize, 100);
+                resolve();
+            });
 
-        })
-        // img.onload = () => {
-        //     console.log("onload occurred");
-        //     setSize();
-        //     setTimeout(setSize, 100);
-        // }
-        if (img.complete) {
-            console.log("already completed occurred");
-            setSize();
-        }
-    })
+            if (img.complete) {
+                console.log("already completed occurred");
+                setSize();
+                resolve();
+            }
+        });
+    });
 
+    Promise.all(loadPromises).then(() => {
+        // set up the pathfinding
+        setupPathfinding();
 
-    // set up the pathfinding
-    setupPathfinding();
+        setTimeout(() => {
+            console.log("after 1s");
+            console.log(allPaths);
+        }, 1000);
 
-    setTimeout(() => {
-        console.log("after 1s");
         console.log(allPaths);
-    }, 1000);
+    });
 
-    setTimeout(() => {
-        console.log("after 5s");
-        console.log(allPaths);
-    }, 5000);
 
-    console.log(allPaths);
 });
 
 // drawLine("Floor0", "Wdot0", allPaths['dot7']);

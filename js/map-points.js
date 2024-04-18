@@ -439,11 +439,17 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Set size successfully", img);
         }
 
-        img.onload = () => {
+        img.addEventListener('load', () => {
             console.log("onload occurred");
             setSize();
             setTimeout(setSize, 100);
-        }
+
+        })
+        // img.onload = () => {
+        //     console.log("onload occurred");
+        //     setSize();
+        //     setTimeout(setSize, 100);
+        // }
         if (img.complete) {
             console.log("already completed occurred");
             setSize();

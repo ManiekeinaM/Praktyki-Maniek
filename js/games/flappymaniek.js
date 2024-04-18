@@ -127,7 +127,7 @@ function updateHighscores() {
         let score = highscores[i];
 
         let p = document.createElement('p');
-        p.innerText = `#${i + 1}: ${score}`;
+        p.innerText = `#${i + 1}: ${score} pkt`;
         highscoresList.appendChild(p);
     }
 
@@ -185,6 +185,8 @@ function death() {
     running = false;
     gameover.classList.remove('hidden');
     highscore.classList.remove('playing');
+
+    highscore.innerText = `${currentScore}`
 
     // Add the current score to the high scores and sort the array in descending order
     highscores.push(currentScore);

@@ -20,14 +20,14 @@ games.forEach(button => {
         // Hide all last game objects, show the new game objects
         let lastGameObjects = document.querySelectorAll(`.${lastGame}:not(.button)`);
         lastGameObjects.forEach(object => {
-            object.classList.add('hidden');
             object.style.display = '';
+            object.classList.add('hidden');
         })
 
         let newGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
         newGameObjects.forEach(object => {
-            object.classList.remove('hidden');
             object.style.display = '';
+            object.classList.remove('hidden');
         })
 
 
@@ -46,7 +46,13 @@ games.forEach(button => {
     let allGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
     allGameObjects.forEach(object => {
         object.addEventListener('transitionend', e => {
-            if (object.classList.contains('hidden')) {
+            let isHidden = object.classList.contains('hidden');
+            let isRelative = window.getComputedStyle(object).position == 'static';
+
+            // console.log(window.getComputedStyle(object).position);
+            // console.log(isRelative, object);
+
+            if (isHidden && isRelative) {
                 object.style.display = 'none';
             }
         })

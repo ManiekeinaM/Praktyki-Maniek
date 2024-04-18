@@ -440,10 +440,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         img.onload = () => {
+            console.log("onload occurred");
             setSize();
             setTimeout(setSize, 100);
         }
         if (img.complete) {
+            console.log("already completed occurred");
             setSize();
         }
     })

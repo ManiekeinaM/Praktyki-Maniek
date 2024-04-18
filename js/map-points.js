@@ -421,11 +421,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // for each img, resize the image-canvas-container to the img's dimensions
     const imgContainers = document.querySelectorAll(".layers");
     imgContainers.forEach(container => {
-        console.log(container);
 
         let img = container.querySelector("img")
         let canvas = container.querySelector("canvas");
         let buttonLayer = container.querySelector(".button-layer");
+
+        console.log(container, img);
 
         let setSize = function () {
             console.log("Setting size", img);

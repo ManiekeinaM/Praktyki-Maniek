@@ -72,3 +72,4 @@ function isDniOtwarte() {
 }
 
 const IS_DNI_OTWARTE = isDniOtwarte();
+console.log(IS_DNI_OTWARTE);

@@ -429,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(container, img);
 
         let setSize = function () {
-            console.log("Setting size", img);
+            console.log("Setting size", img.width, img.height);
             container.style.width = `${img.width}px`;
             container.style.height = `${img.height}px`;
             canvas.width = img.width;

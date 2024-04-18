@@ -439,13 +439,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Set size successfully", img);
         }
 
+        img.onload = () => {
+            setSize();
+            setTimeout(setSize, 100);
+        }
         if (img.complete) {
             setSize();
-        } else {
-            img.onload = () => {
-                setSize();
-                setTimeout(setSize, 100);
-            }
         }
     })
 

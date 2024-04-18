@@ -345,18 +345,18 @@ function setupPathfinding() {
     for (const [floorName, floorItems] of Object.entries(imgPaths)) {
         let floorContainer = map.querySelector(`div.${floorName}`);
 
-        console.log("looping through", floorName, floorContainer);
+        // console.log("looping through", floorName, floorContainer);
         if (!floorContainer) continue;
 
         let img = floorContainer.querySelector("img");
 
         let start = function () {
-            console.log("starting map ", floorName);
+            // console.log("starting map ", floorName);
 
             let pathfind = function (startDot) {
                 // console.log(startDot);
 
-                console.log("currently pathfinding:", startDot);
+                // console.log("currently pathfinding:", startDot);
 
                 let currentPath = [startDot];
                 let lastBranchedPath;
@@ -410,7 +410,7 @@ function setupPathfinding() {
             start();
         } else {
             img.onload = () => {
-                console.log("on load")
+                // console.log("on load")
                 setTimeout(start, 500);
             }
         }
@@ -427,29 +427,29 @@ document.addEventListener('DOMContentLoaded', () => {
         let canvas = container.querySelector("canvas");
         let buttonLayer = container.querySelector(".button-layer");
 
-        console.log(container, img);
+        // console.log(container, img);
 
         let setSize = function () {
-            console.log("Setting size", img.width, img.height);
+            // console.log("Setting size", img.width, img.height);
             container.style.width = `${img.width}px`;
             container.style.height = `${img.height}px`;
             canvas.width = img.width;
             canvas.height = img.height;
             buttonLayer.style.width = `${img.width}px`;
             buttonLayer.style.height = `${img.height}px`;
-            console.log("Set size successfully", container, canvas, buttonLayer);
+            // console.log("Set size successfully", container, canvas, buttonLayer);
         }
 
         return new Promise((resolve) => {
             img.addEventListener('load', () => {
-                console.log("onload occurred");
+                // console.log("onload occurred");
                 setSize();
                 setTimeout(setSize, 100);
                 resolve();
             });
 
             if (img.complete) {
-                console.log("already completed occurred");
+                // console.log("already completed occurred");
                 setSize();
                 resolve();
             }
@@ -461,8 +461,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setupPathfinding();
 
         setTimeout(() => {
-            console.log("after 1s");
-            console.log(allPaths);
+            // console.log("after 1s");
+            // console.log(allPaths);
         }, 1000);
 
         console.log(allPaths);

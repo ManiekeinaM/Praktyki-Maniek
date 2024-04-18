@@ -436,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.height = img.height;
             buttonLayer.style.width = `${img.width}px`;
             buttonLayer.style.height = `${img.height}px`;
-            console.log("Set size successfully", img);
+            console.log("Set size successfully", container);
         }
 
         img.addEventListener('load', () => {

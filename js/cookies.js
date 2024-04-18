@@ -1,48 +1,74 @@
 function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    let expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  }
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
 
 function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
 
-    return "";
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+
+  return "";
 }
 
 // Figure out whether the machine is Maniek
 function isMachineManiek() {
-    if (/Mobi|Android/i.test(navigator.userAgent)) {
-      console.log("Mobilne!");
-      return false;
-    }
+  if (/Mobi|Android/i.test(navigator.userAgent)) {
+    console.log("Mobilne!");
+    return false;
+  }
 
-    let cookie = getCookie('isManiek');
+  let cookie = getCookie('isManiek');
 
-    if (cookie == '' || !cookie) {
-      console.log('MACHINE IS NOT MANIEK');
-      return false;
-    }
-
-    console.log('MACHINE IS MANIEK!!!');
+  // TEMPORARY DEFAULT STATE
+  if (cookie == '') {
+    console.log("Temporary default - isManiek is true");
+    setCookie('isManiek', true, 999);
     return true;
+  }
+
+  if (cookie == '' || !cookie) {
+    console.log('Maszyna nie jest mańkiem');
+    return false;
+  }
+
+  console.log('Maszyna jest mańkiem!!!');
+  return true;
 }
 
 const IS_MANIEK = isMachineManiek();
 
 // Figure out whether today are the open days
 
-const IS_DNI_OTWARTE = true;
+function isDniOtwarte() {
+  let cookie = getCookie('isDniOtwarte');
+
+  // TEMPORARY DEFAULT STATE
+  if (cookie == '') {
+    console.log("Temporary default - isDniOtwarte is true");
+    setCookie('isDniOtwarte', true, 999);
+    return true;
+  }
+
+  if (cookie == '' || !cookie) {
+    console.log('Nie są dni otwarte');
+    return false;
+  }
+
+  console.log("Są dni otwarte!");
+  return true;
+}
+
+const IS_DNI_OTWARTE = isDniOtwarte();

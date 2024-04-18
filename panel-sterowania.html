@@ -6,14 +6,98 @@
     <title>Maniek - Panel sterowania</title>
 
     <link rel="stylesheet" href="./css/all.css">
+    <link rel="stylesheet" href="css/switch.css">
     <!-- <script src="./js/request-fullscreen.js"></script> -->
 
     <script src="js/cookies.js"></script>
+
+    <style>
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-direction: column;
+        }
+
+        .entry {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+
+            text-align: center;
+
+            gap: 2rem;
+            width: 20rem;
+
+            padding: 0.5rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            background-color: var(--lightblue-bg-border);
+            border: 0.125rem solid var(--zsp-blue);
+            border-radius: 1rem;    
+            font-weight: bold;
+        }
+
+        h1 {
+            font-family: var(--maniek-font);
+            font-size: 3rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            color: black;
+
+            background-color: var(--lightblue-bg);
+        }
+
+        .entry p {
+            white-space: nowrap;
+            width: 15rem;
+        }
+
+        .entry button {
+            background-color: var(--lightblue-bg);
+            
+            width: 5rem;
+            
+            font-size: 2rem;
+
+            border: 0.125rem solid var(--zsp-blue);
+            border-radius: 1rem;
+            padding: 0.5rem;
+
+            font-weight: 800;
+            font-family: var(--maniek-font);
+        }
+
+        button.enabled {
+            border-color: var(--lightgreen);
+        }
+        button.disabled {
+            border-color: lightcoral;
+        }
+    </style>
 </head>
 <body>
     
     <main>
-        
+        <h1>Panel sterowania</h1>
+
+        <div class="entry" data-setting="isManiek">
+            <p>Tryb MANIEK <br> [wygaszacz ekranu]</p>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="entry" data-setting="isDniOtwarte">
+            <p>Dni otwarte <br> [ikonki na mapie, koło fortuny]</p>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </div>
     </main>
 
 
@@ -41,6 +125,7 @@
         </div>
     </div>
 
-    <script src="./js/navigation.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/panel-sterowania.js"></script>
 </body>
 </html>

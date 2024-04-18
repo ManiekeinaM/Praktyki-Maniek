@@ -39,7 +39,7 @@ function isMachineManiek() {
     return true;
   }
 
-  if (cookie == '' || !cookie) {
+  if (cookie == '' || cookie == 'false') {
     console.log('Maszyna nie jest mańkiem');
     return false;
   }
@@ -62,7 +62,7 @@ function isDniOtwarte() {
     return true;
   }
 
-  if (cookie == '' || !cookie) {
+  if (cookie == '' || cookie == 'false') {
     console.log('Nie są dni otwarte');
     return false;
   }

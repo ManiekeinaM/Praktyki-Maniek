@@ -381,7 +381,7 @@ function setupPathfinding() {
             let pathfind = function (startDot) {
                 // console.log(startDot);
 
-                console.log("pathfinding something");
+                console.log("currently pathfinding:", startDot);
 
                 let currentPath = [startDot];
                 let lastBranchedPath;
@@ -421,12 +421,10 @@ function setupPathfinding() {
 
             let startDot = floorStartPoints[floorName];
             if (typeof startDot === "object") {
-                console.log("is object");
                 // Przejdz przez obydwa wejscia
                 pathfind(startDot.A);
                 pathfind(startDot.B);
             } else {
-                console.log("is not object");
                 // Przejdz przez jedno wejscie
                 pathfind(startDot);
             }
@@ -435,12 +433,11 @@ function setupPathfinding() {
         // Musiałem to zrobic, bo inaczej 50% czasu na telefonie/slabszym internecie sie psulo
         if (img.complete) {
             start();
-            console.log("already completed loading");
         } else {
             img.onload = () => {
+                console.log("on load")
                 setTimeout(start, 500);
             }
-            console.log("onload");
         }
     }
 }
@@ -453,6 +450,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("after 1s");
         console.log(allPaths);
     }, 1000);
+
+    setTimeout(() => {
+        console.log("after 5s");
+        console.log(allPaths);
+    }, 5000);
 });
 console.log(allPaths);
 

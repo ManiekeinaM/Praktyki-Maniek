@@ -413,7 +413,7 @@ section.flappymaniek .screen {
 .pipe-container {
     position: absolute;
     height: auto;
-    width: 5em;
+    width: 8%;
 
     transform: translate(0%, -50%);
     top: 50%;

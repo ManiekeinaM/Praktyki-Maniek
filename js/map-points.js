@@ -237,7 +237,10 @@ imgContainers.forEach(container => {
     if (img.complete) {
         setSize();
     } else {
-        img.onload = setSize;
+        img.onload = () => {
+            setSize();
+            setTimeout(setSize, 100);
+        }
     }
 })
 
@@ -434,7 +437,9 @@ function setupPathfinding() {
             start();
             console.log("already completed loading");
         } else {
-            img.onload = setTimeout(start, 500);
+            img.onload = () => {
+                setTimeout(start, 500);
+            }
             console.log("onload");
         }
     }
@@ -683,7 +688,9 @@ function createAllButtons() {
         if (img.complete) {
             setButtons();
         } else {
-            img.onload = setTimeout(setButtons, 600);
+            img.onload = () => {
+                setTimeout(setButtons, 600);
+            }
         }
 
 

@@ -21,11 +21,13 @@ games.forEach(button => {
         let lastGameObjects = document.querySelectorAll(`.${lastGame}:not(.button)`);
         lastGameObjects.forEach(object => {
             object.classList.add('hidden');
+            object.style.display = '';
         })
 
         let newGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
         newGameObjects.forEach(object => {
             object.classList.remove('hidden');
+            object.style.display = '';
         })
 
 
@@ -39,4 +41,15 @@ games.forEach(button => {
 
         console.log(game);
     })
+
+    // Correct the display on transition end
+    let allGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
+    allGameObjects.forEach(object => {
+        object.addEventListener('transitionend', e => {
+            if (object.classList.contains('hidden')) {
+                object.style.display = 'none';
+            }
+        })
+    })
 })
+

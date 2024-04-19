@@ -263,7 +263,7 @@ function initScreensaver() {
 
     function updateCornerBounces() {
         score.innerHTML = `Odbicia od rogu: <span>${cornerBounces}</span> <br>
-                        Dzisiejsze: <span>${cornerBounces}</span>`;
+                        Dzisiejsze: <span>${sessionCornerBounces}</span>`;
 
         setCookie(CORNERBOUNCE_COOKIE_NAME, cornerBounces, 9999); // All-time
         sessionStorage.setItem(CORNERBOUNCE_COOKIE_NAME, sessionCornerBounces); // Daily

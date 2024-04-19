@@ -34,9 +34,8 @@ function isMachineManiek() {
 
   // TEMPORARY DEFAULT STATE
   if (cookie == '') {
-    console.log("Temporary default - isManiek is true");
-    setCookie('isManiek', true, 999);
-    return true;
+    console.log("Temporary default - isManiek is false");
+    return false;
   }
 
   if (cookie == '' || cookie == 'false') {
@@ -58,7 +57,7 @@ function isDniOtwarte() {
   // TEMPORARY DEFAULT STATE
   if (cookie == '') {
     console.log("Temporary default - isDniOtwarte is true");
-    setCookie('isDniOtwarte', true, 999);
+    
     return true;
   }
 

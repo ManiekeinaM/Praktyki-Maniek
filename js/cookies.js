@@ -43,8 +43,13 @@ function isMachineManiek() {
     return false;
   }
 
-  console.log('Maszyna jest mańkiem!!!');
-  return true;
+  if (cookie == 'true') {
+    console.log("Maszyna jest mańkiem!");
+    return true;
+  }
+
+  console.log('Maniek error - false');
+  return false;
 }
 
 const IS_MANIEK = isMachineManiek();
@@ -66,8 +71,13 @@ function isDniOtwarte() {
     return false;
   }
 
-  console.log("Są dni otwarte!");
-  return true;
+  if (cookie == 'true') {
+    console.log("Są dni otwarte!");
+    return true;
+  }
+
+  console.log("Dni otwarte error - false");
+  return false;
 }
 
 const IS_DNI_OTWARTE = isDniOtwarte();

@@ -104,7 +104,7 @@ function setSquare(x, y, number) {
     img.style.transform = `scale(1.1)`;
     setTimeout(() => {
         img.style.transform = ``;
-    }, 100);
+    }, 150);
 
     board[x][y] = number;
 

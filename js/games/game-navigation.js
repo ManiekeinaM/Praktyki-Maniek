@@ -44,18 +44,20 @@ games.forEach(button => {
 
     // Correct the display on transition end
     let allGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
+
+    let fixDisplay = object => {
+        let isHidden = object.classList.contains('hidden');
+        let isRelative = window.getComputedStyle(object).position == 'static';
+
+        if (isHidden && isRelative) {
+            object.style.display = 'none';
+        }
+    }
     allGameObjects.forEach(object => {
         object.addEventListener('transitionend', e => {
-            let isHidden = object.classList.contains('hidden');
-            let isRelative = window.getComputedStyle(object).position == 'static';
-
-            // console.log(window.getComputedStyle(object).position);
-            // console.log(isRelative, object);
-
-            if (isHidden && isRelative) {
-                object.style.display = 'none';
-            }
+            fixDisplay(object);
         })
-    })
+        fixDisplay(object);
+    });
 })
 

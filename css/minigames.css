@@ -83,6 +83,9 @@ main {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    gap: 0.5rem;
+
+
     border-radius: 0px;
     margin: 0;
     height: calc(100% - 2rem);
@@ -144,7 +147,9 @@ main {
 }
 
 .maniek-side img {
-    max-width: 100%;
+    max-width: 85%;
+    max-height: 70%;
+    width: auto;
     height: auto;
 }
 
@@ -202,7 +207,7 @@ header {
     height: 75%;
     user-select: none;
 
-    transition: transform 0.1s;
+    transition: transform 0.1s ease-in-out;
 }
 
 h1.game-name {
@@ -581,6 +586,7 @@ section.flappymaniek .screen {
     font-family: var(--maniek-font);
     font-size: 2rem;
     color: white;
+    margin: 0.5em;
     text-shadow: 0 0 3px black,
                 0 0 3px black,
                 0 0 3px black,

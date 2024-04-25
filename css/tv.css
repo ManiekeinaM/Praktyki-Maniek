@@ -9,6 +9,11 @@ body {
     background-color: black;
     font-family: "digital";
     color: green;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 #data-pass {
@@ -16,16 +21,21 @@ body {
 }
 
 .upper-controls {
+    height: calc(100vh - 12rem);
+    width: calc(100vw - 1rem);
     display: flex;
 }
 
 .bottom-controls {
+    height: 10rem;
     font-size: 4rem;
     display: flex;
     position: relative;
     justify-content: space-between;
     border: 0.2rem solid green;
     padding: 0.5rem;
+
+    width: calc(100vw - 2.4rem);
 }
 
 .bell-schedule {

@@ -21,7 +21,7 @@ body {
 }
 
 .upper-controls {
-    height: calc(100vh - 12rem);
+    height: calc(100vh - 10rem);
     width: calc(100vw - 1rem);
     display: flex;
 }

@@ -21,13 +21,13 @@ body {
 }
 
 .upper-controls {
-    height: calc(100vh - 10rem);
+    height: calc(100vh - 9rem);
     width: calc(100vw - 1rem);
     display: flex;
 }
 
 .bottom-controls {
-    height: 8rem;
+    height: 9rem;
     font-size: 4rem;
     display: flex;
     position: relative;

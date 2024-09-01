@@ -4,12 +4,11 @@
 }
 
 body {
-    margin: 0px;
+    margin: 0;
     overflow: hidden;
     background-color: black;
-    font-family: "digital";
+    font-family: "digital", sans-serif;
     color: green;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,20 +21,26 @@ body {
 
 .upper-controls {
     height: calc(100vh - 9rem);
-    width: calc(100vw - 1rem);
+    width: calc(100% - 1rem);
     display: flex;
 }
 
 .bottom-controls {
     height: 9rem;
-    font-size: 4rem;
+    font-size: clamp(2rem, 4vw, 4rem);
     display: flex;
     position: relative;
     justify-content: space-between;
+    align-items: center;
     border: 0.2rem solid green;
     padding: 0.5rem;
+    width: calc(100% - 1rem);
+    box-sizing: border-box;
+}
 
-    width: calc(100vw - 2.4rem);
+.bottom-controls > * {
+    display: flex;
+    align-items: center;
 }
 
 .bell-schedule {
@@ -45,21 +50,21 @@ body {
     border-bottom: none;
     text-wrap: nowrap;
     width: 20%;
-    font-size: 3rem;
+    font-size: clamp(1rem, 2.5vw, 3rem);
 }
 
 .bell-schedule > table {
     text-align: center;
 }
 
-.maniek-face{
-  width: auto;
-  height: 12rem;
+.maniek-face {
+    width: auto;
+    height: 125%;
+    max-height: 12rem;
 }
 
-
 .big {
-    font-size: 5rem;
+    font-size: clamp(3rem, 5vw, 5rem);
 }
 
 .light-green {
@@ -71,9 +76,9 @@ video {
     height: auto;
     width: 80%;
     border: 0.2rem rgb(44, 44, 44) solid;
-    border-right: 0.2rem rgb(44, 44, 44) solid;
 }
 
-.break>p, .timer>p {
-    margin: 3rem;
+.break > p, .timer > p {
+    margin: 1rem;
 }
+

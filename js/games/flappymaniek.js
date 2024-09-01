@@ -17,7 +17,7 @@ const pipesDiv = document.querySelector('.flappymaniek .screen .pipes');
 function createPipe() {
     let pipeContainer = document.createElement('div');
     pipeContainer.className = 'pipe-container';
-    pipeContainer.style.right = `-10%`;
+    pipeContainer.style.right = `-10%`; // start offscreen
 
     let pipeTop = document.createElement('img');
     pipeTop.className = 'pipe top';
@@ -34,20 +34,19 @@ function createPipe() {
     let gapPosition = Math.round(Math.random() * 60 - 30);
     pipeContainer.style.top = `${50 + gapPosition}%`;
 
-    pipes.push({ container: pipeContainer, top: pipeTop, bottom: pipeBottom, givenPoints: false });
+    let gapSize = bird.offsetHeight * 4;
+    pipeContainer.style.gap = `${gapSize}px`;
 
+    pipes.push({ container: pipeContainer, top: pipeTop, bottom: pipeBottom, givenPoints: false });
 }
 
-let pipeSpeed = 0.4; // percent!
-
-function movePipes() {
+function movePipes(deltaTime) {
     for (let i = 0; i < pipes.length; i++) {
         let pipe = pipes[i];
         let container = pipe.container;
 
-
         let right = parseFloat(container.style.right);
-        right += pipeSpeed;
+        right += pipeSpeed * deltaTime;
 
         container.style.right = `${right}%`;
 
@@ -59,10 +58,6 @@ function movePipes() {
         if (right > 100) {
             // Pipe is out of the screen
             pipesDiv.removeChild(container);
-            // pipesDiv.removeChild(bottomPipe);
-            // pipesDiv.removeChild(topPipe);
-
-            // Remove pipe from array
             pipes.splice(i, 1);
             i--;
         }
@@ -70,44 +65,57 @@ function movePipes() {
 }
 
 // Game variables
-
 let birdY = 50; // percent!
 let birdVelocity = 0;
-const birdGravity = 0.05;
-const jumpHeight = -1.25;
+const birdGravity = 160; 
+const jumpVelocity = -70;
+const pipeSpeed = 25; 
+
+let lastTime = 0;
+let pipeSpawnTimer = 0;
+const pipeSpawnInterval = 1.5; // seconds
 
 
 function collisionDetection() {
-    // Check if bird collides with a pipe
-    let checkedPipes = 0;
-    for (let i = 0; i < pipes.length; i++) {
-        let pipe = pipes[i];
-
-        let container = pipe.container;
-        let right = parseFloat(container.style.right);
-
-        if (right > 75) continue;
-        checkedPipes++;
-
-
-        if (checkedPipes == 1 && right > 61.5 && right < 75) {
-            // Inside the bounds of a pipe. Check if the bird is inside the gap
-            let gapTop = parseFloat(container.style.top);
-            let difference = Math.abs(birdY - gapTop);
-
-            if (difference > 11) return true;
-
-            break;
-        }
-    }
+    const birdRect = bird.getBoundingClientRect();
+    const screenRect = screen.getBoundingClientRect();
 
     // Check if bird collides with the ground or top of the screen
-    if (birdY < -10 || birdY > 95) {
+    if (birdRect.top <= screenRect.top || birdRect.bottom >= screenRect.bottom) {
         return true;
+    }
+
+    // Calculate bird's hitbox (slightly smaller than the actual image)
+    const hitboxPadding = 0.1; // 10% padding
+    const hitboxLeft = birdRect.left + birdRect.width * hitboxPadding;
+    const hitboxRight = birdRect.right - birdRect.width * hitboxPadding;
+    const hitboxTop = birdRect.top + birdRect.height * hitboxPadding;
+    const hitboxBottom = birdRect.bottom - birdRect.height * hitboxPadding;
+
+    // Check if bird collides with a pipe
+    for (let pipe of pipes) {
+        const pipeTopRect = pipe.top.getBoundingClientRect();
+        const pipeBottomRect = pipe.bottom.getBoundingClientRect();
+
+        // Early exit if pipe is not in collision range
+        if (hitboxRight < pipeTopRect.left || hitboxLeft > pipeTopRect.right) {
+            continue;
+        }
+
+        // Check collision with top pipe
+        if (hitboxTop < pipeTopRect.bottom) {
+            return true;
+        }
+
+        // Check collision with bottom pipe
+        if (hitboxBottom > pipeBottomRect.top) {
+            return true;
+        }
     }
 
     return false;
 }
+
 
 // Highscore
 
@@ -161,7 +169,7 @@ function restart() {
 
     // Reset bird parameters
     birdY = 50;
-    birdVelocity = jumpHeight;
+    birdVelocity = jumpVelocity;
     running = true;
     frameCount = 0;
 
@@ -178,6 +186,9 @@ function restart() {
         clearInterval(fallInterval);
         bird.classList.remove('falling');
     }
+
+    lastTime = performance.now();
+    pipeSpawnTimer = 0;
 }
 
 
@@ -219,7 +230,7 @@ function death() {
 }
 
 
-function gameLoop() {
+function gameLoop(currentTime) {
     if (CURRENT_GAME != "flappymaniek") {
         requestAnimationFrame(gameLoop);
         return;
@@ -229,36 +240,47 @@ function gameLoop() {
         return;
     }
 
-    frameCount++;
+    const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
+    /*
+    // testing framerate cap
+    if (deltaTime < 1/10) {
+        requestAnimationFrame(gameLoop);
+        return;
+    }
+    */
+    lastTime = currentTime;
+
 
     // Update bird position
-    birdVelocity += birdGravity;
-    birdVelocity = Math.min(birdVelocity, 1);
-    birdY += birdVelocity;
+    birdVelocity += birdGravity * deltaTime;
+    birdVelocity = Math.min(birdVelocity, 300); // Cap max velocity
+    birdY += birdVelocity * deltaTime;
     bird.style.top = `${birdY}%`;
+
+    // Move pipes
+    movePipes(deltaTime);
+
+    // Spawn pipes
+    pipeSpawnTimer += deltaTime;
+    if (pipeSpawnTimer >= pipeSpawnInterval) {
+        createPipe();
+        pipeSpawnTimer = 0;
+    }
 
     // Detect collision
     let dead = collisionDetection();
     if (dead)
         death();
 
-    // Create pipes every 100 frames
-    if (frameCount % 100 == 0) {
-        // console.log("Creating pipe");
-        createPipe();
-    }
-
-    // Move pipes
-    movePipes();
-
     // Continue the game loop
     requestAnimationFrame(gameLoop);
 }
 
-screen.addEventListener('click', e => {
 
+
+screen.addEventListener('click', e => {
     if (running) {
-        birdVelocity = jumpHeight;
+        birdVelocity = jumpVelocity;
     }
 
     if (!running)
@@ -266,4 +288,6 @@ screen.addEventListener('click', e => {
 });
 
 // Start the game loop
-gameLoop();
+lastTime = performance.now();
+requestAnimationFrame(gameLoop);
+

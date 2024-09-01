@@ -453,13 +453,13 @@ section.flappymaniek .screen {
 .screen .titlescreen {
     position: absolute;
     bottom: 0;
-    left: 0%;
-    transform: translate(10%, -10%);
+    left: 100%;
+    transform: translate(-110%, -10%);
 
     font-family: var(--maniek-font);
     text-align: center;
 
-    color: rgb(73, 199, 73);
+    color: rgb(91, 196, 91);
     font-size: 2rem;
     margin: 0;
 

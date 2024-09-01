@@ -142,27 +142,32 @@ body {
 .logo-container {
     position: fixed;
     z-index: 10;
-
     left: 2rem;
-    top: 6rem;
+    top: 2rem;
 
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
 
-    /* border: 0.125rem solid rgba(56, 92, 255, 0.25); */
-    /* background-color:rgba(202, 212, 255, 0.2); */
-    background-color: rgba(213, 227, 255, 0.4);
-    border-radius: 1rem;
+    gap: 15px;
 
-    margin: 1rem;
-    padding-left: 0.5rem; padding-right: 0.5rem;
-    animation: popIn 0.25s;
+    background-color: rgba(213, 227, 255, 0.8);
+    border: 3px solid rgba(56, 92, 255, 0.2);
+    border-radius: 2rem;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 4px 6px rgba(16, 0, 158, 0.1);
+    transition: all 0.3s ease;
 }
+
+.logo-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+
 .logo {
     width: 4.6875rem;
-    height: 4.6857rem;
+    height: 4.6875rem;
 
     /* margin-right: 10px; */
     animation: 6s spin infinite;
@@ -202,7 +207,7 @@ body {
     width: 150px;
 
     left: 0;
-    top: calc(85% + 4.5rem);
+    top: calc(85% + 5.5rem);
 
     /* background-color: rgba(56, 92, 255, 0.05); */
     background-color: rgb(245,247,255);
@@ -215,22 +220,16 @@ body {
 
     display: block;
     
-
     text-align: center;
-
     overflow-y: auto;
-
     user-select: none;
-
     transition: 0.25s;
 }
 
 .room-selection-button {
     position: absolute;
-    top: calc(50% + 4rem);
+    top: calc(50% + 5rem);
     left: calc(0.5rem);
-
-
 
     display: flex;
     justify-content: center;

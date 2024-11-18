@@ -15,7 +15,7 @@ timeout /t 10 /nobreak >nul
 REM after 10sec, the windows were probably loaded, start the site on both monitors
 REM TODO use AHK instead
 
-start /B chrome --app="http://localhost/maniek/Praktyki-Maniek/tv-player.php" --window-position=1680,0 --kiosk --user-data-dir=c:/monitor2
-start /B chrome --app="http://localhost/maniek/Praktyki-Maniek/index.html" --window-position=0,0 --kiosk --user-data-dir=c:/monitor1
+start /B chrome --app="http://localhost/maniek/praktyki-maniek/tv-player.php" --window-position=1680,0 --kiosk --user-data-dir=c:/monitor2
+start /B chrome --app="http://localhost/maniek/praktyki-maniek/index.html" --window-position=0,0 --kiosk --user-data-dir=c:/monitor1
 
 cmd /k

@@ -13,6 +13,9 @@ const GAME_WINDOW_WIDTH = canvas.width;
 //Game state controller
 const game = {
     player_score: 0, 
+    reset: function() {
+        player_turret.lives = 3;
+    },
 }
 
 //Controls
@@ -88,6 +91,7 @@ const enemy_plane = {
         this.scale = 1.0;
         this.width = 40;
         this.height = 20;
+        player_turret.deal_damage();
     }
 }
 
@@ -112,6 +116,12 @@ const player_turret = {
         ctx.fillStyle = 'black';
         ctx.fillRect(x, y, this.width, this.height);
     }, 
+    deal_damage: function() {
+        this.lives -= 1;
+        if (lives == 0) {
+            game.reset();
+        }
+    }
 }
 
 //Camera / Scope obj

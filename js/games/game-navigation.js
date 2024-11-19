@@ -46,7 +46,9 @@ games.forEach(button => {
     })
 
     // Correct the display on transition end
+    /*
     let allGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
+
 
     let fixDisplay = object => {
         let isHidden = object.classList.contains('hidden');
@@ -62,5 +64,6 @@ games.forEach(button => {
         })
         fixDisplay(object);
     });
+    */
 })
 

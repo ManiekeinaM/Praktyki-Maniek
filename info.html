@@ -13,8 +13,11 @@
     <style>
         main {
             display: flex;
-            justify-content: center;
+            flex-direction: column-reverse;
+            justify-content: space-around;
             align-items: center;
+            
+            overflow: hidden;
         }
         body {
             position: relative;
@@ -33,7 +36,9 @@
     </div>
 
     <!-- Info container -->
+    
     <main>
+        <!--
         <div class="partners left">
             <div class="side-patron top">
                 <img src="./assets/Patron-icons/better-logo.png" alt="Better Collective" class="bettercollective">
@@ -48,79 +53,94 @@
                 <img src="./assets/Patron-icons/hydro-logo.png" alt="Hydro"> 
             </div>
         </div>
+        -->
 
-        <div class="info-container">
-            <div class="socials">
-                <img src="assets/sm-facebook.png" alt="Facebook" data-link="https://www.facebook.com/zsp9lodz">
-                <img src="assets/sm-insta.png" alt="Instagram" data-link="https://www.instagram.com/zsp9_im.ken_w_lodzi">
-                <img src="assets/sm-zsp.png" alt="Strona szkoły" data-link="https://zsp9.pl">
+        <div class="scroll-container">
+            <div class="scrolling-images">
+                <!-- Side patrons -->
+                <img src="./assets/Patron-icons/bsh-logo.png" alt="B/S/H/">
+                <img src="./assets/Patron-icons/hydro-logo.png" alt="Hydro"> 
+                <img src="./assets/Patron-icons/toya-logo.png" alt="Toya">
+                <img src="./assets/Patron-icons/pg-logo.png" alt="PG">
+                <img src="./assets/Patron-icons/bsh-logo.png" alt="B/S/H/">
+                <img src="./assets/Patron-icons/hydro-logo.png" alt="Hydro"> 
+                <img src="./assets/Patron-icons/toya-logo.png" alt="Toya">
+                <img src="./assets/Patron-icons/pg-logo.png" alt="PG">
+                <img src="./assets/Patron-icons/bsh-logo.png" alt="B/S/H/">
+                <img src="./assets/Patron-icons/hydro-logo.png" alt="Hydro"> 
+                <img src="./assets/Patron-icons/toya-logo.png" alt="Toya">
+                <img src="./assets/Patron-icons/pg-logo.png" alt="PG">
+                <img src="./assets/Patron-icons/bsh-logo.png" alt="B/S/H/">
+                <img src="./assets/Patron-icons/hydro-logo.png" alt="Hydro"> 
+                <img src="./assets/Patron-icons/toya-logo.png" alt="Toya">
+                <img src="./assets/Patron-icons/pg-logo.png" alt="PG">
             </div>
-
-            
-
-            <div class="screenshots">
-                <div class="description">
-                    <img src="assets/page-previews/qr-facebook.png" alt="qr">
-                    <p>Facebook</p>
-                    <img src="assets/page-previews/qr-facebook.png" alt="qr">
+        </div>
+    
+        <div id="info-container">
+            <div>
+                <div class="socials">
+                    <img src="assets/sm-facebook.png" alt="Facebook" data-link="https://www.facebook.com/zsp9lodz">
+                    <img src="assets/sm-insta.png" alt="Instagram" data-link="https://www.instagram.com/zsp9_im.ken_w_lodzi">
+                    <img src="assets/sm-zsp.png" alt="Strona szkoły" data-link="https://zsp9.pl">
                 </div>
-                
-                <img class="screenshot" src="assets/page-previews/facebook.png" alt="screenshot">
-            </div>
-
-            <script>
-                let socials = document.querySelectorAll('.socials img');
-                let screenshots = document.querySelector('.screenshots');
-
-                let descriptionDiv = screenshots.querySelector('.description');
-                let description = descriptionDiv.querySelector('p');
-                let qrCodes = descriptionDiv.querySelectorAll('img');
-
-                let screenshot = screenshots.querySelector('.screenshot');
-            
-                const altToSrc = { // [0] = src, [1] = qr src
-                    'Facebook': ['assets/page-previews/facebook.png', 'assets/page-previews/qr-facebook.png'],
-                    'Instagram': ['assets/page-previews/insta.png', 'assets/page-previews/qr-insta.png'],
-                    'Strona szkoły': ['assets/page-previews/zsp.png', 'assets/page-previews/qr-zsp.png']
-                }
-
-                function animateScreenshots() {
-                    screenshots.style.transform = `scale(0.85)`;
-                    setTimeout(e => {
-                        screenshots.style.transform = ``;
-                    }, 100)
-                }
-
-                socials.forEach(social => {
-                    let name = social.getAttribute('alt');
-                    let link = social.getAttribute('data-link');
+    
+                <div class="screenshots">
+                    <div class="description">
+                        <img src="assets/page-previews/qr-facebook.png" alt="qr">
+                        <p>Facebook</p>
+                        <img src="assets/page-previews/qr-facebook.png" alt="qr">
+                    </div>
                     
-                    let src = altToSrc[name][0];
-                    let qrSrc = altToSrc[name][1];
-
-                    social.addEventListener('click', () => {
-                        description.innerText = name;
-                        screenshot.src = src;  
-                        console.log(screenshot);
-
-                        qrCodes.forEach(qr => {
-                            qr.src = qrSrc;
+                    <img class="screenshot" src="assets/page-previews/facebook.png" alt="screenshot">
+                </div>
+    
+                <script>
+                    const socials = document.querySelectorAll('.socials img');
+                    const screenshots = document.querySelector('.screenshots');
+    
+                    const descriptionDiv = screenshots.querySelector('.description');
+                    const description = descriptionDiv.querySelector('p');
+                    const qrCodes = descriptionDiv.querySelectorAll('img');
+    
+                    const screenshot = screenshots.querySelector('.screenshot');
+                
+                    const altToSrc = { // [0] = src, [1] = qr src
+                        'Facebook': ['assets/page-previews/facebook.png', 'assets/page-previews/qr-facebook.png'],
+                        'Instagram': ['assets/page-previews/insta.png', 'assets/page-previews/qr-insta.png'],
+                        'Strona szkoły': ['assets/page-previews/zsp.png', 'assets/page-previews/qr-zsp.png']
+                    }
+                    function animateScreenshots() {
+                        screenshots.style.transform = `scale(0.85)`;
+                        setTimeout(e => {
+                            screenshots.style.transform = ``;
+                        }, 100)
+                    }
+                    socials.forEach(social => {
+                        let name = social.getAttribute('alt');
+                        let link = social.getAttribute('data-link');
+                        let src = altToSrc[name][0];
+                        let qrSrc = altToSrc[name][1];
+    
+                        social.addEventListener('click', () => {
+                            description.innerText = name;
+                            screenshot.src = src;  
+                            qrCodes.forEach(qr => {
+                                qr.src = qrSrc;
+                            })
+                            animateScreenshots();
                         })
-
-                        animateScreenshots();
-
+    
+                        social.addEventListener('dblclick', e => {
+                            // this should only happen if this is not a kiosk machine (no maniek cookie)
+                            if (!IS_MANIEK) {
+                                window.open(link, '_blank');
+                            }
+                        })
                     })
-
-                    social.addEventListener('dblclick', e => {
-                        // TODO this should only happen if this is not a kiosk machine (no maniek cookie)
-                        if (0==1) {
-                            window.open(link, '_blank');
-                        }
-                    })
-                })
-
-            </script>
-
+                </script>
+            </div>
+            
 
             <div class="authors">
                 <p class="authors-title big">Twórcy Mańka <br> 3E 2023/2024</p>
@@ -133,7 +153,6 @@
 
                 <p class="big">Projekt wykonany w miesiąc w ramach praktyk</p>
 
-
                 <script>
                     let authors = document.querySelector('.authors');
                     let title = authors.querySelector('.authors-title');
@@ -145,6 +164,30 @@
             </div>
         </div>
 
+        <div class="scroll-container">
+            <div class="scrolling-images main">
+                <!-- Main patrons -->
+                <img src="./assets/Patron-icons/fujitsu-logo.png" alt="Fujitsu">
+                <img src="./assets/Patron-icons/better-logo.png" alt="Better Collective">
+                <img src="./assets/Patron-icons/veolia-logo.png" alt="Veolia">
+                <img src="./assets/Patron-icons/tomtom-logo.png" alt="TomTom">
+                <img src="./assets/Patron-icons/fujitsu-logo.png" alt="Fujitsu">
+                <img src="./assets/Patron-icons/better-logo.png" alt="Better Collective">
+                <img src="./assets/Patron-icons/veolia-logo.png" alt="Veolia">
+                <img src="./assets/Patron-icons/tomtom-logo.png" alt="TomTom">
+                <img src="./assets/Patron-icons/fujitsu-logo.png" alt="Fujitsu">
+                <img src="./assets/Patron-icons/better-logo.png" alt="Better Collective">
+                <img src="./assets/Patron-icons/veolia-logo.png" alt="Veolia">
+                <img src="./assets/Patron-icons/tomtom-logo.png" alt="TomTom">
+                <img src="./assets/Patron-icons/fujitsu-logo.png" alt="Fujitsu">
+                <img src="./assets/Patron-icons/better-logo.png" alt="Better Collective">
+                <img src="./assets/Patron-icons/veolia-logo.png" alt="Veolia">
+                <img src="./assets/Patron-icons/tomtom-logo.png" alt="TomTom">
+            </div>
+        </div>
+        
+        
+        <!--
         <div class="partners right">
             <div class="side-patron top">
                 <img src="./assets/Patron-icons/tomtom-logo.png" alt="TomTom" class="tomtom">
@@ -159,6 +202,7 @@
                 <img src="./assets/Patron-icons/pg-logo.png" alt="PG">
             </div>
         </div>
+        -->
     </main>
 
 

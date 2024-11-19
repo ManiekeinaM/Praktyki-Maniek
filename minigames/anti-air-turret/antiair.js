@@ -26,17 +26,26 @@ const controls = {
     left_pressed: false,
 }
 
-// Diffrent ai plane behaviors
-/*
-const ai_plane_behaviors = {
+const spritesheet = new Image();
+spritesheet.src = 'Assets/enemy.png';
 
+const plane_animation = {
+    frame_width: 640,
+    frame_height: 640,
+    total_frames: 3,
+    current_frame: 0,
+    frame_rate: 100,
+    source_x: 0,
+    source_y: 0,
+    calc_source_position: function() {
+        this.source_x = this.current_frame * this.frame_width;
+    },
+    
 }
-*/
+
 
 //Enemies obj
 const enemy_plane = {
-    height: 20,
-    width: 40,
     x: canvasWidth / 2,
     y: -200,
     camera_offset_x: 0,
@@ -45,15 +54,25 @@ const enemy_plane = {
     camera_acceleration_y: 100,
     acceleration_y: 50,
     scaling_factor: 0.5,
-    scale: 1.0,
+    scale: 0.1,
     color: 'green',
+    sprite: plane_animation,
     draw: function() {
+        ctx.drawImage(
+            spritesheet,
+            plane_animation.source_x, plane_animation.source_y,
+            plane_animation.frame_width, plane_animation.frame_height,
+            this.x, this.y,
+            plane_animation.frame_width * this.scale, plane_animation.frame_height * this.scale,
+        );
+    },
+    /*draw: function() {
         ctx.fillStyle = this.color;
         let x = this.x - this.width / 2;
         let y = this.y - this.height;
         // Add camera offset
         ctx.fillRect(this.x + this.camera_offset_x, this.y + this.camera_offset_y, this.width, this.height);
-    },
+    },*/
     move_offset: function(delta) {
         if (controls.up_pressed) { this.camera_offset_y -= this.camera_acceleration_y * delta; };
         if (controls.down_pressed) { this.camera_offset_y += this.camera_acceleration_y * delta; };
@@ -88,7 +107,7 @@ const enemy_plane = {
     },
     reset: function() {
         this.y = -200;
-        this.scale = 1.0;
+        this.scale = 0.1;
         this.width = 40;
         this.height = 20;
         player_turret.deal_damage();
@@ -118,7 +137,7 @@ const player_turret = {
     }, 
     deal_damage: function() {
         this.lives -= 1;
-        if (lives == 0) {
+        if (this.lives == 0) {
             game.reset();
         }
     }
@@ -161,20 +180,30 @@ document.addEventListener('keyup', (event) => {
 });
 
 let lastFrameResponse = 0;
+let lastAnimationTime = 0;
 
+// Main game loop
 function game_loop(timestamp) {
     let delta = (timestamp - lastFrameResponse) / 1000;
     lastFrameResponse = timestamp;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
+
     Planes.forEach(plane => {
         plane.move_offset(delta);
         plane.move(delta);
     })
 
+    //Handle animation
+    if (timestamp - lastAnimationTime > plane_animation.frame_rate) {
+        plane_animation.current_frame = (plane_animation.current_frame + 1) % plane_animation.total_frames;
+        plane_animation.calc_source_position(); // Update source_x
+        lastAnimationTime = timestamp;
+    }
+
+    //Draw new sprites
     player_turret.draw();
-    //console.log("Plane1: "+(Planes[0].camera_offset_x+Planes[0].x)," Plane2: "+(Planes[1].camera_offset_x+Planes[1].x));
     Planes.forEach(plane => {
         plane.draw();
     })
@@ -183,6 +212,8 @@ function game_loop(timestamp) {
     requestAnimationFrame(game_loop);
 }
 
-requestAnimationFrame(game_loop);
+spritesheet.onload = () => {
+    requestAnimationFrame(game_loop);
+}
 
 

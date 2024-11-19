@@ -74,7 +74,7 @@ const enemy_plane = {
             } else {
                 this.camera_offset_y -= this.camera_acceleration_y * delta;
             }
-            this.y_offset_scale = 1 - this.camera_offset_x / 1000;
+            this.y_offset_scale = 1 - this.camera_offset_y / 1000;
         };
         if (controls.down_pressed) { 
             if (this.camera_offset_y > 0) {
@@ -82,6 +82,7 @@ const enemy_plane = {
             } else {
                 this.camera_offset_y += this.camera_acceleration_y * delta; 
             }
+            this.y_offset_scale = 1 - this.camera_offset_y / 1000;
         };
         if (controls.left_pressed) { this.camera_offset_x -= this.camera_acceleration_x * delta; };
         if (controls.right_pressed) { this.camera_offset_x += this.camera_acceleration_x * delta; };
@@ -201,7 +202,7 @@ function game_loop(timestamp) {
         plane.move_offset(delta);
         plane.move(delta);
     })
-    console.log(Planes[0].scale);
+    console.log(Planes[0].y_offset_scale);
     //Handle animation
     if (timestamp - lastAnimationTime > plane_animation.frame_rate) {
         plane_animation.current_frame = (plane_animation.current_frame + 1) % plane_animation.total_frames;

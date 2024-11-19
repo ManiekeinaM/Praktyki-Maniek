@@ -3,11 +3,10 @@
 }
 
 /* Info */
-.info-container {
+#info-container {
+  position: relative;
     background-color: var(--lightblue-bg);
     min-width: 10rem;
-    width: 50%;
-    max-width: 50%;
     max-height: calc(100vh - 10rem);
 
 
@@ -19,6 +18,13 @@
     text-align: center;
 
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#info-container > div {
+  position: relative;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -28,6 +34,7 @@
 .socials {
     width: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 1rem;
@@ -160,82 +167,44 @@
   border-bottom-right-radius: 1rem;
 }
 
-/* Patrons on the side */
-.partners {
-  width: 25%;
-  height: 100%;
+
+
+.scroll-container {
   position: relative;
-
+  height: 50px;
+  width: 100%;
+  background-color: ghostwhite;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-
-  /* gap: 3rem; */
-
-  z-index: 5;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-
-
-.main-patron {
-  width: calc(70% + 2rem);
+.scrolling-images {
+  position: relative;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-
-  margin: 1.5rem;
+  width: fit-content;
+  animation: scroll 15s linear infinite;
 }
 
-.main-patron img {
-  max-width: 95%;
+.scrolling-images img {
+  width: 400px;
+  height: 50px;
+  object-fit: contain;
 }
 
-.side-patron {
-  width: calc(70% + 2rem);
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-wrap: nowrap;
-}
 
-.side-patron img {
-  flex: 1 0 auto;
-  max-width: 35%;
-}
 
-.side-patron .bettercollective, .side-patron .tomtom {
-  max-width: 60%;
-}
-
-.main-patron img, .side-patron img {
-  height: auto;
-  /* max-width: 100%; */
-}
-
-@media (max-width: 500px) {
-  main {
-      flex-direction: column;
-      gap: 0;
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
   }
-
-  .info-container {
-    max-width: 85%;
-    width: 85%;
+  100% {
+    transform: translateX(calc(400px * 4));
   }
-
-  .partners {
-    width: 100%;
-    height: 10rem;
-    flex-direction: row;
-  }
-  .side-patron {
-    width: 30rem;
-  }
-  .main-patron {
-    width: 40rem;
-  }
-
-  
 }
 

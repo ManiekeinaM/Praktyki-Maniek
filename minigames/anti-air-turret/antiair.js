@@ -8,8 +8,6 @@ const canvasHeight = canvas.height;
 const GAME_WINDOW_HEIGHT = canvas.height + 200;
 const GAME_WINDOW_WIDTH = canvas.width * 2;
 
-//console.log(canvasWidth);
-//console.log(canvasHeight);
 //Game state controller
 const game = {
     player_score: 0, 
@@ -105,7 +103,6 @@ const enemy_plane = {
     move: function(delta) {
         this.y += this.acceleration_y * delta;
         this.scale_up(delta);
-        //console.log(this.scale);
         this.attack_player();
     },
     scale_up: function(delta) {
@@ -130,10 +127,6 @@ const enemy_plane = {
 // Planes
 const Planes = [];
 Planes.push(Object.create(enemy_plane));
-//Planes.push(Object.create(enemy_plane));
-//Planes[0].camera_offset_x -= 200
-//Planes[0].y += 50
-//Planes[0].color = 'red';
 
 //Player obj
 const player_turret = {
@@ -232,7 +225,7 @@ function drawRadar(player, enemies, cameraAngle) {
         const distance = Math.sqrt(relativeX ** 2 + relativeY ** 2) * 0.8;
 
         // We don't want to clamp the distance for radar blips anymore to prevent them from disappearing prematurely.
-        const maxDistance = 800; // Max visible range in the game world
+        const maxDistance = 800; 
 
         // Scale the distance on the radar
         const scaledX = (relativeX / distance) * distance * scale;
@@ -246,15 +239,25 @@ function drawRadar(player, enemies, cameraAngle) {
         const radarBlipY = radarY + rotated.y;
 
         // Draw the blip if it is within the radar's radius
-        if (distance < maxDistance) { // Don't show if too far away, but ensure it doesn't disappear prematurely
-            ctx.drawImage(
-                planeIcon,
-                radarBlipX - IconWidth * 0.2 / 2, // Center the image on the blip position
-                radarBlipY - IconHeigth * 0.2 / 2, // Center the image on the blip position
-                planeIcon.width * 0.2, 
-                planeIcon.height * 0.2 
-            );
-            console.log("radarX", radarBlipX);
+        if (distance < maxDistance) { 
+            const iconWidth = planeIcon.width * 0.2; 
+                const iconHeight = planeIcon.height * 0.2; 
+
+                // Calculate the angle toward the radar center
+                const angleToCenter = Math.atan2(radarY - radarBlipY, radarX - radarBlipX) - Math.PI / 2;
+
+                // Rotate and draw the image
+                ctx.save();
+                ctx.translate(radarBlipX, radarBlipY);
+                ctx.rotate(angleToCenter); 
+                ctx.drawImage(
+                    planeIcon,
+                    -iconWidth / 2,
+                    -iconHeight / 2, 
+                    iconWidth, 
+                    iconHeight 
+                );
+                ctx.restore();
         }
     });
 }

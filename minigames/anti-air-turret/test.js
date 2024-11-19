@@ -1,16 +1,14 @@
-//Canvas setup
+// Canvas setup
 const canvas = document.getElementById('game-canvas');
 const ctx = canvas.getContext('2d');
-//Visible window
+// Visible window
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
-//Entire game window
-const GAME_WINDOW_HEIGHT = canvas.height + 200;
-const GAME_WINDOW_WIDTH = canvas.width * 2;
+// Entire game window dimensions
+const GAME_WINDOW_HEIGHT = canvasHeight;
+const GAME_WINDOW_WIDTH = canvasWidth;
 
-//console.log(canvasWidth);
-//console.log(canvasHeight);
-//Game state controller
+// Game state controller
 const game = {
     player_score: 0, 
     reset: function() {
@@ -18,7 +16,7 @@ const game = {
     },
 }
 
-//Controls
+// Controls
 const controls = {
     up_pressed: false,
     down_pressed: false,
@@ -40,20 +38,18 @@ const plane_animation = {
     calc_source_position: function() {
         this.source_x = this.current_frame * this.frame_width;
     },
-    
 }
 
-
-//Enemies obj
+// Enemies object
 const enemy_plane = {
     x: canvasWidth / 2,
-    y: 0,
+    y: -200,
     camera_offset_x: 0,
     camera_offset_y: 0,
-    camera_acceleration_x: 200,
-    camera_acceleration_y: 100,
-    acceleration_y: 20,
-    scaling_factor: 0.1,
+    camera_acceleration_x: 100, // Slower horizontal movement
+    camera_acceleration_y: 50,  // Slower vertical panning
+    acceleration_y: 10,         // Slower vertical movement
+    scaling_factor: 0.05,       // Slower scaling factor
     y_offset_scale: 1,  
     scale: 0.1,
     color: 'green',
@@ -63,8 +59,7 @@ const enemy_plane = {
             spritesheet,
             plane_animation.source_x, plane_animation.source_y,
             plane_animation.frame_width, plane_animation.frame_height,
-            this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2,
-            this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2,
+            this.x + this.camera_offset_x, this.y - this.camera_offset_y,
             plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
         );
     },
@@ -76,7 +71,7 @@ const enemy_plane = {
                 this.camera_offset_y -= this.camera_acceleration_y * delta;
             }
             this.y_offset_scale = 1 - this.camera_offset_y / 1000;
-        };
+        }
         if (controls.down_pressed) { 
             if (this.camera_offset_y > 0) {
                 this.camera_offset_y = 0;
@@ -84,32 +79,29 @@ const enemy_plane = {
                 this.camera_offset_y += this.camera_acceleration_y * delta; 
             }
             this.y_offset_scale = 1 - this.camera_offset_y / 1000;
-        };
+        }
         if (controls.left_pressed) { 
             this.camera_offset_x -= this.camera_acceleration_x * delta;
-        };
+        }
         if (controls.right_pressed) { 
             this.camera_offset_x += this.camera_acceleration_x * delta; 
-        };
-
-        this.adjust_camera();
-    },
-    adjust_camera: function() {
-        if (this.camera_offset_x + this.x > 1600) {
-            this.camera_offset_x = this.camera_offset_x * -1 + 800;
         }
-        if (this.camera_offset_x + this.x < -800) {
-            this.camera_offset_x = this.camera_offset_x * -1 - 800;
+
+        // Constrain the camera's X offset to within the game window bounds.
+        if (this.camera_offset_x + this.x > GAME_WINDOW_WIDTH) {
+            this.camera_offset_x = GAME_WINDOW_WIDTH - this.x;
+        }
+        if (this.camera_offset_x + this.x < 0) {
+            this.camera_offset_x = -this.x;
         }
     },
     move: function(delta) {
         this.y += this.acceleration_y * delta;
         this.scale_up(delta);
-        //console.log(this.scale);
         this.attack_player();
     },
     scale_up: function(delta) {
-        this.scale += this.scaling_factor * delta;
+        this.scale += this.scaling_factor * delta; // Slower scaling over time
         this.width = 40 * this.scale;
         this.height = 20 * this.scale;
     },
@@ -127,15 +119,15 @@ const enemy_plane = {
     }
 }
 
-// Planes
+// Planes array with initial planes
 const Planes = [];
 Planes.push(Object.create(enemy_plane));
-//Planes.push(Object.create(enemy_plane));
-//Planes[0].camera_offset_x -= 200
-//Planes[0].y += 50
-//Planes[0].color = 'red';
+Planes.push(Object.create(enemy_plane));
+Planes[0].camera_offset_x -= 200;
+Planes[0].y += 50;
+Planes[0].color = 'red';
 
-//Player obj
+// Player object (turret)
 const player_turret = {
     x: canvasWidth / 2,
     y: canvasHeight,
@@ -156,19 +148,17 @@ const player_turret = {
     }
 }
 
-//Camera / Scope obj
-const MAX_CAMERA_OFFSET_Y = -200
-const MIN_CAMERA_OFFSET_Y = GAME_WINDOW_HEIGHT 
-//console.log("max offset y: ",MAX_CAMERA_OFFSET_Y);
-//console.log("min offset y: ",MIN_CAMERA_OFFSET_Y);
+// Camera / Scope object adjustments
+const MAX_CAMERA_OFFSET_Y = -200;
+const MIN_CAMERA_OFFSET_Y = GAME_WINDOW_HEIGHT;
 
 const scope_anchor = {
     height: 5,
     width: 5,
     x: canvasWidth / 2,
     y: canvasHeight / 2,
-    acceleration_x: 200,
-    acceleration_y: 100,
+    acceleration_x: 100, // Slower movement for smoother control
+    acceleration_y: 50,  // Slower vertical acceleration
     draw: function() {
         let x = this.x - this.width / 2;
         let y = this.y - this.height / 2;
@@ -177,7 +167,11 @@ const scope_anchor = {
     },
 }
 
+// Camera angle initialization
+let cameraAngle = 0;
+const rotationSpeed = Math.PI / 4; // Speed at which the camera rotates
 
+// Controls handling
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowUp') controls.up_pressed = true;
     if (event.key === 'ArrowDown') controls.down_pressed = true;
@@ -192,15 +186,49 @@ document.addEventListener('keyup', (event) => {
     if (event.key === 'ArrowRight') controls.right_pressed = false;
 });
 
+// Main game loop with controlled movement
 let lastFrameResponse = 0;
 let lastAnimationTime = 0;
 
-//Radar
-const planeIcon = new Image();
-const IconHeigth = 144;
-const IconWidth = 144;
-planeIcon.src = 'Assets/PlaneIcon.png';
+function gameLoop(timestamp) {
+    const delta = (timestamp - lastFrameResponse) / 1000; // Time difference in seconds
+    lastFrameResponse = timestamp;
 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Move and draw planes
+    Planes.forEach(plane => {
+        plane.move_offset(delta); // Apply offset movement
+        plane.move(delta); // Apply vertical movement and scaling
+        plane.draw(); // Draw the plane sprite
+    });
+
+    // Handle animation frame change
+    if (timestamp - lastAnimationTime > plane_animation.frame_rate) {
+        plane_animation.current_frame = (plane_animation.current_frame + 1) % plane_animation.total_frames;
+        plane_animation.calc_source_position(); // Update source_x
+        lastAnimationTime = timestamp;
+    }
+
+    // Draw player turret
+    player_turret.draw();
+
+    // Update camera angle based on player input
+    if (controls.left_pressed) cameraAngle -= rotationSpeed * delta;
+    if (controls.right_pressed) cameraAngle += rotationSpeed * delta;
+    cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2π
+
+    // Radar draw (if needed)
+    drawRadar(player_turret, Planes, cameraAngle);
+
+    requestAnimationFrame(gameLoop);
+}
+
+spritesheet.onload = () => {
+    requestAnimationFrame(gameLoop);
+}
+
+// Radar drawing function (example)
 function drawRadar(player, enemies, cameraAngle) {
     const radarRadius = 100; // Radar size
     const radarX = canvasWidth - radarRadius - 20; // Radar position (bottom-right corner)
@@ -220,101 +248,36 @@ function drawRadar(player, enemies, cameraAngle) {
     ctx.fillStyle = "green";
     ctx.fill();
 
-    const scale = radarRadius / 800; // Scale game world to radar size
+    // Scale the radar according to the player's distance
+    const scale = radarRadius / 800; // Max range scale factor
 
     // Draw enemy blips
     enemies.forEach(enemy => {
-        // Get the center of the enemy's sprite (based on position, not scale)
-        let relativeX = (enemy.x + (enemy.width / 2) - player.x);
-        let relativeY = (enemy.y + (enemy.height / 2) - player.y);
+        // Calculate enemy position relative to the player
+        let relativeX = enemy.x - player.x;
+        let relativeY = enemy.y - player.y;
 
-        // Calculate the actual distance from the enemy center to the player
-        const distance = Math.sqrt(relativeX ** 2 + relativeY ** 2) * 0.8;
+        // Apply rotation for radar rotation
+        const rotated = rotatePoint(relativeX, relativeY, cameraAngle);
 
-        // We don't want to clamp the distance for radar blips anymore to prevent them from disappearing prematurely.
-        const maxDistance = 800; // Max visible range in the game world
+        // Scale and position the radar blip
+        const radarBlipX = radarX + rotated.x * scale;
+        const radarBlipY = radarY + rotated.y * scale;
 
-        // Scale the distance on the radar
-        const scaledX = (relativeX / distance) * distance * scale;
-        const scaledY = (relativeY / distance) * distance * scale;
-
-        // Rotate to match the radar's orientation (rotate the relative position)
-        const rotated = rotatePoint(scaledX, scaledY, -cameraAngle);
-
-        // Calculate the final position of the blip on the radar
-        const radarBlipX = radarX + rotated.x;
-        const radarBlipY = radarY + rotated.y;
-
-        // Draw the blip if it is within the radar's radius
-        if (distance < maxDistance) { // Don't show if too far away, but ensure it doesn't disappear prematurely
-            ctx.drawImage(
-                planeIcon,
-                radarBlipX - IconWidth / 2 + radarRadius / 2, // Center the image on the blip position
-                radarBlipY - IconHeigth / 2 + radarRadius / 2, // Center the image on the blip position
-                planeIcon.width * 0.2, // Scale the plane icon down (adjust as needed)
-                planeIcon.height * 0.2  // Scale the plane icon down (adjust as needed)
-            );
-            //ctx.beginPath();
-            //ctx.arc(radarBlipX, radarBlipY, 3, 0, Math.PI * 2);
-            //ctx.fillStyle = "red";
-            //ctx.fill();
-        }
+        // Draw radar blip
+        ctx.beginPath();
+        ctx.arc(radarBlipX, radarBlipY, 3, 0, Math.PI * 2);
+        ctx.fillStyle = "red";
+        ctx.fill();
     });
 }
 
+// Rotate a point by an angle (for the radar rotation)
 function rotatePoint(x, y, angle) {
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
     return {
-        x: -(x * cos - y * sin),
+        x: x * cos - y * sin,
         y: x * sin + y * cos,
     };
 }
-
-
-let cameraAngle = 0;
-const rotationSpeed = Math.PI / 4;
-
-// Main game loop
-function game_loop(timestamp) {
-    let delta = (timestamp - lastFrameResponse) / 1000;
-    lastFrameResponse = timestamp;
-
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-
-    Planes.forEach(plane => {
-        plane.move_offset(delta);
-        plane.move(delta);
-    })
-    console.log(Planes[0].y_offset_scale);
-    //Handle animation
-    if (timestamp - lastAnimationTime > plane_animation.frame_rate) {
-        plane_animation.current_frame = (plane_animation.current_frame + 1) % plane_animation.total_frames;
-        plane_animation.calc_source_position(); // Update source_x
-        lastAnimationTime = timestamp;
-    }
-
-    //Draw new sprites
-    player_turret.draw();
-    Planes.forEach(plane => {
-        plane.draw();
-    })
-    scope_anchor.draw();
-
-    // Update camera angle based on player input
-    if (controls.left_pressed) cameraAngle -= rotationSpeed * delta;
-    if (controls.right_pressed) cameraAngle += rotationSpeed * delta;
-    cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2π
-
-    // Draw the radar with updated positions
-    drawRadar(player_turret, Planes, cameraAngle);
-
-    requestAnimationFrame(game_loop);
-}
-
-spritesheet.onload = () => {
-    requestAnimationFrame(game_loop);
-}
-
-

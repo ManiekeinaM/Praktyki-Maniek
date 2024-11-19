@@ -54,7 +54,7 @@ const enemy_plane = {
     camera_acceleration_y: 100,
     acceleration_y: 20,
     scaling_factor: 0.1,
-    y_offset_scale: 1,
+    y_offset_scale: 1,  
     scale: 0.1,
     color: 'green',
     sprite: plane_animation,
@@ -63,13 +63,26 @@ const enemy_plane = {
             spritesheet,
             plane_animation.source_x, plane_animation.source_y,
             plane_animation.frame_width, plane_animation.frame_height,
-            this.x + this.camera_offset_x, this.y + this.camera_offset_y,
-            plane_animation.frame_width * 0.25 * this.scale, plane_animation.frame_height * 0.25 * this.scale,
+            this.x + this.camera_offset_x, this.y - this.camera_offset_y,
+            plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
         );
     },
     move_offset: function(delta) {
-        if (controls.up_pressed) { this.camera_offset_y -= this.camera_acceleration_y * delta; };
-        if (controls.down_pressed) { this.camera_offset_y += this.camera_acceleration_y * delta; };
+        if (controls.up_pressed) { 
+            if (this.camera_offset_y < -200) {
+                this.camera_offset_y = -200;
+            } else {
+                this.camera_offset_y -= this.camera_acceleration_y * delta;
+            }
+            this.y_offset_scale = 1 - this.camera_offset_x / 1000;
+        };
+        if (controls.down_pressed) { 
+            if (this.camera_offset_y > 0) {
+                this.camera_offset_y = 0;
+            } else {
+                this.camera_offset_y += this.camera_acceleration_y * delta; 
+            }
+        };
         if (controls.left_pressed) { this.camera_offset_x -= this.camera_acceleration_x * delta; };
         if (controls.right_pressed) { this.camera_offset_x += this.camera_acceleration_x * delta; };
 
@@ -86,7 +99,7 @@ const enemy_plane = {
     move: function(delta) {
         this.y += this.acceleration_y * delta;
         this.scale_up(delta);
-        console.log(this.scale);
+        //console.log(this.scale);
         this.attack_player();
     },
     scale_up: function(delta) {
@@ -95,7 +108,7 @@ const enemy_plane = {
         this.height = 20 * this.scale;
     },
     attack_player: function() {
-        if (this.y > canvasHeight / 2) {
+        if (this.scale > 2.2) {
             this.reset();
         }
     },
@@ -140,8 +153,8 @@ const player_turret = {
 //Camera / Scope obj
 const MAX_CAMERA_OFFSET_Y = -200
 const MIN_CAMERA_OFFSET_Y = GAME_WINDOW_HEIGHT 
-console.log("max offset y: ",MAX_CAMERA_OFFSET_Y);
-console.log("min offset y: ",MIN_CAMERA_OFFSET_Y);
+//console.log("max offset y: ",MAX_CAMERA_OFFSET_Y);
+//console.log("min offset y: ",MIN_CAMERA_OFFSET_Y);
 
 const scope_anchor = {
     height: 5,
@@ -188,7 +201,7 @@ function game_loop(timestamp) {
         plane.move_offset(delta);
         plane.move(delta);
     })
-
+    console.log(Planes[0].scale);
     //Handle animation
     if (timestamp - lastAnimationTime > plane_animation.frame_rate) {
         plane_animation.current_frame = (plane_animation.current_frame + 1) % plane_animation.total_frames;

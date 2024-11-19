@@ -52,8 +52,9 @@ const enemy_plane = {
     camera_offset_y: 0,
     camera_acceleration_x: 200,
     camera_acceleration_y: 100,
-    acceleration_y: 50,
-    scaling_factor: 0.5,
+    acceleration_y: 20,
+    scaling_factor: 0.1,
+    y_offset_scale: 1,
     scale: 0.1,
     color: 'green',
     sprite: plane_animation,
@@ -62,17 +63,10 @@ const enemy_plane = {
             spritesheet,
             plane_animation.source_x, plane_animation.source_y,
             plane_animation.frame_width, plane_animation.frame_height,
-            this.x, this.y,
-            plane_animation.frame_width * this.scale, plane_animation.frame_height * this.scale,
+            this.x + this.camera_offset_x, this.y + this.camera_offset_y,
+            plane_animation.frame_width * 0.25 * this.scale, plane_animation.frame_height * 0.25 * this.scale,
         );
     },
-    /*draw: function() {
-        ctx.fillStyle = this.color;
-        let x = this.x - this.width / 2;
-        let y = this.y - this.height;
-        // Add camera offset
-        ctx.fillRect(this.x + this.camera_offset_x, this.y + this.camera_offset_y, this.width, this.height);
-    },*/
     move_offset: function(delta) {
         if (controls.up_pressed) { this.camera_offset_y -= this.camera_acceleration_y * delta; };
         if (controls.down_pressed) { this.camera_offset_y += this.camera_acceleration_y * delta; };

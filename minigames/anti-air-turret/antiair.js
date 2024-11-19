@@ -50,8 +50,8 @@ const enemy_plane = {
     camera_offset_y: 0,
     camera_acceleration_x: 200,
     camera_acceleration_y: 100,
-    acceleration_y: 20,
-    scaling_factor: 0.1,
+    acceleration_y: 40,
+    scaling_factor: 0.18,
     y_offset_scale: 1,  
     scale: 0.1,
     color: 'green',
@@ -84,10 +84,10 @@ const enemy_plane = {
             this.y_offset_scale = 1 - this.camera_offset_y / 1000;
         };
         if (controls.left_pressed) { 
-            this.camera_offset_x -= this.camera_acceleration_x * delta;
+            this.camera_offset_x += this.camera_acceleration_x * delta;
         };
         if (controls.right_pressed) { 
-            this.camera_offset_x += this.camera_acceleration_x * delta; 
+            this.camera_offset_x -= this.camera_acceleration_x * delta; 
         };
 
         this.adjust_camera();
@@ -102,7 +102,9 @@ const enemy_plane = {
     },
     move: function(delta) {
         this.y += this.acceleration_y * delta;
-        this.scale_up(delta);
+        if (this.y > 0) {
+            this.scale_up(delta);
+        }
         this.attack_player();
     },
     scale_up: function(delta) {
@@ -111,7 +113,7 @@ const enemy_plane = {
         this.height = 20 * this.scale;
     },
     attack_player: function() {
-        if (this.scale > 2.2) {
+        if (this.scale > 2.3) {
             this.reset();
         }
     },
@@ -196,13 +198,13 @@ planeIcon.src = 'Assets/PlaneIcon.png';
 
 function drawRadar(player, enemies, cameraAngle) {
     const radarRadius = 100; // Radar size
-    const radarX = canvasWidth - radarRadius;
-    const radarY = canvasHeight - radarRadius;
+    const radarX = canvasWidth - radarRadius - 20;
+    const radarY = canvasHeight - radarRadius - 20;
 
     // Draw radar background
     ctx.beginPath();
     ctx.arc(radarX, radarY, radarRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillStyle = "rgba(130, 215, 110, 0.2)";
     ctx.fill();
     ctx.strokeStyle = "white";
     ctx.stroke();
@@ -262,9 +264,24 @@ function drawRadar(player, enemies, cameraAngle) {
     });
 }
 
+function drawRadarSight(camera_offset_y) {
+    camera_vision_percent = Math.abs(camera_offset_y) / 200;
+    console.log(camera_vision_percent);
+    const radarRadius = 100 * camera_vision_percent; // Radar size
+    const radarX = canvasWidth - 20;
+    const radarY = canvasHeight - 20;
+
+    ctx.beginPath();
+    ctx.arc(radarX - 100, radarY - 100, radarRadius, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(130, 215, 110, 0.1)";
+    ctx.fill();
+    ctx.strokeStyle = "white";
+    ctx.stroke();
+}
+
 function rotatePoint(x, y, angle) {
-    const cos = Math.cos(angle);
-    const sin = Math.sin(angle);
+    const cos = Math.cos(-angle);
+    const sin = Math.sin(-angle);
     return {
         x: -(x * cos - y * sin),
         y: x * sin + y * cos,
@@ -275,6 +292,10 @@ function rotatePoint(x, y, angle) {
 let cameraAngle = 0;
 const rotationSpeed = Math.PI / 4;
 
+//Screen cover
+const screen_cover = new Image();
+screen_cover.src = "Assets/ScreenCover3.png";
+
 // Main game loop
 function game_loop(timestamp) {
     let delta = (timestamp - lastFrameResponse) / 1000;
@@ -282,12 +303,11 @@ function game_loop(timestamp) {
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-
     Planes.forEach(plane => {
         plane.move_offset(delta);
         plane.move(delta);
     })
-    console.log(Planes[0].y_offset_scale);
+
     //Handle animation
     if (timestamp - lastAnimationTime > plane_animation.frame_rate) {
         plane_animation.current_frame = (plane_animation.current_frame + 1) % plane_animation.total_frames;
@@ -307,8 +327,17 @@ function game_loop(timestamp) {
     if (controls.right_pressed) cameraAngle += rotationSpeed * delta;
     cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2π
 
+    ctx.drawImage(
+        screen_cover,
+        0,
+        0, 
+        canvasWidth, 
+        canvasHeight 
+    );
+
     // Draw the radar with updated positions
     drawRadar(player_turret, Planes, cameraAngle);
+    drawRadarSight(Planes[0].camera_offset_y);
 
     requestAnimationFrame(game_loop);
 }

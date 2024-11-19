@@ -274,7 +274,7 @@ function randomByWeight(wheelId, actualWheel) {
             // console.log(i);
             let decreasedAmount = {id: values.id, amount: values.amount};
 
-            fetch('decreaseAmount.php', {
+            fetch('misc/decreaseAmount.php', {
                 method: 'POST',
                 body: JSON.stringify(decreasedAmount),
                 headers: {

@@ -203,8 +203,8 @@ planeIcon.src = 'Assets/PlaneIcon.png';
 
 function drawRadar(player, enemies, cameraAngle) {
     const radarRadius = 100; // Radar size
-    const radarX = canvasWidth - radarRadius - 20; // Radar position (bottom-right corner)
-    const radarY = canvasHeight - radarRadius - 20;
+    const radarX = canvasWidth - radarRadius;
+    const radarY = canvasHeight - radarRadius;
 
     // Draw radar background
     ctx.beginPath();
@@ -249,15 +249,12 @@ function drawRadar(player, enemies, cameraAngle) {
         if (distance < maxDistance) { // Don't show if too far away, but ensure it doesn't disappear prematurely
             ctx.drawImage(
                 planeIcon,
-                radarBlipX - IconWidth / 2 + radarRadius / 2, // Center the image on the blip position
-                radarBlipY - IconHeigth / 2 + radarRadius / 2, // Center the image on the blip position
-                planeIcon.width * 0.2, // Scale the plane icon down (adjust as needed)
-                planeIcon.height * 0.2  // Scale the plane icon down (adjust as needed)
+                radarBlipX - IconWidth * 0.2 / 2, // Center the image on the blip position
+                radarBlipY - IconHeigth * 0.2 / 2, // Center the image on the blip position
+                planeIcon.width * 0.2, 
+                planeIcon.height * 0.2 
             );
-            //ctx.beginPath();
-            //ctx.arc(radarBlipX, radarBlipY, 3, 0, Math.PI * 2);
-            //ctx.fillStyle = "red";
-            //ctx.fill();
+            console.log("radarX", radarBlipX);
         }
     });
 }

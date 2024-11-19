@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maniek - Minigry</title>
     <link rel="stylesheet" href="./css/all.css">
-    <link rel="stylesheet" href="./css/minigames.css">
+    <link rel="stylesheet" href="./css/games/minigames.css">
 
     <script src="./js/cookies.js"></script>
 </head>
@@ -31,11 +31,15 @@
                 <img src="assets/flappymaniek.png" alt="Flappy Maniek">
                 <!-- <p class="workinprogress">WIP</p> -->
             </div>
+
+            <div class="button" data-game="wisielec" data-name="Wisielec">
+                <img src="assets/wisielec.png" alt="Wisielec">
+                <!-- <p class="workinprogress">WIP</p> -->
+            </div>
         </div>
 
-
+        <!-- Lewa strona (brazowa, gierki) -->
         <div class="games-side logoitarcza">
-        
             <!-- =========== -->
             <!-- TIC TAC TOE -->
 
@@ -100,8 +104,9 @@
             </div>
         </div>
     
-        <!-- Maniek -->
+        <!-- Prawa strona (niebieska, maniek) -->
         <div class="maniek-side">
+            
             <div class="flappymaniek highscores hidden">
                 <p>Najlepsze wyniki</p>
                 <div id="highscoresList">
@@ -116,8 +121,6 @@
                 <span class="wins">0 wygranych</span>
                 <img src="./assets/kolko.png">
             </div>
-
-            
         </div>
     </main>
     
@@ -154,14 +157,54 @@
     <!-- Game scripts -->
     <script src="js/games/game-navigation.js"></script>
 
-    <script src="js/games/tictactoe.js"></script>
-    <script src="js/games/flappymaniek.js"></script>
-
-
     <script src="js/navigation.js"></script>
     <script src="js/enter-fullscreen.js"></script>
 
     <script src="js/include-confetti.js"></script>
     <script src="js/screensaver.js"></script>
+
+    <script>
+        const gameStyles = {
+            logoitarcza: './css/games/logoitarcza.css',
+            flappymaniek: './css/games/flappymaniek.css',
+            wisielec: './css/games/wisielec.css'
+        };
+
+        const gameScripts = {
+            logoitarcza: 'js/games/logoitarcza.js',
+            flappymaniek: 'js/games/flappymaniek.js',
+            wisielec: 'js/games/wisielec.js'
+        };
+
+        let gamesDone = {};
+
+        function loadGameResources(game) {
+            if (gamesDone[game]) return;
+
+            // Load CSS
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = gameStyles[game];
+            document.head.appendChild(link);
+
+            // Load JS
+            const script = document.createElement('script');
+            script.src = gameScripts[game];
+            document.body.appendChild(script);
+
+            gamesDone[game] = true;
+        }
+
+        document.querySelectorAll('.game-navigation .button').forEach(button => {
+            const game = button.getAttribute('data-game');
+            button.addEventListener('click', () => {
+                loadGameResources(game);
+            });
+        });
+
+        // Load resources for the initially selected game
+        const initialGame = document.querySelector('.game-navigation .button.selected').getAttribute('data-game');
+        loadGameResources(initialGame);
+    </script>
 </body>
 </html>

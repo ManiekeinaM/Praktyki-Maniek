@@ -1,0 +1,197 @@
+/* OGÓLNE */
+
+* {
+    font-family:'Courier New', Courier, monospace;
+}
+
+:root {
+    --blue: #1434B4;
+    --darkblue: #112b95;
+
+    --brown: #CAB282;
+    --darkbrown: #817453;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-navigation {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 50
+}
+
+.game-navigation .button {
+    border-radius: 10px;
+}
+
+.game-navigation .button.selected::after {
+    content: "";
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 0.5em solid transparent;
+    border-right: 0.5em solid transparent;
+    border-bottom: 1.1em solid var(--zsp-blue);
+    z-index: 10;
+}
+
+.game-navigation .button .workinprogress {
+    color: orange;
+    font-family: var(--maniek-font);
+    font-size: 2rem;
+
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 0 0 5px black,
+                0 0 5px black,
+                0 0 5px black;
+
+    z-index: 101;
+
+}
+
+/* Strony gier */
+.games-side, .maniek-side {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    border-radius: 0px;
+    margin: 0;
+    height: calc(100% - 2rem);
+    position: relative;
+    animation: popIn 0.25s;
+    transition: transform 0.5s, width 0.25s;
+}
+
+
+.games-side {
+    /* width: 60%; */
+    background-color: var(--brown);
+    border: 1rem solid var(--darkbrown);
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.logoitarcza {
+    transition: transform 0.5s;
+}
+.logoitarcza.hidden {
+    display: block;
+    transform: scale(0);
+}
+
+
+
+/* Kolory gier */
+.games-side.logoitarcza {
+    background-color: var(--brown);
+    border-color: var(--darkbrown)
+}
+
+.games-side.flappymaniek {
+    background-color: var(--lightgreen);
+    border-color: var(--green);
+}
+
+/* Animacja zmiany gier */
+.games-side section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.5s;
+}
+
+.games-side section.hidden {
+    display: block;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+
+.maniek-side {
+    background-color: var(--blue);
+    border: 1rem solid var(--darkblue);
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    /* width: 40%; */
+}
+
+.maniek-side img {
+    max-width: 85%;
+    max-height: 70%;
+    width: auto;
+    height: auto;
+}
+
+header {
+    text-align: center;
+}
+
+
+/* KOMPATYBILNOŚĆ MOBILNA */
+
+@media (max-width: 500px) {
+    main {
+        flex-direction: column;
+    }
+
+    .games-side, .maniek-side {
+        width: calc(100% - 2rem);
+        border-radius: 0px;
+        height: 50%;
+    }
+
+    .games-side {
+        border-top-right-radius: 25px;
+        border-top-left-radius: 25px;
+    }
+
+    .maniek-side {
+        z-index: 2;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+    .maniek-side {
+        justify-content: end;
+    }
+
+    .score {
+        top: 92%;
+    }
+    .score.maniek {
+        top: 0%;
+    }
+    .legend {
+        margin-top: 1rem;
+    }
+
+    section.flappymaniek .screen {
+        width: 75vw;
+        height: 30vh;
+
+    }
+}
+

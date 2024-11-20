@@ -154,14 +154,14 @@ div.wisielec-title {
     padding: 0.25em;
 }
 .bg2 {
-    transform: translate(-50%, -50%) rotate(3deg);
+    transform: translate(-50%, -50%) rotate(2deg);
     background-color: #b9a273;
     z-index: -2;
     padding: 1em;
 }
 .bg3 {
-    transform: translate(-50%, -50%)  rotate(-3deg);
-    background-color: #b9a273;
+    transform: translate(-50%, -50%)  rotate(-2deg);
+    background-color: #a18c60;
     z-index: -3;
     padding: 1em;
 }
@@ -179,6 +179,7 @@ div.wisielec-title {
 .wisielec-title > span.blue {
     color: var(--zsp-blue);
     text-shadow: none;
+    font-size: 1.5em;
 }
 
 /* Enhanced Animation for launching face parts */
@@ -215,4 +216,28 @@ div.wisielec-title {
     pointer-events: none;
     user-select: none;
     transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.explosion {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+
+}
+
+@keyframes explode {
+    0% {
+        transform: translate(-50%, -50%) scale(0.25);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2),
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5)
+    }
+}
+
+.explosion.explode {
+    animation: explode 2s forwards;
 }

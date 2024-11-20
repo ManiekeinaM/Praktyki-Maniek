@@ -24,7 +24,7 @@ const WORDS = ["ogród", "drzewo", "krzew", "kwiat", "trawa", "liść", "korzeń
     "marketing", "reklama", "strategia", "plan", "projekt", "organizacja", "zarządzanie", "lider", "zespół", "współpraca", "relacja", "kontakt", "spotkanie", "rozmowa", "dyskusja", "negocjacja", "umowa", "prawo", "polityka", "państwo", "rząd", "parlament", "wybory", "demokracja", "urzędnik", "obywatel", "społeczeństwo", "wolność", "prawa", "obowiązki", "konstytucja", "sąd", "sprawiedliwość", "bezpieczeństwo", "policja", "straż", "wojsko", "obrona", "konflikt", "pokój", "dokument", "akt", "certyfikat", "licencja", "legitymacja", "paszport", "bilet", 
     "wejściówka", "zaproszenie", "opłata", "rachunek", "faktura", "paragon", "kasa", "bank", "konto", "karta", "kredyt", "lokata", "oszczędność", "budżet", "wydatki", "przychody", "inwestycja", "zysk", "strata", "ryzyko", "ubezpieczenie", "emerytura", "podatek", "cena", "wartość", "popyt", "podaż", "rynek", "konkurencja", "monopol", "targi", "aukcja", "oferta", "popyt",
     "Adam", "Adrian", "Aleksander", "Andrzej", "Antoni", "Artur", "Bartłomiej", "Bartosz", "Błażej", "Dawid", "Dominik", "Filip", "Grzegorz", "Hubert", "Igor", "Jakub", "Jan", "Jerzy", "Kacper", "Kamil", "Karol", "Konrad", "Krzysztof", "Łukasz", "Maciej", "Marek", "Marcin", "Mariusz", "Mateusz", "Michał", "Patryk", "Paweł", "Piotr", "Radosław", "Rafał", "Robert", "Sebastian", "Sławomir", "Stanisław", "Szymon", "Tomasz", "Wiktor", "Wojciech", "Zbigniew", "Agnieszka", "Aleksandra", "Alicja", "Anna", "Barbara", "Beata", "Dominika", "Edyta", "Elżbieta", "Ewa",
-    "Maniek"
+    "Maniek", "super"
 ]
 
 // 657
@@ -83,6 +83,7 @@ function explodeFace() {
         // Przegrana :(
         console.log("Przegrana :(")
         GAME_STARTED = false;
+        lose();
 
         // TODO przyciski na ponowną gre
     }
@@ -116,6 +117,12 @@ kbButtons.forEach(button => {
         makeGuess(e.target);
     })
 })
+
+// explosion
+const explosion = document.querySelector('.explosion');
+function lose() {
+    explosion.classList.add('explode');
+}
 
 function reset() {
     FAILS = 0;

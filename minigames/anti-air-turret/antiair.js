@@ -92,6 +92,11 @@ const enemy_plane = {
 
         this.adjust_camera();
     },
+    set_mouse_offset: function(pos_x, pos_y) {
+        this.camera_offset_x = pos_x;
+        this.camera_offset_y = pos_y;
+        this.adjust_camera();
+    },
     adjust_camera: function() {
         if (this.camera_offset_x + this.x > 1600) {
             this.camera_offset_x = this.camera_offset_x * -1 + 800;
@@ -100,6 +105,7 @@ const enemy_plane = {
             this.camera_offset_x = this.camera_offset_x * -1 - 800;
         }
     },
+    
     move: function(delta) {
         this.y += this.acceleration_y * delta;
         if (this.y > 0) {
@@ -156,19 +162,26 @@ const MAX_CAMERA_OFFSET_Y = -200
 const MIN_CAMERA_OFFSET_Y = GAME_WINDOW_HEIGHT 
 //console.log("max offset y: ",MAX_CAMERA_OFFSET_Y);
 //console.log("min offset y: ",MIN_CAMERA_OFFSET_Y);
+const scope_icon = new Image();
+scope_icon.src = "Assets/celownik.png";
+const scope_icon_height = 180;
+const scope_icon_width = 300; 
+const scope_width = scope_icon_width * 0.25;
+const scope_height = scope_icon_height * 0.25;
 
 const scope_anchor = {
     height: 5,
     width: 5,
-    x: canvasWidth / 2,
-    y: canvasHeight / 2,
+    x: canvasWidth / 2 - scope_width/2,
+    y: canvasHeight / 1.7 - scope_height/2,
     acceleration_x: 200,
     acceleration_y: 100,
     draw: function() {
         let x = this.x - this.width / 2;
         let y = this.y - this.height / 2;
-        ctx.fillStyle = 'green';
-        ctx.fillRect(x, y, this.width, this.height);
+        //ctx.fillStyle = 'green';
+        //ctx.fillRect(x, y, this.width, this.height);
+        ctx.drawImage(scope_icon, x, y, scope_width, scope_height);
     },
 }
 
@@ -311,9 +324,29 @@ function rotatePoint(x, y, angle) {
 let cameraAngle = 0;
 const rotationSpeed = Math.PI / 4;
 
+
+//Background
+const background = new Image();
+background.src = "Assets/shooter-background.png";
+const background_width = 5120
+const background_height = 1024
+const background_x = 0;
+const background_y = 0;
+
+
 //Screen cover
 const screen_cover = new Image();
 screen_cover.src = "Assets/ScreenCover3.png";
+
+/*document.addEventListener('mousemove', function(event) {
+    let clientX = event.clientX;
+    let clientY = event.clientY;
+    console.log("X: ",clientX, " Y: ",clientY);
+    Planes.forEach(plane => {
+        plane.set_mouse_offset();
+    })
+});*/
+
 
 // Main game loop
 function game_loop(timestamp) {
@@ -321,6 +354,12 @@ function game_loop(timestamp) {
     lastFrameResponse = timestamp;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    //Draw background
+    ctx.drawImage(background, Planes[0].camera_offset_x - background_width + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);    
+    ctx.drawImage(background, Planes[0].camera_offset_x + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);  
+
+    onmousemove
 
     Planes.forEach(plane => {
         plane.move_offset(delta);
@@ -346,6 +385,7 @@ function game_loop(timestamp) {
     if (controls.right_pressed) cameraAngle += rotationSpeed * delta;
     cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2π
 
+    //Draw screen_cover
     ctx.drawImage(
         screen_cover,
         0,

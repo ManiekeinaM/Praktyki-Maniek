@@ -209,12 +209,6 @@ function drawRadar(player, enemies, cameraAngle) {
     ctx.strokeStyle = "white";
     ctx.stroke();
 
-    // Draw the anchor point (player's position) on radar
-    ctx.beginPath();
-    ctx.arc(radarX, radarY, 5, 0, Math.PI * 2);
-    ctx.fillStyle = "green";
-    ctx.fill();
-
     const scale = radarRadius / 800; // Scale game world to radar size
 
     // Draw enemy blips
@@ -267,7 +261,7 @@ function drawRadar(player, enemies, cameraAngle) {
 function drawRadarSight(camera_offset_y) {
     camera_vision_percent = Math.abs(camera_offset_y) / 200;
     console.log(camera_vision_percent);
-    const radarRadius = 100 * camera_vision_percent; // Radar size
+    const radarRadius = 100 * camera_vision_percent * 0.5 + 40; 
     const radarX = canvasWidth - 20;
     const radarY = canvasHeight - 20;
 
@@ -277,6 +271,31 @@ function drawRadarSight(camera_offset_y) {
     ctx.fill();
     ctx.strokeStyle = "white";
     ctx.stroke();
+
+    const line1_angle = 315 * (Math.PI / 180);
+    const line2_angle = 225 * (Math.PI / 180);
+
+    const x1 = (radarX-100) + radarRadius * Math.cos(line1_angle);
+    const y1 = (radarY-100) + radarRadius * Math.sin(line1_angle);
+    ctx.beginPath();
+    ctx.moveTo(radarX - 100, radarY - 100);
+    ctx.lineTo(x1, y1);   
+    ctx.strokeStyle = "rgba(130, 215, 110, 0.5)";
+    ctx.stroke();
+
+    const x2 = (radarX-100) + radarRadius * Math.cos(line2_angle);
+    const y2 = (radarY-100) + radarRadius * Math.sin(line2_angle);
+    ctx.beginPath();
+    ctx.moveTo(radarX - 100, radarY - 100);
+    ctx.lineTo(x2, y2);   
+    ctx.strokeStyle = "rgba(130, 215, 110, 0.5)";
+    ctx.stroke();
+
+    //Draw turret on radar
+    ctx.beginPath();
+    ctx.arc(radarX-100, radarY-100, 5, 0, Math.PI * 2);
+    ctx.fillStyle = "green";
+    ctx.fill();
 }
 
 function rotatePoint(x, y, angle) {

@@ -60,6 +60,9 @@ const enemy_plane = {
     y_offset_scale: 1,  
     scale: 0.1,
     color: 'green',
+    is_on_scope: false,
+    collision_box_width: 320,
+    collision_box_height: 320,
     sprite: plane_animation,
     draw: function() {
         ctx.drawImage(
@@ -70,6 +73,25 @@ const enemy_plane = {
             this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2,
             plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
         );
+        //Draw Colision Box
+        /*ctx.fillStyle = 'red';
+        ctx.fillRect(
+            this.x + this.camera_offset_x - (this.collision_box_width * 0.25 * this.scale * this.y_offset_scale) / 2,
+            this.y - this.camera_offset_y -  (this.collision_box_height * 0.25 * this.scale) / 2,
+            this.collision_box_width * 0.25 * this.scale * this.y_offset_scale, this.collision_box_height * 0.25 * this.scale
+        );*/
+    },
+    get_col_width: function() {
+        return this.collision_box_width * 0.25 * this.scale * this.y_offset_scale;
+    },
+    get_col_height: function() {
+        return this.collision_box_height * 0.25 * this.scale;
+    },
+    get_col_xpos: function() {
+        return this.x + this.camera_offset_x - (this.collision_box_width * 0.25 * this.scale * this.y_offset_scale);
+    },
+    get_col_ypos: function() {
+        return this.y - this.camera_offset_y -  (this.collision_box_height * 0.25 * this.scale);
     },
     move_offset: function(mouse_x, mouse_y, delta) {
         this.camera_offset_x += mouse_x * this.camera_acceleration_x * delta;
@@ -82,28 +104,6 @@ const enemy_plane = {
         } 
         this.y_offset_scale = 1 - this.camera_offset_y / 1000;
         
-        /*if (controls.up_pressed) { 
-            if (this.camera_offset_y < -200) {
-                this.camera_offset_y = -200;
-            } else {
-                this.camera_offset_y -= this.camera_acceleration_y * delta;
-            }
-            this.y_offset_scale = 1 - this.camera_offset_y / 1000;
-        };
-        if (controls.down_pressed) { 
-            if (this.camera_offset_y > 0) {
-                this.camera_offset_y = 0;
-            } else {
-                this.camera_offset_y += this.camera_acceleration_y * delta; 
-            }
-            this.y_offset_scale = 1 - this.camera_offset_y / 1000;
-        };
-        if (controls.left_pressed) { 
-            this.camera_offset_x += this.camera_acceleration_x * delta;
-        };
-        if (controls.right_pressed) { 
-            this.camera_offset_x -= this.camera_acceleration_x * delta; 
-        };*/
         this.adjust_camera();
     },
     adjust_camera: function() {
@@ -146,18 +146,50 @@ const Planes = [];
 Planes.push(Object.create(enemy_plane));
 
 //Player obj
+const turret_inactive = new Image();
+turret_inactive.src = "Assets/turret.png";
+const turret_inactive_width = 640 * 0.5;
+const turret_inactive_height = 640 * 0.5;
+
 const player_turret = {
     x: canvasWidth / 2,
     y: canvasHeight,
     width: 50,
     height: 20,
     lives: 3,
+    is_shooting: false,
     draw: function() {
-        let x = this.x - this.width / 2;
-        let y = this.y - this.height;
-        ctx.fillStyle = 'black';
-        ctx.fillRect(x, y, this.width, this.height);
+        let x = this.x - turret_inactive_width / 2;
+        let y = this.y - turret_inactive_height;
+        if (this.is_shooting) {
+            
+        } else {
+            ctx.drawImage(turret_inactive, x, y, turret_inactive_width, turret_inactive_height); 
+            //ctx.fillStyle = 'black';
+            //ctx.fillRect(x, y, this.width, this.height);
+        }
     }, 
+    shoot: function() {
+        Planes.forEach(plane => {
+            //console.log("Collision width: ", plane.get_col_width(), " , height: ", plane.get_col_height(), " , x: ", plane.get_col_xpos(), " , y: ", plane.get_col_ypox());
+            let plane_col_x = plane.get_col_xpos();
+            let plane_col_x2 = plane_col_x + plane.get_col_width();
+            let plane_col_y = plane.get_col_ypos();
+            let plane_col_y2 = plane_col_y + plane.get_col_height();
+            if (
+                (plane_col_x > scope_anchor.x && plane_col_x < (scope_anchor.x + scope_width) ||
+                plane_col_x2 > scope_anchor.x && plane_col_x2 < (scope_anchor.x + scope_width)) &&
+                (plane_col_y > scope_anchor.y && plane_col_y < (scope_anchor.y + scope_height) ||
+                plane_col_y2 > scope_anchor.y && plane_col_y2 < (scope_anchor.y + scope_height))
+            ) {
+                plane.reset();
+                //console.log("Ładuj armate!");
+            }
+        })
+    },
+    set_shooting_animation(exp) {
+        this.is_shooting = exp;
+    },
     deal_damage: function() {
         this.lives -= 1;
         if (this.lives == 0) {
@@ -282,7 +314,7 @@ function drawRadar(player, enemies, cameraAngle) {
 
 function drawRadarSight(camera_offset_y) {
     camera_vision_percent = Math.abs(camera_offset_y) / 200;
-    console.log(camera_vision_percent);
+    //console.log(camera_vision_percent);
     const radarRadius = 100 * camera_vision_percent * 0.5 + 40; 
     const radarX = canvasWidth - 20;
     const radarY = canvasHeight - 20;
@@ -355,7 +387,8 @@ function logMovement(event) {
     mouse_movement_y += event.movementY;
 }
 
-  document.addEventListener("mousemove", logMovement);
+document.addEventListener("mousemove", logMovement);
+document.addEventListener("click", player_turret.shoot);
 
 // Main game loop
 function game_loop(timestamp) {
@@ -389,7 +422,6 @@ function game_loop(timestamp) {
     }
 
     //Draw new sprites
-    player_turret.draw();
     Planes.forEach(plane => {
         plane.draw();
     })
@@ -403,6 +435,9 @@ function game_loop(timestamp) {
         canvasWidth, 
         canvasHeight 
     );
+
+    //Draw turret
+    player_turret.draw();
 
     // Draw the radar with updated positions
     drawRadar(player_turret, Planes, cameraAngle);

@@ -66,8 +66,19 @@ const enemy_plane = {
             plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
         );
     },
-    move_offset: function(delta) {
-        if (controls.up_pressed) { 
+    move_offset: function(mouse_x, mouse_y, delta) {
+        this.camera_offset_x += mouse_x * this.camera_acceleration_x * delta;
+        this.camera_offset_y += mouse_y * this.camera_acceleration_y * delta;
+        if (this.camera_offset_y < -200) {
+            this.camera_offset_y = -200;
+        };
+        if (this.camera_offset_y > 0) {
+            this.camera_offset_y = 0;
+        } 
+        this.y_offset_scale = 1 - this.camera_offset_y / 1000;
+        
+        this.adjust_camera();
+        /*if (controls.up_pressed) { 
             if (this.camera_offset_y < -200) {
                 this.camera_offset_y = -200;
             } else {
@@ -88,14 +99,7 @@ const enemy_plane = {
         };
         if (controls.right_pressed) { 
             this.camera_offset_x -= this.camera_acceleration_x * delta; 
-        };
-
-        this.adjust_camera();
-    },
-    set_mouse_offset: function(pos_x, pos_y) {
-        this.camera_offset_x = pos_x;
-        this.camera_offset_y = pos_y;
-        this.adjust_camera();
+        };*/
     },
     adjust_camera: function() {
         if (this.camera_offset_x + this.x > 1600) {
@@ -338,15 +342,15 @@ const background_y = 0;
 const screen_cover = new Image();
 screen_cover.src = "Assets/ScreenCover3.png";
 
-/*document.addEventListener('mousemove', function(event) {
-    let clientX = event.clientX;
-    let clientY = event.clientY;
-    console.log("X: ",clientX, " Y: ",clientY);
-    Planes.forEach(plane => {
-        plane.set_mouse_offset();
-    })
-});*/
+let mouse_movement_x = 0;
+let mouse_movement_y = 0;
 
+function logMovement(event) {
+    mouse_movement_x += event.movementX;
+    mouse_movement_y += event.movementY;
+}
+
+  document.addEventListener("mousemove", logMovement);
 
 // Main game loop
 function game_loop(timestamp) {
@@ -359,11 +363,16 @@ function game_loop(timestamp) {
     ctx.drawImage(background, Planes[0].camera_offset_x - background_width + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);    
     ctx.drawImage(background, Planes[0].camera_offset_x + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);  
 
-    onmousemove
+    // Update camera angle based on player input
+    if (mouse_movement_x < 0) cameraAngle -= rotationSpeed * delta;
+    if (mouse_movement_x > 0) cameraAngle += rotationSpeed * delta;
+    cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2πY
 
     Planes.forEach(plane => {
-        plane.move_offset(delta);
+        plane.move_offset(-mouse_movement_x, mouse_movement_y, delta);
         plane.move(delta);
+        mouse_movement_x = 0;
+        mouse_movement_y = 0;
     })
 
     //Handle animation
@@ -379,11 +388,6 @@ function game_loop(timestamp) {
         plane.draw();
     })
     scope_anchor.draw();
-
-    // Update camera angle based on player input
-    if (controls.left_pressed) cameraAngle -= rotationSpeed * delta;
-    if (controls.right_pressed) cameraAngle += rotationSpeed * delta;
-    cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2π
 
     //Draw screen_cover
     ctx.drawImage(

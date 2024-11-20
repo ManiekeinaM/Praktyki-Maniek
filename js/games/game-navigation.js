@@ -46,7 +46,7 @@ games.forEach(button => {
     })
 
     // Correct the display on transition end
-    /*
+    
     let allGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
 
 
@@ -64,6 +64,6 @@ games.forEach(button => {
         })
         fixDisplay(object);
     });
-    */
+    
 })
 

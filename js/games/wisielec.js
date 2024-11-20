@@ -1,0 +1,102 @@
+const keyboard = document.querySelector('.keyboard');
+const kbButtons = keyboard.querySelectorAll('.row button');
+const letters = document.querySelector('.letters');
+
+
+const maniek_stages = Array.from(document.querySelectorAll('.maniek-stages > img'));
+maniek_stages.sort((a,b) => {
+    return parseInt(a.dataset.id) > parseInt(b.dataset.id);
+})
+
+const WORDS = ["ogród", "drzewo", "krzew", "kwiat", "trawa", "liść", "korzeń", "gałąź", "owoc", "warzywo", "kapusta", "marchewka", "pietruszka", "cebula", "czosnek", "pomidor", "ogórek", "papryka", "ziemniak", "burak", "dynia", "fasola", "groszek", "sałata", "szpinak", "rzodkiewka", "brokuł", "kalafior", "brukselka", "por", "seler", "jarmuż", "szparagi", "rukola", "arbuzy", "winogrona", "gruszka", "jabłko", "śliwka", "morela", "brzoskwinia", "wiśnia", "czereśnia", "truskawka", "malina", "jagoda", "jeżyna", "porzeczka", "agrest", "figa", "kiwi", "ananas", 
+    "mango", "banan", "cytryna", "limonka", "pomarańcza", "mandarynka", "grejpfrut", "granat", "kokos", "orzech", "migdał", "rodzynka", "żurawina", "daktyl", "imbir", "bazylia", "mięta", "tymianku", "rozmaryn", "pietruszka", "koper", "estragon", "oregano", "majeranek", "kolendra", "szałwia", "lubczyk", "melisa", "czarny", "biały", "czerwony", "zielony", "niebieski", "żółty", "pomarańczowy", "fioletowy", "różowy", "brązowy", "szary", "srebrny", "złoty", "beżowy", "turkusowy", "granatowy", "bordowy", "łazienka", "kuchnia", "salon", "sypialnia", "jadalnia", 
+    "pokój", "garaż", "piwnica", "strych", "korytarz", "schody", "balkon", "taras", "ogród", "altana", "basen", "fontanna", "staw", "ławeczka", "huśtawka", "piaskownica", "trampolina", "grill", "kosz", "szafa", "komoda", "biurko", "krzesło", "fotel", "kanapa", "stolik", "lampa", "dywan", "zasłona", "firana", "obraz", "lustro", "półka", "regał", "telewizor", "radio", "komputer", "drukarka", "telefon", "tableta", "zegarek", "budzik", "kaloryfer", "klimatyzacja", "wentylator", "pralka", "zmywarka", "lodówka", "mikrofalówka", "piekarnik", "kuchenka", "toster", 
+    "czajnik", "ekspres", "odkurzacz", "żelazko", "suszarka", "kosiarka", "wiertarka", "młotek", "śrubokręt", "piła", "kombinerki", "klucz", "lina", "taśma", "klej", "farba", "pędzel", "wałek", "drabina", "kwiat", "wazon", "doniczka", "nawóz", "ziemia", "grabie", "szpadel", "nożyce", "sekator", "wąż", "zraszacz", "parasolka", "płaszcz", "kurtka", "sweter", "koszula", "bluzka", "spodnie", "spódnica", "sukienka", "marynarka", "garnitur", "krawat", "pasek", "skarpetki", "buty", "kapelusz", "czapka", "szalik", "rękawiczki", "okulary", "torba", "plecak", 
+    "walizka", "portfel", "parasol", "rower", "hulajnoga", "rolki", "łyżwy", "narty", "deskorolka", "kask", "ochraniacze", "samochód", "motocykl", "autobus", "tramwaj", "pociąg", "metro", "samolot", "helikopter", "statek", "łódź", "kajak", "żaglówka", "balon", "rakieta", "bilet", "paszport", "dowód", "karta", "mapa", "przewodnik", "hotel", "hostel", "kemping", "namiot", "śpiwór", "karimata", "latarka", "kompas", "termos", "aparat", "kamera", "lornetka", "notatnik", "długopis", "ołówek", "gumka", "temperówka", "linijka", "nożyczki", "nutria", "szop", "bóbr", 
+    "sarna", "jeleń", "łoś", "żubr", "wilk", "lis", "niedźwiedź", "ryś", "dzik", "zając", "królik", "mysz", "wiewiórka", "kuna", "jenot", "borsuk", "wydra", "orzeł", "sokół", "pustułka", "myszołów", "czajka", "kaczka", "gęś", "łabędź", "bocian", "żaba", "ropucha", "traszka", "jaszczurka", "wąż", "żmija", "zaskroniec", "krokodyl", "hipopotam", "słoń", "żyrafa", "lew", "tygrys", "pantera", "gepard", "hiena", "antylopa", "goryl", "szympans", "orangutan", "małpa", "lemur", "panda", "koala", "kangur", "emu", "struś", "kiwi", "delfin", "wieloryb", "rekin", 
+    "płaszczka", "meduza", "kałamarnica", "ośmiornica", "krab", "homar", "krewetka", "małż", "ostryga", "ślimak", "gąbka", "koral", "jaskinia", "plaża", "pustynia", "ocean", "rzeka", "wodospad", "wyspa", "wulkan", "góra", "szczyt", "dolina", "kanion", "las", "dżungla", "sawanna", "step", "półwysep", "zatoka", "cieśnina", "rafa", "polana", "łąka", "skarpa", "klify", "pustkowie", "oaza", "lodowiec", "grodzisko", "zamek", "pałac", "forteca", "katedra", "kościół", "synagoga", "meczet", "świątynia", "ruiny", "pomnik", "muzeum", "galeria", "teatr", "opera", 
+    "filharmonia", "sala", "amfiteatr", "stadion", "zwierzę", "ptak", "ryba", "owad", "płaz", "gad", "ssak", "roślina", "kwiat", "drzewo", "krzew", "trawa", "liść", "kora", "gałąź", "korzeń", "owoc", "nasiono", "grunt", "gleba", "skała", "piasek", "glina", "ziemia", "powietrze", "atmosfera", "chmura", "mgła", "rosa", "szron", "lód", "śnieg", "deszcz", "grad", "burza", "błyskawica", "grzmot", "wiatr", "tornado", "huragan", "pogoda", "klimat", "słońce", "księżyc", "gwiazda", "planeta", "galaktyka", "wszechświat", "kosmos", "teleskop", "mikroskop", 
+    "laboratorium", "badanie", "eksperyment", "teoria", "praktyka", "nauka", "wiedza", "edukacja", "szkoła", "uniwersytet", "biblioteka", "książka", "notatka", "zeszyt", "długopis", "ołówek", "gumka", "temperówka", "linijka", "kompas", "cyrkiel", "mapa", "globus", "historia", "geografia", "matematyka", "fizyka", "chemia", "biologia", "informatyka", "język", "literatura", "sztuka", "muzyka", "plastyka", "teatr", "film", "fotografia", "malarstwo", "rzeźba", "architektura", "design", "grafika", "projekt", "model", "struktura", "forma", "kolor", "kompozycja", 
+    "perspektywa", "światło", "cień", "kontrast", "tekstura", "materiał", "narzędzie", "technika", "proces", "kreatywność", "inspiracja", "wyobraźnia", "emocja", "przeżycie", "doświadczenie", "idea", "koncepcja", "filozofia", "psychologia", "socjologia", "kultura", "tradycja", "obyczaj", "historia", "społeczeństwo", "język", "komunikacja", "informacja", "media", "internet", "technologia", "przyszłość", "rozwój", "postęp", "innowacja", "nauka", "badanie", "odkrycie", "wynalazek", "praca", "zawód", "kariera", "biznes", "ekonomia", "finanse", "handel", "gospodarka", 
+    "marketing", "reklama", "strategia", "plan", "projekt", "organizacja", "zarządzanie", "lider", "zespół", "współpraca", "relacja", "kontakt", "spotkanie", "rozmowa", "dyskusja", "negocjacja", "umowa", "prawo", "polityka", "państwo", "rząd", "parlament", "wybory", "demokracja", "urzędnik", "obywatel", "społeczeństwo", "wolność", "prawa", "obowiązki", "konstytucja", "sąd", "sprawiedliwość", "bezpieczeństwo", "policja", "straż", "wojsko", "obrona", "konflikt", "pokój", "dokument", "akt", "certyfikat", "licencja", "legitymacja", "paszport", "bilet", 
+    "wejściówka", "zaproszenie", "opłata", "rachunek", "faktura", "paragon", "kasa", "bank", "konto", "karta", "kredyt", "lokata", "oszczędność", "budżet", "wydatki", "przychody", "inwestycja", "zysk", "strata", "ryzyko", "ubezpieczenie", "emerytura", "podatek", "cena", "wartość", "popyt", "podaż", "rynek", "konkurencja", "monopol", "targi", "aukcja", "oferta", "popyt",
+    "Adam", "Adrian", "Aleksander", "Andrzej", "Antoni", "Artur", "Bartłomiej", "Bartosz", "Błażej", "Dawid", "Dominik", "Filip", "Grzegorz", "Hubert", "Igor", "Jakub", "Jan", "Jerzy", "Kacper", "Kamil", "Karol", "Konrad", "Krzysztof", "Łukasz", "Maciej", "Marek", "Marcin", "Mariusz", "Mateusz", "Michał", "Patryk", "Paweł", "Piotr", "Radosław", "Rafał", "Robert", "Sebastian", "Sławomir", "Stanisław", "Szymon", "Tomasz", "Wiktor", "Wojciech", "Zbigniew", "Agnieszka", "Aleksandra", "Alicja", "Anna", "Barbara", "Beata", "Dominika", "Edyta", "Elżbieta", "Ewa",
+    "Maniek"
+]
+
+// 657
+// console.log(WORDS.length);
+
+
+
+let GAME_STARTED = true;
+let CURRENT_WORD = '';
+let FAILS = 0; // 6 fails = lose
+
+function getRandomWord() {
+    let word = WORDS[Math.floor(Math.random() * WORDS.length)];
+    return word.toLowerCase();
+}
+
+function makeGuess(letterButton) {
+    letterButton.classList.add('disabled');
+    const letter = letterButton.textContent.toLowerCase();
+
+    if (!CURRENT_WORD.includes(letter)) {
+        console.log("FAIL");
+        FAILS += 1;
+        // TODO: explode sequence
+        
+        return;
+    }
+
+    for (let i=0; i<CURRENT_WORD.length; i++) {
+        const checkingLetter = CURRENT_WORD[i];
+        if (checkingLetter === letter) {
+            const letterBox = letters.querySelector(`.letter[data-id="${i}"]`);
+            letterBox.textContent = letter;
+        }
+    }
+}
+
+
+
+
+kbButtons.forEach(button => {
+    button.addEventListener('click', e => {
+        if (!GAME_STARTED) return;
+        if (e.target.classList.contains('disabled')) return;
+
+        makeGuess(e.target);
+    })
+})
+
+function clearKeyboard() {
+    kbButtons.forEach((button) => {
+        button.classList.remove('disabled');
+    });
+}
+
+function setupGuessBoard() {
+    let length = CURRENT_WORD.length;
+
+    for (i=0; i<length; i++) {
+        let box = document.createElement('div');
+        box.classList.add('letter');
+        box.dataset.id = i;
+        letters.appendChild(box);
+    }
+}
+
+// Initialize playing the game
+function startGame() {
+    clearKeyboard();
+
+    GAME_STARTED = true;
+    CURRENT_WORD = getRandomWord();
+    console.log(CURRENT_WORD);
+
+    setupGuessBoard();
+}
+
+startGame();

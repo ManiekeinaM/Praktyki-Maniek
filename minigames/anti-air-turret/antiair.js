@@ -246,6 +246,7 @@ const scope_anchor = {
     },
 }
 
+let stop_animation;
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowUp') controls.up_pressed = true;
@@ -264,12 +265,14 @@ document.addEventListener('keyup', (event) => {
 document.addEventListener("mousedown", (event) => {
     if (event.button === 0) { // Left mouse button
         turret_is_shooting = true;
+        stop_animation = false;
     }
 });
 
 document.addEventListener("mouseup", (event) => {
     if (event.button === 0) { // Left mouse button
-        turret_is_shooting = false;
+        stop_animation = true
+        //turret_is_shooting = false;
     }
 });
 
@@ -454,10 +457,13 @@ function game_loop(timestamp) {
     }
     if (turret_is_shooting) {
         if (timestamp - lastTurretAnimationTime > turret_animation.frame_rate) {
-            if (turret_animation.current_frame == 2) player_turret.shoot();
+            player_turret.shoot();
             turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
             turret_animation.calc_source_position();
             lastTurretAnimationTime = timestamp;
+        }
+        if (stop_animation == true && turret_animation.current_frame == 0) {
+            turret_is_shooting = false;
         }
     } else {
         if (turret_animation.current_frame != 0) {

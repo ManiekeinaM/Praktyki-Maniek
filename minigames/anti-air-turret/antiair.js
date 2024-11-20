@@ -27,6 +27,7 @@ const controls = {
     down_pressed: false,
     right_pressed: false,
     left_pressed: false,
+    mouse_pressed: false,
 }
 
 const spritesheet = new Image();
@@ -42,8 +43,7 @@ const plane_animation = {
     source_y: 0,
     calc_source_position: function() {
         this.source_x = this.current_frame * this.frame_width;
-    },
-    
+    },  
 }
 
 
@@ -145,24 +145,47 @@ const enemy_plane = {
 const Planes = [];
 Planes.push(Object.create(enemy_plane));
 
+//Turret animation
+const turret_active = new Image();
+turret_active.src = "Assets/machinegun_spritesheet.png";
+
+const turret_animation = {
+    frame_width: 205,
+    frame_height: 315,
+    total_frames: 7,
+    current_frame: 0,
+    frame_rate: 50, 
+    source_x: 0,
+    source_y: 0,
+    calc_source_position: function () {
+        this.source_x = this.current_frame * this.frame_width;
+    },
+}
+
 //Player obj
+let turret_is_shooting = false;
+
 const turret_inactive = new Image();
-turret_inactive.src = "Assets/turret.png";
-const turret_inactive_width = 640 * 0.5;
-const turret_inactive_height = 640 * 0.5;
+turret_inactive.src = "Assets/machinegun.png";
+const turret_inactive_width = 205;
+const turret_inactive_height = 315;
 
 const player_turret = {
     x: canvasWidth / 2,
     y: canvasHeight,
-    width: 50,
-    height: 20,
     lives: 3,
-    is_shooting: false,
     draw: function() {
         let x = this.x - turret_inactive_width / 2;
         let y = this.y - turret_inactive_height;
-        if (this.is_shooting) {
-            
+        if (turret_is_shooting == true) {     
+            ctx.drawImage(
+                turret_active,
+                turret_animation.source_x, turret_animation.source_y,
+                turret_animation.frame_width, turret_animation.frame_height,
+                x,
+                y,
+                turret_animation.frame_width, turret_animation.frame_height,
+            );
         } else {
             ctx.drawImage(turret_inactive, x, y, turret_inactive_width, turret_inactive_height); 
             //ctx.fillStyle = 'black';
@@ -186,9 +209,6 @@ const player_turret = {
                 //console.log("Ładuj armate!");
             }
         })
-    },
-    set_shooting_animation(exp) {
-        this.is_shooting = exp;
     },
     deal_damage: function() {
         this.lives -= 1;
@@ -241,8 +261,21 @@ document.addEventListener('keyup', (event) => {
     if (event.key === 'ArrowRight') controls.right_pressed = false;
 });
 
+document.addEventListener("mousedown", (event) => {
+    if (event.button === 0) { // Left mouse button
+        turret_is_shooting = true;
+    }
+});
+
+document.addEventListener("mouseup", (event) => {
+    if (event.button === 0) { // Left mouse button
+        turret_is_shooting = false;
+    }
+});
+
 let lastFrameResponse = 0;
 let lastAnimationTime = 0;
+let lastTurretAnimationTime = 0;
 
 //Radar
 const planeIcon = new Image();
@@ -388,7 +421,6 @@ function logMovement(event) {
 }
 
 document.addEventListener("mousemove", logMovement);
-document.addEventListener("click", player_turret.shoot);
 
 // Main game loop
 function game_loop(timestamp) {
@@ -414,11 +446,27 @@ function game_loop(timestamp) {
         mouse_movement_y = 0;
     })
 
-    //Handle animation
+    //Handle animations
     if (timestamp - lastAnimationTime > plane_animation.frame_rate) {
         plane_animation.current_frame = (plane_animation.current_frame + 1) % plane_animation.total_frames;
         plane_animation.calc_source_position(); // Update source_x
         lastAnimationTime = timestamp;
+    }
+    if (turret_is_shooting) {
+        if (timestamp - lastTurretAnimationTime > turret_animation.frame_rate) {
+            if (turret_animation.current_frame == 2) player_turret.shoot();
+            turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
+            turret_animation.calc_source_position();
+            lastTurretAnimationTime = timestamp;
+        }
+    } else {
+        if (turret_animation.current_frame != 0) {
+            turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
+            turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
+            turret_animation.calc_source_position();
+            lastTurretAnimationTime = timestamp;
+        }
+        turret_animation.calc_source_position();
     }
 
     //Draw new sprites
@@ -449,5 +497,3 @@ function game_loop(timestamp) {
 spritesheet.onload = () => {
     requestAnimationFrame(game_loop);
 }
-
-

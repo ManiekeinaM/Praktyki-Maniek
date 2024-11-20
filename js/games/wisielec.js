@@ -34,6 +34,7 @@ const WORDS = ["ogród", "drzewo", "krzew", "kwiat", "trawa", "liść", "korzeń
 let WON = false;
 let GAME_STARTED = true;
 let CURRENT_WORD = '';
+let lettersToGuess = {};
 let FAILS = 0; // 6 fails = lose
 
 function getRandomWord() {
@@ -47,7 +48,7 @@ function makeGuess(letterButton) {
     const letter = letterButton.textContent.toLowerCase();
     console.log(FAILS, letter);
 
-    if (!CURRENT_WORD.includes(letter)) {
+    if (!lettersToGuess[letter]) {
         // console.log("FAIL");
 
         FAILS += 1;
@@ -56,22 +57,25 @@ function makeGuess(letterButton) {
         return;
     }
 
-    let found = false;
     for (let i=0; i<CURRENT_WORD.length; i++) {
         const checkingLetter = CURRENT_WORD.at(i);
         if (checkingLetter === letter) {
-            found = true;
             const letterBox = letters.querySelector(`.letter[data-id="${i}"]`);
+            if (letterBox.textContent !== '') continue;
             letterBox.textContent = letter;
         }
     }
 
-    if (found) return;
+    delete lettersToGuess[letter];
+
+    if (Object.keys(lettersToGuess).length !== 0) return;
 
     // Wygrana!
     // TODO popup na wygraną
     WON = true;
     GAME_STARTED = false;
+    initConfetti();
+    console.log("WYGRANA");
 }
 
 function explodeFace() {
@@ -114,12 +118,16 @@ kbButtons.forEach(button => {
 })
 
 function reset() {
+    FAILS = 0;
     WON = false;
 
     // Clear keyboard
     kbButtons.forEach((button) => {
         button.classList.remove('disabled');
     });
+
+    // Clear letters
+    letters.innerHTML = '';
 
     // Clear face
     maniek_stages.forEach((face) => {
@@ -147,6 +155,9 @@ function startGame() {
 
     GAME_STARTED = true;
     CURRENT_WORD = getRandomWord();
+    for (const letter of CURRENT_WORD) {
+        lettersToGuess[letter] = true;
+    }
     console.log(CURRENT_WORD);
 
     setupGuessBoard();

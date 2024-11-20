@@ -4,12 +4,15 @@ const letters = document.querySelector('.letters');
 
 
 const maniek_stages = Array.from(document.querySelectorAll('.maniek-stages > img'));
-maniek_stages.sort((a,b) => {
-    return parseInt(a.dataset.id) > parseInt(b.dataset.id);
-})
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
 const WORDS = ["ogród", "drzewo", "krzew", "kwiat", "trawa", "liść", "korzeń", "gałąź", "owoc", "warzywo", "kapusta", "marchewka", "pietruszka", "cebula", "czosnek", "pomidor", "ogórek", "papryka", "ziemniak", "burak", "dynia", "fasola", "groszek", "sałata", "szpinak", "rzodkiewka", "brokuł", "kalafior", "brukselka", "por", "seler", "jarmuż", "szparagi", "rukola", "arbuzy", "winogrona", "gruszka", "jabłko", "śliwka", "morela", "brzoskwinia", "wiśnia", "czereśnia", "truskawka", "malina", "jagoda", "jeżyna", "porzeczka", "agrest", "figa", "kiwi", "ananas", 
-    "mango", "banan", "cytryna", "limonka", "pomarańcza", "mandarynka", "grejpfrut", "granat", "kokos", "orzech", "migdał", "rodzynka", "żurawina", "daktyl", "imbir", "bazylia", "mięta", "tymianku", "rozmaryn", "pietruszka", "koper", "estragon", "oregano", "majeranek", "kolendra", "szałwia", "lubczyk", "melisa", "czarny", "biały", "czerwony", "zielony", "niebieski", "żółty", "pomarańczowy", "fioletowy", "różowy", "brązowy", "szary", "srebrny", "złoty", "beżowy", "turkusowy", "granatowy", "bordowy", "łazienka", "kuchnia", "salon", "sypialnia", "jadalnia", 
+    "mango", "banan", "cytryna", "limonka", "pomarańcza", "mandarynka", "grejpfrut", "granat", "kokos", "orzech", "migdał", "rodzynka", "żurawina", "daktyl", "imbir", "bazylia", "mięta", "tymianek", "pietruszka", "koper", "majeranek", "kolendra", "szałwia", "lubczyk", "melisa", "czarny", "biały", "czerwony", "zielony", "niebieski", "żółty", "pomarańczowy", "fioletowy", "różowy", "brązowy", "szary", "srebrny", "złoty", "beżowy", "turkusowy", "granatowy", "bordowy", "łazienka", "kuchnia", "salon", "sypialnia", "jadalnia", 
     "pokój", "garaż", "piwnica", "strych", "korytarz", "schody", "balkon", "taras", "ogród", "altana", "basen", "fontanna", "staw", "ławeczka", "huśtawka", "piaskownica", "trampolina", "grill", "kosz", "szafa", "komoda", "biurko", "krzesło", "fotel", "kanapa", "stolik", "lampa", "dywan", "zasłona", "firana", "obraz", "lustro", "półka", "regał", "telewizor", "radio", "komputer", "drukarka", "telefon", "tableta", "zegarek", "budzik", "kaloryfer", "klimatyzacja", "wentylator", "pralka", "zmywarka", "lodówka", "mikrofalówka", "piekarnik", "kuchenka", "toster", 
     "czajnik", "ekspres", "odkurzacz", "żelazko", "suszarka", "kosiarka", "wiertarka", "młotek", "śrubokręt", "piła", "kombinerki", "klucz", "lina", "taśma", "klej", "farba", "pędzel", "wałek", "drabina", "kwiat", "wazon", "doniczka", "nawóz", "ziemia", "grabie", "szpadel", "nożyce", "sekator", "wąż", "zraszacz", "parasolka", "płaszcz", "kurtka", "sweter", "koszula", "bluzka", "spodnie", "spódnica", "sukienka", "marynarka", "garnitur", "krawat", "pasek", "skarpetki", "buty", "kapelusz", "czapka", "szalik", "rękawiczki", "okulary", "torba", "plecak", 
     "walizka", "portfel", "parasol", "rower", "hulajnoga", "rolki", "łyżwy", "narty", "deskorolka", "kask", "ochraniacze", "samochód", "motocykl", "autobus", "tramwaj", "pociąg", "metro", "samolot", "helikopter", "statek", "łódź", "kajak", "żaglówka", "balon", "rakieta", "bilet", "paszport", "dowód", "karta", "mapa", "przewodnik", "hotel", "hostel", "kemping", "namiot", "śpiwór", "karimata", "latarka", "kompas", "termos", "aparat", "kamera", "lornetka", "notatnik", "długopis", "ołówek", "gumka", "temperówka", "linijka", "nożyczki", "nutria", "szop", "bóbr", 
@@ -28,7 +31,7 @@ const WORDS = ["ogród", "drzewo", "krzew", "kwiat", "trawa", "liść", "korzeń
 // console.log(WORDS.length);
 
 
-
+let WON = false;
 let GAME_STARTED = true;
 let CURRENT_WORD = '';
 let FAILS = 0; // 6 fails = lose
@@ -39,24 +42,63 @@ function getRandomWord() {
 }
 
 function makeGuess(letterButton) {
+   
     letterButton.classList.add('disabled');
     const letter = letterButton.textContent.toLowerCase();
+    console.log(FAILS, letter);
 
     if (!CURRENT_WORD.includes(letter)) {
-        console.log("FAIL");
+        // console.log("FAIL");
+
         FAILS += 1;
-        // TODO: explode sequence
+        explodeFace();
         
         return;
     }
 
+    let found = false;
     for (let i=0; i<CURRENT_WORD.length; i++) {
-        const checkingLetter = CURRENT_WORD[i];
+        const checkingLetter = CURRENT_WORD.at(i);
         if (checkingLetter === letter) {
+            found = true;
             const letterBox = letters.querySelector(`.letter[data-id="${i}"]`);
             letterBox.textContent = letter;
         }
     }
+
+    if (found) return;
+
+    // Wygrana!
+    // TODO popup na wygraną
+    WON = true;
+    GAME_STARTED = false;
+}
+
+function explodeFace() {
+    if (FAILS === 6) {
+        // Przegrana :(
+        console.log("Przegrana :(")
+        GAME_STARTED = false;
+
+        // TODO przyciski na ponowną gre
+    }
+    let i = FAILS - 1;
+    
+    const face = maniek_stages[i];
+    face.classList.add('launch');
+
+    // Set random positions for the animation
+    face.style.setProperty('--rand-x', `${Math.random() * 200 - 100}px`);
+    face.style.setProperty('--rand-y', `${Math.random() * 200 - 100}px`);
+
+    // Optionally, remove the animation class after it completes
+    face.addEventListener('animationend', () => {
+        face.classList.remove('launch');
+        // Reset position if needed
+        face.style.transform = '';
+        face.style.opacity = '';
+        face.style.display = 'none';
+    });
 }
 
 
@@ -64,17 +106,28 @@ function makeGuess(letterButton) {
 
 kbButtons.forEach(button => {
     button.addEventListener('click', e => {
-        if (!GAME_STARTED) return;
+        if (!GAME_STARTED || WON) return;
         if (e.target.classList.contains('disabled')) return;
 
         makeGuess(e.target);
     })
 })
 
-function clearKeyboard() {
+function reset() {
+    WON = false;
+
+    // Clear keyboard
     kbButtons.forEach((button) => {
         button.classList.remove('disabled');
     });
+
+    // Clear face
+    maniek_stages.forEach((face) => {
+        face.style.display='';
+    });
+
+    // Randomize order of face
+    shuffleArray(maniek_stages);
 }
 
 function setupGuessBoard() {
@@ -90,7 +143,7 @@ function setupGuessBoard() {
 
 // Initialize playing the game
 function startGame() {
-    clearKeyboard();
+    reset();
 
     GAME_STARTED = true;
     CURRENT_WORD = getRandomWord();

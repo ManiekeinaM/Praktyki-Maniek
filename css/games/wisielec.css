@@ -19,11 +19,8 @@ section.wisielec {
     align-items: center;
 }
 
-section.wisielec > * {
-    transition: transform 0.5s;
-}
-section.wisielec.hidden > * {
-    transform: translate(-50%,-50%) scale(0);
+section.wisielec.hidden {
+    display: none !important;
 }
 
 .maniek-stages {
@@ -40,6 +37,12 @@ section.wisielec.hidden > * {
     left: 50%;
     transform: translate(-50%, -50%);
     user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+    touch-action: none;
+    transition: 0.5s;
 }
 
 .input-side {
@@ -176,4 +179,40 @@ div.wisielec-title {
 .wisielec-title > span.blue {
     color: var(--zsp-blue);
     text-shadow: none;
+}
+
+/* Enhanced Animation for launching face parts */
+@keyframes launch {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    20% {
+        transform: translate(calc(var(--rand-x) * 0.5), calc(var(--rand-y) * 0.5)) scale(1.2) rotate(15deg);
+        opacity: 0.8;
+    }
+    40% {
+        transform: translate(var(--rand-x), var(--rand-y)) scale(0.9) rotate(-10deg);
+        opacity: 0.6;
+    }
+    60% {
+        transform: translate(calc(var(--rand-x) * 1.2), calc(var(--rand-y) * 1.2)) scale(1.1) rotate(5deg);
+        opacity: 0.4;
+    }
+    80% {
+        transform: translate(calc(var(--rand-x) * 1.5), calc(var(--rand-y) * 1.5)) scale(0.7) rotate(-5deg);
+        opacity: 0.2;
+    }
+    100% {
+        transform: translate(var(--rand-x), var(--rand-y)) scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+}
+
+/* Class to apply the enhanced launch animation */
+.launch {
+    animation: launch 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+    pointer-events: none;
+    user-select: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }

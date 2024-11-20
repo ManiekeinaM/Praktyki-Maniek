@@ -8,6 +8,11 @@ const canvasHeight = canvas.height;
 const GAME_WINDOW_HEIGHT = canvas.height + 200;
 const GAME_WINDOW_WIDTH = canvas.width * 2;
 
+//Configure mouse lock
+canvas.addEventListener("click", async () => {
+    await canvas.requestPointerLock();
+});
+
 //Game state controller
 const game = {
     player_score: 0, 
@@ -48,8 +53,8 @@ const enemy_plane = {
     y: 0,
     camera_offset_x: 0,
     camera_offset_y: 0,
-    camera_acceleration_x: 200,
-    camera_acceleration_y: 100,
+    camera_acceleration_x: 50,
+    camera_acceleration_y: 25,
     acceleration_y: 40,
     scaling_factor: 0.18,
     y_offset_scale: 1,  
@@ -77,7 +82,6 @@ const enemy_plane = {
         } 
         this.y_offset_scale = 1 - this.camera_offset_y / 1000;
         
-        this.adjust_camera();
         /*if (controls.up_pressed) { 
             if (this.camera_offset_y < -200) {
                 this.camera_offset_y = -200;
@@ -100,6 +104,7 @@ const enemy_plane = {
         if (controls.right_pressed) { 
             this.camera_offset_x -= this.camera_acceleration_x * delta; 
         };*/
+        this.adjust_camera();
     },
     adjust_camera: function() {
         if (this.camera_offset_x + this.x > 1600) {
@@ -326,7 +331,7 @@ function rotatePoint(x, y, angle) {
 
 
 let cameraAngle = 0;
-const rotationSpeed = Math.PI / 4;
+const rotationSpeed = Math.PI / 16;
 
 
 //Background
@@ -364,8 +369,9 @@ function game_loop(timestamp) {
     ctx.drawImage(background, Planes[0].camera_offset_x + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);  
 
     // Update camera angle based on player input
-    if (mouse_movement_x < 0) cameraAngle -= rotationSpeed * delta;
-    if (mouse_movement_x > 0) cameraAngle += rotationSpeed * delta;
+    //if (controls.right_pressed) cameraAngle += rotationSpeed * delta;
+    //if (controls.left_pressed) cameraAngle -= rotationSpeed * delta;
+    cameraAngle += mouse_movement_x * rotationSpeed * delta;
     cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2πY
 
     Planes.forEach(plane => {

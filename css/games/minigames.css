@@ -1,6 +1,6 @@
 /* OGÓLNE */
 
-* {
+body {
     font-family:'Courier New', Courier, monospace;
 }
 
@@ -116,15 +116,15 @@ main {
 }
 
 /* Animacja zmiany gier */
-.games-side section {
+.games-side section.flappymaniek {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
     transition: 0.5s;
 }
 
-.games-side section.hidden {
+.games-side section.flappymaniek.hidden {
     display: block;
     transform: translate(-50%, -50%) scale(0);
 }

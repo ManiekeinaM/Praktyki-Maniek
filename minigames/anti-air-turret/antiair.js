@@ -14,10 +14,19 @@ canvas.addEventListener("click", async () => {
 });
 
 //Game state controller
+const score_top_margin = 25;
 const game = {
     player_score: 0, 
     reset: function() {
         player_turret.lives = 3;
+    },
+    draw_score: function() {
+        ctx.font = "64px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(this.player_score, canvasWidth/2, score_top_margin + 64);
+    },
+    update_score: function() {
+        this.player_score += 50;
     },
 }
 
@@ -133,7 +142,7 @@ const enemy_plane = {
         }
     },
     reset: function() {
-        this.y = -200;
+        this.y = 0;
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
@@ -205,6 +214,7 @@ const player_turret = {
                 (plane_col_y > scope_anchor.y && plane_col_y < (scope_anchor.y + scope_height) ||
                 plane_col_y2 > scope_anchor.y && plane_col_y2 < (scope_anchor.y + scope_height))
             ) {
+                game.update_score();
                 plane.reset();
                 //console.log("Ładuj armate!");
             }
@@ -426,6 +436,14 @@ function logMovement(event) {
 document.addEventListener("mousemove", logMovement);
 
 // Main game loop
+// ** Draw order **
+// 1. Background
+// 2. Planes
+// 3. Screen cover
+// 4. Turret
+// 5. Radar
+// 6. Radar Sight
+// 7. Game score
 function game_loop(timestamp) {
     let delta = (timestamp - lastFrameResponse) / 1000;
     lastFrameResponse = timestamp;
@@ -496,6 +514,9 @@ function game_loop(timestamp) {
     // Draw the radar with updated positions
     drawRadar(player_turret, Planes, cameraAngle);
     drawRadarSight(Planes[0].camera_offset_y);
+
+    //Draw score
+    game.draw_score();
 
     requestAnimationFrame(game_loop);
 }

@@ -17,6 +17,7 @@ canvas.addEventListener("click", async () => {
 const score_top_margin = 25;
 const game = {
     player_score: 0, 
+    enemy_planes_amount: 1,
     reset: function() {
         player_turret.lives = 3;
     },
@@ -25,8 +26,8 @@ const game = {
         ctx.textAlign = "center";
         ctx.fillText(this.player_score, canvasWidth/2, score_top_margin + 64);
     },
-    update_score: function() {
-        this.player_score += 50;
+    update_score: function(amount) {
+        this.player_score += amount;
     },
 }
 
@@ -214,7 +215,7 @@ const player_turret = {
                 (plane_col_y > scope_anchor.y && plane_col_y < (scope_anchor.y + scope_height) ||
                 plane_col_y2 > scope_anchor.y && plane_col_y2 < (scope_anchor.y + scope_height))
             ) {
-                game.update_score();
+                game.update_score(50);
                 plane.reset();
                 //console.log("Ładuj armate!");
             }
@@ -444,9 +445,18 @@ document.addEventListener("mousemove", logMovement);
 // 5. Radar
 // 6. Radar Sight
 // 7. Game score
+
+//Update score every sec
+const score_per_plane = 10;
+function update_score_gradually() {
+    game.update_score(score_per_plane * game.enemy_planes_amount);
+}
+setInterval(update_score_gradually, 1000)
+
 function game_loop(timestamp) {
     let delta = (timestamp - lastFrameResponse) / 1000;
     lastFrameResponse = timestamp;
+
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 

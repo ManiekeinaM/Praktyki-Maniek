@@ -237,7 +237,7 @@ const enemy_plane = {
 
 // Planes
 const Planes = [];
-spawn_plane(2);
+spawn_plane(1);
 
 function spawn_plane(amount) {
     for (let i=0; i<amount; i++) {
@@ -420,7 +420,34 @@ function drawRadar(player, enemies, cameraAngle) {
 
     // Draw enemy blips
     enemies.forEach(enemy => {
-        let relativeX = (enemy.x + (enemy.width / 2) - player.x);
+        // World angle of plane
+        let plane_angle = (((enemy.x + camera.offset_x + 2400) * 360) / 5600) - 90;
+    
+        // Adjust for player's camera angle
+        let relative_angle = (plane_angle - cameraAngle) % 360;
+        if (relative_angle < 0) relative_angle += 360;
+    
+        // Calculate radius based on enemy scale
+        let radius_percentage = (enemy.scale - 0.1) / 2.2;
+        let radius = (1 - radius_percentage) * radarRadius;
+    
+        // Convert relative angle to radians
+        let angle_to_radians = -relative_angle * (Math.PI / 180);
+    
+        // Convert to radar coordinates
+        let point_on_radar_x = radius * Math.cos(angle_to_radians);
+        let point_on_radar_y = radius * Math.sin(angle_to_radians); // Adjust if needed
+    
+        // Draw the plane icon
+        ctx.drawImage(
+            planeIcon,
+            -point_on_radar_x + radarX - (planeIcon.width * 0.25) / 2, // Center icon
+            point_on_radar_y + radarY - (planeIcon.height * 0.25) / 2,
+            planeIcon.width * 0.25,
+            planeIcon.height * 0.25
+        );
+    });
+        /*let relativeX = (enemy.x + (enemy.width / 2) - player.x);
         let relativeY = (enemy.y + (enemy.height / 2) - player.y);
 
         // Calculate the actual distance from the enemy center to the player
@@ -447,21 +474,21 @@ function drawRadar(player, enemies, cameraAngle) {
 
                 // Calculate the angle toward the radar center
                 const angleToCenter = Math.atan2(radarY - radarBlipY, radarX - radarBlipX) - Math.PI / 2;
-
+        */
                 // Rotate and draw the image
-                ctx.save();
-                ctx.translate(radarBlipX, radarBlipY);
-                ctx.rotate(angleToCenter); 
-                ctx.drawImage(
+                //ctx.save();
+                //ctx.translate(radarBlipX, radarBlipY);
+                //ctx.rotate(angleToCenter); 
+                /*ctx.drawImage(
                     planeIcon,
                     -iconWidth / 2,
                     -iconHeight / 2, 
                     iconWidth, 
                     iconHeight 
-                );
-                ctx.restore();
-        }
-    });
+                );*/
+                //ctx.restore();
+        //}
+    //});
 }
 
 function drawRadarSight(camera_offset_y) {

@@ -34,6 +34,11 @@
                 <img src="assets/wisielec.png" alt="Wisielec">
                 <!-- <p class="workinprogress">WIP</p> -->
             </div>
+
+            <div class="button" data-game="pong" data-name="Pong">
+                <img src="assets/pong.png" alt="Pong">
+                <!-- <p class="workinprogress">WIP</p> -->
+            </div>
         </div>
 
         <!-- Lewa strona (brazowa, gierki) -->
@@ -166,6 +171,11 @@
                     </div>
                 </div>
             </section>
+
+            <!-- PONG -->
+            <section class="pong hidden">
+                
+            </section>
         </div>
     
         <!-- Prawa strona (niebieska, maniek) -->
@@ -228,13 +238,15 @@
         const gameStyles = {
             logoitarcza: './css/games/logoitarcza.css',
             flappymaniek: './css/games/flappymaniek.css',
-            wisielec: './css/games/wisielec.css'
+            wisielec: './css/games/wisielec.css',
+            pong: './css/games/pong.css',
         };
 
         const gameScripts = {
             logoitarcza: 'js/games/logoitarcza.js',
             flappymaniek: 'js/games/flappymaniek.js',
-            wisielec: 'js/games/wisielec.js'
+            wisielec: 'js/games/wisielec.js',
+            pong: 'js/games/pong.js',
         };
 
         let gamesDone = {};

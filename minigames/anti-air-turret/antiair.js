@@ -302,7 +302,7 @@ const player_turret = {
         this.y += y_offset;
         ctx.drawImage(turret_inactive, this.x - turret_inactive_width / 2, this.y - turret_inactive_height, turret_inactive_width, turret_inactive_height);
     },
-    shoot: function() {
+    shoot: function(last_scope_anchor_x, last_scope_anchor_y) {
         Planes.forEach(plane => {
             //console.log("Collision width: ", plane.get_col_width(), " , height: ", plane.get_col_height(), " , x: ", plane.get_col_xpos(), " , y: ", plane.get_col_ypox());
             let plane_col_x = plane.get_col_xpos();
@@ -310,10 +310,10 @@ const player_turret = {
             let plane_col_y = plane.get_col_ypos();
             let plane_col_y2 = plane_col_y + plane.get_col_height();
             if (
-                (plane_col_x > scope_anchor.x && plane_col_x < (scope_anchor.x + scope_width) ||
-                plane_col_x2 > scope_anchor.x && plane_col_x2 < (scope_anchor.x + scope_width)) &&
-                (plane_col_y > scope_anchor.y && plane_col_y < (scope_anchor.y + scope_height) ||
-                plane_col_y2 > scope_anchor.y && plane_col_y2 < (scope_anchor.y + scope_height))
+                (plane_col_x > last_scope_anchor_x && plane_col_x < (last_scope_anchor_x + scope_width) ||
+                plane_col_x2 > last_scope_anchor_x && plane_col_x2 < (last_scope_anchor_x + scope_width)) &&
+                (plane_col_y > last_scope_anchor_y && plane_col_y < (last_scope_anchor_y + scope_height) ||
+                plane_col_y2 > last_scope_anchor_y && plane_col_y2 < (last_scope_anchor_y + scope_height))
             ) {
                 game.update_score(50);
                 
@@ -541,6 +541,8 @@ function logMovement(event) {
 
 document.addEventListener("mousemove", logMovement);
 
+let did_shoot = false;
+
 // Main game loop
 // ** Draw order **
 // 1. Background
@@ -629,7 +631,8 @@ function game_loop(timestamp) {
     }
     if (turret_is_shooting) {
         if (timestamp - lastTurretAnimationTime > turret_animation.frame_rate) {
-            player_turret.shoot();
+            
+            if (turret_animation.current_frame == 1) player_turret.shoot(scope_anchor.x, scope_anchor.y);
             turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
             turret_animation.calc_source_position();
             lastTurretAnimationTime = timestamp;

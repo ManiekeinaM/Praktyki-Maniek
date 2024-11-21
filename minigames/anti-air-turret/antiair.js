@@ -108,8 +108,9 @@ const camera = {
     acceleration_x: 50,
     acceleration_y: 25,
     y_offset_scale: 1,
+    angle: 0,
     update_offset: function(mouse_x, mouse_y, delta) {
-        console.log("Current degree: ", ((this.offset_x+2400)*360)/5600);
+        this.angle = ((this.offset_x+2400)*360)/5600;
         console.log("Offset: ", this.offset_x);
         this.offset_x += mouse_x * this.acceleration_x * delta;
         this.offset_y += mouse_y * this.acceleration_y * delta;
@@ -143,7 +144,7 @@ const enemy_plane = {
     //camera_offset_y: 0,
     //camera_acceleration_x: 50,
     //camera_acceleration_y: 25,
-    acceleration_y: 0,
+    acceleration_y: 40,
     scaling_factor: 0.18,
     //y_offset_scale: 1,  
     scale: 0.1,
@@ -419,7 +420,6 @@ function drawRadar(player, enemies, cameraAngle) {
 
     // Draw enemy blips
     enemies.forEach(enemy => {
-        // Get the center of the enemy's sprite (based on position, not scale)
         let relativeX = (enemy.x + (enemy.width / 2) - player.x);
         let relativeY = (enemy.y + (enemy.height / 2) - player.y);
 
@@ -561,14 +561,35 @@ let score_updater_id = setInterval(update_score_gradually, 1000);
 function game_loop(timestamp) {
     let delta = (timestamp - lastFrameResponse) / 1000;
     lastFrameResponse = timestamp;
-    if (game.is_gameover == false) {
-
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    // ctx.restore();
+    // ctx.save();
+    // ctx.translate(Math.random()*50 - 25, Math.random()*50 - 25);
+
+    
+    if (game.is_gameover == true) {
+        clearInterval(score_updater_id);
+        
+        //Draw background
+        ctx.drawImage(background, camera.offset_x - background_width + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);    
+        ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
+
+        //Draw screen_cover
+        //ctx.drawImage(screen_cover, 0, 0, canvasWidth, canvasHeight);
+        
+        //Draw turret
+        player_turret.draw_disabled(50 * delta);
+
+        //Draw gameover
+        game.draw_gameover();
+        requestAnimationFrame(game_loop);
+        return;
+    }
 
     //Draw background
-    ctx.drawImage(background, Planes[0].camera_offset_x - background_width + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);    
-    ctx.drawImage(background, Planes[0].camera_offset_x + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);  
+    ctx.drawImage(background, camera.offset_x - background_width + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);    
+    ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
 
     // Update camera angle based on player input
     //if (controls.right_pressed) cameraAngle += rotationSpeed * delta;
@@ -577,7 +598,6 @@ function game_loop(timestamp) {
     cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2πY
     camera.update_offset(-mouse_movement_x, mouse_movement_y, delta);
     Planes.forEach(plane => {
-        //plane.move_offset(-mouse_movement_x, mouse_movement_y, delta);
         plane.move(delta);
         mouse_movement_x = 0;
         mouse_movement_y = 0;
@@ -643,26 +663,11 @@ function game_loop(timestamp) {
 
     // Draw the radar with updated positions
     drawRadar(player_turret, Planes, cameraAngle);
-    drawRadarSight(Planes[0].camera_offset_y);
+    drawRadarSight(camera.offset_y);
 
     //Draw score
     game.draw_score();
-    } else {
-        clearInterval(score_updater_id);
-        
-        //Draw background
-        ctx.drawImage(background, Planes[0].camera_offset_x - background_width + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);    
-        ctx.drawImage(background, Planes[0].camera_offset_x + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);  
-
-        //Draw screen_cover
-        //ctx.drawImage(screen_cover, 0, 0, canvasWidth, canvasHeight);
-        
-        //Draw turret
-        player_turret.draw_disabled(50 * delta);
-
-        //Draw gameover
-        game.draw_gameover();
-    }
+    
     requestAnimationFrame(game_loop);
 }
 

@@ -84,6 +84,22 @@ const plane_animation = {
     },  
 }
 
+//Explosion animation
+const explosion_img = new Image();
+explosion_img.src = "Assets/explosion-sheet.png";
+
+const explosion_animation = {
+    frame_width: 320,
+    frame_height: 320,
+    total_frames: 6,
+    current_frame: 0,
+    frame_rate: 100, 
+    source_x: 0,
+    source_y: 0,
+    calc_source_position: function () {
+        this.source_x = this.current_frame * this.frame_width;
+    },
+}
 
 //Enemies obj
 const enemy_plane = {
@@ -102,11 +118,15 @@ const enemy_plane = {
     collision_box_width: 320,
     collision_box_height: 320,
     sprite: plane_animation,
-    draw: function() {
+    explosion: 0,
+    death_x: 0,
+    death_y: 0,
+    play_explosion: false,
+    draw_plane: function() {
         ctx.drawImage(
             spritesheet,
             plane_animation.source_x, plane_animation.source_y,
-            plane_animation.frame_width, plane_animation.frame_height,
+             plane_animation.frame_width, plane_animation.frame_height,
             this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2,
             this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2,
             plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
@@ -118,6 +138,16 @@ const enemy_plane = {
             this.y - this.camera_offset_y -  (this.collision_box_height * 0.25 * this.scale) / 2,
             this.collision_box_width * 0.25 * this.scale * this.y_offset_scale, this.collision_box_height * 0.25 * this.scale
         );*/
+    },
+    draw_explosion: function() {
+        ctx.drawImage(
+            explosion_img,
+            this.explosion.source_x, this.explosion.source_y,
+            this.explosion.frame_width, this.explosion.frame_height,
+            this.x + this.camera_offset_x - (this.explosion.frame_width * 0.5 * this.scale * this.y_offset_scale) / 2,
+            this.y - this.camera_offset_y - (this.explosion.frame_height * 0.5 * this.scale) / 2,
+            this.explosion.frame_width * 0.5 * this.scale * this.y_offset_scale, this.explosion.frame_height * 0.5 * this.scale,
+        ); 
     },
     get_col_width: function() {
         return this.collision_box_width * 0.25 * this.scale * this.y_offset_scale;
@@ -175,17 +205,26 @@ const enemy_plane = {
         this.reset();
     },
     reset: function() {
+        this.death_x = this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2;
+        this.death_y = this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2;
+        this.play_explosion = false;
+        this.explosion.current_frame = 0;
         this.y = 0;
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
-    }
+    },
+    special_reset: function() {
+        
+    },
 }
 
 // Planes
 const Planes = [];
-Planes.push(Object.create(enemy_plane));
-
+Planes.push({...enemy_plane});
+Planes[0].explosion = {...explosion_animation};
+console.log(Planes[0]);
+console.log(Planes[0].explosion);
 //Turret animation
 const turret_active = new Image();
 turret_active.src = "Assets/machinegun_spritesheet.png";
@@ -251,7 +290,9 @@ const player_turret = {
                 plane_col_y2 > scope_anchor.y && plane_col_y2 < (scope_anchor.y + scope_height))
             ) {
                 game.update_score(50);
-                plane.reset();
+                
+                plane.play_explosion = true;
+                //plane.reset();
                 //console.log("Ładuj armate!");
             }
         })
@@ -518,6 +559,24 @@ function game_loop(timestamp) {
     })
 
     //Handle animations
+    Planes.forEach(plane => {
+        if (plane.play_explosion == true) {
+            if (timestamp - lastAnimationTime > explosion_animation.frame_rate) {
+                plane.explosion.current_frame = (plane.explosion.current_frame + 1) % plane.explosion.total_frames;
+                plane.explosion.calc_source_position(); // Update source_x
+                lastAnimationTime = timestamp;
+            }
+        plane.draw_explosion();
+        
+        if (plane.explosion.current_frame == 5) {
+            console.log(plane.explosion.current_frame);
+            plane.reset();
+        }
+        } else {
+            plane.draw_plane();
+        }
+    });
+
     if (timestamp - lastAnimationTime > plane_animation.frame_rate) {
         plane_animation.current_frame = (plane_animation.current_frame + 1) % plane_animation.total_frames;
         plane_animation.calc_source_position(); // Update source_x
@@ -538,15 +597,11 @@ function game_loop(timestamp) {
             turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
             turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
             turret_animation.calc_source_position();
-            lastTurretAnimationTime = timestamp;
+            //lastTurretAnimationTime = timestamp;
         }
         turret_animation.calc_source_position();
     }
-
-    //Draw new sprites
-    Planes.forEach(plane => {
-        plane.draw();
-    })
+   
     scope_anchor.draw();
 
     //Draw screen_cover

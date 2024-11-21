@@ -97,21 +97,55 @@ const explosion_animation = {
     source_x: 0,
     source_y: 0,
     calc_source_position: function () {
-        this.source_x = this.current_frame * this.frame_width;
+        this.source_x = this.current_frame * this.frame_width;  
+    },
+}
+
+//Camera
+const camera = {
+    offset_x: 0,
+    offset_y: 0,
+    acceleration_x: 50,
+    acceleration_y: 25,
+    y_offset_scale: 1,
+    update_offset: function(mouse_x, mouse_y, delta) {
+        console.log("Current degree: ", ((this.offset_x+2400)*360)/5600);
+        console.log("Offset: ", this.offset_x);
+        this.offset_x += mouse_x * this.acceleration_x * delta;
+        this.offset_y += mouse_y * this.acceleration_y * delta;
+        if (this.offset_y < -200) {
+            this.offset_y = -200;
+        };
+        if (this.offset_y > 0) {
+            this.offset_y = 0;
+        } 
+        this.y_offset_scale = 1 - this.offset_y / 1000;
+        
+        //console.log("Camera: x: ", this.offset_x, " y: ", this.offset_y, " yscale: ", this.y_offset_scale);
+        this.adjust_camera();
+    },
+    adjust_camera: function() {
+        if (this.offset_x > 3200) {
+            console.log(-2400 + (3200 - this.offset_x));
+            this.offset_x = (this.offset_x * -1) + 800 - (3200 - this.offset_x);
+        }
+        if (this.offset_x < -2400) {
+            this.offset_x = 3200 + (-2400 - this.offset_x);
+        }
     },
 }
 
 //Enemies obj
 const enemy_plane = {
     x: canvasWidth / 2,
-    y: 0,
-    camera_offset_x: 0,
-    camera_offset_y: 0,
-    camera_acceleration_x: 50,
-    camera_acceleration_y: 25,
-    acceleration_y: 40,
+    y: 100,
+    //camera_offset_x: 0,
+    //camera_offset_y: 0,
+    //camera_acceleration_x: 50,
+    //camera_acceleration_y: 25,
+    acceleration_y: 0,
     scaling_factor: 0.18,
-    y_offset_scale: 1,  
+    //y_offset_scale: 1,  
     scale: 0.1,
     color: 'green',
     is_on_scope: false,
@@ -122,14 +156,16 @@ const enemy_plane = {
     death_x: 0,
     death_y: 0,
     play_explosion: false,
+    adjust_position: function() {
+    },
     draw_plane: function() {
         ctx.drawImage(
             spritesheet,
             plane_animation.source_x, plane_animation.source_y,
-             plane_animation.frame_width, plane_animation.frame_height,
-            this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2,
-            this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2,
-            plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
+            plane_animation.frame_width, plane_animation.frame_height,
+            this.x + camera.offset_x - (plane_animation.frame_width * 0.25 * this.scale * camera.y_offset_scale) / 2,
+            this.y - camera.offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2,
+            plane_animation.frame_width * 0.25 * this.scale * camera.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
         );
         //Draw Colision Box
         /*ctx.fillStyle = 'red';
@@ -144,45 +180,23 @@ const enemy_plane = {
             explosion_img,
             this.explosion.source_x, this.explosion.source_y,
             this.explosion.frame_width, this.explosion.frame_height,
-            this.x + this.camera_offset_x - (this.explosion.frame_width * 0.5 * this.scale * this.y_offset_scale) / 2,
-            this.y - this.camera_offset_y - (this.explosion.frame_height * 0.5 * this.scale) / 2,
-            this.explosion.frame_width * 0.5 * this.scale * this.y_offset_scale, this.explosion.frame_height * 0.5 * this.scale,
+            this.x + camera.offset_x - (this.explosion.frame_width * 0.5 * this.scale * camera.y_offset_scale) / 2,
+            this.y - camera.offset_y - (this.explosion.frame_height * 0.5 * this.scale) / 2,
+            this.explosion.frame_width * 0.5 * this.scale * camera.y_offset_scale, this.explosion.frame_height * 0.5 * this.scale,
         ); 
     },
     get_col_width: function() {
-        return this.collision_box_width * 0.25 * this.scale * this.y_offset_scale;
+        return this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale;
     },
     get_col_height: function() {
         return this.collision_box_height * 0.25 * this.scale;
     },
     get_col_xpos: function() {
-        return this.x + this.camera_offset_x - (this.collision_box_width * 0.25 * this.scale * this.y_offset_scale);
+        return this.x + camera.offset_x - (this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale);
     },
     get_col_ypos: function() {
-        return this.y - this.camera_offset_y -  (this.collision_box_height * 0.25 * this.scale);
+        return this.y - camera.offset_y -  (this.collision_box_height * 0.25 * this.scale);
     },
-    move_offset: function(mouse_x, mouse_y, delta) {
-        this.camera_offset_x += mouse_x * this.camera_acceleration_x * delta;
-        this.camera_offset_y += mouse_y * this.camera_acceleration_y * delta;
-        if (this.camera_offset_y < -200) {
-            this.camera_offset_y = -200;
-        };
-        if (this.camera_offset_y > 0) {
-            this.camera_offset_y = 0;
-        } 
-        this.y_offset_scale = 1 - this.camera_offset_y / 1000;
-        
-        this.adjust_camera();
-    },
-    adjust_camera: function() {
-        if (this.camera_offset_x + this.x > 1600) {
-            this.camera_offset_x = this.camera_offset_x * -1 + 800;
-        }
-        if (this.camera_offset_x + this.x < -800) {
-            this.camera_offset_x = this.camera_offset_x * -1 - 800;
-        }
-    },
-    
     move: function(delta) {
         this.y += this.acceleration_y * delta;
         if (this.y > 0) {
@@ -210,6 +224,7 @@ const enemy_plane = {
         this.play_explosion = false;
         this.explosion.current_frame = 0;
         this.y = 0;
+        this.x = Math.floor(Math.random() * (1600 - (-800) - 800));
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
@@ -221,10 +236,20 @@ const enemy_plane = {
 
 // Planes
 const Planes = [];
-Planes.push({...enemy_plane});
-Planes[0].explosion = {...explosion_animation};
-console.log(Planes[0]);
-console.log(Planes[0].explosion);
+spawn_plane(2);
+
+function spawn_plane(amount) {
+    for (let i=0; i<amount; i++) {
+        Planes.push({...enemy_plane});
+        Planes[i].explosion = {...explosion_animation};
+        Planes[i].x = Math.floor(Math.random() * (100 - 50) - 50);
+        //Planes[i].x = Math.floor(Math.random() * (1600 - (-800) - 800));
+        console.log(Planes[i].x);
+    }
+}
+
+//console.log(Planes[0]);
+//console.log(Planes[0].explosion);
 //Turret animation
 const turret_active = new Image();
 turret_active.src = "Assets/machinegun_spritesheet.png";
@@ -550,9 +575,9 @@ function game_loop(timestamp) {
     //if (controls.left_pressed) cameraAngle -= rotationSpeed * delta;
     cameraAngle += mouse_movement_x * rotationSpeed * delta;
     cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2πY
-
+    camera.update_offset(-mouse_movement_x, mouse_movement_y, delta);
     Planes.forEach(plane => {
-        plane.move_offset(-mouse_movement_x, mouse_movement_y, delta);
+        //plane.move_offset(-mouse_movement_x, mouse_movement_y, delta);
         plane.move(delta);
         mouse_movement_x = 0;
         mouse_movement_y = 0;
@@ -605,13 +630,13 @@ function game_loop(timestamp) {
     scope_anchor.draw();
 
     //Draw screen_cover
-    ctx.drawImage(
+    /*ctx.drawImage(
         screen_cover,
         0,
         0, 
         canvasWidth, 
         canvasHeight 
-    );
+    );*/
 
     //Draw turret
     player_turret.draw();

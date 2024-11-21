@@ -11,15 +11,30 @@ const GAME_WINDOW_WIDTH = canvas.width * 2;
 //Configure mouse lock
 canvas.addEventListener("click", async () => {
     await canvas.requestPointerLock();
+    if (game.is_gameover) {
+        game.reset();
+    }
 });
+
+//Gameover properties
+const gameover = {
+    width: 400,
+    height: 250,
+}
 
 //Game state controller
 const score_top_margin = 25;
 const game = {
     player_score: 0, 
     enemy_planes_amount: 1,
+    is_gameover: false,
+    stop: function() {
+        this.is_gameover = true;
+    },
     reset: function() {
-        player_turret.lives = 3;
+        player_turret.reset();
+        this.is_gameover = false;
+        this.player_score = 0;
     },
     draw_score: function() {
         ctx.font = "64px sans-serif";
@@ -29,6 +44,19 @@ const game = {
     update_score: function(amount) {
         this.player_score += amount;
     },
+    draw_gameover: function() {
+        ctx.fillStyle = 'rgba(24, 71, 19, 1)';
+        ctx.fillRect(canvasWidth / 2 - (gameover.width + 20) / 2, canvasHeight / 3 - (gameover.height + 20) / 2, gameover.width + 20, gameover.height + 20);
+        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
+        ctx.fillRect(canvasWidth / 2 - gameover.width / 2, canvasHeight / 3 - gameover.height / 2, gameover.width, gameover.height);
+
+        ctx.font = "64px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "white";
+        ctx.fillText(this.player_score, canvasWidth/2, canvasHeight / 3 - 30);
+        ctx.font = "32px sans-serif";
+        ctx.fillText("Press anything to continue", canvasWidth/2, canvasHeight / 3 + 30);
+    }
 }
 
 //Controls
@@ -183,7 +211,7 @@ const turret_inactive_height = 315;
 const player_turret = {
     x: canvasWidth / 2,
     y: canvasHeight,
-    lives: 3,
+    lives: 1,
     draw: function() {
         let x = this.x - turret_inactive_width / 2;
         let y = this.y - turret_inactive_height;
@@ -202,6 +230,10 @@ const player_turret = {
             //ctx.fillRect(x, y, this.width, this.height);
         }
     }, 
+    draw_disabled: function(y_offset) {
+        this.y += y_offset;
+        ctx.drawImage(turret_inactive, this.x - turret_inactive_width / 2, this.y - turret_inactive_height, turret_inactive_width, turret_inactive_height);
+    },
     shoot: function() {
         Planes.forEach(plane => {
             //console.log("Collision width: ", plane.get_col_width(), " , height: ", plane.get_col_height(), " , x: ", plane.get_col_xpos(), " , y: ", plane.get_col_ypox());
@@ -224,8 +256,12 @@ const player_turret = {
     deal_damage: function() {
         this.lives -= 1;
         if (this.lives == 0) {
-            game.reset();
+            game.stop();
         }
+    },
+    reset: function() {
+        this.y = canvasHeight;
+        this.lives = 3;
     }
 }
 
@@ -449,13 +485,14 @@ document.addEventListener("mousemove", logMovement);
 //Update score every sec
 const score_per_plane = 10;
 function update_score_gradually() {
-    game.update_score(score_per_plane * game.enemy_planes_amount);
+    game.update_score(score_per_plane * game.enemy_planes_amount);  
 }
-setInterval(update_score_gradually, 1000)
+let score_updater_id = setInterval(update_score_gradually, 1000);
 
 function game_loop(timestamp) {
     let delta = (timestamp - lastFrameResponse) / 1000;
     lastFrameResponse = timestamp;
+    if (game.is_gameover == false) {
 
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -527,7 +564,22 @@ function game_loop(timestamp) {
 
     //Draw score
     game.draw_score();
+    } else {
+        clearInterval(score_updater_id);
+        
+        //Draw background
+        ctx.drawImage(background, Planes[0].camera_offset_x - background_width + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);    
+        ctx.drawImage(background, Planes[0].camera_offset_x + canvasWidth/2, -Planes[0].camera_offset_y, background_width, canvasHeight);  
 
+        //Draw screen_cover
+        //ctx.drawImage(screen_cover, 0, 0, canvasWidth, canvasHeight);
+        
+        //Draw turret
+        player_turret.draw_disabled(50 * delta);
+
+        //Draw gameover
+        game.draw_gameover();
+    }
     requestAnimationFrame(game_loop);
 }
 

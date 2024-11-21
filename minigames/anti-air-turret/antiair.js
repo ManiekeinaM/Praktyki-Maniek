@@ -167,15 +167,18 @@ const enemy_plane = {
     },
     attack_player: function() {
         if (this.scale > 2.3) {
-            this.reset();
+            this.kill_self();
         }
+    },
+    kill_self: function() {
+        player_turret.deal_damage();
+        this.reset();
     },
     reset: function() {
         this.y = 0;
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
-        player_turret.deal_damage();
     }
 }
 
@@ -211,7 +214,7 @@ const turret_inactive_height = 315;
 const player_turret = {
     x: canvasWidth / 2,
     y: canvasHeight,
-    lives: 1,
+    lives: 3,
     draw: function() {
         let x = this.x - turret_inactive_width / 2;
         let y = this.y - turret_inactive_height;

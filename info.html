@@ -38,23 +38,6 @@
     <!-- Info container -->
     
     <main>
-        <!--
-        <div class="partners left">
-            <div class="side-patron top">
-                <img src="./assets/Patron-icons/better-logo.png" alt="Better Collective" class="bettercollective">
-            </div>
-
-            <div class="main-patron">
-                <img src="./assets/Patron-icons/fujitsu-logo.png" alt="Fujitsu" class="fujitsu">
-            </div>
-
-            <div class="side-patron bottom">
-                <img src="./assets/Patron-icons/bsh-logo.png" alt="B/S/H/">
-                <img src="./assets/Patron-icons/hydro-logo.png" alt="Hydro"> 
-            </div>
-        </div>
-        -->
-
         <div class="scroll-container">
             <div class="scrolling-images">
                 <!-- Side patrons -->
@@ -78,7 +61,7 @@
         </div>
     
         <div id="info-container">
-            <div>
+            <div class="promo">
                 <div class="socials">
                     <img src="assets/sm-facebook.png" alt="Facebook" data-link="https://www.facebook.com/zsp9lodz">
                     <img src="assets/sm-insta.png" alt="Instagram" data-link="https://www.instagram.com/zsp9_im.ken_w_lodzi">
@@ -143,7 +126,13 @@
             
 
             <div class="authors">
-                <p class="authors-title big">Twórcy Mańka <br> 3E 2023/2024</p>
+                <p class="authors-title big">
+                    Twórcy Mańka 
+                    <br> 
+                    3E 2023/2024
+                    <br>
+                    4E 2024/2025
+                </p>
 
                 <div class="list">
                     <p class="author"> <span class="whomst">Mikołaj Lisowski</span> - <span class="what-for">główne programowanie, infrastruktura & wygląd</span></p>
@@ -151,15 +140,21 @@
                     <p class="author"> <span class="whomst">Laura Kołodziejczyk</span> - <span class="what-for">zdjęcia mapy, Mańka & grafika zewnętrzna</span></p>
                 </div>
 
-                <p class="big">Projekt wykonany w miesiąc w ramach praktyk</p>
+                <p class="big">Projekt wykonany w ramach praktyk</p>
 
                 <script>
-                    let authors = document.querySelector('.authors');
-                    let title = authors.querySelector('.authors-title');
-
+                    const authors = document.querySelector('.authors');
+                    const title = authors.querySelector('.authors-title');
 
                     // get current date
+                    let date = new Date();
+                    let month = date.getMonth();
+                    let year = date.getFullYear();
 
+                    let klasa = 3;
+                    if (month == 10) {
+
+                    }
                 </script>
             </div>
         </div>

@@ -88,6 +88,7 @@ section.wisielec.hidden {
 }
 
 .category {
+    margin: 0;
     font-size: 2rem;
     font-weight: bolder;
     color: #eee;
@@ -189,7 +190,9 @@ div.wisielec-title {
 }
 
 div > p.wordResult {
-    font-size: 2rem;
+    margin: 0;
+    font-family: var(--maniek-font);
+    font-size: 3rem;
     position: absolute;
     z-index: 2;
     top: 50%;
@@ -197,12 +200,13 @@ div > p.wordResult {
     transform: translate(-50%, -50%);
     color: #eee;
     text-align: center;
-    font-weight: bolder;
-    text-shadow: 
-        1px 1px 0 #000, 
-        -1px -1px 0 #000, 
-        1px -1px 0 #000, 
-        -1px 1px 0 #000;
+    font-weight: bold;
+    text-shadow:
+        3px 3px 0 #000,
+        -1px -1px 0 #000,  
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
 }
 
 /* Enhanced Animation for launching face parts */

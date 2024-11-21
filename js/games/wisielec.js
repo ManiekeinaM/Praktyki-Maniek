@@ -112,7 +112,8 @@ const WORDS_SEGREGATED = {
         "tornado", "huragan", "pogoda", "klimat", "słońce", "księżyc", "gwiazda",
         "planeta", "galaktyka", "wszechświat", "kosmos", "zwierzę", "ptak",
         "ryba", "owad", "płaz", "gad", "ssak", "roślina", "liść", "kora",
-        "gałąź", "korzeń", "grunt", "gleba", "skała", "piasek", "glina", "ziemia", "super"
+        "gałąź", "korzeń", "grunt", "gleba", "skała", "piasek", "glina", "ziemia", "super",
+        "aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż"
     ]
 };
 

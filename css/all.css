@@ -888,3 +888,12 @@ div.reset {
 .nothing {
     display: none;
 }
+
+.unselectable {
+    user-select: none !important;
+    pointer-events: none !important;
+    -webkit-user-drag: none !important;
+    -moz-user-drag: none !important;
+    -ms-user-drag: none !important;
+    touch-action: none !important;
+}

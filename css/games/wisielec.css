@@ -61,6 +61,8 @@ section.wisielec.hidden {
     justify-content: center;
     align-items: center;
     gap: 1em;
+    max-width: 100%;
+    flex-wrap: wrap;
 }
 .letters > .letter {
     position: relative;
@@ -142,7 +144,7 @@ div.wisielec-title {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1em;
+    gap: 1.25em;
     font-weight: bold;
     padding: 1em;
 }
@@ -154,33 +156,74 @@ div.wisielec-title {
     height: 100%;
     border-radius: 5em;
 }
+
+@keyframes bobAround {
+    0% {
+        transform: translate(-50%, -50%) rotate(-1deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(1deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(-1deg);
+    }
+}
+
+@keyframes bobOpposite {
+    0% {
+        transform: translate(-50%, -50%) rotate(1deg);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(-1deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(1deg);
+    }
+}
+
 .bg1 {
     transform: translate(-50%, -50%);
     z-index: -1;
-    background-color: #ceba90;
+    background-color: rgb(255, 158, 113);
     padding: 0.25em;
 }
+
 .bg2 {
-    transform: translate(-50%, -50%) rotate(2deg);
-    background-color: #b9a273;
+    transform: translate(-50%, -50%);
+    background-color: #b00;
     z-index: -2;
-    padding: 1em;
+    padding: 0.75em;
+    animation: bobAround 3s infinite ease-in-out;
 }
+
 .bg3 {
-    transform: translate(-50%, -50%)  rotate(-2deg);
-    background-color: #a18c60;
+    transform: translate(-50%, -50%);
+    background-color: #d00;
     z-index: -3;
     padding: 1em;
+    animation: bobOpposite 3s infinite ease-in-out;
 }
 
 .wisielec-title > span {
     font-size: 1.5em;
 }
 .wisielec-title > span.red {
-    color: #d00;
+    color: #e00;
     font-weight: bolder;
     transform: rotate(5deg);
     font-size: 1.75em;
+    animation: sizeup 2s infinite ease-in-out;
+}
+@keyframes sizeup {
+    0% {
+        transform: scale(1) rotate(4deg);
+    }
+    50% {
+        transform: scale(1.15) rotate(3deg);
+    }
+    100% {
+        transform: scale(1) rotate(4deg);
+    }
 }
 
 .wisielec-title > span.blue {

@@ -1,0 +1,21 @@
+.pongtitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    position: absolute;
+    left: -1rem;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.pongtitle > span {
+    font-family: var(--maniek-font);
+    font-size: 6rem;
+    color: white;
+    font-weight: 500;
+}
+
+.pong.hidden {
+    display: none;
+}

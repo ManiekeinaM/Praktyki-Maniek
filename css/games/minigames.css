@@ -164,14 +164,14 @@ header {
     }
 
     .games-side {
-        border-top-right-radius: 25px;
-        border-top-left-radius: 25px;
+        border-top-right-radius: 2rem !important;
+        border-top-left-radius: 2rem !important;
     }
 
     .maniek-side {
         z-index: 2;
-        border-bottom-left-radius: 25px;
-        border-bottom-right-radius: 25px;
+        border-bottom-left-radius: 2rem !important;
+        border-bottom-right-radius: 2rem !important;
     }
 
     .maniek-side {
@@ -197,6 +197,12 @@ header {
         flex-direction: column-reverse !important;
         width: 100% !important;
         height: calc(100% - 8em) !important;
+    }
+
+    .pongtitle {
+        flex-direction: row !important;
+        left: 50% !important;
+        top: -1rem !important;
     }
 }
 

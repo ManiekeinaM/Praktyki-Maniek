@@ -243,7 +243,8 @@ function spawn_plane(amount) {
     for (let i=0; i<amount; i++) {
         Planes.push({...enemy_plane});
         Planes[i].explosion = {...explosion_animation};
-        Planes[i].x = Math.floor(Math.random() * (100 - 50) - 50);
+        //Planes[i].x = Math.floor(Math.random() * (100 - 50) - 50);
+        Planes[i].x = -2400 + i * 400;
         //Planes[i].x = Math.floor(Math.random() * (1600 - (-800) - 800));
         console.log(Planes[i].x);
     }
@@ -433,17 +434,26 @@ function drawRadar(player, enemies, cameraAngle) {
         let angle_to_radians = -relative_angle * (Math.PI / 180);
     
         // Convert to radar coordinates
-        let point_on_radar_x = radius * Math.cos(angle_to_radians);
+        let point_on_radar_x = -radius * Math.cos(angle_to_radians);
         let point_on_radar_y = radius * Math.sin(angle_to_radians); // Adjust if needed
     
-        // Draw the plane icon
+        // Calculate the angle toward the radar center
+        let dx = radarX - (point_on_radar_x + radarX); 
+        let dy = radarY - (point_on_radar_y + radarY);
+        let angle_to_center = Math.atan2(dy, dx); 
+
+        // Rotate plane icon
+        ctx.save();
+        ctx.translate(point_on_radar_x + radarX, point_on_radar_y + radarY); // Move origin to plane icon
+        ctx.rotate(angle_to_center);
         ctx.drawImage(
             planeIcon,
-            -point_on_radar_x + radarX - (planeIcon.width * 0.25) / 2, // Center icon
-            point_on_radar_y + radarY - (planeIcon.height * 0.25) / 2,
+            -(planeIcon.width * 0.25) / 2, 
+            -(planeIcon.height * 0.25) / 2,
             planeIcon.width * 0.25,
             planeIcon.height * 0.25
         );
+        ctx.restore();
     });
 }
 

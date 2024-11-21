@@ -237,7 +237,7 @@ const enemy_plane = {
 
 // Planes
 const Planes = [];
-spawn_plane(1);
+spawn_plane(3);
 
 function spawn_plane(amount) {
     for (let i=0; i<amount; i++) {
@@ -403,7 +403,7 @@ const IconHeigth = 144;
 const IconWidth = 144;
 planeIcon.src = 'Assets/PlaneIcon.png';
 
-function drawRadar(enemies, cameraAngle) {
+function drawRadar(player, enemies, cameraAngle) {
     const radarRadius = 100; // Radar size
     const radarX = canvasWidth - radarRadius - 20;
     const radarY = canvasHeight - radarRadius - 20;

@@ -169,12 +169,12 @@ const enemy_plane = {
             plane_animation.frame_width * 0.25 * this.scale * camera.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
         );
         //Draw Colision Box
-        /*ctx.fillStyle = 'red';
+        ctx.fillStyle = 'green';
         ctx.fillRect(
-            this.x + this.camera_offset_x - (this.collision_box_width * 0.25 * this.scale * this.y_offset_scale) / 2,
-            this.y - this.camera_offset_y -  (this.collision_box_height * 0.25 * this.scale) / 2,
-            this.collision_box_width * 0.25 * this.scale * this.y_offset_scale, this.collision_box_height * 0.25 * this.scale
-        );*/
+            this.x + camera.offset_x - (this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale) / 2,
+            this.y - camera.offset_y -  (this.collision_box_height * 0.25 * this.scale) / 2,
+            this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale, this.collision_box_height * 0.25 * this.scale
+        );
     },
     draw_explosion: function() {
         ctx.drawImage(
@@ -310,10 +310,10 @@ const player_turret = {
             let plane_col_y = plane.get_col_ypos();
             let plane_col_y2 = plane_col_y + plane.get_col_height();
             if (
-                (plane_col_x > last_scope_anchor_x && plane_col_x < (last_scope_anchor_x + scope_width) ||
-                plane_col_x2 > last_scope_anchor_x && plane_col_x2 < (last_scope_anchor_x + scope_width)) &&
-                (plane_col_y > last_scope_anchor_y && plane_col_y < (last_scope_anchor_y + scope_height) ||
-                plane_col_y2 > last_scope_anchor_y && plane_col_y2 < (last_scope_anchor_y + scope_height))
+                (plane_col_x > last_scope_anchor_x && plane_col_x < (last_scope_anchor_x + scope_width * 4) ||
+                plane_col_x2 > last_scope_anchor_x && plane_col_x2 < (last_scope_anchor_x + scope_width * 4)) &&
+                (plane_col_y > last_scope_anchor_y && plane_col_y < (last_scope_anchor_y + scope_height * 4) ||
+                plane_col_y2 > last_scope_anchor_y && plane_col_y2 < (last_scope_anchor_y + scope_height * 4))
             ) {
                 game.update_score(50);
                 

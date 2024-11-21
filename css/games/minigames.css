@@ -157,7 +157,7 @@ header {
         flex-direction: column;
     }
 
-    .games-side, .maniek-side {
+    .games-side:not(.wisielec), .maniek-side {
         width: calc(100% - 2rem);
         border-radius: 0px;
         height: 50%;
@@ -189,9 +189,14 @@ header {
     }
 
     section.flappymaniek .screen {
-        width: 75vw;
-        height: 30vh;
+        width: 75vw !important;
+        height: 30vh !important;
+    }
 
+    section.wisielec {
+        flex-direction: column-reverse !important;
+        width: 100% !important;
+        height: calc(100% - 8em) !important;
     }
 }
 

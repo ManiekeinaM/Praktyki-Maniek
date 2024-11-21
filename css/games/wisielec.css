@@ -26,6 +26,7 @@ section.wisielec.hidden {
 .maniek-stages {
     flex: 1;
     position: relative;
+    min-width: 250px;
 }
 
 .maniek-stages > img {
@@ -86,6 +87,11 @@ section.wisielec.hidden {
     padding: 0.125rem;
 }
 
+.category {
+    font-size: 2rem;
+    font-weight: bolder;
+    color: #eee;
+}
 
 .keyboard {
     display: flex;
@@ -98,20 +104,20 @@ section.wisielec.hidden {
 }
 
 .keyboard .spacer {
-    width: 20px;
+    width: 1.25em;
 }
 
 .keyboard button {
-    margin: 2px;
-    width: 48px;
-    height: 48px;
-    border: 2px solid #444;
-    border-radius: 5px;
+    margin: 0.125em;
+    width: 1.5em;
+    height: 1.5em;
+    border: 0.125em solid #444;
+    border-radius: 0.25em;
     background-color: #333;
     cursor: pointer;
     color: #eee;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 2rem;
 
     box-shadow: 0 0.2em 0 0.05em #222;
     /* transition: 0.2s; */
@@ -129,7 +135,7 @@ section.wisielec.hidden {
 
 div.wisielec-title {
     position: absolute;
-    top: 10%;
+    top: calc(5% + 3em);
     left: 50%;
     transform: translate(-50%, 0%);
     display: flex;
@@ -182,6 +188,23 @@ div.wisielec-title {
     font-size: 1.5em;
 }
 
+div > p.wordResult {
+    font-size: 2rem;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #eee;
+    text-align: center;
+    font-weight: bolder;
+    text-shadow: 
+        1px 1px 0 #000, 
+        -1px -1px 0 #000, 
+        1px -1px 0 #000, 
+        -1px 1px 0 #000;
+}
+
 /* Enhanced Animation for launching face parts */
 @keyframes launch {
     0% {
@@ -223,7 +246,7 @@ div.wisielec-title {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
-
+    z-index: 1;
 }
 
 @keyframes explode {
@@ -231,10 +254,10 @@ div.wisielec-title {
         transform: translate(-50%, -50%) scale(0.25);
     }
     50% {
-        transform: translate(-50%, -50%) scale(1.2),
+        transform: translate(-50%, -50%) scale(1),
     }
     100% {
-        transform: translate(-50%, -50%) scale(1.5)
+        transform: translate(-50%, -50%) scale(1.25)
     }
 }
 

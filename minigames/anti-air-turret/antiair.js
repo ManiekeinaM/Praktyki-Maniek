@@ -403,7 +403,7 @@ const IconHeigth = 144;
 const IconWidth = 144;
 planeIcon.src = 'Assets/PlaneIcon.png';
 
-function drawRadar(player, enemies, cameraAngle) {
+function drawRadar(enemies, cameraAngle) {
     const radarRadius = 100; // Radar size
     const radarX = canvasWidth - radarRadius - 20;
     const radarY = canvasHeight - radarRadius - 20;
@@ -415,8 +415,6 @@ function drawRadar(player, enemies, cameraAngle) {
     ctx.fill();
     ctx.strokeStyle = "white";
     ctx.stroke();
-
-    const scale = radarRadius / 800; // Scale game world to radar size
 
     // Draw enemy blips
     enemies.forEach(enemy => {
@@ -447,48 +445,6 @@ function drawRadar(player, enemies, cameraAngle) {
             planeIcon.height * 0.25
         );
     });
-        /*let relativeX = (enemy.x + (enemy.width / 2) - player.x);
-        let relativeY = (enemy.y + (enemy.height / 2) - player.y);
-
-        // Calculate the actual distance from the enemy center to the player
-        const distance = Math.sqrt(relativeX ** 2 + relativeY ** 2) * 0.8;
-
-        // We don't want to clamp the distance for radar blips anymore to prevent them from disappearing prematurely.
-        const maxDistance = 800; 
-
-        // Scale the distance on the radar
-        const scaledX = (relativeX / distance) * distance * scale;
-        const scaledY = (relativeY / distance) * distance * scale;
-
-        // Rotate to match the radar's orientation (rotate the relative position)
-        const rotated = rotatePoint(scaledX, scaledY, -cameraAngle);
-
-        // Calculate the final position of the blip on the radar
-        const radarBlipX = radarX + rotated.x;
-        const radarBlipY = radarY + rotated.y;
-
-        // Draw the blip if it is within the radar's radius
-        if (distance < maxDistance) { 
-            const iconWidth = planeIcon.width * 0.2; 
-                const iconHeight = planeIcon.height * 0.2; 
-
-                // Calculate the angle toward the radar center
-                const angleToCenter = Math.atan2(radarY - radarBlipY, radarX - radarBlipX) - Math.PI / 2;
-        */
-                // Rotate and draw the image
-                //ctx.save();
-                //ctx.translate(radarBlipX, radarBlipY);
-                //ctx.rotate(angleToCenter); 
-                /*ctx.drawImage(
-                    planeIcon,
-                    -iconWidth / 2,
-                    -iconHeight / 2, 
-                    iconWidth, 
-                    iconHeight 
-                );*/
-                //ctx.restore();
-        //}
-    //});
 }
 
 function drawRadarSight(camera_offset_y) {

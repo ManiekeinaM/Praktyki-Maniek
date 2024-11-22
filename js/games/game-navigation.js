@@ -3,8 +3,8 @@ const gamesSide = document.querySelector('.games-side');
 const rightSide = document.querySelector('.maniek-side');
 
 let games = gamenavigation.querySelectorAll('.button');
-let lastGame = "logoitarcza";
 
+let LAST_GAME = "logoitarcza";
 let CURRENT_GAME = "logoitarcza";
 
 games.forEach(button => {
@@ -15,15 +15,15 @@ games.forEach(button => {
         CURRENT_GAME = game;
 
         // Change the style of the gameboard
-        gamesSide.classList.remove(lastGame);
+        gamesSide.classList.remove(LAST_GAME);
         gamesSide.classList.add(game);
-        rightSide.classList.remove(lastGame);
+        rightSide.classList.remove(LAST_GAME);
         rightSide.classList.add(game);
 
 
 
         // Hide all last game objects, show the new game objects
-        let lastGameObjects = document.querySelectorAll(`.${lastGame}:not(.button)`);
+        let lastGameObjects = document.querySelectorAll(`.${LAST_GAME}:not(.button)`);
         lastGameObjects.forEach(object => {
             object.style.display = '';
             object.classList.add('hidden');
@@ -42,7 +42,7 @@ games.forEach(button => {
             lastButton.classList.remove('selected');
         button.classList.add('selected');
 
-        lastGame = game;
+        LAST_GAME = game;
     })
 
     // Correct the display on transition end

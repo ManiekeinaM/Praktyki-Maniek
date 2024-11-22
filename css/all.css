@@ -1,11 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
-
 @font-face {
     font-family: 'Determination Mono';
     /* src: url('../fonts/DeterminationMono.ttf') format('truetype'), */
         /* url('../fonts/DeterminationMono.woff2') format('woff2'); */
 
-    src: url(../fonts/DeterminationMonoPolish.otf);
+    src: url('../fonts/DeterminationMonoPolish.otf');
+}
+
+@font-face {
+    font-family: 'Raleway';
+    src: url('../fonts/Raleway-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Raleway';
+    src: url('../fonts/Raleway-Medium.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
 }
 
 

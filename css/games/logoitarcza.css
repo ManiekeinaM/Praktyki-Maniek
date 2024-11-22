@@ -1,13 +1,19 @@
+section.logoitarcza {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 .game-container {
     position: relative;
     background-color: var(--darkbrown);
 
-    border-radius: calc(25px + 1rem);
+    border-radius: 3em;
     border: 1rem solid #b99a5a;
 
     box-shadow: 0 0 10px 10px rgba(61, 37, 0, 0.3);
 
-    width: 30rem;
+    width: 25em;
     aspect-ratio: 1/1;
     max-width: calc(100% - 2rem);
     max-height: auto;
@@ -31,16 +37,16 @@
 }
 
 .tiles div:nth-child(1) {
-    border-top-left-radius: 25px;
+    border-top-left-radius: 2rem;
 }
 .tiles div:nth-child(3) {
-    border-top-right-radius: 25px;
+    border-top-right-radius: 2rem;
 }
 .tiles div:nth-child(7) {
-    border-bottom-left-radius: 25px;
+    border-bottom-left-radius: 2rem;
 }
 .tiles div:nth-child(9) {
-    border-bottom-right-radius: 25px;
+    border-bottom-right-radius: 2rem;
 }
 
 .tiles .tile img {
@@ -60,8 +66,6 @@ h1.game-name {
 
     width: 55%;
 
-    font-size: 2rem;
-
     /* font-size: 2rem; */
     background-color: white;
     border-top-left-radius: 2rem;
@@ -72,6 +76,9 @@ h1.game-name {
 
     text-align: center;
     white-space: nowrap;
+
+    background-image: url("../../assets/tile-zsp9-2.png");
+    background-size: contain;
 }
 
 .win-popup {
@@ -110,14 +117,17 @@ h1.game-name {
 
 span.blue {
     color: #2247dd;
-    text-shadow: 1px 1px 2px #3559eb;
+    text-shadow: 1px 1px 1px #3559eb;
 }
 span.brown {
     color: #b99a5a;
-    text-shadow: 1px 1px 2px #d3b271;
+    text-shadow: 1px 1px 1px #d3b271;
 }
-h1 span {
-    font-size: 2.2rem;
+.game-name {
+    font-size: 1.5rem;
+}
+.game-name > span {
+    font-size: 1.75rem;
     font-weight: 900;
 }
 

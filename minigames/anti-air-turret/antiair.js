@@ -21,6 +21,11 @@ const gameover = {
     width: 400,
     height: 250,
 }
+//Livebar properties
+const lives_bar = {
+    width: 100,
+    height: 100,
+}
 
 //Game state controller
 const score_top_margin = 25;
@@ -56,6 +61,13 @@ const game = {
         ctx.fillText(this.player_score, canvasWidth/2, canvasHeight / 3 - 30);
         ctx.font = "32px sans-serif";
         ctx.fillText("Press anything to continue", canvasWidth/2, canvasHeight / 3 + 30);
+    },
+    draw_livesbar: function() {
+        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
+        ctx.fillRect((lives_bar.width + 20) / 2, canvasHeight - (lives_bar.height + 20), lives_bar.width + 20, lives_bar.height + 20);
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.fillText(player_turret.lives, lives_bar.width + 20,  canvasHeight - (lives_bar.height-20) / 2);
     }
 }
 
@@ -79,6 +91,7 @@ const plane_animation = {
     frame_rate: 100,
     source_x: 0,
     source_y: 0,
+    last_animation_time: 0,
     calc_source_position: function() {
         this.source_x = this.current_frame * this.frame_width;
     },  
@@ -96,6 +109,7 @@ const explosion_animation = {
     frame_rate: 100, 
     source_x: 0,
     source_y: 0,
+    last_animation_time: 0,
     calc_source_position: function () {
         this.source_x = this.current_frame * this.frame_width;  
     },
@@ -111,7 +125,7 @@ const camera = {
     angle: 0,
     update_offset: function(mouse_x, mouse_y, delta) {
         this.angle = ((this.offset_x+2400)*360)/5600;
-        console.log("Offset: ", this.offset_x);
+        //console.log("Offset: ", this.offset_x);
         this.offset_x += mouse_x * this.acceleration_x * delta;
         this.offset_y += mouse_y * this.acceleration_y * delta;
         if (this.offset_y < -200) {
@@ -152,7 +166,7 @@ const enemy_plane = {
     is_on_scope: false,
     collision_box_width: 320,
     collision_box_height: 320,
-    sprite: plane_animation,
+    sprite: 0,
     explosion: 0,
     death_x: 0,
     death_y: 0,
@@ -162,11 +176,11 @@ const enemy_plane = {
     draw_plane: function() {
         ctx.drawImage(
             spritesheet,
-            plane_animation.source_x, plane_animation.source_y,
-            plane_animation.frame_width, plane_animation.frame_height,
-            this.x + camera.offset_x - (plane_animation.frame_width * 0.25 * this.scale * camera.y_offset_scale) / 2,
-            this.y - camera.offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2,
-            plane_animation.frame_width * 0.25 * this.scale * camera.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
+            this.sprite.source_x, this.sprite.source_y,
+            this.sprite.frame_width, this.sprite.frame_height,
+            this.x + camera.offset_x - (this.sprite.frame_width * 0.25 * this.scale * camera.y_offset_scale) / 2,
+            this.y - camera.offset_y - (this.sprite.frame_height * 0.25 * this.scale) / 2,
+            this.sprite.frame_width * 0.25 * this.scale * camera.y_offset_scale, this.sprite.frame_height * 0.25 * this.scale,
         );
         //Draw Colision Box
         /*ctx.fillStyle = 'green';
@@ -230,19 +244,21 @@ const enemy_plane = {
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
+        this.scaling_factor = 0.18;
     },
 }
 
 // Planes
 const Planes = [];
-spawn_plane(14);
+spawn_plane(3);
 
 function spawn_plane(amount) {
     for (let i=0; i<amount; i++) {
         Planes.push({...enemy_plane});
         Planes[i].explosion = {...explosion_animation};
-        //Planes[i].x = Math.floor(Math.random() * (100 - 50) - 50);
-        Planes[i].x = -2400 + i * 400;
+        Planes[i].sprite = {...plane_animation};
+        Planes[i].x = Math.floor(Math.random() * (100 - 50) - 50);
+        //Planes[i].x = -2400 + i * 400;
         //Planes[i].x = Math.floor(Math.random() * (1600 - (-800) - 800));
         console.log(Planes[i].x);
     }
@@ -602,11 +618,13 @@ function game_loop(timestamp) {
     //Handle animations
     Planes.forEach(plane => {
         if (plane.play_explosion == true) {
-            if (timestamp - lastAnimationTime > explosion_animation.frame_rate) {
+            console.log(plane.explosion);
+            if (timestamp - plane.explosion.last_animation_time > explosion_animation.frame_rate) {
                 plane.explosion.current_frame = (plane.explosion.current_frame + 1) % plane.explosion.total_frames;
                 plane.explosion.calc_source_position(); // Update source_x
-                lastAnimationTime = timestamp;
+                plane.explosion.last_animation_time = timestamp;
             }
+        plane.scaling_factor = 0.0;
         plane.acceleration_y = 0;
         plane.draw_explosion();
         
@@ -615,15 +633,14 @@ function game_loop(timestamp) {
             plane.reset();
         }
         } else {
+            if (timestamp - plane.sprite.last_animation_time > plane_animation.frame_rate) {
+                plane.sprite.current_frame = (plane.sprite.current_frame + 1) % plane.sprite.total_frames;
+                plane.sprite.calc_source_position(); // Update source_x
+                last_animation_time = timestamp;
+            }
             plane.draw_plane();
         }
     });
-
-    if (timestamp - lastAnimationTime > plane_animation.frame_rate) {
-        plane_animation.current_frame = (plane_animation.current_frame + 1) % plane_animation.total_frames;
-        plane_animation.calc_source_position(); // Update source_x
-        lastAnimationTime = timestamp;
-    }
     if (turret_is_shooting) {
         if (timestamp - lastTurretAnimationTime > turret_animation.frame_rate) {
             
@@ -665,6 +682,7 @@ function game_loop(timestamp) {
 
     //Draw score
     game.draw_score();
+    game.draw_livesbar();
     
     requestAnimationFrame(game_loop);
 }

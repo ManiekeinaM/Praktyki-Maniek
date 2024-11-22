@@ -42,6 +42,9 @@ const game = {
         this.is_gameover = true;
     },
     reset: function() {
+        Planes.forEach(plane => {
+            plane.reset();
+        })
         player_turret.reset();
         this.has_not_started = false;
         this.is_gameover = false;

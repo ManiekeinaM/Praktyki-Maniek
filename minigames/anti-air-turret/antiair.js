@@ -169,12 +169,12 @@ const enemy_plane = {
             plane_animation.frame_width * 0.25 * this.scale * camera.y_offset_scale, plane_animation.frame_height * 0.25 * this.scale,
         );
         //Draw Colision Box
-        ctx.fillStyle = 'green';
+        /*ctx.fillStyle = 'green';
         ctx.fillRect(
             this.x + camera.offset_x - (this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale) / 2,
             this.y - camera.offset_y -  (this.collision_box_height * 0.25 * this.scale) / 2,
             this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale, this.collision_box_height * 0.25 * this.scale
-        );
+        );*/
     },
     draw_explosion: function() {
         ctx.drawImage(
@@ -225,19 +225,17 @@ const enemy_plane = {
         this.play_explosion = false;
         this.explosion.current_frame = 0;
         this.y = 0;
+        this.acceleration_y = 40;
         this.x = Math.floor(Math.random() * (1600 - (-800) - 800));
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
     },
-    special_reset: function() {
-        
-    },
 }
 
 // Planes
 const Planes = [];
-spawn_plane(3);
+spawn_plane(14);
 
 function spawn_plane(amount) {
     for (let i=0; i<amount; i++) {
@@ -606,6 +604,7 @@ function game_loop(timestamp) {
                 plane.explosion.calc_source_position(); // Update source_x
                 lastAnimationTime = timestamp;
             }
+        plane.acceleration_y = 0;
         plane.draw_explosion();
         
         if (plane.explosion.current_frame == 5) {

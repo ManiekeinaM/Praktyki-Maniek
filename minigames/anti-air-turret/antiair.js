@@ -21,11 +21,15 @@ const gameover = {
     width: 400,
     height: 250,
 }
-//Livebar properties
+//Lifebar properties
 const lives_bar = {
     width: 100,
     height: 100,
 }
+
+//Single Live sprite
+const life_icon = new Image();
+life_icon.src = "Assets/turret-alive.png";
 
 //Game state controller
 const score_top_margin = 25;
@@ -63,11 +67,13 @@ const game = {
         ctx.fillText("Press anything to continue", canvasWidth/2, canvasHeight / 3 + 30);
     },
     draw_livesbar: function() {
-        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
-        ctx.fillRect((lives_bar.width + 20) / 2, canvasHeight - (lives_bar.height + 20), lives_bar.width + 20, lives_bar.height + 20);
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center";
-        ctx.fillText(player_turret.lives, lives_bar.width + 20,  canvasHeight - (lives_bar.height-20) / 2);
+        //ctx.fillStyle = 'rgba(33, 112, 26, 1)';
+        //ctx.fillRect((lives_bar.width + 20) / 2, canvasHeight - (lives_bar.height + 20), lives_bar.width + 20, lives_bar.height + 20);
+        //ctx.fillStyle = "white";
+        //ctx.textAlign = "center";
+        for (let i=1; i<=player_turret.lives; i++) {
+            ctx.drawImage(life_icon, 0 + life_icon.width*0.25/2 * i, canvasHeight - life_icon.height * 0.25 - 20, life_icon.width * 0.25, life_icon.height * 0.25); 
+        }
     }
 }
 
@@ -260,7 +266,7 @@ function spawn_plane(amount) {
         Planes[i].x = Math.floor(Math.random() * (100 - 50) - 50);
         //Planes[i].x = -2400 + i * 400;
         //Planes[i].x = Math.floor(Math.random() * (1600 - (-800) - 800));
-        console.log(Planes[i].x);
+        //console.log(Planes[i].x);
     }
 }
 
@@ -628,11 +634,10 @@ function game_loop(timestamp) {
         plane.draw_explosion();
         
         if (plane.explosion.current_frame == 5) {
-            console.log(plane.explosion.current_frame);
+            //console.log(plane.explosion.current_frame);
             plane.reset();
         }
         } else {
-            console.log(timestamp - plane.sprite.last_animation_time);
             if (timestamp - plane.sprite.last_animation_time > plane_animation.frame_rate) {
                 plane.sprite.current_frame = (plane.sprite.current_frame + 1) % plane.sprite.total_frames;
                 plane.sprite.calc_source_position(); // Update source_x

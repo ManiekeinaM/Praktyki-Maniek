@@ -200,13 +200,15 @@ const enemy_plane = {
             this.y - camera.offset_y - (this.sprite.frame_height * 0.25 * this.scale) / 2,
             this.sprite.frame_width * 0.25 * this.scale * camera.y_offset_scale, this.sprite.frame_height * 0.25 * this.scale,
         );
+
+         
         //Draw Colision Box
-        /*ctx.fillStyle = 'green';
-        ctx.fillRect(
-            this.x + camera.offset_x - (this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale) / 2,
-            this.y - camera.offset_y -  (this.collision_box_height * 0.25 * this.scale) / 2,
-            this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale, this.collision_box_height * 0.25 * this.scale
-        );*/
+        //let plane_col_x = this.get_col_xpos();
+        //let plane_col_x2 = this.get_col_width();
+        //let plane_col_y = this.get_col_ypos();
+        //let plane_col_y2 = this.get_col_height();
+        //ctx.fillStyle = "rgba(33, 112, 26, 0.5)"
+        //ctx.fillRect(this.x + camera.offset_x - plane_col_x2/2, this.y - camera.offset_y - plane_col_y2 * 0.625, plane_col_x2, plane_col_y2);
     },
     draw_explosion: function() {
         ctx.drawImage(
@@ -222,13 +224,13 @@ const enemy_plane = {
         return this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale;
     },
     get_col_height: function() {
-        return this.collision_box_height * 0.25 * this.scale;
+        return this.collision_box_height * 0.25 * this.scale * camera.y_offset_scale;
     },
     get_col_xpos: function() {
-        return this.x + camera.offset_x - (this.collision_box_width * 0.25 * this.scale * camera.y_offset_scale);
+        return this.x + camera.offset_x - this.get_col_width() / 2;
     },
     get_col_ypos: function() {
-        return this.y - camera.offset_y -  (this.collision_box_height * 0.25 * this.scale);
+        return this.y - camera.offset_y - this.get_col_height() * 0.625;
     },
     move: function(delta) {
         this.y += this.acceleration_y * delta;
@@ -342,11 +344,15 @@ const player_turret = {
             let plane_col_x2 = plane_col_x + plane.get_col_width();
             let plane_col_y = plane.get_col_ypos();
             let plane_col_y2 = plane_col_y + plane.get_col_height();
+            console.log("(last_scope_anchor_x > plane_col_x) : (",last_scope_anchor_x, " > ", plane_col_x, ") &&");
+            console.log("(last_scope_anchor_x < plane_col_x2) : (",last_scope_anchor_x, " < ", plane_col_x2, ") &&");
+            console.log("(last_scope_anchor_y > plane_col_y) : (",last_scope_anchor_y, " > ", plane_col_y, ") &&");
+            console.log("(last_scope_anchor_y < plane_col_y2) : (",last_scope_anchor_y, " < ", plane_col_y2, ") &&");
             if (
-                (plane_col_x > last_scope_anchor_x && plane_col_x < (last_scope_anchor_x + scope_width * 4) ||
-                plane_col_x2 > last_scope_anchor_x && plane_col_x2 < (last_scope_anchor_x + scope_width * 4)) &&
-                (plane_col_y > last_scope_anchor_y && plane_col_y < (last_scope_anchor_y + scope_height * 4) ||
-                plane_col_y2 > last_scope_anchor_y && plane_col_y2 < (last_scope_anchor_y + scope_height * 4))
+                (last_scope_anchor_x > plane_col_x) && 
+                (last_scope_anchor_x < plane_col_x2) &&
+                (last_scope_anchor_y > plane_col_y) && 
+                (last_scope_anchor_y < plane_col_y2)
             ) {
                 game.update_score(50);
                 
@@ -665,8 +671,11 @@ function game_loop(timestamp) {
     });
     if (turret_is_shooting) {
         if (timestamp - lastTurretAnimationTime > turret_animation.frame_rate) {
-            
-            if (turret_animation.current_frame == 1) player_turret.shoot(scope_anchor.x, scope_anchor.y);
+            if (turret_animation.current_frame == 1) player_turret.shoot(scope_anchor.x + scope_width / 2, scope_anchor.y + scope_height / 2);
+            ctx.beginPath();
+            ctx.strokeStyle = "black";
+            ctx.arc(scope_anchor.x + scope_width/2 - 5/2, scope_anchor.y + scope_height/2 - 5/2, 10, 0, 2 * Math.PI);
+            ctx.stroke();
             turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
             turret_animation.calc_source_position();
             lastTurretAnimationTime = timestamp;

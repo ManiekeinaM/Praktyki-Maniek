@@ -417,6 +417,9 @@ function drawRadar(player, enemies, cameraAngle) {
 
     // Draw enemy blips
     enemies.forEach(enemy => {
+        if (enemy.play_explosion == true) {
+            return;
+        }
         // World angle of plane
         let plane_angle = (((enemy.x + camera.offset_x + 2400) * 360) / 5600) - 90;
     

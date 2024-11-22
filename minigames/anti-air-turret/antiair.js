@@ -8,6 +8,10 @@ const canvasHeight = canvas.height;
 const GAME_WINDOW_HEIGHT = canvas.height + 200;
 const GAME_WINDOW_WIDTH = canvas.width * 2;
 
+const MAX_CAMERA_OFFSET_X = canvasWidth * 4;
+const MIN_CAMERA_OFFSET_X = -canvasWidth * 3;
+const TOTAL_GAME_WIDTH = Math.abs(MAX_CAMERA_OFFSET_X) + Math.abs(MIN_CAMERA_OFFSET_X);
+
 //Configure mouse lock
 canvas.addEventListener("click", async () => {
     await canvas.requestPointerLock();
@@ -31,24 +35,88 @@ const lives_bar = {
 const life_icon = new Image();
 life_icon.src = "Assets/turret-alive.png";
 
+//Explosion animation
+const explosion_img = new Image();
+explosion_img.src = "Assets/explosion-sheet.png";
+
+const spritesheet = new Image();
+spritesheet.src = 'Assets/enemy.png';
+
+
+const plane_animation = {
+    frame_width: 640,
+    frame_height: 640,
+    total_frames: 3,
+    current_frame: 0,
+    frame_rate: 100,
+    source_x: 0,
+    source_y: 0,
+    last_animation_time: 0,
+    calc_source_position: function() {
+        this.source_x = this.current_frame * this.frame_width;
+    },  
+}
+
+const explosion_animation = {
+    frame_width: 320,
+    frame_height: 320,
+    total_frames: 6,
+    current_frame: 0,
+    frame_rate: 100, 
+    source_x: 0,
+    source_y: 0,
+    last_animation_time: 0,
+    calc_source_position: function () {
+        this.source_x = this.current_frame * this.frame_width;  
+    },
+}
+
+// Waves
+const Planes = [];
+
 //Game state controller
 const score_top_margin = 25;
 const game = {
     player_score: 0, 
     enemy_planes_amount: 1,
+    kill_count: 0,
     is_gameover: false,
     has_not_started: true,
     stop: function() {
         this.is_gameover = true;
     },
     reset: function() {
-        Planes.forEach(plane => {
-            plane.reset();
-        })
+        Planes.length = 0;
+        this.enemy_planes_amount = 0;
+        this.spawn_plane(50);
         player_turret.reset();
         this.has_not_started = false;
         this.is_gameover = false;
         this.player_score = 0;
+        this.kill_count = 0;
+    },
+    spawn_plane: function(amount) {
+        for (let i=0; i<amount; i++) {
+            let plane = {...enemy_plane};
+            plane.explosion = {...explosion_animation} ;
+            plane.sprite = {...plane_animation};
+            plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
+            Planes.push(plane);
+            this.enemy_planes_amount++;
+            //Planes[i].x = -2400 + i * 400;
+            //Planes[i].x = Math.floor(Math.random() * (1600 - (-800) - 800));
+            //console.log(Planes[i].x);
+        }
+
+        //console.log(Planes);
+    },
+    update_killcount: function() {
+        console.log(this.kill_count);
+        console.log(this.enemy_planes_amount);
+        this.kill_count += 1;
+        if (this.kill_count > this.enemy_planes_amount * 4) {
+            this.spawn_plane(1);
+        }
     },
     draw_score: function() {
         ctx.font = "64px sans-serif";
@@ -101,41 +169,6 @@ const controls = {
     mouse_pressed: false,
 }
 
-const spritesheet = new Image();
-spritesheet.src = 'Assets/enemy.png';
-
-const plane_animation = {
-    frame_width: 640,
-    frame_height: 640,
-    total_frames: 3,
-    current_frame: 0,
-    frame_rate: 100,
-    source_x: 0,
-    source_y: 0,
-    last_animation_time: 0,
-    calc_source_position: function() {
-        this.source_x = this.current_frame * this.frame_width;
-    },  
-}
-
-//Explosion animation
-const explosion_img = new Image();
-explosion_img.src = "Assets/explosion-sheet.png";
-
-const explosion_animation = {
-    frame_width: 320,
-    frame_height: 320,
-    total_frames: 6,
-    current_frame: 0,
-    frame_rate: 100, 
-    source_x: 0,
-    source_y: 0,
-    last_animation_time: 0,
-    calc_source_position: function () {
-        this.source_x = this.current_frame * this.frame_width;  
-    },
-}
-
 //Camera
 const camera = {
     offset_x: 0,
@@ -145,7 +178,7 @@ const camera = {
     y_offset_scale: 1,
     angle: 0,
     update_offset: function(mouse_x, mouse_y, delta) {
-        this.angle = ((this.offset_x+2400)*360)/5600;
+        this.angle = ((this.offset_x+2400)*360)/ TOTAL_GAME_WIDTH;
         //console.log("Offset: ", this.offset_x);
         this.offset_x += mouse_x * this.acceleration_x * delta;
         this.offset_y += mouse_y * this.acceleration_y * delta;
@@ -159,14 +192,15 @@ const camera = {
         
         //console.log("Camera: x: ", this.offset_x, " y: ", this.offset_y, " yscale: ", this.y_offset_scale);
         this.adjust_camera();
+        console.log(camera.offset_x);
     },
     adjust_camera: function() {
-        if (this.offset_x > 3200) {
-            console.log(-2400 + (3200 - this.offset_x));
-            this.offset_x = (this.offset_x * -1) + 800 - (3200 - this.offset_x);
+        if (this.offset_x > MAX_CAMERA_OFFSET_X) {
+            console.log(MIN_CAMERA_OFFSET_X + (MAX_CAMERA_OFFSET_X - this.offset_x));
+            this.offset_x = (this.offset_x * -1) + canvasWidth - (MAX_CAMERA_OFFSET_X - this.offset_x);
         }
-        if (this.offset_x < -2400) {
-            this.offset_x = 3200 + (-2400 - this.offset_x);
+        if (this.offset_x < MIN_CAMERA_OFFSET_X) {
+            this.offset_x = MAX_CAMERA_OFFSET_X + (MIN_CAMERA_OFFSET_X - this.offset_x);
         }
     },
 }
@@ -192,8 +226,6 @@ const enemy_plane = {
     death_x: 0,
     death_y: 0,
     play_explosion: false,
-    adjust_position: function() {
-    },
     draw_plane: function() {
         ctx.drawImage(
             spritesheet,
@@ -268,23 +300,8 @@ const enemy_plane = {
         this.width = 40;
         this.height = 20;
         this.scaling_factor = 0.18;
+        game.update_killcount();
     },
-}
-
-// Planes
-const Planes = [];
-spawn_plane(3);
-
-function spawn_plane(amount) {
-    for (let i=0; i<amount; i++) {
-        Planes.push({...enemy_plane});
-        Planes[i].explosion = {...explosion_animation};
-        Planes[i].sprite = {...plane_animation};
-        Planes[i].x = Math.floor(Math.random() * (100 - 50) - 50);
-        //Planes[i].x = -2400 + i * 400;
-        //Planes[i].x = Math.floor(Math.random() * (1600 - (-800) - 800));
-        //console.log(Planes[i].x);
-    }
 }
 
 //console.log(Planes[0]);
@@ -347,10 +364,10 @@ const player_turret = {
             let plane_col_x2 = plane_col_x + plane.get_col_width();
             let plane_col_y = plane.get_col_ypos();
             let plane_col_y2 = plane_col_y + plane.get_col_height();
-            console.log("(last_scope_anchor_x > plane_col_x) : (",last_scope_anchor_x, " > ", plane_col_x, ") &&");
-            console.log("(last_scope_anchor_x < plane_col_x2) : (",last_scope_anchor_x, " < ", plane_col_x2, ") &&");
-            console.log("(last_scope_anchor_y > plane_col_y) : (",last_scope_anchor_y, " > ", plane_col_y, ") &&");
-            console.log("(last_scope_anchor_y < plane_col_y2) : (",last_scope_anchor_y, " < ", plane_col_y2, ") &&");
+            //console.log("(last_scope_anchor_x > plane_col_x) : (",last_scope_anchor_x, " > ", plane_col_x, ") &&");
+            //console.log("(last_scope_anchor_x < plane_col_x2) : (",last_scope_anchor_x, " < ", plane_col_x2, ") &&");
+            //console.log("(last_scope_anchor_y > plane_col_y) : (",last_scope_anchor_y, " > ", plane_col_y, ") &&");
+            //console.log("(last_scope_anchor_y < plane_col_y2) : (",last_scope_anchor_y, " < ", plane_col_y2, ") &&");
             if (
                 (last_scope_anchor_x > plane_col_x) && 
                 (last_scope_anchor_x < plane_col_x2) &&
@@ -377,9 +394,7 @@ const player_turret = {
     }
 }
 
-//Camera / Scope obj
-const MAX_CAMERA_OFFSET_Y = -200
-const MIN_CAMERA_OFFSET_Y = GAME_WINDOW_HEIGHT 
+
 //console.log("max offset y: ",MAX_CAMERA_OFFSET_Y);
 //console.log("min offset y: ",MIN_CAMERA_OFFSET_Y);
 const scope_icon = new Image();

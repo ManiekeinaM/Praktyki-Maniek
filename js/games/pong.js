@@ -130,7 +130,8 @@ function movePaddles() {
     // right paddle AI
     if (nearestBall.x > width/4 && nearestBall.velocity.x > 0) {
         if (nearestBall.y > rightPaddle.y && nearestBall.y < rightPaddle.y + sizePaddle.height) {
-            rightPaddle.y += AI_SPEED * Math.sign(nearestBall.velocity.y);
+            let direction = Math.sign(nearestBall.velocity.y);
+            rightPaddle.y += Math.min(AI_SPEED, Math.abs(nearestBall.velocity.y))*direction;
             return;
         } else if (nearestBall.y > rightPaddle.y + sizePaddle.height/2) {
             rightPaddle.y += AI_SPEED;
@@ -244,7 +245,7 @@ function animate(timestamp) {
             continue;
         }
         if (ball != nearestBall) {
-            if (ball.x > nearestBall.x) {
+            if (ball.x > nearestBall.x || nearestBall.velocity.x < 0) {
                 nearestBall = ball;
             }
         }

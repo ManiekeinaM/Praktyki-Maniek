@@ -11,7 +11,7 @@ const GAME_WINDOW_WIDTH = canvas.width * 2;
 //Configure mouse lock
 canvas.addEventListener("click", async () => {
     await canvas.requestPointerLock();
-    if (game.is_gameover) {
+    if (game.is_gameover || game.has_not_started) {
         game.reset();
     }
 });
@@ -37,11 +37,13 @@ const game = {
     player_score: 0, 
     enemy_planes_amount: 1,
     is_gameover: false,
+    has_not_started: true,
     stop: function() {
         this.is_gameover = true;
     },
     reset: function() {
         player_turret.reset();
+        this.has_not_started = false;
         this.is_gameover = false;
         this.player_score = 0;
     },
@@ -52,6 +54,16 @@ const game = {
     },
     update_score: function(amount) {
         this.player_score += amount;
+    },
+    draw_start_screen: function() {
+        ctx.fillStyle = 'rgba(24, 71, 19, 1)';
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
+        ctx.fillRect(40, 40, canvasWidth - 80, canvasHeight - 80);
+        ctx.fillStyle = 'white';
+        ctx.font = "32px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("Press anything to start", canvasWidth/2, canvasHeight/2);
     },
     draw_gameover: function() {
         ctx.fillStyle = 'rgba(24, 71, 19, 1)';
@@ -585,7 +597,12 @@ function game_loop(timestamp) {
     // ctx.save();
     // ctx.translate(Math.random()*50 - 25, Math.random()*50 - 25);
 
-    
+    if (game.has_not_started == true) {
+        game.draw_start_screen();
+        requestAnimationFrame(game_loop);
+        return;
+    }
+
     if (game.is_gameover == true) {
         clearInterval(score_updater_id);
         

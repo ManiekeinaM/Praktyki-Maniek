@@ -70,7 +70,6 @@ let radius = 10;
 
 const leftPaddle = new Paddle(10, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
 const rightPaddle = new Paddle(width - 60, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
-const ball = new Ball(157, height/2, radius, {x: 4, y: 4});
 
 // Define safe zone (middle 4/5 of screen, for collision detecting paddles)
 let widthZone = {min: 20+radius+sizePaddle.width, max: width-20-radius-sizePaddle.width};

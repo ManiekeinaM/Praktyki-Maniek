@@ -618,7 +618,6 @@ function game_loop(timestamp) {
     //Handle animations
     Planes.forEach(plane => {
         if (plane.play_explosion == true) {
-            console.log(plane.explosion);
             if (timestamp - plane.explosion.last_animation_time > explosion_animation.frame_rate) {
                 plane.explosion.current_frame = (plane.explosion.current_frame + 1) % plane.explosion.total_frames;
                 plane.explosion.calc_source_position(); // Update source_x
@@ -633,10 +632,11 @@ function game_loop(timestamp) {
             plane.reset();
         }
         } else {
+            console.log(timestamp - plane.sprite.last_animation_time);
             if (timestamp - plane.sprite.last_animation_time > plane_animation.frame_rate) {
                 plane.sprite.current_frame = (plane.sprite.current_frame + 1) % plane.sprite.total_frames;
                 plane.sprite.calc_source_position(); // Update source_x
-                last_animation_time = timestamp;
+                plane.sprite.last_animation_time = timestamp;
             }
             plane.draw_plane();
         }

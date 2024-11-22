@@ -272,6 +272,15 @@ const enemy_plane = {
         if (this.y > 0) {
             this.scale_up(delta);
         }
+        
+        // Add camera wrapping for planes
+        if (this.x + camera.offset_x > MAX_CAMERA_OFFSET_X) 
+            this.x = this.x - TOTAL_GAME_WIDTH;
+        
+        if (this.x + camera.offset_x < MIN_CAMERA_OFFSET_X) 
+            this.x = this.x + TOTAL_GAME_WIDTH;
+        
+        
         this.attack_player();
     },
     scale_up: function(delta) {

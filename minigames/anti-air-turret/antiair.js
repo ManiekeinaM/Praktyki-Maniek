@@ -581,9 +581,10 @@ const rotationSpeed = Math.PI / 16;
 
 //Background
 const background = new Image();
-background.src = "Assets/shooter-background.png";
-const background_width = 5120
-const background_height = 1024
+//background.src = "Assets/shooter-background.png";
+background.src = "Assets/Testbg.png";
+const background_width = 7200;
+const background_height = 800;
 const background_x = 0;
 const background_y = 0;
 
@@ -640,8 +641,9 @@ function game_loop(timestamp) {
         clearInterval(score_updater_id);
         
         //Draw background
-        ctx.drawImage(background, camera.offset_x - background_width + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);    
-        ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
+        ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y, background_width, canvasHeight);
+        //ctx.drawImage(background, camera.offset_x - background_width + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);    
+        //ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
 
         //Draw screen_cover
         //ctx.drawImage(screen_cover, 0, 0, canvasWidth, canvasHeight);
@@ -656,8 +658,8 @@ function game_loop(timestamp) {
     }
 
     //Draw background
-    ctx.drawImage(background, camera.offset_x - background_width + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);    
-    ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
+    ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y, background_width, canvasHeight);
+    //ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
 
     // Update camera angle based on player input
     //if (controls.right_pressed) cameraAngle += rotationSpeed * delta;

@@ -641,7 +641,7 @@ function game_loop(timestamp) {
         clearInterval(score_updater_id);
         
         //Draw background
-        ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - canvasHeight/2, background_width, canvasHeight);
+        ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height);
         //ctx.drawImage(background, camera.offset_x - background_width + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);    
         //ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
 
@@ -658,7 +658,7 @@ function game_loop(timestamp) {
     }
 
     //Draw background
-    ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - canvasHeight/2, background_width, canvasHeight);
+    ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height);
     //ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
 
     // Update camera angle based on player input

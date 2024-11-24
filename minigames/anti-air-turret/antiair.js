@@ -582,7 +582,8 @@ const rotationSpeed = Math.PI / 16;
 //Background
 const background = new Image();
 //background.src = "Assets/shooter-background.png";
-background.src = "Assets/Testbg.png";
+//background.src = "Assets/Testbg.png";
+background.src = "Assets/Sky_bg.png";
 const background_width = 7200;
 const background_height = 800;
 const background_x = 0;

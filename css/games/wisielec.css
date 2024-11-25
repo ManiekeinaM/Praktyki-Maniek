@@ -159,25 +159,25 @@ div.wisielec-title {
 
 @keyframes bobAround {
     0% {
-        transform: translate(-50%, -50%) rotate(-1deg);
+        transform: translate(-50%, -50%) rotate(-2deg);
     }
     50% {
-        transform: translate(-50%, -50%) rotate(1deg);
+        transform: translate(-50%, -50%) rotate(2deg);
     }
     100% {
-        transform: translate(-50%, -50%) rotate(-1deg);
+        transform: translate(-50%, -50%) rotate(-2deg);
     }
 }
 
 @keyframes bobOpposite {
     0% {
-        transform: translate(-50%, -50%) rotate(1deg);
+        transform: translate(-50%, -50%) rotate(2deg);
     }
     50% {
-        transform: translate(-50%, -50%) rotate(-1deg);
+        transform: translate(-50%, -50%) rotate(-2deg);
     }
     100% {
-        transform: translate(-50%, -50%) rotate(1deg);
+        transform: translate(-50%, -50%) rotate(2deg);
     }
 }
 
@@ -193,7 +193,7 @@ div.wisielec-title {
     background-color: #b00;
     z-index: -2;
     padding: 0.75em;
-    animation: bobAround 3s infinite ease-in-out;
+    animation: bobAround 2s infinite ease-in-out;
 }
 
 .bg3 {
@@ -201,7 +201,7 @@ div.wisielec-title {
     background-color: #d00;
     z-index: -3;
     padding: 1em;
-    animation: bobOpposite 3s infinite ease-in-out;
+    animation: bobOpposite 2s infinite ease-in-out;
 }
 
 .wisielec-title > span {

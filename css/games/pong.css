@@ -16,6 +16,19 @@
     font-weight: 500;
 }
 
+h1.pong {
+    font-family: var(--maniek-font);
+    font-size: 12rem;
+    color: white;
+    font-weight: 500;
+    margin: 0;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .pong.hidden {
     display: none;
 }

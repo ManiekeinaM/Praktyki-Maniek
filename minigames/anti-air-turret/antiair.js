@@ -240,7 +240,7 @@ const enemy_plane = {
         //let plane_col_y = this.get_col_ypos();
         //let plane_col_y2 = this.get_col_height();
         //ctx.fillStyle = "rgba(33, 112, 26, 0.5)"
-        //ctx.fillRect(this.x + camera.offset_x - plane_col_x2/2, this.y - camera.offset_y - plane_col_y2 * 0.625, plane_col_x2, plane_col_y2);
+        //ctx.fillRect(this.x + camera.offset_x - plane_col_x2/2, this.y - camera.offset_y - plane_col_y2 / 2, plane_col_x2, plane_col_y2);
     },
     draw_explosion: function() {
         ctx.drawImage(
@@ -262,7 +262,7 @@ const enemy_plane = {
         return this.x + camera.offset_x - this.get_col_width() / 2;
     },
     get_col_ypos: function() {
-        return this.y - camera.offset_y;
+        return this.y - camera.offset_y - this.get_col_height() / 2;
     },
     move: function(delta) {
         this.y += this.acceleration_y * delta;
@@ -676,10 +676,10 @@ function game_loop(timestamp) {
     if (turret_is_shooting) {
         if (timestamp - lastTurretAnimationTime > turret_animation.frame_rate) {
             if (turret_animation.current_frame == 1) player_turret.shoot(scope_anchor.x + scope_width / 2, scope_anchor.y + scope_height / 2);
-            ctx.beginPath();
-            ctx.strokeStyle = "black";
-            ctx.arc(scope_anchor.x + scope_width/2 - 5/2, scope_anchor.y + scope_height/2 - 5/2, 10, 0, 2 * Math.PI);
-            ctx.stroke();
+            //ctx.beginPath();
+            //ctx.strokeStyle = "black";
+            //ctx.arc(scope_anchor.x + scope_width*width_upscale/2 - 5/2, scope_anchor.y + scope_height*height_upscale/2 - 5/2, 10, 0, 2 * Math.PI);
+            //ctx.stroke();
             turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
             turret_animation.calc_source_position();
             lastTurretAnimationTime = timestamp;

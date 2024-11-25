@@ -88,7 +88,7 @@ const game = {
     reset: function() {
         Planes.length = 0;
         this.enemy_planes_amount = 0;
-        this.spawn_plane(50);
+        this.spawn_plane(1);
         player_turret.reset();
         this.has_not_started = false;
         this.is_gameover = false;
@@ -289,13 +289,14 @@ const enemy_plane = {
         this.height = 20 * this.scale;
     },
     attack_player: function() {
-        if (this.scale > 2.3) {
+        if (this.scale > 2.3 && this.play_explosion == false) {
             this.kill_self();
         }
     },
     kill_self: function() {
         player_turret.deal_damage();
-        this.reset();
+        this.play_explosion = true;
+        //this.reset();
     },
     reset: function() {
         this.death_x = this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2;

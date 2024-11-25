@@ -5,8 +5,8 @@ const ctx = canvas.getContext('2d');
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
 //Entire game window
-const GAME_WINDOW_HEIGHT = canvas.height + 200;
-const GAME_WINDOW_WIDTH = canvas.width * 2;
+const GAME_WINDOW_HEIGHT = canvas.height + canvas.height / 3;
+const GAME_WINDOW_WIDTH = canvasWidth * 9;
 
 const MAX_CAMERA_OFFSET_X = canvasWidth * 4;
 const MIN_CAMERA_OFFSET_X = -canvasWidth * 3;
@@ -175,8 +175,8 @@ const camera = {
         //console.log("Offset: ", this.offset_x);
         this.offset_x += mouse_x * this.acceleration_x * delta;
         this.offset_y += mouse_y * this.acceleration_y * delta;
-        if (this.offset_y < -200) {
-            this.offset_y = -200;
+        if (this.offset_y < -(canvasHeight / 3)) {
+            this.offset_y = -(canvasHeight / 3);
         };
         if (this.offset_y > 0) {
             this.offset_y = 0;
@@ -293,7 +293,7 @@ const enemy_plane = {
         this.explosion.current_frame = 0;
         this.y = 0;
         this.acceleration_y = 40;
-        this.x = Math.floor(Math.random() * (1600 - (-800) - 800));
+        this.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
@@ -347,8 +347,6 @@ const player_turret = {
             );
         } else {
             ctx.drawImage(turret_inactive, x, y, turret_inactive_width, turret_inactive_height); 
-            //ctx.fillStyle = 'black';
-            //ctx.fillRect(x, y, this.width, this.height);
         }
     }, 
     draw_disabled: function(y_offset) {
@@ -357,15 +355,10 @@ const player_turret = {
     },
     shoot: function(last_scope_anchor_x, last_scope_anchor_y) {
         Planes.forEach(plane => {
-            //console.log("Collision width: ", plane.get_col_width(), " , height: ", plane.get_col_height(), " , x: ", plane.get_col_xpos(), " , y: ", plane.get_col_ypox());
             let plane_col_x = plane.get_col_xpos();
             let plane_col_x2 = plane_col_x + plane.get_col_width();
             let plane_col_y = plane.get_col_ypos();
             let plane_col_y2 = plane_col_y + plane.get_col_height();
-            //console.log("(last_scope_anchor_x > plane_col_x) : (",last_scope_anchor_x, " > ", plane_col_x, ") &&");
-            //console.log("(last_scope_anchor_x < plane_col_x2) : (",last_scope_anchor_x, " < ", plane_col_x2, ") &&");
-            //console.log("(last_scope_anchor_y > plane_col_y) : (",last_scope_anchor_y, " > ", plane_col_y, ") &&");
-            //console.log("(last_scope_anchor_y < plane_col_y2) : (",last_scope_anchor_y, " < ", plane_col_y2, ") &&");
             if (
                 (last_scope_anchor_x > plane_col_x) && 
                 (last_scope_anchor_x < plane_col_x2) &&
@@ -373,10 +366,7 @@ const player_turret = {
                 (last_scope_anchor_y < plane_col_y2)
             ) {
                 game.update_score(50);
-                
                 plane.play_explosion = true;
-                //plane.reset();
-                //console.log("Ładuj armate!");
             }
         })
     },
@@ -393,8 +383,6 @@ const player_turret = {
 }
 
 
-//console.log("max offset y: ",MAX_CAMERA_OFFSET_Y);
-//console.log("min offset y: ",MIN_CAMERA_OFFSET_Y);
 const scope_icon = new Image();
 scope_icon.src = "Assets/celownik.png";
 const scope_icon_height = 180;
@@ -412,8 +400,6 @@ const scope_anchor = {
     draw: function() {
         let x = this.x - this.width / 2;
         let y = this.y - this.height / 2;
-        //ctx.fillStyle = 'green';
-        //ctx.fillRect(x, y, this.width, this.height);
         ctx.drawImage(scope_icon, x, y, scope_width, scope_height);
     },
 }
@@ -477,7 +463,7 @@ function drawRadar(player, enemies, cameraAngle) {
             return;
         }
         // World angle of plane
-        let plane_angle = (((enemy.x + camera.offset_x + 2400) * 360) / 5600) - 90;
+        let plane_angle = (((enemy.x + camera.offset_x + Math.abs(MIN_CAMERA_OFFSET_X)) * 360) / GAME_WINDOW_WIDTH) - 90;
     
         // Adjust for player's camera angle
         let relative_angle = (plane_angle - cameraAngle) % 360;
@@ -573,8 +559,8 @@ const background = new Image();
 //background.src = "Assets/shooter-background.png";
 //background.src = "Assets/Testbg.png";
 background.src = "Assets/Sky_bg.png";
-const background_width = 7200;
-const background_height = 800;
+const background_width = GAME_WINDOW_WIDTH;
+const background_height = GAME_WINDOW_HEIGHT;
 const background_x = 0;
 const background_y = 0;
 

@@ -117,17 +117,20 @@ const game = {
             plane.explosion = {...explosion_animation} ;
             plane.sprite = {...plane_animation};
             plane.item = {...special_item};
-            plane.item.type = "speed";   
+            plane.item.type = 0;
+
+            let roll = Math.floor(Math.random() * 20 + 1); 
+            if (roll == 4) { plane.item.type = "heal";}
+            if (roll == 7) { plane.item.type = "speed";}
+            if (roll == 13) { plane.item.type = "score";}   
             plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
             Planes.push(plane);
             this.enemy_planes_amount++;
         }
-
-        console.log(Planes);
     },
     update_killcount: function() {
-        console.log(this.kill_count);
-        console.log(this.enemy_planes_amount);
+        //console.log(this.kill_count);
+        //console.log(this.enemy_planes_amount);
         this.kill_count += 1;
         if (this.kill_count > this.enemy_planes_amount * 4) {
             this.spawn_plane(1);
@@ -190,7 +193,6 @@ const camera = {
     angle: 0,
     update_offset: function(mouse_x, mouse_y, delta) {
         this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
-        //console.log("Offset: ", this.offset_x);
         this.offset_x += mouse_x * this.acceleration_x * delta;
         this.offset_y += mouse_y * this.acceleration_y * delta;
         if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {
@@ -203,11 +205,9 @@ const camera = {
         
         //console.log("Camera: x: ", this.offset_x, " y: ", this.offset_y, " yscale: ", this.y_offset_scale);
         this.adjust_camera();
-        //console.log(camera.offset_x);
     },
     adjust_camera: function() {
         if (this.offset_x > MAX_CAMERA_OFFSET_X) {
-            console.log(MIN_CAMERA_OFFSET_X + (MAX_CAMERA_OFFSET_X - this.offset_x));
             this.offset_x = (this.offset_x * -1) + canvasWidth - (MAX_CAMERA_OFFSET_X - this.offset_x);
         }
         if (this.offset_x < MIN_CAMERA_OFFSET_X) {
@@ -254,6 +254,7 @@ const enemy_plane = {
         if (this.item.type == "heal") { sprite = heal_plane }
         if (this.item.type == "speed") { sprite = speed_plane }
         if (this.item.type == "score") { sprite = score_plane }
+        //console.log(this.item.type);
         ctx.drawImage(
             sprite,
             this.sprite.source_x, this.sprite.source_y,
@@ -317,7 +318,7 @@ const enemy_plane = {
         //if (this.scale > 2.3 && this.play_explosion == false) {
         //    this.kill_self();
         //}
-        if (this.y > canvasHeight - turret_inactive_height + (0.1 * turret_inactive_height) && this.play_explosion == false) {
+        if (this.y > canvasHeight - turret_inactive_height + (0.5 * turret_inactive_height) && this.play_explosion == false) {
             this.kill_self();
         }
     },
@@ -327,9 +328,11 @@ const enemy_plane = {
         //this.reset();
     },
     reset: function() {
-        console.log(this.item);
-        this.item.use();
         this.item.type = 0;
+        let roll = Math.floor(Math.random() * 20 + 1); 
+        if (roll == 4) { this.item.type = "heal";}
+        if (roll == 7) { this.item.type = "speed";}
+        if (roll == 13) { this.item.type = "score";}   
         this.death_x = this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2;
         this.death_y = this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2;
         this.play_explosion = false;
@@ -411,6 +414,7 @@ const player_turret = {
                 (last_scope_anchor_y < plane_col_y2)
             ) {
                 game.update_score(50 * this.score_multiplier);
+                plane.item.use();
                 plane.play_explosion = true;
             }
         })
@@ -687,9 +691,6 @@ function game_loop(timestamp) {
         return;
     }
 
-    //Draw background
-    ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height); 
-
     cameraAngle += mouse_movement_x * rotationSpeed * delta;
     cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2πY
     camera.update_offset(-mouse_movement_x, mouse_movement_y, delta);
@@ -698,6 +699,9 @@ function game_loop(timestamp) {
         mouse_movement_x = 0;
         mouse_movement_y = 0;
     })
+
+    //Draw background
+    ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height); 
 
     //Handle animations
     Planes.forEach(plane => {

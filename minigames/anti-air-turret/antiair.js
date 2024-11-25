@@ -103,9 +103,6 @@ const game = {
             plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
             Planes.push(plane);
             this.enemy_planes_amount++;
-            //Planes[i].x = -2400 + i * 400;
-            //Planes[i].x = Math.floor(Math.random() * (1600 - (-800) - 800));
-            //console.log(Planes[i].x);
         }
 
         //console.log(Planes);
@@ -150,10 +147,6 @@ const game = {
         ctx.fillText("Press anything to continue", canvasWidth/2, canvasHeight / 3 + 30);
     },
     draw_livesbar: function() {
-        //ctx.fillStyle = 'rgba(33, 112, 26, 1)';
-        //ctx.fillRect((lives_bar.width + 20) / 2, canvasHeight - (lives_bar.height + 20), lives_bar.width + 20, lives_bar.height + 20);
-        //ctx.fillStyle = "white";
-        //ctx.textAlign = "center";
         for (let i=1; i<=player_turret.lives; i++) {
             ctx.drawImage(life_icon, 0 + life_icon.width*0.25/2 * i, canvasHeight - life_icon.height * 0.25 - 20, life_icon.width * 0.25, life_icon.height * 0.25); 
         }
@@ -209,13 +202,8 @@ const camera = {
 const enemy_plane = {
     x: canvasWidth / 2,
     y: 100,
-    //camera_offset_x: 0,
-    //camera_offset_y: 0,
-    //camera_acceleration_x: 50,
-    //camera_acceleration_y: 25,
     acceleration_y: 40,
     scaling_factor: 0.18,
-    //y_offset_scale: 1,  
     scale: 0.1,
     color: 'green',
     is_on_scope: false,
@@ -629,9 +617,6 @@ function game_loop(timestamp) {
     lastFrameResponse = timestamp;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    // ctx.restore();
-    // ctx.save();
-    // ctx.translate(Math.random()*50 - 25, Math.random()*50 - 25);
 
     if (game.has_not_started == true) {
         game.draw_start_screen();
@@ -644,11 +629,6 @@ function game_loop(timestamp) {
         
         //Draw background
         ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height);
-        //ctx.drawImage(background, camera.offset_x - background_width + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);    
-        //ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
-
-        //Draw screen_cover
-        //ctx.drawImage(screen_cover, 0, 0, canvasWidth, canvasHeight);
         
         //Draw turret
         player_turret.draw_disabled(50 * delta);
@@ -660,12 +640,8 @@ function game_loop(timestamp) {
     }
 
     //Draw background
-    ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height);
-    //ctx.drawImage(background, camera.offset_x + canvasWidth/2, -camera.offset_y, background_width, canvasHeight);  
+    ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height); 
 
-    // Update camera angle based on player input
-    //if (controls.right_pressed) cameraAngle += rotationSpeed * delta;
-    //if (controls.left_pressed) cameraAngle -= rotationSpeed * delta;
     cameraAngle += mouse_movement_x * rotationSpeed * delta;
     cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2πY
     camera.update_offset(-mouse_movement_x, mouse_movement_y, delta);
@@ -725,15 +701,6 @@ function game_loop(timestamp) {
     }
    
     scope_anchor.draw();
-
-    //Draw screen_cover
-    /*ctx.drawImage(
-        screen_cover,
-        0,
-        0, 
-        canvasWidth, 
-        canvasHeight 
-    );*/
 
     //Draw turret
     player_turret.draw();

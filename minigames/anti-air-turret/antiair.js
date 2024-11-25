@@ -109,12 +109,14 @@ const game = {
             let plane = {...enemy_plane};
             plane.explosion = {...explosion_animation} ;
             plane.sprite = {...plane_animation};
+            plane.item = {...special_item};
+            plane.item.type = "score";   
             plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
             Planes.push(plane);
             this.enemy_planes_amount++;
         }
 
-        //console.log(Planes);
+        console.log(Planes);
     },
     update_killcount: function() {
         console.log(this.kill_count);
@@ -207,6 +209,21 @@ const camera = {
     },
 }
 
+const special_item = {
+    type: 0,
+    use: function() {
+        if (this.type == 'heal') {
+            player_turret.heal();
+        }
+        if (this.type == 'speed') {
+            player_turret.boost_speed();
+        }
+        if (this.type == 'score') {
+            player_turret.boost_score();
+        }
+    }
+}
+
 //Enemies obj
 const enemy_plane = {
     x: canvasWidth / 2,
@@ -223,6 +240,8 @@ const enemy_plane = {
     death_x: 0,
     death_y: 0,
     play_explosion: false,
+    is_special: false,
+    item: 0,
     draw_plane: function() {
         ctx.drawImage(
             spritesheet,
@@ -232,8 +251,6 @@ const enemy_plane = {
             this.y - camera.offset_y - (this.sprite.frame_height * 0.25 * this.scale) / 2,
             this.sprite.frame_width * 0.25 * this.scale * camera.y_offset_scale * width_upscale , this.sprite.frame_height * 0.25 * this.scale * camera.y_offset_scale * height_upscale,
         );
-
-         
         //Draw Colision Box
         //let plane_col_x = this.get_col_xpos();
         //let plane_col_x2 = this.get_col_width();
@@ -299,6 +316,9 @@ const enemy_plane = {
         //this.reset();
     },
     reset: function() {
+        console.log(this.item);
+        this.item.use();
+        this.item.type = 0;
         this.death_x = this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2;
         this.death_y = this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2;
         this.play_explosion = false;
@@ -346,6 +366,7 @@ const player_turret = {
     x: canvasWidth / 2,
     y: canvasHeight,
     lives: 3,
+    score_multiplier: 1,
     draw: function() {
         let x = this.x - turret_inactive_width / 2;
         let y = this.y - turret_inactive_height;
@@ -378,7 +399,7 @@ const player_turret = {
                 (last_scope_anchor_y > plane_col_y) && 
                 (last_scope_anchor_y < plane_col_y2)
             ) {
-                game.update_score(50);
+                game.update_score(50 * this.score_multiplier);
                 plane.play_explosion = true;
             }
         })
@@ -388,6 +409,25 @@ const player_turret = {
         if (this.lives == 0) {
             game.stop();
         }
+    },
+    heal: function() {
+        this.lives += 1;
+    },
+    boost_speed: function() {
+        turret_animation.frame_rate = 25;
+        setTimeout(() => {
+            this.score_multiplier = 1;
+          }, 5000);
+    },
+    boost_score: function() {
+        this.score_multiplier = 2;
+        setTimeout(() => {
+            this.score_multiplier = 1;
+          }, 5000);
+    },
+    remove_buff: function() {
+        this.score_multiplier = 1;
+        turret_animation.frame_rate = 50;
     },
     reset: function() {
         this.y = canvasHeight;

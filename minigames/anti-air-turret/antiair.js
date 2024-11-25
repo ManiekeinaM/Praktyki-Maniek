@@ -13,8 +13,11 @@ const MIN_CAMERA_OFFSET_X = -canvasWidth * 3;
 const ABS_MIN_CAMERA_OFFSET_X = canvasWidth * 3;
 const TOTAL_GAME_WIDTH = Math.abs(MAX_CAMERA_OFFSET_X) + Math.abs(MIN_CAMERA_OFFSET_X);
 
-const width_upscale = (800 / canvasWidth) + 1;
-const height_upscale = (600 / canvasHeight) + 1;
+let width_upscale = (800 / canvasWidth);
+let height_upscale = (600 / canvasHeight);
+if (width_upscale < 1) width_upscale += 1;
+if (height_upscale < 1) height_upscale += 1;
+
 console.log(width_upscale);
 console.log(height_upscale);
 

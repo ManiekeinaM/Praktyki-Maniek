@@ -139,7 +139,7 @@ class Paddle {
 }
 
 // Ball object
-let radius = 10;
+let radius = 12;
 const BALL_SPEED = 8;
 class Ball {
     constructor(x, y, radius, velocity) {
@@ -254,7 +254,7 @@ class Spritesheet {
     draw(x,y) {
         ctx.save();
 
-        ctx.translate(x+this.width/2, y+this.height/2);
+        ctx.translate(x, y);
 
         // flip if needed
         ctx.scale(this.direction, 1);
@@ -283,9 +283,7 @@ class Spritesheet {
 // paddleImage.src = './assets/paddle.png';
 
 const MAX_REFLECTION_ANGLE = 75 * Math.PI / 180; // 75 degrees in radians
-
 const AI_SPEED = 6;
-
 const sizePaddle = {width: 50, height: 160};
 
 
@@ -334,12 +332,12 @@ function addBall() {
 }
 addBall();
 
-const BALL_INTERVAL = 10; // seconds
+const BALL_INTERVAL = 10/100; // seconds
 let BALL_TIMER = 0;
 const ANIMATION_INTERVAL = 0.25;
 let ANIMATION_TIMER = 0; // shared animation between every sprite
 
-const ROCKET_INTERVAL = 10;
+const ROCKET_INTERVAL = 6;
 let ROCKET_TIMER = {left: ROCKET_INTERVAL, right: ROCKET_INTERVAL-5};
 
 // let mouseX = 10;
@@ -430,12 +428,15 @@ function paddleCollision(paddle, ball) {
 }
 // Detect collision between two rectangles
 function isRocketColliding(rocket, ball) {
+    /*
     return rocket.x < ball.x &&
             rocket.x + ROCKET_SIZE.width > ball.x &&
             rocket.y + ROCKET_SIZE.yGap < ball.y &&
-            rocket.y + ROCKET_SIZE.height - ROCKET_SIZE.yGap > ball.y;
-    //return (rocket.x - ROCKET_SIZE.width/2 < ball.x && rocket.x + ROCKET_SIZE.width/2 > ball.x)
-    //    && (rocket.y - ROCKET_SIZE.hitboxHeight/2 < ball.y && rocket.y + ROCKET_SIZE.hitboxHeight/2 > ball.y);
+            rocket.y + ROCKET_SIZE.height - ROCKET_SIZE.yGap > ball.y;*/
+    return rocket.x - ROCKET_SIZE.width/2 < ball.x && 
+            rocket.x + ROCKET_SIZE.width/2 > ball.x && 
+            rocket.y - ROCKET_SIZE.hitboxHeight/2 < ball.y && 
+            rocket.y + ROCKET_SIZE.hitboxHeight/2 > ball.y;
 }
 function isColliding(rect1, rect2) {
     return (
@@ -454,19 +455,19 @@ function createRocket(direction) {
     let x, y;
     if (direction == 1) {
         // left side shoots: move right
-        x = sizePaddle.width + 10;
-        y = leftPaddle.y + sizePaddle.height/2 - ROCKET_SIZE.height/2;
+        x = sizePaddle.width + 10 + ROCKET_SIZE.width/2;
+        y = leftPaddle.y + sizePaddle.height/2;
     } else {
         // right side shoots: move left
-        x = width - ROCKET_SIZE.width - sizePaddle.width - 10;
-        y = rightPaddle.y + sizePaddle.height/2 - ROCKET_SIZE.height/2;
+        x = width - ROCKET_SIZE.width/2 - sizePaddle.width - 10;
+        y = rightPaddle.y + sizePaddle.height/2;
     }
     
     const rocket = new Rocket(x, y, direction);
     rockets.push(rocket);
 }
 
-//const rocket = new Spritesheet('./assets/rocket-size2.png', 61*2, 28*2, 4);
+// const rocket = new Spritesheet('./assets/rocket-size2.png', 61*2, 28*2, 4);
 
 // Animation loop
 let previousTime = performance.now();
@@ -509,8 +510,8 @@ function animate(timestamp) {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    //rocket.draw(500,500);
-    //rocket.direction *= -1;
+    // rocket.draw(0,0);
+    // rocket.direction *= -1;
 
     // Initialize Quadtree
     let boundary = new Rectangle(width / 2, height / 2, width / 2, height / 2);

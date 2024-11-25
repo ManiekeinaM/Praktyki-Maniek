@@ -429,16 +429,16 @@ const player_turret = {
         this.lives += 1;
     },
     boost_speed: function() {
-        turret_animation.frame_rate = 25;
+        turret_animation.frame_rate = 15;
         setTimeout(() => {
             turret_animation.frame_rate = 50;
-          }, 5000);
+          }, 6000);
     },
     boost_score: function() {
         this.score_multiplier = 2;
         setTimeout(() => {
             this.score_multiplier = 1;
-          }, 5000);
+          }, 6000);
     },
     remove_buff: function() {
         this.score_multiplier = 1;
@@ -505,10 +505,18 @@ let lastAnimationTime = 0;
 let lastTurretAnimationTime = 0;
 
 //Radar
-const planeIcon = new Image();
-const IconHeigth = 144;
-const IconWidth = 144;
-planeIcon.src = 'Assets/PlaneIcon.png';
+const plane_icon_normal = new Image();
+const plane_icon_heal = new Image();
+const plane_icon_speed = new Image();
+const plane_icon_score = new Image();
+
+plane_icon_normal.src = "Assets/plane_icons/plane_icon_normal.png";
+plane_icon_heal.src = "Assets/plane_icons/plane_icon_heal.png";
+plane_icon_speed.src = "Assets/plane_icons/plane_icon_speed.png";
+plane_icon_score.src = "Assets/plane_icons/plane_icon_score.png";
+
+const IconHeight = 144 * 0.25;
+const IconWidth = 144 * 0.25;
 
 function drawRadar(player, enemies, cameraAngle) {
     const radarRadius = 100; // Radar size
@@ -555,12 +563,18 @@ function drawRadar(player, enemies, cameraAngle) {
         ctx.save();
         ctx.translate(point_on_radar_x + radarX, point_on_radar_y + radarY); // Move origin to plane icon
         ctx.rotate(angle_to_center);
+
+        let icon_sprite = plane_icon_normal;
+        if (enemy.item.type == "heal")  icon_sprite = plane_icon_heal;
+        else if (enemy.item.type == "speed") icon_sprite = plane_icon_speed; 
+        else if (enemy.item.type == "score") icon_sprite = plane_icon_score;
+
         ctx.drawImage(
-            planeIcon,
-            -(planeIcon.width * 0.25) / 2, 
-            -(planeIcon.height * 0.25) / 2,
-            planeIcon.width * 0.25,
-            planeIcon.height * 0.25
+            icon_sprite,
+            -(IconWidth) / 2, 
+            -(IconHeight) / 2,
+            IconWidth,
+            IconHeight
         );
         ctx.restore();
     });

@@ -429,16 +429,28 @@ const player_turret = {
         this.lives += 1;
     },
     boost_speed: function() {
+        if (this.speed_timeout) {
+            clearTimeout(this.speed_timeout);
+        }
+
         turret_animation.frame_rate = 15;
-        setTimeout(() => {
+
+        this.speed_timeout = setTimeout(() => {
             turret_animation.frame_rate = 50;
-          }, 6000);
+            this.speed_timeout = null;
+        }, 6000);
     },
     boost_score: function() {
+        if (this.score_timeout) {
+            clearTimeout(this.score_timeout);
+        }
+        
         this.score_multiplier = 2;
-        setTimeout(() => {
+
+        this.score_timeout = setTimeout(() => {
             this.score_multiplier = 1;
-          }, 6000);
+            this.score_timeout = null;
+        }, 6000)
     },
     remove_buff: function() {
         this.score_multiplier = 1;

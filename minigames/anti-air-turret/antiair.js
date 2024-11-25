@@ -640,7 +640,7 @@ const background = new Image();
 //background.src = "Assets/Testbg.png";
 background.src = "Assets/Sky_bg.png";
 const background_width = GAME_WINDOW_WIDTH + canvasWidth * 2;
-const background_height = GAME_WINDOW_HEIGHT;
+const background_height = GAME_WINDOW_HEIGHT + canvasHeight / 2;
 const background_x = 0;
 const background_y = 0;
 

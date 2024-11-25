@@ -49,7 +49,14 @@ const explosion_img = new Image();
 explosion_img.src = "Assets/explosion-sheet.png";
 
 const spritesheet = new Image();
+const heal_plane = new Image();
+const speed_plane = new Image();
+const score_plane = new Image();
 spritesheet.src = 'Assets/enemy.png';
+heal_plane.src = 'Assets/enemy-red.png';
+speed_plane.src = 'Assets/enemy-orange.png';
+score_plane.src = 'Assets/enemy-yellow.png';
+
 
 
 const plane_animation = {
@@ -110,7 +117,7 @@ const game = {
             plane.explosion = {...explosion_animation} ;
             plane.sprite = {...plane_animation};
             plane.item = {...special_item};
-            plane.item.type = "score";   
+            plane.item.type = "speed";   
             plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
             Planes.push(plane);
             this.enemy_planes_amount++;
@@ -243,8 +250,12 @@ const enemy_plane = {
     is_special: false,
     item: 0,
     draw_plane: function() {
+        let sprite = spritesheet;
+        if (this.item.type == "heal") { sprite = heal_plane }
+        if (this.item.type == "speed") { sprite = speed_plane }
+        if (this.item.type == "score") { sprite = score_plane }
         ctx.drawImage(
-            spritesheet,
+            sprite,
             this.sprite.source_x, this.sprite.source_y,
             this.sprite.frame_width, this.sprite.frame_height,
             this.x + camera.offset_x - (this.sprite.frame_width * 0.25 * this.scale * camera.y_offset_scale) / 2,
@@ -416,7 +427,7 @@ const player_turret = {
     boost_speed: function() {
         turret_animation.frame_rate = 25;
         setTimeout(() => {
-            this.score_multiplier = 1;
+            turret_animation.frame_rate = 50;
           }, 5000);
     },
     boost_score: function() {

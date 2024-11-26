@@ -53,7 +53,6 @@ speed_buff_icon.src = "Assets/buff_icons/shooter-speed.png";
 score_buff_icon.src = "Assets/buff_icons/shooter-2x.png";
 
 //Buff cooldown properties
-let current_buffs = {};
 let current_cooldowns = {"score": 0, "speed": 0};
 
 const buff_cooldown = {
@@ -66,7 +65,6 @@ const buff_cooldown = {
 
         for (const [key, value] of Object.entries(current_cooldowns)) {
             let icon = null;
-            console.log(key, value);
             if (value > 0) { 
                 if (key == "speed") { icon = speed_buff_icon; }
                 if (key == "score") { icon = score_buff_icon; }
@@ -496,9 +494,7 @@ const player_turret = {
         this.speed_timeout = setTimeout(() => {
             turret_animation.frame_rate = 50;
             this.speed_timeout = null;
-            current_buffs["speed"] = null;
         }, 6000);
-        current_buffs["speed"] = this.speed_timeout;
         current_cooldowns["speed"] = 6000;
     },
     boost_score: function() {
@@ -511,19 +507,21 @@ const player_turret = {
         this.score_timeout = setTimeout(() => {
             this.score_multiplier = 1;
             this.score_timeout = null;
-            current_buffs["score"] = null;
         }, 6000)
-        current_buffs["score"] = this.score_timeout;
         current_cooldowns["score"] = 6000;
     },
     remove_buff: function() {
         this.score_multiplier = 1;
         turret_animation.frame_rate = 50;
+        for (const [key, value] of Object.entries(current_cooldowns)) {
+            current_cooldowns[key] = 0;
+        }
     },
     reset: function() {
         //ensure buffs are dispelled
         this.speed_timeout = null;
         this.score_timeout = null;
+        this.remove_buff();
 
         this.y = canvasHeight;
         this.lives = 3;

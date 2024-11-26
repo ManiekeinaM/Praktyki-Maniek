@@ -75,7 +75,7 @@ section.flappymaniek .screen {
     height: 60vh;
 
     border-radius: 2rem;
-    background-image: url('../../assets/flappymaniek-bg.png');
+    background-image: url('../../assets/flappy/flappymaniek-bg.png');
     background-repeat: repeat-x;
     background-size: 50% 100%;
 

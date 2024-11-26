@@ -381,6 +381,8 @@ const player_turret = {
     y: canvasHeight,
     lives: 3,
     score_multiplier: 1,
+    speed_timeout: null,
+    score_timeout: null,
     draw: function() {
         let x = this.x - turret_inactive_width / 2;
         let y = this.y - turret_inactive_height;
@@ -414,7 +416,9 @@ const player_turret = {
                 (last_scope_anchor_y < plane_col_y2)
             ) {
                 game.update_score(50 * this.score_multiplier);
+                if (plane.play_explosion == false) {
                 plane.item.use();
+                }
                 plane.play_explosion = true;
             }
         })
@@ -457,6 +461,10 @@ const player_turret = {
         turret_animation.frame_rate = 50;
     },
     reset: function() {
+        //ensure buffs are dispelled
+        this.speed_timeout = null;
+        this.score_timeout = null;
+
         this.y = canvasHeight;
         this.lives = 3;
     }

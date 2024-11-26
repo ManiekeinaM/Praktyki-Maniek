@@ -848,7 +848,7 @@ function game_loop(timestamp) {
     drawRadarSight(camera.offset_y);
 
     for (const [key, value] of Object.entries(current_cooldowns)) {
-        console.log(key, " ", value);
+        //console.log(key, " ", value);
         if (value > 0) {
             current_cooldowns[key] -= 1000 * delta;
         }

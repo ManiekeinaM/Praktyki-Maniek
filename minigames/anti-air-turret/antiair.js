@@ -462,6 +462,7 @@ const player_turret = {
             let plane_col_y = plane.get_col_ypos();
             let plane_col_y2 = plane_col_y + plane.get_col_height();
             if (
+                (plane.play_explosion == false) && 
                 (last_scope_anchor_x > plane_col_x) && 
                 (last_scope_anchor_x < plane_col_x2) &&
                 (last_scope_anchor_y > plane_col_y) && 

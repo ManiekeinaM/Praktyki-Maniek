@@ -140,6 +140,9 @@ function update_score_gradually() {
     game.update_score(score_per_plane * game.enemy_planes_amount);  
 }
 
+//Highscore table
+let BestScores = []; 
+
 
 //Game state controller
 const score_top_margin = 25;
@@ -151,6 +154,11 @@ const game = {
     has_not_started: true,
     stop: function() {
         this.is_gameover = true;
+        console.log(this.player_score);
+        BestScores.push(this.player_score);
+        BestScores.sort((a,b) => b - a);
+        BestScores = BestScores.splice(0, 5);
+        console.log(BestScores);
     },
     reset: function() {
         Planes.length = 0;
@@ -220,8 +228,7 @@ const game = {
         ctx.fillText("Press anything to continue", canvasWidth/2, canvasHeight / 3 + 30);
     },
     draw_livesbar: function() {
-        for (let i=1; i<=player_turret.lives + 1; i++) {
-            console.log(i/8);
+        for (let i=1; i<player_turret.lives + 1; i++) {
             if (i % 6 == 0) i++;
             ctx.drawImage(life_icon, 0 + life_icon.width*width_upscale*0.25/2 * (i % 6), canvasHeight - life_icon.height * 0.25 * height_upscale - 20 - Math.floor(15 * height_upscale * parseInt(i / 6)) , life_icon.width * 0.25 * width_upscale, life_icon.height * 0.25 * height_upscale); 
         }

@@ -29,6 +29,38 @@ h1.pong {
     transform: translate(-50%, -50%);
 }
 
+.rocket-timer {
+    position: absolute;
+
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: rgba(255,255,255,0.1);
+    border: 0.25rem solid rgba(255,255,255,0.3);
+    border-radius: 1rem;
+    z-index: 10;
+    bottom: 1rem;
+}
+.rocket-timer-left {
+    left: 1rem;
+}
+.rocket-timer-right {
+    right: 1rem;
+    flex-direction: row-reverse;
+}
+.rocket-time {
+    color: white;
+    font-weight: bold;
+    margin: 0;
+}
+
+.rocket-timer > img {
+    height: 2rem;
+    width: auto;
+}
+
 .pong.hidden {
     display: none;
 }

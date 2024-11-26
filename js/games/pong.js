@@ -7,6 +7,11 @@ canvas.height = canvas.offsetHeight;
 let width = canvas.width;
 let height = canvas.height;
 
+const rocketTimes = {
+    left: document.querySelector('.rocket-timer-left > .rocket-time'),
+    right: document.querySelector('.rocket-timer-right > .rocket-time')
+}
+
 let pongScores = {left: 0, right: 0};
 function addScore(side, amount) {
     pongScores[side] += amount;
@@ -194,6 +199,7 @@ class Rocket {
 }
 let rockets = [];
 
+const EXPLOSION_SIZE = 200;
 class Explosion {
     constructor(x, y, radius) {
         this.x = x;
@@ -283,9 +289,8 @@ class Spritesheet {
 // paddleImage.src = './assets/paddle.png';
 
 const MAX_REFLECTION_ANGLE = 75 * Math.PI / 180; // 75 degrees in radians
-const AI_SPEED = 6;
+const AI_SPEED = 7;
 const sizePaddle = {width: 50, height: 160};
-
 
 const leftPaddle = new Paddle(10, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
 const rightPaddle = new Paddle(width - 60, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle2.png');
@@ -332,7 +337,7 @@ function addBall() {
 }
 addBall();
 
-const BALL_INTERVAL = 10/100; // seconds
+const BALL_INTERVAL = 10; // seconds
 let BALL_TIMER = 0;
 const ANIMATION_INTERVAL = 0.25;
 let ANIMATION_TIMER = 0; // shared animation between every sprite
@@ -467,7 +472,22 @@ function createRocket(direction) {
     rockets.push(rocket);
 }
 
-// const rocket = new Spritesheet('./assets/rocket-size2.png', 61*2, 28*2, 4);
+function updateRocketTimes() {
+    let time1 = ROCKET_INTERVAL - ROCKET_TIMER.left;
+    let time2 = ROCKET_INTERVAL - ROCKET_TIMER.right;
+    rocketTimes.left.textContent = `${time1.toFixed(1)}s`;
+    rocketTimes.right.textContent = `${time2.toFixed(1)}s`;
+
+    if (time1 <= 0) {
+        rocketTimes.left.style.color = 'lightgreen';
+        rocketTimes.left.textContent = `GOTOWE`;
+    } else rocketTimes.left.style = '';
+    if (time2 <= 0) {
+        rocketTimes.right.style.color = 'lightgreen';
+        rocketTimes.right.textContent = `GOTOWE`;
+    } else rocketTimes.right.style = '';
+}
+
 
 // Animation loop
 let previousTime = performance.now();
@@ -510,14 +530,10 @@ function animate(timestamp) {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // rocket.draw(0,0);
-    // rocket.direction *= -1;
-
     // Initialize Quadtree
     let boundary = new Rectangle(width / 2, height / 2, width / 2, height / 2);
     let qtree = new Quadtree(boundary, 4); // capacity of 4
     balls.forEach(ball => qtree.insert(ball));
-
 
     // Rockets & rocket explosions
     for (let rocket of rockets) {
@@ -536,7 +552,6 @@ function animate(timestamp) {
         );
         let possibleCollisions = qtree.query(range);
 
-
         let collided = false;
         for (let ball of possibleCollisions) {
             //console.log(possibleCollisions);
@@ -547,11 +562,9 @@ function animate(timestamp) {
 
         if (collided) {
             rockets.splice(rockets.indexOf(rocket), 1);
-
-            let explosion = new Explosion(rocket.x, rocket.y, 200);
+            let explosion = new Explosion(rocket.x, rocket.y, EXPLOSION_SIZE);
             explosions.push(explosion);
             explosion.explode(qtree);
-
             continue;
         };
 
@@ -607,6 +620,8 @@ function animate(timestamp) {
 
         ball.draw();
     }
+
+    updateRocketTimes();
 
     requestAnimationFrame(animate);
 }

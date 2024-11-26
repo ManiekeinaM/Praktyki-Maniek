@@ -84,20 +84,20 @@ const buff_cooldown = {
 
 //Single Live sprite
 const life_icon = new Image();
-life_icon.src = "Assets/turret-alive.png";
+life_icon.src = "Assets/GUI/turret-alive.png";
 
 //Explosion animation
 const explosion_img = new Image();
-explosion_img.src = "Assets/explosion-sheet.png";
+explosion_img.src = "Assets/VFX/explosion-sheet.png";
 
 const spritesheet = new Image();
 const heal_plane = new Image();
 const speed_plane = new Image();
 const score_plane = new Image();
-spritesheet.src = 'Assets/enemy.png';
-heal_plane.src = 'Assets/enemy-red.png';
-speed_plane.src = 'Assets/enemy-orange.png';
-score_plane.src = 'Assets/enemy-yellow.png';
+spritesheet.src = 'Assets/ingame_planes/enemy.png';
+heal_plane.src = 'Assets/ingame_planes/enemy-red.png';
+speed_plane.src = 'Assets/ingame_planes/enemy-orange.png';
+score_plane.src = 'Assets/ingame_planes/enemy-yellow.png';
 
 
 
@@ -405,7 +405,7 @@ const enemy_plane = {
 
 //Turret animation
 const turret_active = new Image();
-turret_active.src = "Assets/machinegun_spritesheet.png";
+turret_active.src = "Assets/GUI/machinegun_spritesheet.png";
 
 const turret_animation = {
     frame_width: 205,
@@ -424,7 +424,7 @@ const turret_animation = {
 let turret_is_shooting = false;
 
 const turret_inactive = new Image();
-turret_inactive.src = "Assets/machinegun.png";
+turret_inactive.src = "Assets/GUI/machinegun.png";
 const turret_inactive_width = 205 * width_upscale;
 const turret_inactive_height = 315 * height_upscale;
 
@@ -531,7 +531,7 @@ const player_turret = {
 
 
 const scope_icon = new Image();
-scope_icon.src = "Assets/celownik.png";
+scope_icon.src = "Assets/GUI/celownik.png";
 const scope_icon_height = 180;
 const scope_icon_width = 300; 
 const scope_width = scope_icon_width * 0.25 * width_upscale;
@@ -717,16 +717,12 @@ const rotationSpeed = Math.PI / 16;
 const background = new Image();
 //background.src = "Assets/shooter-background.png";
 //background.src = "Assets/Testbg.png";
-background.src = "Assets/Sky_bg.png";
+background.src = "Assets/backgrounds/Sky_bg.png";
 const background_width = GAME_WINDOW_WIDTH + canvasWidth * 2;
 const background_height = GAME_WINDOW_HEIGHT + canvasHeight / 2;
 const background_x = 0;
 const background_y = 0;
 
-
-//Screen cover
-const screen_cover = new Image();
-screen_cover.src = "Assets/ScreenCover3.png";
 
 let mouse_movement_x = 0;
 let mouse_movement_y = 0;
@@ -817,10 +813,6 @@ function game_loop(timestamp) {
     if (turret_is_shooting) {
         if (timestamp - lastTurretAnimationTime > turret_animation.frame_rate) {
             if (turret_animation.current_frame == 1) player_turret.shoot(scope_anchor.x + scope_width / 2, scope_anchor.y + scope_height / 2);
-            //ctx.beginPath();
-            //ctx.strokeStyle = "black";
-            //ctx.arc(scope_anchor.x + scope_width*width_upscale/2 - 5/2, scope_anchor.y + scope_height*height_upscale/2 - 5/2, 10, 0, 2 * Math.PI);
-            //ctx.stroke();
             turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
             turret_animation.calc_source_position();
             lastTurretAnimationTime = timestamp;
@@ -833,7 +825,6 @@ function game_loop(timestamp) {
             turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
             turret_animation.current_frame = (turret_animation.current_frame + 1) % turret_animation.total_frames;
             turret_animation.calc_source_position();
-            //lastTurretAnimationTime = timestamp;
         }
         turret_animation.calc_source_position();
     }

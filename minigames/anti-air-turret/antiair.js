@@ -90,6 +90,15 @@ const explosion_animation = {
 // Waves
 const Planes = [];
 
+//Update score every sec
+let score_updater_id = null;
+const score_per_plane = 10;
+
+function update_score_gradually() {
+    game.update_score(score_per_plane * game.enemy_planes_amount);  
+}
+
+
 //Game state controller
 const score_top_margin = 25;
 const game = {
@@ -110,6 +119,7 @@ const game = {
         this.is_gameover = false;
         this.player_score = 0;
         this.kill_count = 0;
+        score_updater_id = setInterval(update_score_gradually, 1000);
     },
     spawn_plane: function(amount) {
         for (let i=0; i<amount; i++) {
@@ -690,13 +700,6 @@ let did_shoot = false;
 // 5. Radar
 // 6. Radar Sight
 // 7. Game score
-
-//Update score every sec
-const score_per_plane = 10;
-function update_score_gradually() {
-    game.update_score(score_per_plane * game.enemy_planes_amount);  
-}
-let score_updater_id = setInterval(update_score_gradually, 1000);
 
 function game_loop(timestamp) {
     let delta = (timestamp - lastFrameResponse) / 1000;

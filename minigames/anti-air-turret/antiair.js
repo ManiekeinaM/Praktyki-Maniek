@@ -37,7 +37,51 @@ const gameover = {
 //Lifebar properties
 const lives_bar = {
     width: 100 * width_upscale,
-    height: 100 * height_upscale    ,
+    height: 100 * height_upscale,
+}
+
+//Buffs icons
+const buff_icon = {
+    width: 640 * 0.1 * width_upscale,
+    height: 640 * 0.1 * height_upscale,
+}
+
+const speed_buff_icon = new Image();
+const score_buff_icon = new Image();
+
+speed_buff_icon.src = "Assets/buff_icons/shooter-speed.png";
+score_buff_icon.src = "Assets/buff_icons/shooter-2x.png";
+
+//Buff cooldown properties
+let current_buffs = {};
+let current_cooldowns = {"score": 0, "speed": 0};
+
+const buff_cooldown = {
+    x: 0,
+    y: canvasHeight / 2,
+    width: 100 * width_upscale,
+    height: 60 * height_upscale,
+    draw_cooldowns: function() {
+        this.x = 0 + this.width / 2;
+
+        for (const [key, value] of Object.entries(current_cooldowns)) {
+            let icon = null;
+            console.log(key, value);
+            if (value > 0) { 
+                if (key == "speed") { icon = speed_buff_icon; }
+                if (key == "score") { icon = score_buff_icon; }
+                console.log(icon);
+                ctx.drawImage(icon, this.x, this.y, buff_icon.width, buff_icon.height);
+                
+                ctx.font = "2rem sans-serif";
+                ctx.fillStyle = "white";
+                ctx.textAlign = "center";
+                ctx.fillText(Math.round(current_cooldowns[key] / 1000, 2), this.x + 20 + buff_icon.width / 2, this.y + buff_icon.height / 2);
+                this.y -= 80 * height_upscale;
+            }
+        }
+        this.y = canvasHeight / 2;
+    }
 }
 
 //Single Live sprite
@@ -452,7 +496,10 @@ const player_turret = {
         this.speed_timeout = setTimeout(() => {
             turret_animation.frame_rate = 50;
             this.speed_timeout = null;
+            current_buffs["speed"] = null;
         }, 6000);
+        current_buffs["speed"] = this.speed_timeout;
+        current_cooldowns["speed"] = 6000;
     },
     boost_score: function() {
         if (this.score_timeout) {
@@ -464,7 +511,10 @@ const player_turret = {
         this.score_timeout = setTimeout(() => {
             this.score_multiplier = 1;
             this.score_timeout = null;
+            current_buffs["score"] = null;
         }, 6000)
+        current_buffs["score"] = this.score_timeout;
+        current_cooldowns["score"] = 6000;
     },
     remove_buff: function() {
         this.score_multiplier = 1;
@@ -798,9 +848,17 @@ function game_loop(timestamp) {
     drawRadar(player_turret, Planes, cameraAngle);
     drawRadarSight(camera.offset_y);
 
-    //Draw score
+    for (const [key, value] of Object.entries(current_cooldowns)) {
+        console.log(key, " ", value);
+        if (value > 0) {
+            current_cooldowns[key] -= 1000 * delta;
+        }
+    }
+
+    //Draw GUI
     game.draw_score();
     game.draw_livesbar();
+    buff_cooldown.draw_cooldowns();
     
     requestAnimationFrame(game_loop);
 }

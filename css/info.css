@@ -185,7 +185,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-x: hidden;
+  padding: 0.5rem;
 }
 
 .scrolling-images {
@@ -202,6 +203,10 @@
   width: 400px;
   height: 50px;
   object-fit: contain;
+}
+
+img[alt='Fujitsu'] {
+  height: calc(50px + 1rem);
 }
 
 

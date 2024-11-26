@@ -21,12 +21,12 @@ function createPipe() {
 
     let pipeTop = document.createElement('img');
     pipeTop.className = 'pipe top';
-    pipeTop.src = 'assets/pipe-top.png';
+    pipeTop.src = 'assets/flappy/pipe-top.png';
     pipeContainer.appendChild(pipeTop);
 
     let pipeBottom = document.createElement('img');
     pipeBottom.className = 'pipe bottom';
-    pipeBottom.src = 'assets/pipe-bottom.png';
+    pipeBottom.src = 'assets/flappy/pipe-bottom.png';
     pipeContainer.appendChild(pipeBottom);
 
     pipesDiv.appendChild(pipeContainer);

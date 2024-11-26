@@ -595,9 +595,12 @@ function createAllButtons() {
                     element = document.createElement("img");
                     element.src = mapIcons[values.icon];
 
-                    if (values.icon.includes('arrow')) {
-                        element.style = `width: 10em; height: 10em;`
-                    }
+                    if (values.icon.includes('arrow')) 
+                        element.style = `width: 10em; height: 10em;`;
+                    if (values.icon == 'machine')
+                        element.style = `width: 3em; height: 3em;`;
+
+
                 } else if (values.label) {
                     element = document.createElement("button");
                     element.innerHTML = values.label;

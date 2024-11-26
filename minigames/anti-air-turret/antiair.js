@@ -184,7 +184,7 @@ const game = {
         //console.log(this.kill_count);
         //console.log(this.enemy_planes_amount);
         this.kill_count += 1;
-        if (this.kill_count > this.enemy_planes_amount * 4) {
+        if (this.kill_count > this.enemy_planes_amount * this.enemy_planes_amount) {
             this.spawn_plane(1);
         }
     },
@@ -220,8 +220,10 @@ const game = {
         ctx.fillText("Press anything to continue", canvasWidth/2, canvasHeight / 3 + 30);
     },
     draw_livesbar: function() {
-        for (let i=1; i<=player_turret.lives; i++) {
-            ctx.drawImage(life_icon, 0 + life_icon.width*width_upscale*0.25/2 * i, canvasHeight - life_icon.height * 0.25 * height_upscale - 20, life_icon.width * 0.25 * width_upscale, life_icon.height * 0.25 * height_upscale); 
+        for (let i=1; i<=player_turret.lives + 1; i++) {
+            console.log(i/8);
+            if (i % 6 == 0) i++;
+            ctx.drawImage(life_icon, 0 + life_icon.width*width_upscale*0.25/2 * (i % 6), canvasHeight - life_icon.height * 0.25 * height_upscale - 20 - Math.floor(15 * height_upscale * parseInt(i / 6)) , life_icon.width * 0.25 * width_upscale, life_icon.height * 0.25 * height_upscale); 
         }
     }
 }

@@ -38,13 +38,16 @@ window.addEventListener('resize', () => {
 });
 
 let birdY = HEIGHT_IN_EM/2; 
-console.log(birdY);
 
 const pipesDiv = document.querySelector('.flappymaniek .screen .pipes');
 let latestPipe;
 
-function randomizePipeGap() {
-    return 50 + Math.round(Math.random() * 60 - 30);
+function randomizePipeGap(fromTop = 20, fromBottom = 20) {
+    const maxGap = 100 - fromBottom;
+    const minGap = fromTop;
+
+    const gapPosition = Math.random() * (maxGap - minGap) + minGap;
+    return Math.round(gapPosition);
 }
 // Default pipe stats, unless specified otherwise
 function createPipe(emDifference = pipeSpawnInterval*PIPE_SPEED, gapPosition = randomizePipeGap()) {
@@ -91,6 +94,7 @@ const pipeLayouts = [
     {
         weight: 5, 
         layout: function() {
+            //let pipeGap = randomizePipeGap(top=12)
             createPipe();
             let lastPipeGap = parseFloat(latestPipe.style.top);
             createPipe(4, lastPipeGap-6);
@@ -172,7 +176,11 @@ function movePipes(deltaTime) {
 
 function collisionDetection() {
     const birdRect = bird.getBoundingClientRect();
-    const collisionMargin = 10;
+    const collisionMargin = 0.75 * EM_CONVERSION;
+
+    let birdTop = parseFloat(bird.style.top);
+    if (birdTop < -1 || birdTop > HEIGHT_IN_EM)
+        return true;
 
     for (let pipe of pipes) {
         const pipeTopRect = pipe.top.getBoundingClientRect();

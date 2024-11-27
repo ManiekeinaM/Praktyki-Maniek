@@ -600,6 +600,14 @@ function createAllButtons() {
                     if (values.icon == 'machine')
                         element.style = `width: 3em; height: 3em;`;
 
+                    // Mirror images for stairs accordingly to where they go up and down
+                    if (
+                        values.icon == 'stairsDown' && (dot.includes('B') || floorName.includes('B') || desc.includes('SCHODY B'))
+                        || values.icon == 'stairsUp' && (dot.includes('A') || floorName.includes('A') || desc.includes('SCHODY A'))
+                    ) {
+                        element.classList.add('flip');
+                    }
+                        
 
                 } else if (values.label) {
                     element = document.createElement("button");

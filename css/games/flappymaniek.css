@@ -120,7 +120,7 @@ section.flappymaniek .screen {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 13em;
+    gap: 12em;
 }
 
 .pipe {
@@ -133,7 +133,7 @@ section.flappymaniek .screen {
     width: 4em;
     height: auto;
 
-    right: 70%;
+    left: 5em;
     transform: translate(0%, -50%);
 }
 

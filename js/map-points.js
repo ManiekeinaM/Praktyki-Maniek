@@ -188,6 +188,13 @@ const imgPaths = {
         }
 
     },
+
+    "Floor2-back": {
+        dots: {
+            "Xdot1": {x: 0.5, y: 0.6, icon: 'arrowUp', destination: mapThresholds[0].threshold - 500},
+        }
+        
+    }
 }
 
 const mapIcons = {
@@ -364,6 +371,7 @@ function setupPathfinding() {
                 let checkNextConnection = function (currentPath) {
                     // console.log(floorName);
                     let latestDotName = currentPath[currentPath.length - 1];
+                    if (!latestDotName) return;
                     let latestDot = floorItems.dots[latestDotName];
                     // console.log(latestDotName);
                     // console.log(latestDot);
@@ -582,6 +590,7 @@ function createAllButtons() {
         const buttonLayer = floorContainer.querySelector(".button-layer");
 
         const setButtons = () => {
+            console.log(floorItems);
             for (const [dot, values] of Object.entries(floorItems.dots)) {
                 let element = document.createElement("button");
                 if (!values.icon && !values.label) continue;

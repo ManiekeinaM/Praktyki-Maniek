@@ -301,7 +301,7 @@ const camera = {
     },
     adjust_camera: function() {
         if (this.offset_x > MAX_CAMERA_OFFSET_X) {
-            this.offset_x = (this.offset_x * -1) + canvasWidth - (MAX_CAMERA_OFFSET_X - this.offset_x);
+            this.offset_x = MIN_CAMERA_OFFSET_X - (this.offset_x - MAX_CAMERA_OFFSET_X);
         }
         if (this.offset_x < MIN_CAMERA_OFFSET_X) {
             this.offset_x = MAX_CAMERA_OFFSET_X + (MIN_CAMERA_OFFSET_X - this.offset_x);

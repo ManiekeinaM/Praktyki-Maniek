@@ -362,7 +362,7 @@ function movePaddles() {
         if (nearestBall.y > rightPaddle.y && nearestBall.y < rightPaddle.y + rightPaddle.height) {
             //console.log(nearestBall.y, rightPaddle.y, rightPaddle.y + sizePaddle.height);
             let direction = Math.sign(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
-            console.log(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
+            //console.log(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
             rightPaddle.y += Math.min(AI_SPEED, Math.floor(Math.abs(nearestBall.velocity.y))+2) * direction;
             return;
         } else if (nearestBall.y > rightPaddle.y + rightPaddle.height/2) {

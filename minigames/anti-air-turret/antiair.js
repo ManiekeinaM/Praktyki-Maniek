@@ -68,7 +68,6 @@ const buff_cooldown = {
             if (value > 0) { 
                 if (key == "speed") { icon = speed_buff_icon; }
                 if (key == "score") { icon = score_buff_icon; }
-                console.log(icon);
                 ctx.drawImage(icon, this.x, this.y, buff_icon.width, buff_icon.height);
                 
                 ctx.font = "2rem sans-serif";
@@ -141,8 +140,22 @@ function update_score_gradually() {
 }
 
 //Highscore table
-let BestScores = []; 
+let BestScores = [];
+let StoredScores = getCookie('airturret-bestscores'); 
+if (StoredScores) BestScores = JSON.parse(StoredScores);
 
+BestScores.forEach(score => {
+    let p_score = document.createElement("p");
+    p_score.innerHTML = `#${i+1}: ${score} pkt`;
+    p_score.classList.add("score");
+    scores_table.appendChild(p_score);
+    i++;
+});
+
+console.log(StoredScores);
+console.log(BestScores);
+
+let scores_table = document.getElementById("highscoresList");
 
 //Game state controller
 const score_top_margin = 25;
@@ -154,11 +167,27 @@ const game = {
     has_not_started: true,
     stop: function() {
         this.is_gameover = true;
-        console.log(this.player_score);
+        //console.log(this.player_score);
         BestScores.push(this.player_score);
         BestScores.sort((a,b) => b - a);
         BestScores = BestScores.splice(0, 5);
+        scores_table.querySelectorAll("p").forEach(para => {
+            scores_table.removeChild(para);
+        })
+        let i = 0;
+        BestScores.forEach(score => {
+            let p_score = document.createElement("p");
+            p_score.innerHTML = `#${i+1}: ${score} pkt`;
+            p_score.classList.add("score");
+            scores_table.appendChild(p_score);
+            i++;
+        });
+
         console.log(BestScores);
+        setCookie('airturret-bestscores', JSON.stringify(BestScores), 365);
+
+
+        //console.log(BestScores);
     },
     reset: function() {
         Planes.length = 0;
@@ -205,10 +234,8 @@ const game = {
         this.player_score += amount;
     },
     draw_start_screen: function() {
-        ctx.fillStyle = 'rgba(24, 71, 19, 1)';
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.fillStyle = 'rgba(33, 112, 26, 1)';
-        ctx.fillRect(40, 40, canvasWidth - 80, canvasHeight - 80);
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.fillStyle = 'white';
         ctx.font = "32px sans-serif";
         ctx.textAlign = "center";

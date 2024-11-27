@@ -221,7 +221,14 @@ img[alt='Fujitsu'] {
 }
 
 @media (max-width: 500px) {
+  html {
+    font-size: 9px !important;
+  }
   #info-container {
     flex-direction: column;
+  }
+  main {
+    justify-content: center !important;
+    gap: 1rem;
   }
 }

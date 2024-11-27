@@ -284,6 +284,8 @@ const camera = {
     acceleration_y: 25,
     y_offset_scale: 1,
     angle: 0,
+    is_shaking: false,
+    shake_timeout: null,
     update_offset: function(mouse_x, mouse_y, delta) {
         this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
         this.offset_x += mouse_x * this.acceleration_x * delta;
@@ -307,6 +309,18 @@ const camera = {
         }
         console.log(this.offset_x);
     },
+    shake: function(i) {
+        if (this.shake_timeout) {
+            clearTimeout(this.shake_timeout);
+        }
+
+        this.is_shaking = true;
+
+        this.shake_timeout = setTimeout(() => {
+            this.is_shaking = false;
+            this.shake_timeout = null;
+        }, 400);
+    }
 }
 
 const special_item = {
@@ -518,6 +532,7 @@ const player_turret = {
         })
     },
     deal_damage: function() {
+        camera.shake();
         this.lives -= 1;
         if (this.lives == 0) {
             game.stop();
@@ -826,6 +841,12 @@ function game_loop(timestamp) {
         mouse_movement_x = 0;
         mouse_movement_y = 0;
     })
+
+    //Shake camera
+    if (camera.is_shaking) {
+        camera.offset_x = Math.random() * (20 + 20) - 20;
+        camera.offset_y = Math.random() * (20 + 20) - 20;
+    }
 
     //Draw background
     ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height); 

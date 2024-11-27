@@ -4,6 +4,11 @@ const ctx = canvas.getContext('2d');
 //Visible window
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
+
+
+//Font
+document.fonts.load('20px', 'Determination Mono');
+
 //Entire game window
 const GAME_WINDOW_HEIGHT = canvas.height + canvas.height / 2;
 const GAME_WINDOW_WIDTH = canvasWidth * 7;
@@ -70,7 +75,7 @@ const buff_cooldown = {
                 if (key == "score") { icon = score_buff_icon; }
                 ctx.drawImage(icon, this.x, this.y, buff_icon.width, buff_icon.height);
                 
-                ctx.font = "2rem sans-serif";
+                ctx.font = "2rem Determination Mono";
                 ctx.fillStyle = "white";
                 ctx.textAlign = "center";
                 ctx.fillText(Math.round(current_cooldowns[key] / 1000, 2), this.x + 20 + buff_icon.width / 2, this.y + buff_icon.height / 2);
@@ -226,7 +231,7 @@ const game = {
         }
     },
     draw_score: function() {
-        ctx.font = "64px sans-serif";
+        ctx.font = `64px Determination Mono`;
         ctx.textAlign = "center";
         ctx.fillText(this.player_score, canvasWidth/2, score_top_margin + 64);
     },
@@ -237,7 +242,7 @@ const game = {
         ctx.fillStyle = 'rgba(33, 112, 26, 1)';
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.fillStyle = 'white';
-        ctx.font = "32px sans-serif";
+        ctx.font = "32px Determination Mono";
         ctx.textAlign = "center";
         ctx.fillText("Press anything to start", canvasWidth/2, canvasHeight/2);
     },
@@ -247,11 +252,11 @@ const game = {
         ctx.fillStyle = 'rgba(33, 112, 26, 1)';
         ctx.fillRect(canvasWidth / 2 - gameover.width / 2, canvasHeight / 3 - gameover.height / 2, gameover.width, gameover.height);
 
-        ctx.font = "64px sans-serif";
+        ctx.font = "64px Determination Mono";
         ctx.textAlign = "center";
         ctx.fillStyle = "white";
         ctx.fillText(this.player_score, canvasWidth/2, canvasHeight / 3 - 30);
-        ctx.font = "32px sans-serif";
+        ctx.font = "32px Determination Mono";
         ctx.fillText("Press anything to continue", canvasWidth/2, canvasHeight / 3 + 30);
     },
     draw_livesbar: function() {

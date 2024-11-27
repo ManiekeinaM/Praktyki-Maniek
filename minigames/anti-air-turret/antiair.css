@@ -13,6 +13,7 @@ main {
 }
 
 #bestscore-table {
+    font-family: var(--maniek-font);
     width: 40%;
     height: calc(100% - 2rem);
     background-color: var(--blue);

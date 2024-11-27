@@ -295,7 +295,7 @@ const AI_SPEED = 10;
 const sizePaddle = {width: 50, height: 160};
 
 const leftPaddle = new Paddle(10, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
-const rightPaddle = new Paddle(width - 60, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height*6, './assets/paddle4.png');
+const rightPaddle = new Paddle(width - 60, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle2.png');
 
 
 

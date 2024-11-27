@@ -36,7 +36,7 @@ canvas.addEventListener("click", async () => {
 
 //Gameover properties
 const gameover = {
-    width: 400 * width_upscale,
+    width: 600 * width_upscale,
     height: 250 * height_upscale,
 }
 //Lifebar properties
@@ -295,17 +295,17 @@ const camera = {
             this.offset_y = 0;
         } 
         this.y_offset_scale = 1 - this.offset_y / 1000;
-        
-        //console.log("Camera: x: ", this.offset_x, " y: ", this.offset_y, " yscale: ", this.y_offset_scale);
+
         this.adjust_camera();
     },
     adjust_camera: function() {
         if (this.offset_x > MAX_CAMERA_OFFSET_X) {
-            this.offset_x = MIN_CAMERA_OFFSET_X - (this.offset_x - MAX_CAMERA_OFFSET_X);
+            this.offset_x = (this.offset_x * -1) + canvasWidth - (MAX_CAMERA_OFFSET_X - this.offset_x);
         }
         if (this.offset_x < MIN_CAMERA_OFFSET_X) {
-            this.offset_x = MAX_CAMERA_OFFSET_X + (MIN_CAMERA_OFFSET_X - this.offset_x);
+            this.offset_x = MAX_CAMERA_OFFSET_X - (MIN_CAMERA_OFFSET_X - this.offset_x);
         }
+        console.log(this.offset_x);
     },
 }
 

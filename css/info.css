@@ -230,9 +230,10 @@ img[alt='Fujitsu'] {
     padding: 1rem;
   }
   main {
-    justify-content: center !important;
+    justify-content: start !important;
     gap: 1rem;
   }
+
   .socials > img {
     height: 3.5rem;
     width: 3.5rem;

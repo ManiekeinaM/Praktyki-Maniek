@@ -186,6 +186,7 @@
   align-items: center;
   justify-content: center;
   overflow-x: hidden;
+  overflow-y: hidden;
   padding: 0.5rem;
 }
 
@@ -221,7 +222,22 @@ img[alt='Fujitsu'] {
 }
 
 @media (max-width: 500px) {
+  html {
+    font-size: 9px !important;
+  }
   #info-container {
     flex-direction: column;
+    padding: 1rem;
   }
+  main {
+    justify-content: start !important;
+    gap: 1rem;
+  }
+
+  .socials > img {
+    height: 3.5rem;
+    width: 3.5rem;
+    padding: 0.5rem;
+  }
+
 }

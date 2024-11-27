@@ -38,7 +38,6 @@ window.addEventListener('resize', () => {
 });
 
 let birdY = HEIGHT_IN_EM/2; 
-console.log(birdY);
 
 const pipesDiv = document.querySelector('.flappymaniek .screen .pipes');
 let latestPipe;
@@ -172,7 +171,7 @@ function movePipes(deltaTime) {
 
 function collisionDetection() {
     const birdRect = bird.getBoundingClientRect();
-    const collisionMargin = 10;
+    const collisionMargin = 0.75 * EM_CONVERSION;
 
     for (let pipe of pipes) {
         const pipeTopRect = pipe.top.getBoundingClientRect();

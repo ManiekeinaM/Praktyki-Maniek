@@ -41,9 +41,13 @@
     margin: 0;
 
     color: white;
-    text-shadow: 0 0 5px black,
-                0 0 5px black,
-                0 0 5px black;
+    text-shadow: 0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black;
 
 }
 #highscoresList p:nth-child(even) {

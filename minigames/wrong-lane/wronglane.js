@@ -20,6 +20,16 @@ class camera {
     }
 }
 
+class traffic_handler {
+    constructor(camera) {
+        this.camera = camera
+        this.car_stack = [];
+    }
+    spawn_car() {
+        this.car_stack.push(new car(0, 40, 100, 50, this.camera));
+    }
+}
+
 const MAX_DEPTH_SCALE = 4;
 class car {
     constructor(x, speed, width, height, camera) {

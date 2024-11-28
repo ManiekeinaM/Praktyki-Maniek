@@ -286,6 +286,7 @@ function initScreensaver() {
 
 
 
+
     // ================== //
     // CAMERA DETECTION V //
 
@@ -302,26 +303,30 @@ function initScreensaver() {
     // This function gets called whenever X or more pixels change at once. Change this until it's good at detecting humans
     let changeThreshold = 400;
 
+    let randomNames = ['Bartek', 'Mateusz', 'Zosia', 'Hania', 'Antoni', 'Franek', 'Janek', 'Krzysztof', 'Marysia', 'Ania', 'Andrzej', 'Wojciech', 'Michał', 'Marcin', 'Kuba', 'Patryk', 'Kamil', 'Dawid', 'Julia', 'Kacper', 'Filip', 'Mikołaj', 'Laura', 'Wiktor', 'Adam', 'Igor', 'Maciek', 'Dominik', 'Tomek'];
+    function getRandomName() {
+        return randomNames[Math.floor(Math.random() * randomNames.length)];
+    }
     let maniekChats = [
-        "Widzę Ciebie! Zagraj ze mną!",
+        "Widzę Ciebie! {name}!!",
+        "Fajna fryzura! {name}, to ty?",
         "Przyjdź tu, NIE UCIEKAJ ODE MNIE!!!",
-        "Ładnie wyglądasz, chodź tu natychmiast!",
+        "Ładnie wyglądasz, teraz tu przyjdź!",
         "KAŻDEGO WIDZĘ. Nawet CIEBIE.",
-        "Zostaw to, co robisz i dotknij ekranu!!",
+        "Zagraj ze mną w Ponga :D",
         "Ja, wszechmocny Maniek, proszę Ciebie do ekranu.",
-        "Co innego robisz, czemu nie możesz ze mną grać? :(",
+        "Mój highscore w Flappy Mańku wynosi 634 :)",
         "Legenda mówi, że coś się stanie, jak Maniek odbije się od rogu...",
-        "Fajna fryzura!",
-        "Reaguję na dotyk ekranu! Jak nie chcesz mnie widziec, masz wyjście. :(",
-    ]
+        "Guten Tag!",
+    ];
 
     let maniekNoCamChats = [
-        "Nie widzę nikogo.. :(",
-        "Gdzie jesteście? :(",
-        "Czy ktoś tam jest? :(",
-        "Czy ktoś mnie słyszy? :(",
-        "Czy ktoś mnie widzi? :(",
-    ]
+        "Nie widzę nikogo..",
+        "Gdzie jesteście?",
+        "Czy ktoś tam jest?",
+        "Czy ktoś mnie słyszy?",
+        "Czy ktoś mnie widzi?",
+    ];
 
     let forceDisable = false;
     setInterval(() => {
@@ -343,6 +348,7 @@ function initScreensaver() {
 
 
         let randomChat = maniekChats[Math.floor(Math.random() * maniekChats.length)];
+        randomChat = randomChat.replace('{name}', getRandomName());
         setDialog(randomChat);
 
         setTimeout(() => {

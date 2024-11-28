@@ -34,8 +34,18 @@
                 0 0 3px black,
                 0 0 3px black;
 }
-
-#highscoresList p {
+#highscoresList {
+    display: flex;
+    flex-direction: column;
+}
+#highscoresList > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0.25rem 0;
+}
+#highscoresList > div > p {
     font-family: var(--maniek-font);
     font-size: 2rem;
     margin: 0;
@@ -48,12 +58,24 @@
                 0 0 3px black,
                 0 0 3px black,
                 0 0 3px black;
-
 }
-#highscoresList p:nth-child(even) {
+
+#highscoresList > div > p.scoreTime {
+    font-size: 1.25rem;
+    color: rgb(235,235,235);
+    text-shadow: 0 0 2px black,
+                0 0 2px black,
+                0 0 2px black,
+                0 0 2px black,
+                0 0 2px black,
+                0 0 2px black,
+                0 0 2px black;
+}
+
+#highscoresList > div:nth-child(even) {
     background-color: var(--lightblue-bg);
 }
-#highscoresList p:nth-child(odd) {
+#highscoresList > div:nth-child(odd) {
     background-color: var(--lightblue-bg-border);
 }
 

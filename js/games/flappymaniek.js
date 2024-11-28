@@ -225,14 +225,71 @@ let highscores = JSON.parse(getCookie(HIGHSCORES_COOKIE_NAME) || '[]');
 function updateHighscores() {
     highscoresList.innerHTML = '';
 
-    for (let i = 0; i < highscores.length; i++) {
-        let score = highscores[i];
 
-        let p = document.createElement('p');
-        p.innerText = `#${i + 1}: ${score} pkt`;
-        highscoresList.appendChild(p);
+    for (let i = 0; i < highscores.length; i++) {
+        let div = document.createElement('div');
+
+        let scoreEntry = highscores[i];
+        if (scoreEntry.score && scoreEntry.date) {
+            let timeDiff = Date.now() - new Date(scoreEntry.date).getTime();
+            let minutes = Math.floor(timeDiff / (1000 * 60))
+            let hours = Math.floor(minutes / 60);
+            let days = Math.floor(hours / 24);
+            let dateText = '';
+
+            if (minutes < 1) {
+                dateText = 'przed chwilą';
+            } else if (minutes < 60) {
+                let subtext = '';
+                if (minutes === 1)
+                    subtext = 'ę';
+                else if (minutes < 5)
+                    subtext = 'y';
+
+                dateText = `${minutes} minut${subtext} temu`;
+            } else if (hours < 24) {
+                let subtext = '';
+                if (hours === 1)
+                    subtext = 'ę';
+                else if (hours < 5)
+                    subtext = 'y';
+
+                dateText = `${hours} godzin${subtext} temu`;
+            } else {
+                let subtext = '';
+                if (days === 1)
+                    subtext = 'zień';
+                else
+                    subtext = 'ni';
+
+                dateText = `${days} d${subtext} temu`;
+            }
+
+            
+            let p = document.createElement('p');
+            p.innerHTML = `#${i + 1}: ${scoreEntry.score} pkt`;
+            let time = document.createElement('p');
+            time.classList.add('scoreTime');
+            time.innerHTML = `(${dateText})`;
+            
+            div.appendChild(p);
+            div.appendChild(time);
+        } else if (scoreEntry.score) {
+            let p = document.createElement('p');
+            p.innerText = `#${i + 1}: ${scoreEntry.score} pkt`;
+
+            div.appendChild(p);
+        } else if (scoreEntry) {
+            let p = document.createElement('p');
+            p.innerText = `#${i + 1}: ${scoreEntry} pkt`;
+
+            div.appendChild(p);
+        }
+
+        highscoresList.appendChild(div);
     }
 
+    
 }
 updateHighscores();
 
@@ -293,8 +350,12 @@ function death() {
     highscore.innerText = `${currentScore}`
 
     // Add the current score to the high scores and sort the array in descending order
-    highscores.push(currentScore);
-    highscores.sort((a, b) => b - a);
+    highscores.push({ score: currentScore, date: new Date() });
+    highscores.sort((a, b) => {
+        const scoreA = a.score !== undefined ? a.score : a;
+        const scoreB = b.score !== undefined ? b.score : b;
+        return scoreB - scoreA;
+    });
 
     // Keep only the top 5 scores
     highscores = highscores.slice(0, 5);

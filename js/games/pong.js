@@ -147,7 +147,7 @@ class Paddle {
 
 // Ball object
 let radius = 12;
-const BALL_SPEED = 8;
+const BALL_SPEED = 8 * 60;
 class Ball {
     constructor(x, y, radius, velocity) {
         this.x = x;
@@ -165,9 +165,9 @@ class Ball {
         ctx.closePath();
     }
 
-    update() {
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
+    update(deltaTime) {
+        this.x += this.velocity.x * deltaTime;
+        this.y += this.velocity.y * deltaTime;
     }
 
     setVelocity(angle, direction) {
@@ -176,7 +176,7 @@ class Ball {
     }
 }
 
-const ROCKET_SPEED = 6;
+const ROCKET_SPEED = 6 * 60;
 const ROCKET_SIZE = {width: 61*2, height: 28*2, hitboxHeight: 28, hitboxWidth: 61*2};
 ROCKET_SIZE.yGap = (ROCKET_SIZE.height - ROCKET_SIZE.hitboxHeight) / 2;
 class Rocket {
@@ -192,8 +192,8 @@ class Rocket {
         this.sprite.draw(this.x, this.y);
     }
 
-    update() {
-        this.x += ROCKET_SPEED * this.direction;
+    update(deltaTime) {
+        this.x += ROCKET_SPEED * this.direction * deltaTime;
     }
     updateAnimation() {
         this.sprite.currentFrame = (this.sprite.currentFrame + 1) % this.sprite.frameCount;
@@ -291,11 +291,11 @@ class Spritesheet {
 // paddleImage.src = './assets/paddle.png';
 
 const MAX_REFLECTION_ANGLE = 75 * Math.PI / 180; // 75 degrees in radians
-const AI_SPEED = 10;
+const AI_SPEED = 10 * 60;
 const sizePaddle = {width: 50, height: 160};
 
-const leftPaddle = new Paddle(10, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
-const rightPaddle = new Paddle(width - 60, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle2.png');
+const leftPaddle = new Paddle(10, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
+const rightPaddle = new Paddle(width - 60, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle2.png');
 
 
 
@@ -332,7 +332,7 @@ addBall();
 
 const BALL_INTERVAL = 10; // seconds
 let BALL_TIMER = 0;
-const ANIMATION_INTERVAL = 0.25;
+const ANIMATION_INTERVAL = 0.06;
 let ANIMATION_TIMER = 0; // shared animation between every sprite
 
 const ROCKET_INTERVAL = 6;
@@ -350,7 +350,7 @@ canvas.addEventListener('click', e => {
 });
 
 
-function movePaddles() {
+function movePaddles(deltaTime) {
     // leftPaddle.x = mouseX - sizePaddle.width/2;
     leftPaddle.y = mouseY - leftPaddle.height/2;
 
@@ -363,22 +363,22 @@ function movePaddles() {
             //console.log(nearestBall.y, rightPaddle.y, rightPaddle.y + sizePaddle.height);
             let direction = Math.sign(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
             //console.log(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
-            rightPaddle.y += Math.min(AI_SPEED, Math.floor(Math.abs(nearestBall.velocity.y))+2) * direction;
+            rightPaddle.y += Math.min(AI_SPEED, Math.floor(Math.abs(nearestBall.velocity.y))+2) * direction * deltaTime;
             return;
         } else if (nearestBall.y > rightPaddle.y + rightPaddle.height/2) {
-            rightPaddle.y += AI_SPEED;
+            rightPaddle.y += AI_SPEED * deltaTime;
         } else if (nearestBall.y < rightPaddle.y - rightPaddle.height/2) {
-            rightPaddle.y -= AI_SPEED;
+            rightPaddle.y -= AI_SPEED * deltaTime;
         } 
         
     } else {
         let difference = rightPaddle.y + rightPaddle.height/2 - height/2;
-        if (Math.abs(difference) < AI_SPEED) return;
+        if (Math.abs(difference) < AI_SPEED * deltaTime) return;
 
         if (difference < 0)
-            rightPaddle.y += AI_SPEED;
+            rightPaddle.y += AI_SPEED * deltaTime;
         else
-            rightPaddle.y -= AI_SPEED;
+            rightPaddle.y -= AI_SPEED * deltaTime;
         
     }
 }
@@ -496,6 +496,9 @@ function updateRocketTimes() {
 // Animation loop
 let previousTime = performance.now();
 
+//const TARGET_FPS = 60;
+//const interval = 1 / TARGET_FPS;
+
 let isGameStillPong = false;
 function animate(timestamp) {
     if (CURRENT_GAME != 'pong') {
@@ -509,7 +512,13 @@ function animate(timestamp) {
     isGameStillPong = true;
 
     const deltaTime = (timestamp - previousTime)/1000 || 1/60;
+    /*if (deltaTime < interval) {
+        requestAnimationFrame(animate);
+        return;
+    }*/
     previousTime = timestamp;
+
+    
 
     // Animations/timers
     ROCKET_TIMER.left += deltaTime;
@@ -528,6 +537,9 @@ function animate(timestamp) {
         }
         for (let explosion of explosions) {
             explosion.updateAnimation();
+            if (!explosion.active) {
+                explosions.splice(explosions.indexOf(explosion), 1);
+            }
         }
     }
 
@@ -572,17 +584,12 @@ function animate(timestamp) {
             continue;
         };
 
-        rocket.update();
+        rocket.update(deltaTime);
         rocket.draw();
     }
 
     explosions.forEach((explosion, index) => {
         explosion.draw();
-        explosion.updateAnimation();
-
-        if (!explosion.active) {
-            explosions.splice(index, 1);
-        }
     });
 
     // Paddles
@@ -618,7 +625,7 @@ function animate(timestamp) {
             }
         }
     
-        ball.update();
+        ball.update(deltaTime);
 
         // Bounce off top and bottom edges
         if (ball.y - ball.radius < 0 || ball.y + ball.radius > height) {

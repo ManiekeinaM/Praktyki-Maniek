@@ -15,6 +15,7 @@ let birdVelocity = 0;
 const birdGravity = 48; 
 const jumpVelocity = -22;
 const PIPE_SPEED = 13; // em's per second
+const PIPE_GAP = 12;
 
 let lastTime = 0;
 let pipeSpawnTimer = 0;
@@ -42,18 +43,27 @@ let birdY = HEIGHT_IN_EM/2;
 const pipesDiv = document.querySelector('.flappymaniek .screen .pipes');
 let latestPipe;
 
-function randomizePipeGap(fromTop = 20, fromBottom = 20) {
-    const maxGap = 100 - fromBottom;
-    const minGap = fromTop;
+// Return pipe gap height, in ems, +- of the height +- pipe gap
+function randomizePipeGap(fromTop = 0, fromBottom = 0) {
+    const ACCOUNT_FOR_PIPEGAP = PIPE_GAP+1;
+    const ELIGIBLE_HEIGHT = HEIGHT_IN_EM - ACCOUNT_FOR_PIPEGAP - fromTop - fromBottom;
 
-    const gapPosition = Math.random() * (maxGap - minGap) + minGap;
-    return Math.round(gapPosition);
+    
+
+    const gapPosition = Math.random() * ELIGIBLE_HEIGHT - ELIGIBLE_HEIGHT/2 + fromTop/2;
+    //console.log(HEIGHT_IN_EM, ELIGIBLE_HEIGHT, gapPosition);
+    //console.log(`lower bound: ${-ELIGIBLE_HEIGHT/2 + fromTop/2}, higher bound: ${ELIGIBLE_HEIGHT/2 + fromTop/2}`);
+
+    //return -ELIGIBLE_HEIGHT/2 + fromTop/2; // higher bound (pipes always spawn at top)
+    //return ELIGIBLE_HEIGHT/2 + fromTop/2; // higher bound (pipes always spawn at bottom)
+    return gapPosition;
 }
 // Default pipe stats, unless specified otherwise
 function createPipe(emDifference = pipeSpawnInterval*PIPE_SPEED, gapPosition = randomizePipeGap()) {
     let pipeContainer = document.createElement('div');
     pipeContainer.className = 'pipe-container';
     pipeContainer.style.position = 'absolute';
+    pipeContainer.style.gap = `${PIPE_GAP}em`;
 
     if (!latestPipe)
         pipeContainer.style.left = `${WIDTH_IN_EM}em`; // Start just outside the right edge
@@ -75,7 +85,7 @@ function createPipe(emDifference = pipeSpawnInterval*PIPE_SPEED, gapPosition = r
 
     pipesDiv.appendChild(pipeContainer);
 
-    pipeContainer.style.top = `${gapPosition}%`
+    pipeContainer.style.top = `calc(${gapPosition}em + 50%)`;
 
     latestPipe = pipeContainer;
     let pipe = { container: pipeContainer, top: pipeTop, bottom: pipeBottom, givenPoints: false };
@@ -94,43 +104,45 @@ const pipeLayouts = [
     {
         weight: 5, 
         layout: function() {
-            //let pipeGap = randomizePipeGap(top=12)
-            createPipe();
-            let lastPipeGap = parseFloat(latestPipe.style.top);
-            createPipe(4, lastPipeGap-6);
-            createPipe(4, lastPipeGap-12);
-            createPipe(4, lastPipeGap-6);
-            createPipe(4, lastPipeGap);
+            let pipeGap = randomizePipeGap(4);
+            createPipe(undefined, pipeGap);
+            createPipe(4, pipeGap-2);
+            createPipe(4, pipeGap-4);
+            createPipe(4, pipeGap-2);
+            createPipe(4, pipeGap);
         }
     }, // 5x pipe, going up
 
     {
         weight: 5, 
         layout: function() {
-            createPipe();
-            let lastPipeGap = parseFloat(latestPipe.style.top);
-            createPipe(6, lastPipeGap-10);
-            createPipe(6, lastPipeGap);
-            createPipe(6, lastPipeGap-10);
+            let pipeGap = randomizePipeGap(4);
+            createPipe(undefined, pipeGap);
+            createPipe(6, pipeGap-4);
+            createPipe(6, pipeGap);
+            createPipe(6, pipeGap-4);
         }
     }, // zig zag
 
     {
         weight: 3,
         layout: function() {
-            createPipe();
-            let lastPipeGap = parseFloat(latestPipe.style.top);
-            createPipe(4, lastPipeGap-8);
-            createPipe(4, lastPipeGap-16);
-            createPipe(4, lastPipeGap-24);
-            createPipe(3, lastPipeGap-24);
-            createPipe(3, lastPipeGap-24);
-            createPipe(5, lastPipeGap-8);
+            let pipeGap = randomizePipeGap(6);
+            createPipe(undefined, pipeGap);
+            createPipe(4, pipeGap-2);
+            createPipe(4, pipeGap-4);
+            createPipe(4, pipeGap-6);
+            createPipe(3, pipeGap-6);
+            createPipe(3, pipeGap-6);
+            createPipe(5, pipeGap-2);
 
         }
     }
 ]
 function createRandomPipe() {
+    if (pipes.length > 30)
+        return;
+
     const totalWeight = pipeLayouts.reduce((sum, layout) => sum + layout.weight, 0);
     let random = Math.random() * totalWeight;
     for (let layout of pipeLayouts) {

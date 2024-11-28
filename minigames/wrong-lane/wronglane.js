@@ -5,10 +5,53 @@ const ctx = canvas.getContext('2d');
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
 
-const block = {
-    x: 0,
-    y: 50,
+const MAX_CAMERA_OFFSET_X = 400;
+const MIN_CAMERA_OFFSET_X = -400;
+
+class camera {
+    constructor() {
+        this.offset_x = 0;
+    }
+
+    update_offset(delta) {
+        this.offset_x += wheel_tilt * delta
+        if (this.offset_x > MAX_CAMERA_OFFSET_X) this.offset_x = MAX_CAMERA_OFFSET_X;
+        if (this.offset_x < MIN_CAMERA_OFFSET_X) this.offset_x = MIN_CAMERA_OFFSET_X;
+    }
 }
+
+const MAX_DEPTH_SCALE = 4;
+class car {
+    constructor(x, speed, width, height, camera) {
+        this.x = x;
+        this.y = -100;
+        this.width = width;
+        this.height = height;
+        this.speed = speed;
+        this.depth_scale = 0.1;
+        this.distance_percentage = 0;
+        this.camera = camera;
+    }
+
+    move(delta) {
+        this.y += this.speed * delta;
+        this.distance_percentage = (this.y / canvasHeight);
+        this.depth_scale = MAX_DEPTH_SCALE * this.distance_percentage;
+    }
+
+    switch_lanes() {
+
+    }
+
+    draw() {
+        ctx.fillStyle = "green";
+        ctx.fillRect(this.x - this.camera.offset_x, this.y, this.width * this.depth_scale, this.height * this.depth_scale);
+    }
+}
+
+const main_camera = new camera();
+
+const green_car = new car(canvasWidth/2 , 40, 100, 50, main_camera);
 
 let steering;
 let lastRotation = 0;
@@ -124,6 +167,9 @@ function updateStrengthDisplay() {
   strengthDisplay.textContent = `Strength: ${strength.toFixed(2)}`;
 }
 
+
+
+
 let lastFrameResponse = 0;
 
 function game_loop(timestamp) {
@@ -134,10 +180,11 @@ function game_loop(timestamp) {
 
     ctx.fillStyle = "yellow";
     tilt_the_wheel(delta);
-    move_block(delta);
+    main_camera.update_offset(delta);
+    green_car.move(delta);
     console.log(wheel_tilt);
 
-    ctx.fillRect(block.x, block.y, 50, 50);
+    green_car.draw();
 
     requestAnimationFrame(game_loop);
 }

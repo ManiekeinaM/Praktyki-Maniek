@@ -226,7 +226,7 @@ function initScreensaver() {
         if (navigator.userActivation.hasBeenActive) {
             // new scope to garbage collect it faster
             let sansVoice = new Audio('./sounds/voice_sans.mp3');
-            sansVoice.volume = 0.12;
+            sansVoice.volume = 0.06;
             sansVoice.play();
         }
 

@@ -59,8 +59,45 @@ class car {
     }
 }
 
+class RoadDrawer {
+    constructor(road_segments_amout, horizon_start) {
+        this.road_segments_amout = road_segments_amout;
+        this.distance_to_segment = 0.10;
+        this.horizon_start = horizon_start;
+        this.draw_cursor_y = 0;
+        this.road_segements = [];
+        for (let i=0; i<road_segments_amout; i++) {
+            this.road_segements.push(new RoadSegment(canvasWidth / 2 - 400 / 2, horizon_start + i * 1, 400, 50, 0, 1));
+        }
+    }
+    draw_road() {
+        this.distance_to_segment = 0.10;
+        this.road_segements.forEach(segment => {
+            segment.distance_scale = this.distance_to_segment
+            this.distance_to_segment += 0.01;
+            segment.draw();
+        })
+    }
+}
+
+class RoadSegment {
+    constructor(x, y, width, height, source_y, distance_scale) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.source_y = source_y;
+        this.distance_scale = distance_scale;
+    }
+    draw() {
+        ctx.fillStyle = "grey";
+        ctx.fillRect(this.x + (this.width - (this.width * this.distance_scale)) / 2, this.y, this.width * this.distance_scale, this.height * this.distance_scale)
+    }
+}
+
 const main_camera = new camera();
 
+const road_drawer = new RoadDrawer(300, 200);
 const green_car = new car(canvasWidth/2 , 40, 100, 50, main_camera);
 
 let steering;
@@ -187,6 +224,9 @@ function game_loop(timestamp) {
     lastFrameResponse = timestamp;
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+
+    road_drawer.draw_road();
 
     ctx.fillStyle = "yellow";
     tilt_the_wheel(delta);

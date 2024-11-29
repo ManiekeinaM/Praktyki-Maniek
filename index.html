@@ -11,10 +11,6 @@
     <script src="./js/cookies.js"></script>
 </head>
 <body>
-    <!-- Fixed logo [on every page] -->
-    
-
-
     <!-- Map container -->
     <main class="map-container">
         <div class="logo-container">
@@ -56,18 +52,18 @@
 
         <div class="scale">
             <button class="plus">
-                <img src="./assets/add.png" alt="+">
+                <img src="./assets/map/other/add.png" alt="+">
             </button>
             <p>
                 <!-- Skala: <span class="scale-num">1.0x</span> -->
                 POWIĘKSZ <br> <span class="scale-num">1.0x</span>
             </p>
             <button class="minus">
-                <img src="./assets/minus.png" alt="-">
+                <img src="./assets/map/other/minus.png" alt="-">
             </button>
 
             <button class="reset">
-                <img src="./assets/reset.png" alt="/">
+                <img src="./assets/map/other/reset.png" alt="/">
             </button>
             <div class="reset">
                 <!-- Background extension for reset -->
@@ -90,9 +86,15 @@
                 <div class="button-layer"></div>
             </div>
 
-            <div style="display: flex; justify-content: center; align-items: center; width: 100%; gap: 25rem;">
+            <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
                 <div class="layers Floor2A">
                     <img class="map-layer" src="./assets/map/Floor2A.jpg">
+                    <canvas class="canvas-layer"></canvas>
+                    <div class="button-layer"></div>
+                </div>
+
+                <div class="layers Floor2-back">
+                    <img class="map-layer" src="./assets/map/Floor2-back.png">
                     <canvas class="canvas-layer"></canvas>
                     <div class="button-layer"></div>
                 </div>
@@ -119,7 +121,7 @@
 
 
     <!-- Navigation button container / zakładki -->
-    <div class="navigation-container">
+    <nav class="navigation-container">
         <!-- <div class="hidden"></div> -->
         <div class="button selected" data-tab="index.html" data-name="Mapa">
             <!-- Mapa -->
@@ -141,7 +143,7 @@
             <img src="./assets/wheel.png" alt="Koło fortuny">
             <img src="./assets/sparkle.png" alt="" class="decoration">
         </div>
-    </div>
+    </nav>
 
     <p class="dev-coordinates"></p>
 

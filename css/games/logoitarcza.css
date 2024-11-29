@@ -209,3 +209,10 @@ span.brown {
     right: 0;
     transform: translateX(125%);
 }
+
+@media (max-width: 500px) {
+    .score.player {
+        top: unset;
+        bottom: 0.5rem;
+    }
+}

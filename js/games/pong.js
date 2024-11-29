@@ -136,16 +136,18 @@ class Paddle {
         this.height = height;
         this.image = new Image();
         this.image.src = image;
+        this.directionOfBallVelocity = 1;
     }
 
     draw() {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+
+        ctx.drawImage(this.image, this.x, this.y    , this.width, this.height);
     }
 }
 
 // Ball object
 let radius = 12;
-const BALL_SPEED = 8;
+const BALL_SPEED = 8 * 60;
 class Ball {
     constructor(x, y, radius, velocity) {
         this.x = x;
@@ -163,9 +165,9 @@ class Ball {
         ctx.closePath();
     }
 
-    update() {
-        this.x += this.velocity.x;
-        this.y += this.velocity.y;
+    update(deltaTime) {
+        this.x += this.velocity.x * deltaTime;
+        this.y += this.velocity.y * deltaTime;
     }
 
     setVelocity(angle, direction) {
@@ -174,7 +176,7 @@ class Ball {
     }
 }
 
-const ROCKET_SPEED = 6;
+const ROCKET_SPEED = 6 * 60;
 const ROCKET_SIZE = {width: 61*2, height: 28*2, hitboxHeight: 28, hitboxWidth: 61*2};
 ROCKET_SIZE.yGap = (ROCKET_SIZE.height - ROCKET_SIZE.hitboxHeight) / 2;
 class Rocket {
@@ -190,8 +192,8 @@ class Rocket {
         this.sprite.draw(this.x, this.y);
     }
 
-    update() {
-        this.x += ROCKET_SPEED * this.direction;
+    update(deltaTime) {
+        this.x += ROCKET_SPEED * this.direction * deltaTime;
     }
     updateAnimation() {
         this.sprite.currentFrame = (this.sprite.currentFrame + 1) % this.sprite.frameCount;
@@ -289,17 +291,12 @@ class Spritesheet {
 // paddleImage.src = './assets/paddle.png';
 
 const MAX_REFLECTION_ANGLE = 75 * Math.PI / 180; // 75 degrees in radians
-const AI_SPEED = 7;
+const AI_SPEED = 10 * 60;
 const sizePaddle = {width: 50, height: 160};
 
-const leftPaddle = new Paddle(10, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
-const rightPaddle = new Paddle(width - 60, height/2 - sizePaddle.height/2, sizePaddle.width, sizePaddle.height, './assets/paddle2.png');
+const leftPaddle = new Paddle(10, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
+const rightPaddle = new Paddle(width - 60, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle2.png');
 
-// Define safe zone (middle 4/5 of screen, for collision detecting paddles)
-let widthZone = {
-    min: 20+radius+sizePaddle.width, 
-    max: width-20-radius-sizePaddle.width
-};
 
 
 function resizeCanvas() {
@@ -310,10 +307,6 @@ function resizeCanvas() {
 
     leftPaddle.x = 10;
     rightPaddle.x = width - 60;
-    widthZone = {
-        min: 20 + radius + sizePaddle.width, 
-        max: width - 20 - radius - sizePaddle.width
-    };
 }
 window.addEventListener('resize', resizeCanvas);
 
@@ -339,7 +332,7 @@ addBall();
 
 const BALL_INTERVAL = 10; // seconds
 let BALL_TIMER = 0;
-const ANIMATION_INTERVAL = 0.25;
+const ANIMATION_INTERVAL = 0.06;
 let ANIMATION_TIMER = 0; // shared animation between every sprite
 
 const ROCKET_INTERVAL = 6;
@@ -357,33 +350,35 @@ canvas.addEventListener('click', e => {
 });
 
 
-function movePaddles() {
+function movePaddles(deltaTime) {
     // leftPaddle.x = mouseX - sizePaddle.width/2;
-    leftPaddle.y = mouseY - sizePaddle.height/2;
+    leftPaddle.y = mouseY - leftPaddle.height/2;
 
     //createRocket(-1);
     createRocket(-1);
 
     // right paddle AI
     if (nearestBall.x > width/4 && nearestBall.velocity.x > 0) {
-        if (nearestBall.y > rightPaddle.y && nearestBall.y < rightPaddle.y + sizePaddle.height) {
-            let direction = Math.sign(nearestBall.velocity.y);
-            rightPaddle.y += Math.min(AI_SPEED, Math.abs(nearestBall.velocity.y))*direction;
+        if (nearestBall.y > rightPaddle.y && nearestBall.y < rightPaddle.y + rightPaddle.height) {
+            //console.log(nearestBall.y, rightPaddle.y, rightPaddle.y + sizePaddle.height);
+            let direction = Math.sign(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
+            //console.log(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
+            rightPaddle.y += Math.min(AI_SPEED, Math.floor(Math.abs(nearestBall.velocity.y))+2) * direction * deltaTime;
             return;
-        } else if (nearestBall.y > rightPaddle.y + sizePaddle.height/2) {
-            rightPaddle.y += AI_SPEED;
-        } else if (nearestBall.y < rightPaddle.y + sizePaddle.height/2) {
-            rightPaddle.y -= AI_SPEED;
+        } else if (nearestBall.y > rightPaddle.y + rightPaddle.height/2) {
+            rightPaddle.y += AI_SPEED * deltaTime;
+        } else if (nearestBall.y < rightPaddle.y - rightPaddle.height/2) {
+            rightPaddle.y -= AI_SPEED * deltaTime;
         } 
         
     } else {
-        let difference = rightPaddle.y + sizePaddle.height/2 - height/2;
-        if (Math.abs(difference) < AI_SPEED) return;
+        let difference = rightPaddle.y + rightPaddle.height/2 - height/2;
+        if (Math.abs(difference) < AI_SPEED * deltaTime) return;
 
         if (difference < 0)
-            rightPaddle.y += AI_SPEED;
+            rightPaddle.y += AI_SPEED * deltaTime;
         else
-            rightPaddle.y -= AI_SPEED;
+            rightPaddle.y -= AI_SPEED * deltaTime;
         
     }
 }
@@ -391,46 +386,55 @@ function movePaddles() {
 let nearestBall = balls[0];
 
 // Collision detection
-function paddleCollision(paddle, ball) {
-    // Skip if ball is moving away from paddle
-    if ((paddle === leftPaddle && ball.velocity.x > 0) || 
-        (paddle === rightPaddle && ball.velocity.x < 0)) {
-        return;
-    }
+function paddleCollision(paddle, quadtree) {
+    // Define the range around the paddle for collision detection
+    const range = new Rectangle(
+        paddle.x + paddle.width / 2,
+        paddle.y + paddle.height / 2,
+        paddle.width,
+        paddle.height
+    );
 
-    // Skip collision check if ball is in safe zone
-    if (ball.x > widthZone.min && ball.x < widthZone.max) {
-        return;
-    }
+    //console.log(quadtree);
 
-    // Bounding box collision
-    if (
-        ball.x - ball.radius < paddle.x + paddle.width &&
-        ball.x + ball.radius > paddle.x &&
-        ball.y - ball.radius < paddle.y + paddle.height &&
-        ball.y + ball.radius > paddle.y 
-    ) {
-        // Pixel-perfect collision
-        const paddleImageData = ctx.getImageData(paddle.x, paddle.y, paddle.width, paddle.height);
-        const ballX = Math.floor(ball.x - paddle.x);
-        const ballY = Math.floor(ball.y - paddle.y);
-        if (paddleImageData.data[(ballY * paddle.width + ballX) * 4 + 3] > 128) {
-            // Calculate relative collision position (from -1 to 1)
-            const paddleCenterY = paddle.y + paddle.height / 2;
-            const relativeIntersectY = (ball.y - paddleCenterY) / (paddle.height / 2);
-            const clampedRelativeY = Math.max(-1, Math.min(1, relativeIntersectY));
+    const possibleCollisions = quadtree.query(range);
 
-            // Calculate reflection angle
-            const reflectionAngle = clampedRelativeY * MAX_REFLECTION_ANGLE;
+    possibleCollisions.forEach(ball => {
+        if (ball.velocity.x > 1 && paddle == leftPaddle) return;
+        if (ball.velocity.x < 1 && paddle == rightPaddle) return;
 
-            // Determine the direction based on paddle side
-            const direction = (paddle === leftPaddle) ? 1 : -1;
+        // Bounding box collision
+        if (
+            ball.x - ball.radius < paddle.x + paddle.width &&
+            ball.x + ball.radius > paddle.x &&
+            ball.y - ball.radius < paddle.y + paddle.height &&
+            ball.y + ball.radius > paddle.y 
+        ) {
+            // Pixel-perfect collision
+            const paddleImageData = ctx.getImageData(paddle.x, paddle.y, paddle.width, paddle.height);
+            const ballX = Math.floor(ball.x - paddle.x);
+            const ballY = Math.floor(ball.y - paddle.y);
+            
+            if (paddleImageData.data[(ballY * paddle.width + ballX) * 4 + 3] > 128) {
+                // Calculate relative collision position (from -1 to 1)
+                const paddleCenterY = paddle.y + paddle.height / 2;
+                const relativeIntersectY = (ball.y - paddleCenterY) / (paddle.height / 2);
+                const clampedRelativeY = Math.max(-1, Math.min(1, relativeIntersectY));
 
-            // Update ball velocity based on reflection angle
-            ball.setVelocity(reflectionAngle, direction);
+                // Calculate reflection angle
+                const reflectionAngle = clampedRelativeY * MAX_REFLECTION_ANGLE;
+
+                // Determine the direction based on paddle side
+                const direction = (paddle === leftPaddle) ? 1 : -1;
+
+                // Update ball velocity based on reflection angle
+                ball.setVelocity(reflectionAngle, direction);
+            }
         }
-    }
+    });
 }
+
+
 // Detect collision between two rectangles
 function isRocketColliding(rocket, ball) {
     /*
@@ -492,6 +496,9 @@ function updateRocketTimes() {
 // Animation loop
 let previousTime = performance.now();
 
+//const TARGET_FPS = 60;
+//const interval = 1 / TARGET_FPS;
+
 let isGameStillPong = false;
 function animate(timestamp) {
     if (CURRENT_GAME != 'pong') {
@@ -505,7 +512,13 @@ function animate(timestamp) {
     isGameStillPong = true;
 
     const deltaTime = (timestamp - previousTime)/1000 || 1/60;
+    /*if (deltaTime < interval) {
+        requestAnimationFrame(animate);
+        return;
+    }*/
     previousTime = timestamp;
+
+    
 
     // Animations/timers
     ROCKET_TIMER.left += deltaTime;
@@ -524,6 +537,9 @@ function animate(timestamp) {
         }
         for (let explosion of explosions) {
             explosion.updateAnimation();
+            if (!explosion.active) {
+                explosions.splice(explosions.indexOf(explosion), 1);
+            }
         }
     }
 
@@ -532,8 +548,8 @@ function animate(timestamp) {
 
     // Initialize Quadtree
     let boundary = new Rectangle(width / 2, height / 2, width / 2, height / 2);
-    let qtree = new Quadtree(boundary, 4); // capacity of 4
-    balls.forEach(ball => qtree.insert(ball));
+    let quadtree = new Quadtree(boundary, 4); // capacity of 4
+    balls.forEach(ball => quadtree.insert(ball));
 
     // Rockets & rocket explosions
     for (let rocket of rockets) {
@@ -550,7 +566,7 @@ function animate(timestamp) {
             ROCKET_SIZE.width * 2,
             ROCKET_SIZE.height * 2
         );
-        let possibleCollisions = qtree.query(range);
+        let possibleCollisions = quadtree.query(range);
 
         let collided = false;
         for (let ball of possibleCollisions) {
@@ -564,27 +580,27 @@ function animate(timestamp) {
             rockets.splice(rockets.indexOf(rocket), 1);
             let explosion = new Explosion(rocket.x, rocket.y, EXPLOSION_SIZE);
             explosions.push(explosion);
-            explosion.explode(qtree);
+            explosion.explode(quadtree);
             continue;
         };
 
-        rocket.update();
+        rocket.update(deltaTime);
         rocket.draw();
     }
 
     explosions.forEach((explosion, index) => {
         explosion.draw();
-        explosion.updateAnimation();
-
-        if (!explosion.active) {
-            explosions.splice(index, 1);
-        }
     });
 
     // Paddles
     leftPaddle.draw();
     rightPaddle.draw();
     movePaddles(deltaTime);
+
+    //console.log(quadtree.query);
+
+    paddleCollision(leftPaddle, quadtree);
+    paddleCollision(rightPaddle, quadtree);
 
     // Balls, score & ball paddle collisions
     for (let ball of balls) {
@@ -608,10 +624,8 @@ function animate(timestamp) {
                 nearestBall = ball;
             }
         }
-        
-        paddleCollision(leftPaddle, ball);
-        paddleCollision(rightPaddle, ball);
-        ball.update();
+    
+        ball.update(deltaTime);
 
         // Bounce off top and bottom edges
         if (ball.y - ball.radius < 0 || ball.y + ball.radius > height) {

@@ -60,11 +60,11 @@ function isDniOtwarte() {
   let cookie = getCookie('isDniOtwarte');
 
   // TEMPORARY DEFAULT STATE
-  if (cookie == '') {
+  /*if (cookie == '') {
     console.log("Temporary default - isDniOtwarte is true");
     
     return true;
-  }
+  }*/
 
   if (cookie == '' || cookie == 'false') {
     console.log('Nie są dni otwarte');

@@ -34,22 +34,48 @@
                 0 0 3px black,
                 0 0 3px black;
 }
-
-#highscoresList p {
+#highscoresList {
+    display: flex;
+    flex-direction: column;
+}
+#highscoresList > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0.25rem 0;
+}
+#highscoresList > div > p {
     font-family: var(--maniek-font);
     font-size: 2rem;
     margin: 0;
 
     color: white;
-    text-shadow: 0 0 5px black,
-                0 0 5px black,
-                0 0 5px black;
-
+    text-shadow: 0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black,
+                0 0 3px black;
 }
-#highscoresList p:nth-child(even) {
+
+#highscoresList > div > p.scoreTime {
+    font-size: 1.25rem;
+    color: rgb(235,235,235);
+    text-shadow: 0 0 2px black,
+                0 0 2px black,
+                0 0 2px black,
+                0 0 2px black,
+                0 0 2px black,
+                0 0 2px black,
+                0 0 2px black;
+}
+
+#highscoresList > div:nth-child(even) {
     background-color: var(--lightblue-bg);
 }
-#highscoresList p:nth-child(odd) {
+#highscoresList > div:nth-child(odd) {
     background-color: var(--lightblue-bg-border);
 }
 
@@ -75,7 +101,7 @@ section.flappymaniek .screen {
     height: 60vh;
 
     border-radius: 2rem;
-    background-image: url('../../assets/flappymaniek-bg.png');
+    background-image: url('../../assets/flappy/flappymaniek-bg.png');
     background-repeat: repeat-x;
     background-size: 50% 100%;
 
@@ -101,11 +127,15 @@ section.flappymaniek .screen {
 .screen > * {
     pointer-events: none;
     user-select: none;
-    z-index: 1;
+    z-index: 2;
+}
+
+.screen > .titlescreen {
+    z-index: 0;
 }
 
 .screen .pipes {
-    z-index: 0;
+    z-index: 1;
 }
 
 .pipe-container {
@@ -120,7 +150,7 @@ section.flappymaniek .screen {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 13em;
+    /* gap: 12em; */
 }
 
 .pipe {
@@ -133,7 +163,7 @@ section.flappymaniek .screen {
     width: 4em;
     height: auto;
 
-    right: 70%;
+    left: 5em;
     transform: translate(0%, -50%);
 }
 
@@ -146,8 +176,8 @@ section.flappymaniek .screen {
 .screen .titlescreen {
     position: absolute;
     bottom: 0;
-    left: 100%;
-    transform: translate(-110%, -10%);
+    left: 50%;
+    transform: translate(-50%, 0);
 
     font-family: var(--maniek-font);
     text-align: center;

@@ -458,6 +458,9 @@ main {
 
     transition: 0.1s;
 }
+.button-layer > *.flip {
+    transform: translate(-50%, -50%) scaleX(-1);
+}
 
 .button-layer img {
     width: 2em;
@@ -488,6 +491,9 @@ main {
 .button-layer > *:hover {
     z-index: 20;
     transform: translate(-50%, -50%) scale(1.1);
+}
+.button-layer > *.flip:hover {
+    transform: translate(-50%, -50%) scaleX(-1.1) scaleY(1.1);
 }
 
 

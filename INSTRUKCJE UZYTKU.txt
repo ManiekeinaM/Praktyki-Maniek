@@ -8,7 +8,8 @@ Instrukcje użytku:
         'Xdot' - kropka pełniąca specyficzną funkcję, obecnie tylko dla strzałek 
                 (musi mieć nazwę 'Xdot' i parametr 'destination' równy ilości pikseli do przesunięcia na mapie)
     - Każda kropka 'Wdot' ma zazwyczaj parametr 'connections', który zawiera nazwy kropek do których się łączy kropka.
-    
+    - Czcionka do tekstu dużego: Siemens Sans SC Black
+
     - Na stronie mapy: Wciśnij F2 aby otworzyć narzędzie dodawania kropek (dolny lewy róg).
         1) Kliknij na mapę, wypełnią się koordynaty. 
             Można wpisywać z klawiatury komentarz do kropki.

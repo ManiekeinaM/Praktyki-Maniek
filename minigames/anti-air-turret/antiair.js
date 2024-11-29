@@ -145,9 +145,15 @@ function update_score_gradually() {
 }
 
 //Highscore table
+let scores_table = document.getElementById("highscoresList");
+let i = 0;
+
 let BestScores = [];
 let StoredScores = getCookie('airturret-bestscores'); 
 if (StoredScores) BestScores = JSON.parse(StoredScores);
+
+
+console.log(BestScores);
 
 BestScores.forEach(score => {
     let p_score = document.createElement("p");
@@ -157,10 +163,10 @@ BestScores.forEach(score => {
     i++;
 });
 
+i = 0;
+
 console.log(StoredScores);
 console.log(BestScores);
-
-let scores_table = document.getElementById("highscoresList");
 
 //Game state controller
 const score_top_margin = 25;
@@ -179,7 +185,6 @@ const game = {
         scores_table.querySelectorAll("p").forEach(para => {
             scores_table.removeChild(para);
         })
-        let i = 0;
         BestScores.forEach(score => {
             let p_score = document.createElement("p");
             p_score.innerHTML = `#${i+1}: ${score} pkt`;

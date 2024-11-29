@@ -145,6 +145,9 @@ function update_score_gradually() {
 }
 
 //Highscore table
+let scores_table = document.getElementById("highscoresList");
+let i = 0;
+
 let BestScores = [];
 let StoredScores = getCookie('airturret-bestscores'); 
 if (StoredScores) BestScores = JSON.parse(StoredScores);
@@ -157,10 +160,11 @@ BestScores.forEach(score => {
     i++;
 });
 
+i = 0;
+
 console.log(StoredScores);
 console.log(BestScores);
 
-let scores_table = document.getElementById("highscoresList");
 
 //Game state controller
 const score_top_margin = 25;

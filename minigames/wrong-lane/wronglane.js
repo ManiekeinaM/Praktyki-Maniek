@@ -8,6 +8,14 @@ const canvasHeight = canvas.height;
 const MAX_CAMERA_OFFSET_X = 400;
 const MIN_CAMERA_OFFSET_X = -400;
 
+const road_sprite = new Image();
+road_sprite.src = "Assets/wrongLane-lane_base.png";
+
+road_sprite_properties = {
+    width: 1930,
+    height: 320,
+}
+
 class camera {
     constructor() {
         this.offset_x = 0;
@@ -67,11 +75,11 @@ class RoadDrawer {
         this.draw_cursor_y = 0;
         this.road_segements = [];
         for (let i=0; i<road_segments_amout; i++) {
-            this.road_segements.push(new RoadSegment(canvasWidth / 2 - 400 / 2, horizon_start + i * 1, 400, 50, 0, 1));
+            this.road_segements.push(new RoadSegment(canvasWidth / 2 - 400 / 2, horizon_start + i * 1, 400, 10, 0, 1));
         }
     }
     draw_road() {
-        this.distance_to_segment = 0.10;
+        this.distance_to_segment = 0.35;
         this.road_segements.forEach(segment => {
             segment.distance_scale = this.distance_to_segment
             this.distance_to_segment += 0.01;
@@ -91,7 +99,16 @@ class RoadSegment {
     }
     draw() {
         ctx.fillStyle = "grey";
-        ctx.fillRect(this.x + (this.width - (this.width * this.distance_scale)) / 2, this.y, this.width * this.distance_scale, this.height * this.distance_scale)
+        //ctx.fillRect(this.x + (this.width - (this.width * this.distance_scale)) / 2, this.y, this.width * this.distance_scale, this.height * this.distance_scale)
+        console.log(this.height * this.distance_scale);
+        ctx.drawImage(
+            road_sprite,
+            0, this.y - 200,
+            road_sprite.width, road_sprite.height,
+            this.x + (this.width - (this.width * this.distance_scale)) / 2,
+            this.y,
+            this.width * this.distance_scale, this.height * this.distance_scale,
+        );
     }
 }
 

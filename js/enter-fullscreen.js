@@ -22,6 +22,7 @@ let isMobile = /Mobi|Android/i.test(navigator.userAgent);
 if (isMobile) {
     enterfullscreen.style.display = 'block';
 }
+let isSmallMobile = isMobile && window.innerWidth <= 500;
 
 document.addEventListener('fullscreenchange', () => {
     if (!isMobile) return;

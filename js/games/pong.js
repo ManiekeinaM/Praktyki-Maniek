@@ -7,8 +7,7 @@ canvas.height = canvas.offsetHeight;
 let width = canvas.width;
 let height = canvas.height;
 
-let speedMultiplier = isMobile ? 0.5 : 1;
-console.log(isMobile);
+let speedMultiplier = isSmallMobile ? 0.5 : 1;
 
 const rocketTimes = {
     left: document.querySelector('.rocket-timer-left > .rocket-time'),
@@ -149,7 +148,7 @@ class Paddle {
 // Ball object
 let radius = 12 * Math.sqrt(speedMultiplier);
 console.log(radius);
-const BALL_SPEED = 8 * 60 * speedMultiplier;
+const BALL_SPEED = 7 * 60 * speedMultiplier;
 class Ball {
     constructor(x, y, radius, velocity) {
         this.x = x;
@@ -348,7 +347,10 @@ canvas.addEventListener('mousemove', e => {
     // mouseX = e.clientX - rect.left;
 });
 canvas.addEventListener('click', e => {
-    createRocket(1);
+    setTimeout(() => {
+        createRocket(1);
+    }, 10)
+
 });
 
 let touchY = null;

@@ -20,4 +20,4 @@ start /B chrome --app="http://localhost/maniek/praktyki-maniek/index.html" --win
 
 start "" "%USERPROFILE%\Desktop\focusManiekWindow.ahk"
 
-exit
+cmd /k

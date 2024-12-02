@@ -18,4 +18,6 @@ REM TODO use AHK instead
 start /B chrome --app="http://localhost/maniek/praktyki-maniek/tv-player.php" --window-position=1680,0 --kiosk --user-data-dir=c:/monitor2
 start /B chrome --app="http://localhost/maniek/praktyki-maniek/index.html" --window-position=0,0 --kiosk --user-data-dir=c:/monitor1
 
-cmd /k
+start "" "%USERPROFILE%\Desktop\focusManiekWindow.ahk"
+
+exit

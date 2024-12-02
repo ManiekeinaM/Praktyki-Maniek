@@ -915,3 +915,10 @@ div.reset {
     -ms-user-drag: none !important;
     touch-action: none !important;
 }
+
+@media (max-width: 500px) {
+    main {
+        margin: 1rem;
+        height: calc(100vh - 2rem);
+    }
+}

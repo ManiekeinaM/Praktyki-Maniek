@@ -147,7 +147,8 @@ class Paddle {
 }
 
 // Ball object
-let radius = 12;
+let radius = 12 * Math.sqrt(speedMultiplier);
+console.log(radius);
 const BALL_SPEED = 8 * 60 * speedMultiplier;
 class Ball {
     constructor(x, y, radius, velocity) {
@@ -331,7 +332,7 @@ function addBall() {
 }
 addBall();
 
-const BALL_INTERVAL = 10; // seconds
+const BALL_INTERVAL = 15; // seconds
 let BALL_TIMER = 0;
 const ANIMATION_INTERVAL = 0.06;
 let ANIMATION_TIMER = 0; // shared animation between every sprite
@@ -349,6 +350,18 @@ canvas.addEventListener('mousemove', e => {
 canvas.addEventListener('click', e => {
     createRocket(1);
 });
+
+let touchY = null;
+canvas.addEventListener('touchstart', e => {
+    touchY = e.touches[0].clientY;
+})
+canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - touchY;
+    touchY = touch.clientY;
+    mouseY = touchY;
+})
 
 
 function movePaddles(deltaTime) {

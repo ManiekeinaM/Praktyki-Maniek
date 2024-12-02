@@ -1,5 +1,5 @@
 .games-side.wisielec {
-    width: 100%;
+    width: calc(100% - 2rem);
     border-radius: 25px;
 }
 .maniek-side.wisielec {

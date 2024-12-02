@@ -7,6 +7,9 @@ canvas.height = canvas.offsetHeight;
 let width = canvas.width;
 let height = canvas.height;
 
+let speedMultiplier = isMobile ? 0.5 : 1;
+console.log(isMobile);
+
 const rocketTimes = {
     left: document.querySelector('.rocket-timer-left > .rocket-time'),
     right: document.querySelector('.rocket-timer-right > .rocket-time')
@@ -136,18 +139,16 @@ class Paddle {
         this.height = height;
         this.image = new Image();
         this.image.src = image;
-        this.directionOfBallVelocity = 1;
     }
 
     draw() {
-
-        ctx.drawImage(this.image, this.x, this.y    , this.width, this.height);
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
 
 // Ball object
 let radius = 12;
-const BALL_SPEED = 8 * 60;
+const BALL_SPEED = 8 * 60 * speedMultiplier;
 class Ball {
     constructor(x, y, radius, velocity) {
         this.x = x;
@@ -176,7 +177,7 @@ class Ball {
     }
 }
 
-const ROCKET_SPEED = 6 * 60;
+const ROCKET_SPEED = 6 * 60 * speedMultiplier;
 const ROCKET_SIZE = {width: 61*2, height: 28*2, hitboxHeight: 28, hitboxWidth: 61*2};
 ROCKET_SIZE.yGap = (ROCKET_SIZE.height - ROCKET_SIZE.hitboxHeight) / 2;
 class Rocket {
@@ -291,7 +292,7 @@ class Spritesheet {
 // paddleImage.src = './assets/paddle.png';
 
 const MAX_REFLECTION_ANGLE = 75 * Math.PI / 180; // 75 degrees in radians
-const AI_SPEED = 10 * 60;
+const AI_SPEED = 10 * 60 * speedMultiplier;
 const sizePaddle = {width: 50, height: 160};
 
 const leftPaddle = new Paddle(10, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');

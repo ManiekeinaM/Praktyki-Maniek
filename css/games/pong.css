@@ -67,7 +67,7 @@ h1.pong {
 
 @media (max-width: 500px) {
     .rocket-timer-right {
-        left: 1rem;
         top: 1rem;
+        bottom: unset;
     }
 }

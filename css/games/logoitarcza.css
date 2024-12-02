@@ -16,7 +16,6 @@ section.logoitarcza {
     width: 25em;
     aspect-ratio: 1/1;
     max-width: calc(100% - 2rem);
-    max-height: auto;
 }
 
 .game-container .tiles {

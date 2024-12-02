@@ -177,10 +177,11 @@ const game = {
             plane.item = {...special_item};
             plane.item.type = "none";
 
-            let roll = Math.floor(Math.random() * 20 + 1); 
-            if (roll == 4) { plane.item.type = "HealthUp";}
-            if (roll == 7) { plane.item.type = "ShootingSpeed";}
-            if (roll == 13) { plane.item.type = "ScoreMultiplier";}   
+            //Roll for type
+            if (roll_for_plane()) {
+                plane.item.type = roll_for_buff();
+            }
+              
             plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
             Planes.push(plane);
             this.enemy_planes_amount++;
@@ -301,6 +302,20 @@ const camera = {
 
 //Buff list 
 const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "TimeStop", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow"];
+
+//Roll for plane type
+function roll_for_plane() {
+    let roll = Math.floor(Math.random() * 5 + 1);
+    if (roll == 5) return true;
+    else return false; 
+}
+
+//Roll for buff type
+function roll_for_buff() {
+    let roll = Math.floor(Math.random() * buff_list.length);
+    return buff_list[roll];
+}
+
 //1. Shooting Speed (Cooldown)
 //2. Score multiplier (Cooldown)
 //3. Get 2 random buffs (One-shot)
@@ -610,10 +625,10 @@ const enemy_plane = {
     },
     reset: function() {
         this.item.type = "none";
-        let roll = Math.floor(Math.random() * 20 + 1); 
-        if (roll == 4) { this.item.type = "HealthUp";}
-        if (roll == 7) { this.item.type = "ShootingSpeed";}
-        if (roll == 13) { this.item.type = "ScoreMultiplier";}   
+        //Roll for type
+        if (roll_for_plane()) {
+            this.item.type = roll_for_buff();
+        } 
         this.death_x = this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2;
         this.death_y = this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2;
         this.play_explosion = false;

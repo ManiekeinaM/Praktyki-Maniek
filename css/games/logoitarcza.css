@@ -5,17 +5,30 @@ section.logoitarcza {
     flex-direction: column;
 }
 .game-container {
+    box-sizing: border-box;
     position: relative;
-    background-color: var(--darkbrown);
+    background: var(--darkbrown);
 
     border-radius: 3em;
-    border: 1rem solid #b99a5a;
-
-    box-shadow: 0 0 10px 10px rgba(61, 37, 0, 0.3);
+    border: 0.75em solid var(--darkbrown);
 
     width: 25em;
     aspect-ratio: 1/1;
-    max-width: calc(100% - 2rem);
+    z-index: 1;
+}
+
+/* Rotated shadow frame */
+.game-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 5em;
+    border: 0.5em solid var(--darkbrown); /* Slightly different brown tint */
+    transform: translate(-50%, -50%) rotate(45deg);
+    z-index: -1;
 }
 
 .game-container .tiles {
@@ -25,7 +38,8 @@ section.logoitarcza {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 0.75em;
+    z-index: 2;
 }
 
 .tiles .tile {
@@ -36,16 +50,16 @@ section.logoitarcza {
 }
 
 .tiles div:nth-child(1) {
-    border-top-left-radius: 2rem;
+    border-top-left-radius: 2.25em;
 }
 .tiles div:nth-child(3) {
-    border-top-right-radius: 2rem;
+    border-top-right-radius: 2.25em;
 }
 .tiles div:nth-child(7) {
-    border-bottom-left-radius: 2rem;
+    border-bottom-left-radius: 2.25em;
 }
 .tiles div:nth-child(9) {
-    border-bottom-right-radius: 2rem;
+    border-bottom-right-radius: 2.25em;
 }
 
 .tiles .tile img {
@@ -69,7 +83,7 @@ h1.game-name {
     background-color: white;
     border-top-left-radius: 2rem;
     border-top-right-radius: 2rem;
-    border: 0.5rem solid #b99a5a;
+    border: 0.5rem solid var(--darkbrown);
     margin: 0px;
     padding: 1rem;
 
@@ -135,14 +149,24 @@ span.brown {
     position: relative;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 1em;
 
-    margin-top: 1.5rem;
+    /* margin-top: 0.5em; */
 
-    width: 30rem;
-    max-width: 100%;
-    height: 3rem;
+    max-width: 25em;
+    height: 3em;
+
+    /* background-color: var(--darkbrown-transparent); */
+    background-color: var(--brown);
+    border-radius: 2em;
+    border: 0.5em solid var(--darkbrown);
+    border-top: 0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    padding: 0.5em;
+    z-index: 2;
 }
 
 .legend div {
@@ -150,23 +174,22 @@ span.brown {
     justify-content: center;
     align-items: center;
     gap: 0.75rem;
-
     padding: 0.75rem;
+    padding-top: 0;
+    padding-bottom: 0;
 
     height: 100%;
-    min-width: 20%;
 
     background-color: rgba(255, 255, 255, 0.267);
-    border: 0.25rem solid #b99a5a;
     border-radius: 5rem;
 }
 
 .legend div img {
-    height: 100%;
+    height: 1.75rem;
     width: auto;
 }
 .legend div span {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: bolder;
 }
 

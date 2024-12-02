@@ -4,14 +4,6 @@ body {
     font-family:'Courier New', Courier, monospace;
 }
 
-:root {
-    --blue: #1434B4;
-    --darkblue: #112b95;
-
-    --brown: #CAB282;
-    --darkbrown: #817453;
-}
-
 main {
     display: flex;
     justify-content: center;
@@ -216,9 +208,6 @@ header {
     }
     .score.maniek {
         top: 0%;
-    }
-    .legend {
-        margin-top: 1rem;
     }
 
     section.flappymaniek .screen {

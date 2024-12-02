@@ -201,17 +201,6 @@ body {
     line-height: 1.75rem;
 }
 
-/* Scale down  */
-@media (max-width: 800px) {
-    html, body {
-        font-size: 12px;
-    }
-}
-@media (max-width: 600px) {
-    html, body {
-        font-size: 10px;
-    }
-}
 
 .room-selection {
     position: absolute;
@@ -916,9 +905,32 @@ div.reset {
     touch-action: none !important;
 }
 
+
+
+/* Scale down  */
+@media (max-width: 800px) {
+    html {
+        font-size: 12px;
+    }
+}
+@media (max-width: 600px) {
+    html {
+        font-size: 10px;
+    }
+}
+
 @media (max-width: 500px) {
+    html {
+        font-size: 9px;
+    }
     main {
         margin: 1rem;
         height: calc(100vh - 2rem);
+    }
+}
+
+@media (max-width: 400px) {
+    html {
+        font-size: 8px;
     }
 }

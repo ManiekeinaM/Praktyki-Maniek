@@ -183,7 +183,6 @@ const game = {
         scores_table.querySelectorAll("p").forEach(para => {
             scores_table.removeChild(para);
         })
-        let i = 0;
         BestScores.forEach(score => {
             let p_score = document.createElement("p");
             p_score.innerHTML = `#${i+1}: ${score} pkt`;
@@ -191,6 +190,8 @@ const game = {
             scores_table.appendChild(p_score);
             i++;
         });
+
+        i = 0;
 
         console.log(BestScores);
         setCookie('airturret-bestscores', JSON.stringify(BestScores), 365);

@@ -16,7 +16,6 @@ section.logoitarcza {
     width: 25em;
     aspect-ratio: 1/1;
     max-width: calc(100% - 2rem);
-    max-height: auto;
 }
 
 .game-container .tiles {
@@ -208,6 +207,23 @@ span.brown {
 .score img:nth-child(3) {
     right: 0;
     transform: translateX(125%);
+}
+
+
+@keyframes popImg {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+}
+.popImg {
+    animation: popImg 0.25s forwards;
+    animation-iteration-count: 1;
 }
 
 @media (max-width: 500px) {

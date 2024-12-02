@@ -88,6 +88,13 @@ function switchPlayer() {
     return current_player;
 }
 
+function animateSquare(img) {
+    img.classList.add('popImg');
+
+    img.addEventListener('animationend', () => {
+        img.classList.remove('popImg');
+    }, {once: true});
+}
 
 let icons = {
     1: './assets/krzyzyk.png',
@@ -101,10 +108,7 @@ function setSquare(x, y, number) {
     img.src = icons[number];
 
     // animacja
-    img.style.transform = `scale(1.1)`;
-    setTimeout(() => {
-        img.style.transform = ``;
-    }, 150);
+    animateSquare(img);
 
     board[x][y] = number;
 

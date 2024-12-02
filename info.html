@@ -66,6 +66,7 @@
                     <img src="assets/sm-facebook.png" alt="Facebook" data-link="https://www.facebook.com/zsp9lodz">
                     <img src="assets/sm-insta.png" alt="Instagram" data-link="https://www.instagram.com/zsp9_im.ken_w_lodzi">
                     <img src="assets/sm-zsp.png" alt="Strona szkoły" data-link="https://zsp9.pl">
+                    <img src="assets/sm-podatek.png" alt="1.5% Podatku" data-link="https://sedeka.pl/opp/rr-zsp-im-ken">
                 </div>
     
                 <div class="screenshots">
@@ -91,13 +92,15 @@
                     const altToSrc = { // [0] = src, [1] = qr src
                         'Facebook': ['assets/page-previews/facebook.png', 'assets/page-previews/qr-facebook.png'],
                         'Instagram': ['assets/page-previews/insta.png', 'assets/page-previews/qr-insta.png'],
-                        'Strona szkoły': ['assets/page-previews/zsp.png', 'assets/page-previews/qr-zsp.png']
+                        'Strona szkoły': ['assets/page-previews/zsp.png', 'assets/page-previews/qr-zsp.png'],
+                        '1.5% Podatku': ['assets/page-previews/podatek.png', 'assets/page-previews/qr-podatek.png']
                     }
-                    function animateScreenshots() {
-                        screenshots.style.transform = `scale(0.85)`;
-                        setTimeout(e => {
-                            screenshots.style.transform = ``;
-                        }, 100)
+                    function playScreenshotAnimation() {
+                        screenshots.classList.add('popScreenshot');
+
+                        screenshots.addEventListener('animationend', () => {
+                            screenshots.classList.remove('popScreenshot');
+                        }, {once: true});
                     }
                     socials.forEach(social => {
                         let name = social.getAttribute('alt');
@@ -111,7 +114,7 @@
                             qrCodes.forEach(qr => {
                                 qr.src = qrSrc;
                             })
-                            animateScreenshots();
+                            playScreenshotAnimation();
                         })
     
                         social.addEventListener('dblclick', e => {

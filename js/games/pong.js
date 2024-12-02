@@ -7,6 +7,8 @@ canvas.height = canvas.offsetHeight;
 let width = canvas.width;
 let height = canvas.height;
 
+let speedMultiplier = isSmallMobile ? 0.5 : 1;
+
 const rocketTimes = {
     left: document.querySelector('.rocket-timer-left > .rocket-time'),
     right: document.querySelector('.rocket-timer-right > .rocket-time')
@@ -136,18 +138,17 @@ class Paddle {
         this.height = height;
         this.image = new Image();
         this.image.src = image;
-        this.directionOfBallVelocity = 1;
     }
 
     draw() {
-
-        ctx.drawImage(this.image, this.x, this.y    , this.width, this.height);
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
 
 // Ball object
-let radius = 12;
-const BALL_SPEED = 8 * 60;
+let radius = 12 * Math.sqrt(speedMultiplier);
+console.log(radius);
+const BALL_SPEED = 6 * 60 * speedMultiplier;
 class Ball {
     constructor(x, y, radius, velocity) {
         this.x = x;
@@ -176,7 +177,7 @@ class Ball {
     }
 }
 
-const ROCKET_SPEED = 6 * 60;
+const ROCKET_SPEED = 6 * 60 * speedMultiplier;
 const ROCKET_SIZE = {width: 61*2, height: 28*2, hitboxHeight: 28, hitboxWidth: 61*2};
 ROCKET_SIZE.yGap = (ROCKET_SIZE.height - ROCKET_SIZE.hitboxHeight) / 2;
 class Rocket {
@@ -291,7 +292,7 @@ class Spritesheet {
 // paddleImage.src = './assets/paddle.png';
 
 const MAX_REFLECTION_ANGLE = 75 * Math.PI / 180; // 75 degrees in radians
-const AI_SPEED = 10 * 60;
+const AI_SPEED = 10 * 60 * speedMultiplier;
 const sizePaddle = {width: 50, height: 160};
 
 const leftPaddle = new Paddle(10, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
@@ -330,7 +331,7 @@ function addBall() {
 }
 addBall();
 
-const BALL_INTERVAL = 10; // seconds
+const BALL_INTERVAL = 15; // seconds
 let BALL_TIMER = 0;
 const ANIMATION_INTERVAL = 0.06;
 let ANIMATION_TIMER = 0; // shared animation between every sprite
@@ -346,8 +347,23 @@ canvas.addEventListener('mousemove', e => {
     // mouseX = e.clientX - rect.left;
 });
 canvas.addEventListener('click', e => {
-    createRocket(1);
+    setTimeout(() => {
+        createRocket(1);
+    }, 10)
+
 });
+
+let touchY = null;
+canvas.addEventListener('touchstart', e => {
+    touchY = e.touches[0].clientY;
+})
+canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - touchY;
+    touchY = touch.clientY;
+    mouseY = touchY;
+})
 
 
 function movePaddles(deltaTime) {
@@ -492,6 +508,15 @@ function updateRocketTimes() {
     } else rocketTimes.right.style = '';
 }
 
+let IGNORE_NEXT_DT = false;
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        isGamePaused = true;
+    } else {
+        isGamePaused = false;
+        IGNORE_NEXT_DT = true;
+    }
+});
 
 // Animation loop
 let previousTime = performance.now();
@@ -499,9 +524,19 @@ let previousTime = performance.now();
 //const TARGET_FPS = 60;
 //const interval = 1 / TARGET_FPS;
 
+let isGamePaused = false;
 let isGameStillPong = false;
 function animate(timestamp) {
+    const deltaTime = IGNORE_NEXT_DT && 1/60 || (timestamp - previousTime)/1000 || 1/60;
+    previousTime = timestamp;
+
+    /*if (deltaTime < interval) {
+        requestAnimationFrame(animate);
+        return;
+    }*/
+
     if (CURRENT_GAME != 'pong') {
+        //console.log("not pong");
         if (isGameStillPong)
             ctx.clearRect(0, 0, width, height);
         
@@ -511,13 +546,10 @@ function animate(timestamp) {
     }
     isGameStillPong = true;
 
-    const deltaTime = (timestamp - previousTime)/1000 || 1/60;
-    /*if (deltaTime < interval) {
+    if (isGamePaused) {
         requestAnimationFrame(animate);
         return;
-    }*/
-    previousTime = timestamp;
-
+    }
     
 
     // Animations/timers

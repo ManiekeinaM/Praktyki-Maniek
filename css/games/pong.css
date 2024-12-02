@@ -64,3 +64,10 @@ h1.pong {
 .pong.hidden {
     display: none;
 }
+
+@media (max-width: 500px) {
+    .rocket-timer-right {
+        top: 1rem;
+        bottom: unset;
+    }
+}

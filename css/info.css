@@ -221,6 +221,23 @@ img[alt='Fujitsu'] {
   }
 }
 
+@keyframes popScreenshot {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.popScreenshot {
+  animation: popScreenshot 0.2s forwards;
+  animation-iteration-count: 1;
+}
+
+
 @media (max-width: 500px) {
   html {
     font-size: 9px !important;

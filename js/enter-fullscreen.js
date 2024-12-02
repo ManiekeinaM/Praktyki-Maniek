@@ -19,12 +19,14 @@ enterfullscreen_button.addEventListener('click', () => {
 
 
 let isMobile = /Mobi|Android/i.test(navigator.userAgent);
-if (isMobile) {
+let isSmallMobile = isMobile && window.innerWidth <= 500;
+
+if (isSmallMobile) {
     enterfullscreen.style.display = 'block';
 }
 
 document.addEventListener('fullscreenchange', () => {
-    if (!isMobile) return;
+    if (!isSmallMobile) return;
 
     if (!document.fullscreenElement) {
         enterfullscreen.style.display = 'block';

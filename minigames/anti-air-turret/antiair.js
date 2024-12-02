@@ -45,47 +45,6 @@ const lives_bar = {
     height: 100 * height_upscale,
 }
 
-//Buffs icons
-const buff_icon = {
-    width: 640 * 0.1 * width_upscale,
-    height: 640 * 0.1 * height_upscale,
-}
-
-const speed_buff_icon = new Image();
-const score_buff_icon = new Image();
-
-speed_buff_icon.src = "Assets/buff_icons/shooter-speed.png";
-score_buff_icon.src = "Assets/buff_icons/shooter-2x.png";
-
-//Buff cooldown properties
-let current_cooldowns = {"score": 0, "speed": 0};
-
-const buff_cooldown = {
-    x: 0,
-    y: canvasHeight / 2,
-    width: 100 * width_upscale,
-    height: 60 * height_upscale,
-    draw_cooldowns: function() {
-        this.x = 0 + this.width / 2;
-
-        for (const [key, value] of Object.entries(current_cooldowns)) {
-            let icon = null;
-            if (value > 0) { 
-                if (key == "speed") { icon = speed_buff_icon; }
-                if (key == "score") { icon = score_buff_icon; }
-                ctx.drawImage(icon, this.x, this.y, buff_icon.width, buff_icon.height);
-                
-                ctx.font = "2rem Determination Mono";
-                ctx.fillStyle = "white";
-                ctx.textAlign = "center";
-                ctx.fillText(Math.round(current_cooldowns[key] / 1000, 2), this.x + 20 + buff_icon.width / 2, this.y + buff_icon.height / 2);
-                this.y -= 80 * height_upscale;
-            }
-        }
-        this.y = canvasHeight / 2;
-    }
-}
-
 //Single Live sprite
 const life_icon = new Image();
 life_icon.src = "Assets/turret-alive.png";
@@ -213,15 +172,15 @@ const game = {
     spawn_plane: function(amount) {
         for (let i=0; i<amount; i++) {
             let plane = {...enemy_plane};
-            plane.explosion = {...explosion_animation} ;
+            plane.explosion = {...explosion_animation};
             plane.sprite = {...plane_animation};
             plane.item = {...special_item};
-            plane.item.type = 0;
+            plane.item.type = "none";
 
             let roll = Math.floor(Math.random() * 20 + 1); 
-            if (roll == 4) { plane.item.type = "heal";}
-            if (roll == 7) { plane.item.type = "speed";}
-            if (roll == 13) { plane.item.type = "score";}   
+            if (roll == 4) { plane.item.type = "HealthUp";}
+            if (roll == 7) { plane.item.type = "ShootingSpeed";}
+            if (roll == 13) { plane.item.type = "ScoreMultiplier";}   
             plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
             Planes.push(plane);
             this.enemy_planes_amount++;
@@ -328,18 +287,225 @@ const camera = {
     }
 }
 
+//Better Collective
+//B/S/H
+//DHL
+//Fujitsu
+//Hitachi
+//P&G
+//radio łódź
+//toya
+//veolia
+//tomtom
+//hydro
+
+//Buff list 
+const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "TimeStop", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow"];
+//1. Shooting Speed (Cooldown)
+//2. Score multiplier (Cooldown)
+//3. Get 2 random buffs (One-shot)
+//4. Health up (One-shot)
+//5. Time stop (Cooldown)
+//6. Chain lighting bullets (Cooldown)
+//7. Explosive bullets (Cooldown)
+//8. Screen AOE (One-shot)
+//9. Aimbot (Cooldown)
+//10. Temporary Immortality (Cooldown)
+//11. Slow down partner (Cooldown)
+
+//Buff cooldowns
+let current_cooldowns = {
+    "ShootingSpeed" : 0,
+    "ScoreMultiplier" : 0,
+    "TimeStop" : 0,
+    "ChainBullets" : 0,
+    "ExplosiveBullets" : 0,
+    "Aimbot" : 0,
+    "Immortality" : 0,
+    "Slow" : 0,
+};
+
+const buff_action = {
+    "none" : function() { console.log("Im gay"); },
+    "ShootingSpeed" : function() { buff_handler.activate_faster_shooting() },
+    "ScoreMultiplier" : function() { buff_handler.activate_score_multiplier() },
+    "RandomBuffs" : function() { buff_handler.use_roll_buffs() },
+    "HealthUp" : function() { buff_handler.use_heal() },
+    "TimeStop" : function() { buff_handler.activate_time_stop() },
+    "ChainBullets" : function() { buff_handler.activate_chain_bullets() },
+    "ExplosiveBullets" : function() { buff_handler.activate_explosive_bullets() },
+    "ScreenAOE" : function() { buff_handler.use_kill_all() },
+    "Aimbot" : function() { buff_handler.activate_aimbot() },
+    "Immortality" : function() { buff_handler.activate_immortality() },
+    "Slow" : function() { buff_handler.activate_slow() },
+}
+
+const buff_handler = {
+    shooting_speed_timeout : 0,
+    score_multiplier_timeout : 0,
+    time_stop_timeout: 0,
+    chain_bullets_timeout : 0,
+    explosive_bullets_timeout : 0,
+    aimbot_timeout : 0,
+    immortality_timeout : 0,
+    slow_timeout : 0,   
+    use_roll_buffs: function() {
+        buff_action[buff_list[Math.floor(Math.random() * 11)]]();
+        buff_action[buff_list[Math.floor(Math.random() * 11)]]();  
+    },
+    use_heal: function() {
+        player_turret.lives += 1;
+    },
+    use_kill_all: function() {
+        Planes.forEach(plane => {
+            plane.reset();
+        })
+    },
+    activate_faster_shooting: function() {
+            if (this.shooting_speed_timeout) {
+                clearTimeout(this.shooting_speed_timeout);
+            }
+    
+            turret_animation.frame_rate = 15;
+    
+            this.shooting_speed_timeout = setTimeout(() => {
+                turret_animation.frame_rate = 50;
+                this.shooting_speed_timeout = null;
+            }, 6000);
+            current_cooldowns["ShootingSpeed"] = 6000;
+    },
+    activate_score_multiplier: function() {
+            if (this.score_multiplier_timeout) {
+                clearTimeout(this.score_multiplier_timeout);
+            }
+            
+            player_turret.score_multiplier = 2;
+    
+            this.score_multiplier_timeout = setTimeout(() => {
+                player_turret.score_multiplier = 1;
+                this.score_multiplier_timeout = null;
+            }, 6000)
+            current_cooldowns["ScoreMultiplier"] = 6000;
+    },
+    activate_time_stop: function() {
+        if (this.time_stop_timeout) {
+            clearTimeout(this.time_stop_timeout);
+        }
+        
+        Planes.forEach(plane => {
+            plane.acceleration_y = 0;
+            plane.sprite.frame_rate = 0;
+            plane.explosion.frame_rate = 0;
+        })
+
+        this.time_stop_timeout = setTimeout(() => {
+            Planes.forEach(plane => {
+                plane.acceleration_y = 40;
+                plane.sprite.frame_rate = 100;
+                plane.explosion.frame_rate = 100;
+            })
+            this.time_stop_timeout = null;
+        }, 6000)
+        current_cooldowns["TimeStop"] = 6000;
+    },
+    activate_chain_bullets: function() {
+
+    },
+    activate_explosive_bullets: function() {
+
+    },
+    activate_aimbot: function() {
+        Planes.forEach(plane => {
+            console.log(plane.get_distance_to_player());
+        })
+    },
+    activate_immortality: function() {
+        if (this.immortality_timeout) {
+            clearTimeout(this.immortality_timeout);
+        }
+        
+        player_turret.is_immortal = true;
+
+        this.immortality_timeout = setTimeout(() => {
+            player_turret.is_immortal = false;
+            this.immortality_timeout = null;
+        }, 6000)
+        current_cooldowns["Immortality"] = 6000;
+    },
+    activate_slow: function() {
+        if (this.slow_timeout) {
+            clearTimeout(this.slow_timeout);
+        }
+        
+        Planes.forEach(plane => {
+            plane.acceleration_y = 20;
+            plane.sprite.frame_rate = 50;
+        })
+
+        this.slow_timeout = setTimeout(() => {
+            Planes.forEach(plane => {
+                plane.acceleration_y = 40;
+                plane.sprite.frame_rate = 100;
+            })
+            this.slow_timeout = null;
+        }, 6000)
+        current_cooldowns["Slow"] = 6000;
+    }
+
+}
+
 const special_item = {
     type: 0,
-    use: function() {
-        if (this.type == 'heal') {
-            player_turret.heal();
+    use: function() {buff_action[this.type]()},
+}
+
+//Buffs icons
+const buff_icon = {
+    width: 640 * 0.1 * width_upscale,
+    height: 640 * 0.1 * height_upscale,
+}
+
+const speed_buff_icon = new Image();
+const score_buff_icon = new Image();
+
+//Buff cooldowns
+const buff_icons = {
+    "ShootingSpeed" : speed_buff_icon,
+    "ScoreMultiplier" : score_buff_icon,
+    "TimeStop" : 0,
+    "ChainBullets" : 0,
+    "ExplosiveBullets" : 0,
+    "Aimbot" : 0,
+    "Immortality" : 0,
+    "Slow" : 0,
+};
+
+speed_buff_icon.src = "Assets/buff_icons/shooter-speed.png";
+score_buff_icon.src = "Assets/buff_icons/shooter-2x.png";
+
+const buff_cooldown = {
+    x: 0,
+    y: canvasHeight / 2,
+    width: 100 * width_upscale,
+    height: 60 * height_upscale,
+    draw_cooldowns: function() {
+        this.x = 0 + this.width / 2;
+
+        for (const [key, value] of Object.entries(current_cooldowns)) {
+            let icon = null;
+            if (value > 0) { 
+                icon = buff_icons[key];
+
+                ctx.drawImage(icon, this.x, this.y, buff_icon.width, buff_icon.height);
+                
+                ctx.font = "2rem Determination Mono";
+                ctx.fillStyle = "white";
+                ctx.textAlign = "center";
+                ctx.fillText(Math.round(current_cooldowns[key] / 1000, 2), this.x + 20 + buff_icon.width / 2, this.y + buff_icon.height / 2);
+                this.y -= 80 * height_upscale;
+            }
         }
-        if (this.type == 'speed') {
-            player_turret.boost_speed();
-        }
-        if (this.type == 'score') {
-            player_turret.boost_score();
-        }
+        this.y = canvasHeight / 2;
     }
 }
 
@@ -363,9 +529,9 @@ const enemy_plane = {
     item: 0,
     draw_plane: function() {
         let sprite = spritesheet;
-        if (this.item.type == "heal") { sprite = heal_plane }
-        if (this.item.type == "speed") { sprite = speed_plane }
-        if (this.item.type == "score") { sprite = score_plane }
+        if (this.item.type == "HealthUp") { sprite = heal_plane }
+        if (this.item.type == "ShootingSpeed") { sprite = speed_plane }
+        if (this.item.type == "ScoreMultiplier") { sprite = score_plane }
         //console.log(this.item.type);
         ctx.drawImage(
             sprite,
@@ -405,6 +571,9 @@ const enemy_plane = {
     get_col_ypos: function() {
         return this.y - camera.offset_y - this.get_col_height() / 2;
     },
+    get_distance_to_player() {
+        return (this.x);
+    },
     move: function(delta) {
         this.y += this.acceleration_y * delta;
         if (this.y > 0) {
@@ -440,11 +609,11 @@ const enemy_plane = {
         //this.reset();
     },
     reset: function() {
-        this.item.type = 0;
+        this.item.type = "none";
         let roll = Math.floor(Math.random() * 20 + 1); 
-        if (roll == 4) { this.item.type = "heal";}
-        if (roll == 7) { this.item.type = "speed";}
-        if (roll == 13) { this.item.type = "score";}   
+        if (roll == 4) { this.item.type = "HealthUp";}
+        if (roll == 7) { this.item.type = "ShootingSpeed";}
+        if (roll == 13) { this.item.type = "ScoreMultiplier";}   
         this.death_x = this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2;
         this.death_y = this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2;
         this.play_explosion = false;
@@ -495,6 +664,7 @@ const player_turret = {
     score_multiplier: 1,
     speed_timeout: null,
     score_timeout: null,
+    is_immortal: false,
     draw: function() {
         let x = this.x - turret_inactive_width / 2;
         let y = this.y - turret_inactive_height;
@@ -530,6 +700,7 @@ const player_turret = {
             ) {
                 game.update_score(50 * this.score_multiplier);
                 if (plane.play_explosion == false) {
+                console.log(plane.item);
                 plane.item.use();
                 }
                 plane.play_explosion = true;
@@ -538,39 +709,11 @@ const player_turret = {
     },
     deal_damage: function() {
         camera.shake();
+        if (this.is_immortal) return 0;
         this.lives -= 1;
         if (this.lives == 0) {
             game.stop();
         }
-    },
-    heal: function() {
-        this.lives += 1;
-    },
-    boost_speed: function() {
-        if (this.speed_timeout) {
-            clearTimeout(this.speed_timeout);
-        }
-
-        turret_animation.frame_rate = 15;
-
-        this.speed_timeout = setTimeout(() => {
-            turret_animation.frame_rate = 50;
-            this.speed_timeout = null;
-        }, 6000);
-        current_cooldowns["speed"] = 6000;
-    },
-    boost_score: function() {
-        if (this.score_timeout) {
-            clearTimeout(this.score_timeout);
-        }
-        
-        this.score_multiplier = 2;
-
-        this.score_timeout = setTimeout(() => {
-            this.score_multiplier = 1;
-            this.score_timeout = null;
-        }, 6000)
-        current_cooldowns["score"] = 6000;
     },
     remove_buff: function() {
         this.score_multiplier = 1;
@@ -705,9 +848,9 @@ function drawRadar(player, enemies, cameraAngle) {
         ctx.rotate(angle_to_center);
 
         let icon_sprite = plane_icon_normal;
-        if (enemy.item.type == "heal")  icon_sprite = plane_icon_heal;
-        else if (enemy.item.type == "speed") icon_sprite = plane_icon_speed; 
-        else if (enemy.item.type == "score") icon_sprite = plane_icon_score;
+        if (enemy.item.type == "HealthUp")  icon_sprite = plane_icon_heal;
+        else if (enemy.item.type == "ShootingSpeed") icon_sprite = plane_icon_speed; 
+        else if (enemy.item.type == "ScoreMultiplier") icon_sprite = plane_icon_score;
 
         ctx.drawImage(
             icon_sprite,
@@ -849,8 +992,8 @@ function game_loop(timestamp) {
 
     //Shake camera
     if (camera.is_shaking) {
-        camera.offset_x = Math.random() * (20 + 20) - 20;
-        camera.offset_y = Math.random() * (20 + 20) - 20;
+        camera.offset_x += Math.random() * (20 + 20) - 20;
+        camera.offset_y += Math.random() * (20 + 20) - 20;
     }
 
     //Draw background

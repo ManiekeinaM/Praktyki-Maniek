@@ -95,11 +95,12 @@
                         'Strona szkoły': ['assets/page-previews/zsp.png', 'assets/page-previews/qr-zsp.png'],
                         '1.5% Podatku': ['assets/page-previews/podatek.png', 'assets/page-previews/qr-podatek.png']
                     }
-                    function animateScreenshots() {
-                        screenshots.style.transform = `scale(0.85)`;
-                        setTimeout(e => {
-                            screenshots.style.transform = ``;
-                        }, 100)
+                    function playScreenshotAnimation() {
+                        screenshots.classList.add('popScreenshot');
+
+                        screenshots.addEventListener('animationend', () => {
+                            screenshots.classList.remove('popScreenshot');
+                        }, {once: true});
                     }
                     socials.forEach(social => {
                         let name = social.getAttribute('alt');
@@ -113,7 +114,7 @@
                             qrCodes.forEach(qr => {
                                 qr.src = qrSrc;
                             })
-                            animateScreenshots();
+                            playScreenshotAnimation();
                         })
     
                         social.addEventListener('dblclick', e => {

@@ -508,6 +508,15 @@ function updateRocketTimes() {
     } else rocketTimes.right.style = '';
 }
 
+let IGNORE_NEXT_DT = false;
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        isGamePaused = true;
+    } else {
+        isGamePaused = false;
+        IGNORE_NEXT_DT = true;
+    }
+});
 
 // Animation loop
 let previousTime = performance.now();
@@ -515,12 +524,19 @@ let previousTime = performance.now();
 //const TARGET_FPS = 60;
 //const interval = 1 / TARGET_FPS;
 
+let isGamePaused = false;
 let isGameStillPong = false;
 function animate(timestamp) {
-    const deltaTime = (timestamp - previousTime)/1000 || 1/60;
+    const deltaTime = IGNORE_NEXT_DT && 1/60 || (timestamp - previousTime)/1000 || 1/60;
     previousTime = timestamp;
 
+    /*if (deltaTime < interval) {
+        requestAnimationFrame(animate);
+        return;
+    }*/
+
     if (CURRENT_GAME != 'pong') {
+        //console.log("not pong");
         if (isGameStillPong)
             ctx.clearRect(0, 0, width, height);
         
@@ -530,12 +546,10 @@ function animate(timestamp) {
     }
     isGameStillPong = true;
 
-    
-    /*if (deltaTime < interval) {
+    if (isGamePaused) {
         requestAnimationFrame(animate);
         return;
-    }*/
-
+    }
     
 
     // Animations/timers

@@ -209,6 +209,23 @@ span.brown {
     transform: translateX(125%);
 }
 
+
+@keyframes popImg {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+}
+.popImg {
+    animation: popImg 0.25s forwards;
+    animation-iteration-count: 1;
+}
+
 @media (max-width: 500px) {
     .score.player {
         top: unset;

@@ -148,7 +148,7 @@ class Paddle {
 // Ball object
 let radius = 12 * Math.sqrt(speedMultiplier);
 console.log(radius);
-const BALL_SPEED = 7 * 60 * speedMultiplier;
+const BALL_SPEED = 6 * 60 * speedMultiplier;
 class Ball {
     constructor(x, y, radius, velocity) {
         this.x = x;
@@ -517,6 +517,9 @@ let previousTime = performance.now();
 
 let isGameStillPong = false;
 function animate(timestamp) {
+    const deltaTime = (timestamp - previousTime)/1000 || 1/60;
+    previousTime = timestamp;
+
     if (CURRENT_GAME != 'pong') {
         if (isGameStillPong)
             ctx.clearRect(0, 0, width, height);
@@ -527,12 +530,11 @@ function animate(timestamp) {
     }
     isGameStillPong = true;
 
-    const deltaTime = (timestamp - previousTime)/1000 || 1/60;
+    
     /*if (deltaTime < interval) {
         requestAnimationFrame(animate);
         return;
     }*/
-    previousTime = timestamp;
 
     
 

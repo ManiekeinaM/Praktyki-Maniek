@@ -178,9 +178,7 @@ const game = {
             plane.item.type = "none";
 
             //Roll for type
-            if (roll_for_plane()) {
-                plane.item.type = roll_for_buff();
-            }
+            plane.item.type = roll_for_plane();
               
             plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
             Planes.push(plane);
@@ -306,8 +304,14 @@ const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp"
 //Roll for plane type
 function roll_for_plane() {
     let roll = Math.floor(Math.random() * 5 + 1);
-    if (roll == 5) return true;
-    else return false; 
+    console.log("Los: ",roll);
+    if (roll == 4) {
+        let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
+        console.log(rolled_buff);
+        return rolled_buff;
+    } else {
+        return "none"
+    }
 }
 
 //Roll for buff type
@@ -365,8 +369,8 @@ const buff_handler = {
     immortality_timeout : 0,
     slow_timeout : 0,   
     use_roll_buffs: function() {
-        buff_action[buff_list[Math.floor(Math.random() * 11)]]();
-        buff_action[buff_list[Math.floor(Math.random() * 11)]]();  
+        buff_action[roll_for_buff()]();
+        buff_action[roll_for_buff()](); 
     },
     use_heal: function() {
         player_turret.lives += 1;
@@ -411,6 +415,7 @@ const buff_handler = {
             plane.acceleration_y = 0;
             plane.sprite.frame_rate = 0;
             plane.explosion.frame_rate = 0;
+            plane.scaling_factor = 0;
         })
 
         this.time_stop_timeout = setTimeout(() => {
@@ -418,6 +423,7 @@ const buff_handler = {
                 plane.acceleration_y = 40;
                 plane.sprite.frame_rate = 100;
                 plane.explosion.frame_rate = 100;
+                plane.scaling_factor = 0.18;
             })
             this.time_stop_timeout = null;
         }, 6000)
@@ -453,12 +459,14 @@ const buff_handler = {
         }
         
         Planes.forEach(plane => {
+            plane.scaling_factor = 0.09;
             plane.acceleration_y = 20;
             plane.sprite.frame_rate = 50;
         })
 
         this.slow_timeout = setTimeout(() => {
             Planes.forEach(plane => {
+                plane.scaling_factor = 0.18;
                 plane.acceleration_y = 40;
                 plane.sprite.frame_rate = 100;
             })
@@ -480,23 +488,51 @@ const buff_icon = {
     height: 640 * 0.1 * height_upscale,
 }
 
-const speed_buff_icon = new Image();
-const score_buff_icon = new Image();
+// Cooldown icons
+const shoot_speed_icon = new Image();
+const score_multiplier_icon = new Image();
+const time_stop_icon = new Image();
+const chain_bullets_icon = new Image();
+//const explosive_bullets_icon = new Image(); - Missing
+const aimbot_icon = new Image();
+const immortality_icon = new Image();
+const slow_icon = new Image();
+
+shoot_speed_icon.src = "Assets/buff_icons/shooter-speed.png";
+score_multiplier_icon.src = "Assets/buff_icons/shooter-2x.png";
+time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ;
+chain_bullets_icon.src = "Assets/buff_icons/shooter-lightning.png" ;
+//explosive_bullets_icon.src = "Assets/buff_icons/.png";
+aimbot_icon.src = "Assets/buff_icons/shooter-aimbot.png" ;
+immortality_icon.src = "Assets/buff_icons/shooter-immortal.png" ;
+slow_icon.src = "Assets/buff_icons/shooter-slow.png"; 
+
+//One shot icons (Popup)
+const health_up_icon = new Image();
+//const screen_aoe_icon = new Image(); - Missing
+const random_buffs_icon = new Image();
+
+health_up_icon.src = "Assets/buff_icons/shooter-heal.png";
+//screen_aoe_icon.src = "Assets/buff_icons/shooter-";
+random_buffs_icon.src = "Assets/buff_icons/shooter-random.png";
 
 //Buff cooldowns
 const buff_icons = {
-    "ShootingSpeed" : speed_buff_icon,
-    "ScoreMultiplier" : score_buff_icon,
-    "TimeStop" : 0,
-    "ChainBullets" : 0,
-    "ExplosiveBullets" : 0,
-    "Aimbot" : 0,
-    "Immortality" : 0,
-    "Slow" : 0,
-};
+    //Cooldowns
+    "ShootingSpeed" : shoot_speed_icon,
+    "ScoreMultiplier" : score_multiplier_icon,
+    "TimeStop" : time_stop_icon,
+    "ChainBullets" : chain_bullets_icon,
+    //"ExplosiveBullets" : explosive_bullets_icon,
+    "Aimbot" : aimbot_icon,
+    "Immortality" : immortality_icon,
+    "Slow" : slow_icon,
 
-speed_buff_icon.src = "Assets/buff_icons/shooter-speed.png";
-score_buff_icon.src = "Assets/buff_icons/shooter-2x.png";
+    //One-shot
+    "RandomBuffs" : random_buffs_icon,
+    "HealthUp" : health_up_icon,
+    //"ScreenAOE" : screen_aoe_icon,
+};
 
 const buff_cooldown = {
     x: 0,
@@ -626,20 +662,20 @@ const enemy_plane = {
     reset: function() {
         this.item.type = "none";
         //Roll for type
-        if (roll_for_plane()) {
-            this.item.type = roll_for_buff();
-        } 
+        this.item.type = roll_for_plane();
         this.death_x = this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2;
         this.death_y = this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2;
         this.play_explosion = false;
         this.explosion.current_frame = 0;
         this.y = 0;
-        this.acceleration_y = 40;
+        if (!buff_handler.slow_timeout || !buff_handler.time_stop_timeout) {
+            this.acceleration_y = 40;
+            this.scaling_factor = 0.18;
+        }
         this.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
-        this.scaling_factor = 0.18;
         game.update_killcount();
     },
 }

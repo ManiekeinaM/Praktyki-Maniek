@@ -13,6 +13,7 @@ main {
 }
 
 #bestscore-table {
+    position: relative;
     font-family: var(--maniek-font);
     width: 40%;
     height: calc(100% - 2rem);
@@ -27,45 +28,4 @@ main {
     padding: 0;
     padding-left: 2rem;
     padding-right: 2rem;
-}
-
-#highscoresList p:nth-child(even) {
-    background-color: var(--lightblue-bg);
-}
-#highscoresList p:nth-child(odd) {
-    background-color: var(--lightblue-bg-border);
-}
-
-.highscores {
-    background-color: var(--lightblue-bg);
-    border: 0.5rem solid var(--lightblue-bg-border);
-    padding: 0.5rem;
-    border-radius: 1rem;
-    text-align: center;
-}
-
-.highscores p {
-    font-family: var(--maniek-font);
-    font-size: 2rem;
-    color: white;
-    margin: 0.5em;
-    text-shadow: 0 0 3px black,
-                0 0 3px black,
-                0 0 3px black,
-                0 0 3px black,
-                0 0 3px black,
-                0 0 3px black,
-                0 0 3px black;
-}
-
-#highscoresList p {
-    font-family: var(--maniek-font);
-    font-size: 2rem;
-    margin: 0;
-
-    color: white;
-    text-shadow: 0 0 5px black,
-                0 0 5px black,
-                0 0 5px black;
-
 }

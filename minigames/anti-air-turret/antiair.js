@@ -105,7 +105,7 @@ function update_score_gradually() {
 }
 
 //Highscore table
-let scores_table = document.getElementById("highscoresList");
+let scores_table = document.querySelector(".highscoresList");
 let i = 0;
 
 let BestScores = [];
@@ -1030,7 +1030,8 @@ const rotationSpeed = Math.PI / 16;
 const background = new Image();
 //background.src = "Assets/shooter-background.png";
 //background.src = "Assets/Testbg.png";
-background.src = "Assets/Sky_bg.png";
+//background.src = "Assets/Sky_bg.png";
+background.src = "Assets/Calibrationbg.png";
 const background_width = GAME_WINDOW_WIDTH + canvasWidth * 2;
 const background_height = GAME_WINDOW_HEIGHT + canvasHeight / 2;
 const background_x = 0;

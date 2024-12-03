@@ -225,12 +225,11 @@ let highscores = JSON.parse(getCookie(HIGHSCORES_COOKIE_NAME) || '[]');
 function updateHighscores() {
     highscoresList.innerHTML = '';
 
-
     for (let i = 0; i < highscores.length; i++) {
         let div = document.createElement('div');
 
         let scoreEntry = highscores[i];
-        if (scoreEntry.score && scoreEntry.date) {
+        if (scoreEntry.score !== undefined && scoreEntry.date) {
             let timeDiff = Date.now() - new Date(scoreEntry.date).getTime();
             let minutes = Math.floor(timeDiff / (1000 * 60))
             let hours = Math.floor(minutes / 60);
@@ -271,17 +270,20 @@ function updateHighscores() {
             let time = document.createElement('p');
             time.classList.add('scoreTime');
             time.innerHTML = `(${dateText})`;
+            console.log("scoreEntry with time");
             
             div.appendChild(p);
             div.appendChild(time);
-        } else if (scoreEntry.score) {
+        } else if (scoreEntry.score !== undefined) {
             let p = document.createElement('p');
             p.innerText = `#${i + 1}: ${scoreEntry.score} pkt`;
+            console.log("scoreEntry score");
 
             div.appendChild(p);
-        } else if (scoreEntry) {
+        } else if (scoreEntry !== undefined) {
             let p = document.createElement('p');
             p.innerText = `#${i + 1}: ${scoreEntry} pkt`;
+            console.log(scoreEntry);
 
             div.appendChild(p);
         }

@@ -217,7 +217,7 @@ let currentScore = 0;
 
 const gameover = document.querySelector('.flappymaniek .screen .gameover');
 const highscore = document.querySelector('.flappymaniek .screen .highscore');
-const highscoresList = document.querySelector('#highscoresList');
+const highscoresList = document.querySelector('.highscoresList');
 
 const HIGHSCORES_COOKIE_NAME = 'flappy-highscores';
 let highscores = JSON.parse(getCookie(HIGHSCORES_COOKIE_NAME) || '[]');

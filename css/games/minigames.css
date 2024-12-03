@@ -62,6 +62,7 @@ main {
 
 /* Strony gier */
 .games-side, .maniek-side {
+    box-sizing: border-box;
     width: 50%;
     display: flex;
     justify-content: center;
@@ -71,10 +72,10 @@ main {
 
     border-radius: 0px;
     margin: 0;
-    height: calc(100% - 2rem);
+    height: 100%;
     position: relative;
     animation: popIn 0.25s;
-    transition: transform 0.5s, width 0.25s;
+    transition: transform 0.5s, width 0.25s, border 0.25s, background-color 0.25s;
 }
 
 
@@ -82,8 +83,8 @@ main {
     /* width: 60%; */
     background-color: var(--brown);
     border: 1rem solid var(--darkbrown);
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
 }
 
 .logoitarcza {
@@ -123,8 +124,8 @@ main {
 .maniek-side {
     background-color: var(--blue);
     border: 1rem solid var(--darkblue);
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
     /* width: 40%; */
 }
 

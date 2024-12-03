@@ -197,7 +197,7 @@
   justify-content: center;
   align-items: center;
   width: fit-content;
-  animation: scroll 15s linear infinite;
+  animation: scroll var(--scroll-duration) linear infinite;
 }
 
 .scrolling-images img {
@@ -217,7 +217,7 @@ img[alt='Fujitsu'] {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(calc(400px * 4));
+    transform: translateX(var(--scroll-distance));
   }
 }
 

@@ -1,0 +1,11 @@
+.games-side.hardestgame {
+    border-right-width: 0;
+}
+.maniek-side.hardestgame {
+    border-left-width: 0;
+}
+
+.games-side.hardestgame, .maniek-side.hardestgame {
+    background-color: var(--coolviolet);
+    border-color: var(--cooldarkviolet);
+}

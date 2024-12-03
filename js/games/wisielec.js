@@ -45,7 +45,7 @@ const WORDS_SEGREGATED = {
     zwierzęta: [
         "nutria", "szop", "bóbr", "sarna", "jeleń", "łoś", "żubr", "wilk", "lis",
         "niedźwiedź", "ryś", "dzik", "zając", "królik", "mysz", "wiewiórka", "kuna",
-        "jenot", "borsuk", "wydra", "orzeł", "sokół", "pustułka", "myszołów",
+        "jenot", "borsuk", "wydra", "orzeł", "sokół", "myszołów", "mrówka", "żuk",
         "czajka", "kaczka", "gęś", "łabędź", "bocian", "żaba", "ropucha", "traszka",
         "jaszczurka", "wąż", "żmija", "zaskroniec", "krokodyl", "hipopotam", "słoń",
         "żyrafa", "lew", "tygrys", "pantera", "gepard", "hiena", "antylopa",

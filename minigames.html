@@ -27,17 +27,18 @@
     
             <div class="button" data-game="flappymaniek" data-name="Flappy Maniek">
                 <img src="assets/flappymaniek.png" alt="Flappy Maniek">
-                <!-- <p class="workinprogress">WIP</p> -->
             </div>
 
             <div class="button" data-game="wisielec" data-name="Wisielec">
                 <img src="assets/wisielec.png" alt="Wisielec">
-                <!-- <p class="workinprogress">WIP</p> -->
             </div>
 
             <div class="button" data-game="pong" data-name="Pong">
                 <img src="assets/pong.png" alt="Pong">
-                <!-- <p class="workinprogress">WIP</p> -->
+            </div>
+
+            <div class="button" data-game="hardestgame" data-name="Maniek's Hardest Game">
+                <img src="assets/maniekshardestgame.png" alt="Maniek's Hardest Game">
             </div>
         </div>
 
@@ -45,12 +46,10 @@
 
         </canvas>
 
-        <div is="game-overlay" class="hidden">
-            <div class="game-overlay-content">
-                <h1 class="game-overlay-title">Pauza</h1>
+        <div id="game-overlay" class="hidden">
+            <h1 class="game-overlay-title">Pauza</h1>
                 <button class="game-overlay-resume">Wznów</button>
                 <button class="game-overlay-quit">Wyjdź</button>
-            </div>
         </div>
 
         <!-- Lewa strona (brazowa, gierki) -->
@@ -196,7 +195,7 @@
         <div class="maniek-side">
             <div class="flappymaniek highscores hidden">
                 <p>Najlepsze wyniki</p>
-                <div id="highscoresList"></div>
+                <div class="highscoresList"></div>
             </div>
 
             <img class="maniek logoitarcza" src="./assets/maniek-faces/thinking.gif">
@@ -267,6 +266,7 @@
             flappymaniek: './css/games/flappymaniek.css',
             wisielec: './css/games/wisielec.css',
             pong: './css/games/pong.css',
+            hardestgame: './css/games/hardestgame.css',
         };
 
         const gameScripts = {
@@ -274,6 +274,7 @@
             flappymaniek: 'js/games/flappymaniek.js',
             wisielec: 'js/games/wisielec.js',
             pong: 'js/games/pong.js',
+            hardestgame: 'js/games/hardestgame.js',
         };
 
         let gamesDone = {};

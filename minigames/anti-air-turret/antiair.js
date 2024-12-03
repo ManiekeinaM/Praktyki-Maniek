@@ -53,16 +53,20 @@ life_icon.src = "Assets/turret-alive.png";
 const explosion_img = new Image();
 explosion_img.src = "Assets/explosion-sheet.png";
 
-const spritesheet = new Image();
-const heal_plane = new Image();
-const speed_plane = new Image();
-const score_plane = new Image();
-spritesheet.src = 'Assets/enemy.png';
-heal_plane.src = 'Assets/enemy-red.png';
-speed_plane.src = 'Assets/enemy-orange.png';
-score_plane.src = 'Assets/enemy-yellow.png';
-
-
+const plane_variants = {
+    "none" : "Assets/planes/enemy.png",
+    "ShootingSpeed" : "Assets/planes/enemy-red.png",
+    "ScoreMultiplier" : "Assets/planes/enemy-violet.png",
+    "RandomBuffs"  : "Assets/planes/enemy-orange.png",
+    "HealthUp"  : "Assets/planes/enemy-green.png",
+    "TimeStop" : "Assets/planes/enemy-blue.png",
+    "ChainBullets" : "Assets/planes/enemy-yellow.png", 
+    "ExplosiveBullets" : "Assets/planes/enemy-yellow.png", //Missing
+    "ScreenAOE" : "Assets/planes/enemy-yellow.png", //Missing
+    "Aimbot" : "Assets/planes/enemy-brown.png",
+    "Immortality" : "Assets/planes/enemy-purple.png",
+    "Slow" : "Assets/planes/enemy-pink.png", 
+}
 
 const plane_animation = {
     frame_width: 640,
@@ -249,18 +253,23 @@ const camera = {
     angle: 0,
     is_shaking: false,
     shake_timeout: null,
+    auto_aim: false,
     update_offset: function(mouse_x, mouse_y, delta) {
-        this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
-        this.offset_x += mouse_x * this.acceleration_x * delta;
-        this.offset_y += mouse_y * this.acceleration_y * delta;
-        if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {
-            this.offset_y = -(GAME_WINDOW_HEIGHT - canvasHeight);
-        };
-        if (this.offset_y > 0) {
-            this.offset_y = 0;
-        } 
-        this.y_offset_scale = 1 - this.offset_y / 1000;
-
+        if (this.auto_aim == false) {
+            this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
+            this.offset_x += mouse_x * this.acceleration_x * delta;
+            this.offset_y += mouse_y * this.acceleration_y * delta;
+            if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {
+                this.offset_y = -(GAME_WINDOW_HEIGHT - canvasHeight);
+            };
+            if (this.offset_y > 0) {
+                this.offset_y = 0;
+            } 
+            this.y_offset_scale = 1 - this.offset_y / 1000;
+        } else {
+            get_closest_plane();
+            player_turret.shoot();
+        }
         this.adjust_camera();
     },
     adjust_camera: function() {
@@ -270,7 +279,6 @@ const camera = {
         if (this.offset_x < MIN_CAMERA_OFFSET_X) {
             this.offset_x = MAX_CAMERA_OFFSET_X - (MIN_CAMERA_OFFSET_X - this.offset_x);
         }
-        console.log(this.offset_x);
     },
     shake: function(i) {
         if (this.shake_timeout) {
@@ -303,11 +311,12 @@ const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp"
 
 //Roll for plane type
 function roll_for_plane() {
-    let roll = Math.floor(Math.random() * 5 + 1);
+    //let roll = Math.floor(Math.random() * 5 + 1);
+    let roll = 4;
     console.log("Los: ",roll);
     if (roll == 4) {
         let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
-        console.log(rolled_buff);
+        console.log("buff: ", rolled_buff);
         return rolled_buff;
     } else {
         return "none"
@@ -331,6 +340,22 @@ function roll_for_buff() {
 //9. Aimbot (Cooldown)
 //10. Temporary Immortality (Cooldown)
 //11. Slow down partner (Cooldown)
+
+// Used by aimbot
+function get_closest_plane() {
+    let closest_plane = null;
+    Planes.forEach(plane => {
+        if (closest_plane == null) {
+            closest_plane = plane;
+        }
+
+        if ((plane.x + camera.offset_x) < closest_plane.x && plane.y > 0) {
+            // In case planes are out of bounds
+            closest_plane = {x: -plane.x};
+        }
+    });
+    camera.offset_x = closest_plane.x;
+}
 
 //Buff cooldowns
 let current_cooldowns = {
@@ -413,9 +438,8 @@ const buff_handler = {
         
         Planes.forEach(plane => {
             plane.acceleration_y = 0;
-            plane.sprite.frame_rate = 0;
-            plane.explosion.frame_rate = 0;
             plane.scaling_factor = 0;
+            plane.time_stopped = true;
         })
 
         this.time_stop_timeout = setTimeout(() => {
@@ -424,22 +448,56 @@ const buff_handler = {
                 plane.sprite.frame_rate = 100;
                 plane.explosion.frame_rate = 100;
                 plane.scaling_factor = 0.18;
+                plane.time_stopped = false;
             })
             this.time_stop_timeout = null;
         }, 6000)
         current_cooldowns["TimeStop"] = 6000;
     },
+
     activate_chain_bullets: function() {
+        if (this.chain_bullets_timeout) {
+            clearTimeout(this.chain_bullets_timeout);
+        }
+        
+        //Chain bullets
 
+        this.chain_bullets_timeout = setTimeout(() => {
+            player_turret.is_immortal = false;
+            this.chain_bullets_timeout = null;
+        }, 6000)
+        current_cooldowns["ChainBullets"] = 6000;
     },
+
     activate_explosive_bullets: function() {
+        if (this.explosive_bullets_timeout) {
+            clearTimeout(this.explosive_bullets_timeout);
+        }
+        
+        //Explosive bullets
 
+        this.explosive_bullets_timeout = setTimeout(() => {
+            player_turret.is_immortal = false;
+            this.explosive_bullets_timeout = null;
+        }, 6000)
+        current_cooldowns["ExplosiveBullets"] = 6000;
     },
+
     activate_aimbot: function() {
-        Planes.forEach(plane => {
-            console.log(plane.get_distance_to_player());
-        })
+        if (this.explosive_bullets_timeout) {
+            clearTimeout(this.explosive_bullets_timeout);
+        }
+        
+        //Auto Aim
+        camera.auto_aim = true;
+
+        this.aimbot_timeout = setTimeout(() => {
+            camera.auto_aim = false;
+            this.aimbot_timeout = null;
+        }, 6000)
+        current_cooldowns["Aimbot"] = 6000;
     },
+
     activate_immortality: function() {
         if (this.immortality_timeout) {
             clearTimeout(this.immortality_timeout);
@@ -461,14 +519,14 @@ const buff_handler = {
         Planes.forEach(plane => {
             plane.scaling_factor = 0.09;
             plane.acceleration_y = 20;
-            plane.sprite.frame_rate = 50;
+            plane.is_slow = true;
         })
 
         this.slow_timeout = setTimeout(() => {
             Planes.forEach(plane => {
                 plane.scaling_factor = 0.18;
                 plane.acceleration_y = 40;
-                plane.sprite.frame_rate = 100;
+                plane.is_slow = false;
             })
             this.slow_timeout = null;
         }, 6000)
@@ -493,7 +551,7 @@ const shoot_speed_icon = new Image();
 const score_multiplier_icon = new Image();
 const time_stop_icon = new Image();
 const chain_bullets_icon = new Image();
-//const explosive_bullets_icon = new Image(); - Missing
+const explosive_bullets_icon = new Image();
 const aimbot_icon = new Image();
 const immortality_icon = new Image();
 const slow_icon = new Image();
@@ -502,18 +560,18 @@ shoot_speed_icon.src = "Assets/buff_icons/shooter-speed.png";
 score_multiplier_icon.src = "Assets/buff_icons/shooter-2x.png";
 time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ;
 chain_bullets_icon.src = "Assets/buff_icons/shooter-lightning.png" ;
-//explosive_bullets_icon.src = "Assets/buff_icons/.png";
+explosive_bullets_icon.src = "Assets/buff_icons/shooter-boomboom.png";
 aimbot_icon.src = "Assets/buff_icons/shooter-aimbot.png" ;
 immortality_icon.src = "Assets/buff_icons/shooter-immortal.png" ;
 slow_icon.src = "Assets/buff_icons/shooter-slow.png"; 
 
 //One shot icons (Popup)
 const health_up_icon = new Image();
-//const screen_aoe_icon = new Image(); - Missing
+const screen_aoe_icon = new Image();
 const random_buffs_icon = new Image();
 
 health_up_icon.src = "Assets/buff_icons/shooter-heal.png";
-//screen_aoe_icon.src = "Assets/buff_icons/shooter-";
+screen_aoe_icon.src = "Assets/buff_icons/shooter-blank.png";
 random_buffs_icon.src = "Assets/buff_icons/shooter-random.png";
 
 //Buff cooldowns
@@ -523,7 +581,7 @@ const buff_icons = {
     "ScoreMultiplier" : score_multiplier_icon,
     "TimeStop" : time_stop_icon,
     "ChainBullets" : chain_bullets_icon,
-    //"ExplosiveBullets" : explosive_bullets_icon,
+    "ExplosiveBullets" : explosive_bullets_icon,
     "Aimbot" : aimbot_icon,
     "Immortality" : immortality_icon,
     "Slow" : slow_icon,
@@ -531,7 +589,7 @@ const buff_icons = {
     //One-shot
     "RandomBuffs" : random_buffs_icon,
     "HealthUp" : health_up_icon,
-    //"ScreenAOE" : screen_aoe_icon,
+    "ScreenAOE" : screen_aoe_icon,
 };
 
 const buff_cooldown = {
@@ -578,11 +636,13 @@ const enemy_plane = {
     play_explosion: false,
     is_special: false,
     item: 0,
+    // Plane debuffs
+    time_stopped: false,
+    is_slow: false,
     draw_plane: function() {
-        let sprite = spritesheet;
-        if (this.item.type == "HealthUp") { sprite = heal_plane }
-        if (this.item.type == "ShootingSpeed") { sprite = speed_plane }
-        if (this.item.type == "ScoreMultiplier") { sprite = score_plane }
+        let sprite = new Image();
+        sprite.src = plane_variants[this.item.type];
+        //sprite = plane_variant[this.item.type];
         //console.log(this.item.type);
         ctx.drawImage(
             sprite,
@@ -622,13 +682,12 @@ const enemy_plane = {
     get_col_ypos: function() {
         return this.y - camera.offset_y - this.get_col_height() / 2;
     },
-    get_distance_to_player() {
-        return (this.x);
-    },
     move: function(delta) {
-        this.y += this.acceleration_y * delta;
-        if (this.y > 0) {
-            this.scale_up(delta);
+        if (this.time_stopped == false) {
+            this.y += this.acceleration_y * delta;
+            if (this.y > 0) {
+                this.scale_up(delta);
+            }
         }
         
         // Add camera wrapping for planes
@@ -668,10 +727,8 @@ const enemy_plane = {
         this.play_explosion = false;
         this.explosion.current_frame = 0;
         this.y = 0;
-        if (!buff_handler.slow_timeout || !buff_handler.time_stop_timeout) {
-            this.acceleration_y = 40;
-            this.scaling_factor = 0.18;
-        }
+        this.acceleration_y = 40;
+        this.scaling_factor = 0.18;
         this.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
         this.scale = 0.1;
         this.width = 40;
@@ -1054,7 +1111,9 @@ function game_loop(timestamp) {
     Planes.forEach(plane => {
         if (plane.play_explosion == true) {
             if (timestamp - plane.explosion.last_animation_time > explosion_animation.frame_rate) {
-                plane.explosion.current_frame = (plane.explosion.current_frame + 1) % plane.explosion.total_frames;
+                if (plane.time_stopped == false) {
+                    plane.explosion.current_frame = (plane.explosion.current_frame + 1) % plane.explosion.total_frames;    
+                }
                 plane.explosion.calc_source_position(); // Update source_x
                 plane.explosion.last_animation_time = timestamp;
             }
@@ -1067,8 +1126,10 @@ function game_loop(timestamp) {
             plane.reset();
         }
         } else {
-            if (timestamp - plane.sprite.last_animation_time > plane_animation.frame_rate) {
-                plane.sprite.current_frame = (plane.sprite.current_frame + 1) % plane.sprite.total_frames;
+            if (timestamp - plane.sprite.last_animation_time > plane_animation.frame_rate + plane_animation.frame_rate * plane.is_slow) {
+                if (plane.time_stopped == false) {
+                    plane.sprite.current_frame = (plane.sprite.current_frame + 1) % plane.sprite.total_frames;
+                }
                 plane.sprite.calc_source_position(); // Update source_x
                 plane.sprite.last_animation_time = timestamp;
             }
@@ -1123,6 +1184,4 @@ function game_loop(timestamp) {
     requestAnimationFrame(game_loop);
 }
 
-spritesheet.onload = () => {
-    requestAnimationFrame(game_loop);
-}
+requestAnimationFrame(game_loop);

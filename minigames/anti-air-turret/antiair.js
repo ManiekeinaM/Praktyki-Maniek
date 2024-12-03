@@ -6,9 +6,6 @@ const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
 
 
-//Font
-document.fonts.load('20px', 'Determination Mono');
-
 //Entire game window
 const GAME_WINDOW_HEIGHT = canvas.height + canvas.height / 2;
 const GAME_WINDOW_WIDTH = canvasWidth * 7;

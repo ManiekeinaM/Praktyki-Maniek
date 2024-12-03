@@ -4,14 +4,6 @@ body {
     font-family:'Courier New', Courier, monospace;
 }
 
-:root {
-    --blue: #1434B4;
-    --darkblue: #112b95;
-
-    --brown: #CAB282;
-    --darkbrown: #817453;
-}
-
 main {
     display: flex;
     justify-content: center;
@@ -118,15 +110,13 @@ main {
 /* Animacja zmiany gier */
 .games-side section.flappymaniek {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    transition: 0.5s;
+    transform: scale(1);
+    transition: transform 0.5s;
 }
 
 .games-side section.flappymaniek.hidden {
     display: block;
-    transform: translate(-50%, -50%) scale(0);
+    transform: scale(0);
 }
 
 
@@ -216,9 +206,6 @@ header {
     }
     .score.maniek {
         top: 0%;
-    }
-    .legend {
-        margin-top: 1rem;
     }
 
     section.flappymaniek .screen {

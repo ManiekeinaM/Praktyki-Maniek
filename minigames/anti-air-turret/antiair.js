@@ -252,7 +252,7 @@ const camera = {
     shake_timeout: null,
     auto_aim: false,
     update_offset: function(mouse_x, mouse_y, delta) {
-        if (this.auto_aim == false) {
+        //if (this.auto_aim == false) {
             this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
             this.offset_x += mouse_x * this.acceleration_x * delta;
             this.offset_y += mouse_y * this.acceleration_y * delta;
@@ -263,10 +263,10 @@ const camera = {
                 this.offset_y = 0;
             } 
             this.y_offset_scale = 1 - this.offset_y / 1000;
-        } else {
+        //} else {
             get_closest_plane();
-            player_turret.shoot();
-        }
+            //player_turret.shoot();
+        //}
         this.adjust_camera();
     },
     adjust_camera: function() {
@@ -314,7 +314,8 @@ function roll_for_plane() {
     if (roll == 4) {
         let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
         console.log("buff: ", rolled_buff);
-        return rolled_buff;
+        //return rolled_buff;
+        return "Aimbot";
     } else {
         return "none"
     }
@@ -346,12 +347,15 @@ function get_closest_plane() {
             closest_plane = plane;
         }
 
+        console.log("Samolot x: ", Math.floor(plane.x), " Kamera x: ", Math.floor(camera.offset_x));
+        console.log("Samolot y: ", Math.floor(plane.y), " Kamera y: ", Math.floor(camera.offset_y));
+        camera.offset_x = (plane.x - canvasWidth / 2) * -1;
+        camera.offset_y = plane.y - 350; 
+
         if ((plane.x + camera.offset_x) < closest_plane.x && plane.y > 0) {
             // In case planes are out of bounds
-            closest_plane = {x: -plane.x};
         }
     });
-    camera.offset_x = closest_plane.x;
 }
 
 //Buff cooldowns

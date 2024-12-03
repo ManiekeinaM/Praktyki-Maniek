@@ -105,7 +105,7 @@ function update_score_gradually() {
 }
 
 //Highscore table
-let scores_table = document.getElementById("highscoresList");
+let scores_table = document.querySelector(".highscoresList");
 let i = 0;
 
 let BestScores = [];
@@ -252,6 +252,7 @@ const camera = {
     shake_timeout: null,
     auto_aim: false,
     update_offset: function(mouse_x, mouse_y, delta) {
+        console.log(`Plane #0: ${Planes[0].x + this.offset_x - (Planes[0].sprite.frame_width * 0.25 * Planes[0].scale * this.y_offset_scale) / 2}, Camera: ${this.offset_x}`);
         if (this.auto_aim == false) {
             this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
             this.offset_x += mouse_x * this.acceleration_x * delta;
@@ -1026,7 +1027,8 @@ const rotationSpeed = Math.PI / 16;
 const background = new Image();
 //background.src = "Assets/shooter-background.png";
 //background.src = "Assets/Testbg.png";
-background.src = "Assets/Sky_bg.png";
+//background.src = "Assets/Sky_bg.png";
+background.src = "Assets/Calibrationbg.png";
 const background_width = GAME_WINDOW_WIDTH + canvasWidth * 2;
 const background_height = GAME_WINDOW_HEIGHT + canvasHeight / 2;
 const background_x = 0;

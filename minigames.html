@@ -291,6 +291,8 @@
             // Load JS
             const script = document.createElement('script');
             script.src = gameScripts[game];
+            script.src = `${gameScripts[game]}?v=${Math.random()}`;
+            script.type = 'module';
             document.body.appendChild(script);
 
             gamesDone[game] = true;

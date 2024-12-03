@@ -42,8 +42,10 @@
     --darkblue: #112b95;
 
     --coolviolet: rgb(194, 205, 255);
-    --cooldarkviolet: rgb(141, 162, 255);
+    --coolviolet-dark: rgb(141, 162, 255);
 
+    --blandviolet: rgb(193, 199, 224);
+    --blandviolet-dark: rgb(160, 166, 192);
 
     --brown: #CAB282;
     --darkbrown: #817453;

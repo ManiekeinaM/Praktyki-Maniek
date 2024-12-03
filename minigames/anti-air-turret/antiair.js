@@ -253,18 +253,23 @@ const camera = {
     angle: 0,
     is_shaking: false,
     shake_timeout: null,
+    auto_aim: false,
     update_offset: function(mouse_x, mouse_y, delta) {
-        this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
-        this.offset_x += mouse_x * this.acceleration_x * delta;
-        this.offset_y += mouse_y * this.acceleration_y * delta;
-        if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {
-            this.offset_y = -(GAME_WINDOW_HEIGHT - canvasHeight);
-        };
-        if (this.offset_y > 0) {
-            this.offset_y = 0;
-        } 
-        this.y_offset_scale = 1 - this.offset_y / 1000;
-
+        if (this.auto_aim == false) {
+            this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
+            this.offset_x += mouse_x * this.acceleration_x * delta;
+            this.offset_y += mouse_y * this.acceleration_y * delta;
+            if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {
+                this.offset_y = -(GAME_WINDOW_HEIGHT - canvasHeight);
+            };
+            if (this.offset_y > 0) {
+                this.offset_y = 0;
+            } 
+            this.y_offset_scale = 1 - this.offset_y / 1000;
+        } else {
+            get_closest_plane();
+            player_turret.shoot();
+        }
         this.adjust_camera();
     },
     adjust_camera: function() {
@@ -335,6 +340,22 @@ function roll_for_buff() {
 //9. Aimbot (Cooldown)
 //10. Temporary Immortality (Cooldown)
 //11. Slow down partner (Cooldown)
+
+// Used by aimbot
+function get_closest_plane() {
+    let closest_plane = null;
+    Planes.forEach(plane => {
+        if (closest_plane == null) {
+            closest_plane = plane;
+        }
+
+        if ((plane.x + camera.offset_x) < closest_plane.x && plane.y > 0) {
+            // In case planes are out of bounds
+            closest_plane = {x: -plane.x};
+        }
+    });
+    camera.offset_x = closest_plane.x;
+}
 
 //Buff cooldowns
 let current_cooldowns = {
@@ -468,9 +489,10 @@ const buff_handler = {
         }
         
         //Auto Aim
+        camera.auto_aim = true;
 
         this.aimbot_timeout = setTimeout(() => {
-            player_turret.is_immortal = false;
+            camera.auto_aim = false;
             this.aimbot_timeout = null;
         }, 6000)
         current_cooldowns["Aimbot"] = 6000;
@@ -538,7 +560,7 @@ shoot_speed_icon.src = "Assets/buff_icons/shooter-speed.png";
 score_multiplier_icon.src = "Assets/buff_icons/shooter-2x.png";
 time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ;
 chain_bullets_icon.src = "Assets/buff_icons/shooter-lightning.png" ;
-explosive_bullets_icon.src = "Assets/buff_icons/shooter-explosive.png";
+explosive_bullets_icon.src = "Assets/buff_icons/shooter-boomboom.png";
 aimbot_icon.src = "Assets/buff_icons/shooter-aimbot.png" ;
 immortality_icon.src = "Assets/buff_icons/shooter-immortal.png" ;
 slow_icon.src = "Assets/buff_icons/shooter-slow.png"; 
@@ -549,7 +571,7 @@ const screen_aoe_icon = new Image();
 const random_buffs_icon = new Image();
 
 health_up_icon.src = "Assets/buff_icons/shooter-heal.png";
-screen_aoe_icon.src = "Assets/buff_icons/shooter-aoe";
+screen_aoe_icon.src = "Assets/buff_icons/shooter-blank.png";
 random_buffs_icon.src = "Assets/buff_icons/shooter-random.png";
 
 //Buff cooldowns
@@ -659,9 +681,6 @@ const enemy_plane = {
     },
     get_col_ypos: function() {
         return this.y - camera.offset_y - this.get_col_height() / 2;
-    },
-    get_distance_to_player() {
-        return (this.x);
     },
     move: function(delta) {
         if (this.time_stopped == false) {

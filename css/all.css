@@ -985,6 +985,7 @@ div.reset {
                 0 0 2px black;
 }
 
+
 .highscoresList > div:nth-child(even) {
     background-color: var(--lightblue-bg);
 }

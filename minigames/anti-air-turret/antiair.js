@@ -6,9 +6,6 @@ const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
 
 
-//Font
-document.fonts.load('20px', 'Determination Mono');
-
 //Entire game window
 const GAME_WINDOW_HEIGHT = canvas.height + canvas.height / 2;
 const GAME_WINDOW_WIDTH = canvasWidth * 7;
@@ -108,7 +105,7 @@ function update_score_gradually() {
 }
 
 //Highscore table
-let scores_table = document.getElementById("highscoresList");
+let scores_table = document.querySelector(".highscoresList");
 let i = 0;
 
 let BestScores = [];
@@ -255,7 +252,7 @@ const camera = {
     shake_timeout: null,
     auto_aim: false,
     update_offset: function(mouse_x, mouse_y, delta) {
-        if (this.auto_aim == false) {
+        //if (this.auto_aim == false) {
             this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
             this.offset_x += mouse_x * this.acceleration_x * delta;
             this.offset_y += mouse_y * this.acceleration_y * delta;
@@ -266,10 +263,10 @@ const camera = {
                 this.offset_y = 0;
             } 
             this.y_offset_scale = 1 - this.offset_y / 1000;
-        } else {
+        //} else {
             get_closest_plane();
-            player_turret.shoot();
-        }
+            //player_turret.shoot();
+        //}
         this.adjust_camera();
     },
     adjust_camera: function() {
@@ -317,7 +314,8 @@ function roll_for_plane() {
     if (roll == 4) {
         let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
         console.log("buff: ", rolled_buff);
-        return rolled_buff;
+        //return rolled_buff;
+        return "Aimbot";
     } else {
         return "none"
     }
@@ -349,12 +347,15 @@ function get_closest_plane() {
             closest_plane = plane;
         }
 
+        console.log("Samolot x: ", Math.floor(plane.x), " Kamera x: ", Math.floor(camera.offset_x));
+        console.log("Samolot y: ", Math.floor(plane.y), " Kamera y: ", Math.floor(camera.offset_y));
+        camera.offset_x = (plane.x - canvasWidth / 2) * -1;
+        camera.offset_y = plane.y - 350; 
+
         if ((plane.x + camera.offset_x) < closest_plane.x && plane.y > 0) {
             // In case planes are out of bounds
-            closest_plane = {x: -plane.x};
         }
     });
-    camera.offset_x = closest_plane.x;
 }
 
 //Buff cooldowns
@@ -1029,7 +1030,8 @@ const rotationSpeed = Math.PI / 16;
 const background = new Image();
 //background.src = "Assets/shooter-background.png";
 //background.src = "Assets/Testbg.png";
-background.src = "Assets/Sky_bg.png";
+//background.src = "Assets/Sky_bg.png";
+background.src = "Assets/Calibrationbg.png";
 const background_width = GAME_WINDOW_WIDTH + canvasWidth * 2;
 const background_height = GAME_WINDOW_HEIGHT + canvasHeight / 2;
 const background_x = 0;

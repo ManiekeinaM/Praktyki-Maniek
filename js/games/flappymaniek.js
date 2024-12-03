@@ -179,7 +179,7 @@ function movePipes(deltaTime) {
 
         // Check if the bird passed through the gap
         if (newLeft < 5 && !pipe.givenPoints) {
-            incrementHighscore();
+            incrementScore();
             pipe.givenPoints = true;
         }
     }
@@ -211,100 +211,26 @@ function collisionDetection() {
 }
 
 
-// Highscore
-
+// Highscore system
 let currentScore = 0;
+
+import { HighScores } from '../highscores.js';
+const highscoresList = document.querySelector('.highscoresList');
+const highscoreManager = new HighScores('flappy-highscores');
 
 const gameover = document.querySelector('.flappymaniek .screen .gameover');
 const highscore = document.querySelector('.flappymaniek .screen .highscore');
-const highscoresList = document.querySelector('.highscoresList');
 
-const HIGHSCORES_COOKIE_NAME = 'flappy-highscores';
-let highscores = JSON.parse(getCookie(HIGHSCORES_COOKIE_NAME) || '[]');
+highscoreManager.updateHighscoresList(highscoresList);
 
-function updateHighscores() {
-    highscoresList.innerHTML = '';
-
-    for (let i = 0; i < highscores.length; i++) {
-        let div = document.createElement('div');
-
-        let scoreEntry = highscores[i];
-        if (scoreEntry.score !== undefined && scoreEntry.date) {
-            let timeDiff = Date.now() - new Date(scoreEntry.date).getTime();
-            let minutes = Math.floor(timeDiff / (1000 * 60))
-            let hours = Math.floor(minutes / 60);
-            let days = Math.floor(hours / 24);
-            let dateText = '';
-
-            if (minutes < 1) {
-                dateText = 'przed chwilą';
-            } else if (minutes < 60) {
-                let subtext = '';
-                if (minutes === 1)
-                    subtext = 'ę';
-                else if (minutes < 5)
-                    subtext = 'y';
-
-                dateText = `${minutes} minut${subtext} temu`;
-            } else if (hours < 24) {
-                let subtext = '';
-                if (hours === 1)
-                    subtext = 'ę';
-                else if (hours < 5)
-                    subtext = 'y';
-
-                dateText = `${hours} godzin${subtext} temu`;
-            } else {
-                let subtext = '';
-                if (days === 1)
-                    subtext = 'zień';
-                else
-                    subtext = 'ni';
-
-                dateText = `${days} d${subtext} temu`;
-            }
-
-            
-            let p = document.createElement('p');
-            p.innerHTML = `#${i + 1}: ${scoreEntry.score} pkt`;
-            let time = document.createElement('p');
-            time.classList.add('scoreTime');
-            time.innerHTML = `(${dateText})`;
-            console.log("scoreEntry with time");
-            
-            div.appendChild(p);
-            div.appendChild(time);
-        } else if (scoreEntry.score !== undefined) {
-            let p = document.createElement('p');
-            p.innerText = `#${i + 1}: ${scoreEntry.score} pkt`;
-            console.log("scoreEntry score");
-
-            div.appendChild(p);
-        } else if (scoreEntry !== undefined) {
-            let p = document.createElement('p');
-            p.innerText = `#${i + 1}: ${scoreEntry} pkt`;
-            console.log(scoreEntry);
-
-            div.appendChild(p);
-        }
-
-        highscoresList.appendChild(div);
-    }
-
-    
-}
-updateHighscores();
-
-function incrementHighscore() {
+function incrementScore() {
     currentScore++;
     highscore.innerText = currentScore;
 }
 
 // Game loop
-
 let running = false;
 let frameCount = 0;
-
 let fallInterval;
 
 let restartDebounce = false;
@@ -331,7 +257,7 @@ function restart() {
     // Reset highscore
     highscore.innerText = `0`;
     currentScore = 0;
-    updateHighscores();
+    highscoreManager.updateHighscoresList(highscoresList);
 
     if (fallInterval) {
         // Stop falling animation
@@ -351,21 +277,10 @@ function death() {
 
     highscore.innerText = `${currentScore}`
 
-    // Add the current score to the high scores and sort the array in descending order
-    highscores.push({ score: currentScore, date: new Date() });
-    highscores.sort((a, b) => {
-        const scoreA = a.score !== undefined ? a.score : a;
-        const scoreB = b.score !== undefined ? b.score : b;
-        return scoreB - scoreA;
-    });
+    // Add the current score to the high scores
+    highscoreManager.addScore(currentScore);
 
-    // Keep only the top 5 scores
-    highscores = highscores.slice(0, 5);
-
-    // Store the high scores in a cookie
-    setCookie(HIGHSCORES_COOKIE_NAME, JSON.stringify(highscores), 9999);
-
-    updateHighscores();
+    highscoreManager.updateHighscoresList(highscoresList);
 
     // Add falling animation
     fallInterval = setInterval(() => {

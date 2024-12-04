@@ -123,6 +123,7 @@ const WORDS_SEGREGATED = {
 
 let GAME_STARTED = true;
 let CURRENT_WORD = '';
+let CURRENT_WORD_VISUAL = '';
 let CURRENT_CATEGORY = '';
 let lettersToGuess = {};
 let FAILS = 0; // 6 fails = lose
@@ -155,7 +156,7 @@ function makeGuess(letterButton) {
         if (checkingLetter === letter) {
             const letterBox = letters.querySelector(`.letter[data-id="${i}"]`);
             if (letterBox.textContent !== '') continue;
-            letterBox.textContent = letter;
+            letterBox.textContent = CURRENT_WORD_VISUAL.at(i);
         }
     }
 
@@ -215,7 +216,7 @@ const explosion = document.querySelector('.explosion');
 function lose() {
     explosion.classList.add('explode');
 
-    result.innerText = `Słowem było: ${CURRENT_WORD}`;
+    result.innerText = `Słowem było: ${CURRENT_WORD_VISUAL}`;
     setTimeout(startGame, 5000);
 }
 
@@ -254,9 +255,6 @@ function setupGuessBoard() {
         box.classList.add('letter');
         box.dataset.id = i;
         letters.appendChild(box);
-        if (i==0 && CURRENT_CATEGORY === 'imiona') {
-            box.style.textTransform = 'capitalize';
-        }
     }
 
 
@@ -270,6 +268,9 @@ function startGame() {
     GAME_STARTED = true;
     let { category, word } = getRandomWord();
     CURRENT_WORD = word;
+    if (category === 'imiona')
+        CURRENT_WORD_VISUAL = CURRENT_WORD.charAt(0).toUpperCase() + CURRENT_WORD.slice(1);
+
     CURRENT_CATEGORY = category;
 
     for (const letter of CURRENT_WORD) {

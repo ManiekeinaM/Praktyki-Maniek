@@ -1,9 +1,9 @@
 
 
 .games-side.hardestgame, .maniek-side.hardestgame {
-    background-color: var(--coolviolet);
-    border-color: var(--coolviolet-dark);
-    border-width: 0.5rem;
+    background-color: var(--soft-violet);
+    border-color: var(--soft-violet-dark);
+    /* border-width: 0.5rem; */
 }
 
 .games-side.hardestgame {

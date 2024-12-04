@@ -43,15 +43,18 @@
 
     --coolviolet: rgb(194, 205, 255);
     --coolviolet-dark: rgb(141, 162, 255);
-
     --blandviolet: rgb(193, 199, 224);
     --blandviolet-dark: rgb(160, 166, 192);
+    --soft-violet: #8A7CA8;
+    --soft-violet-dark: #72658A;
 
     --brown: #CAB282;
     --darkbrown: #817453;
     --darkbrown-transparent: rgba(129, 116, 83, 0.25);
     --green: rgb(87, 172, 39);
     --lightgreen: rgb(153, 243, 101);
+
+    
 
 
     --zsp-font: 'Raleway', 'sans-serif';
@@ -651,7 +654,7 @@ div.reset {
 /* Navigation container */
 .navigation-container {
     position: fixed;
-    font-size: 16px;
+    /* font-size: 16px; */
 
     top: calc(100% - 1rem);
     left: 50%;
@@ -687,8 +690,8 @@ div.reset {
 .button {
     position: relative;
 
-    height: 4em;
-    width: 4em;
+    height: 4rem;
+    width: 4rem;
     margin: 0.5rem;
     border-radius: 100%;
 
@@ -1020,5 +1023,11 @@ div.reset {
 @media (max-width: 400px) {
     html {
         font-size: 8px;
+    }
+}
+
+@media (min-width: 2000px) {
+    html {
+        font-size: 24px;
     }
 }

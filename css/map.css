@@ -413,7 +413,6 @@ img::selection {
     /* background-color: lightgray; */
     /* border: 2px solid gray; */
     background-color: rgba(100,100,100,0.1);
-    backdrop-filter: blur(4px);
     border-radius: 4rem;
     margin: 1rem;
     
@@ -471,7 +470,6 @@ div.reset {
     margin: 0;
     top: 100%;
     background-color: rgba(100,100,100,0.1);
-    backdrop-filter: blur(4px);
 
     width: 5rem;
     height: 3.5rem;

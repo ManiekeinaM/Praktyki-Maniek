@@ -174,13 +174,13 @@ main {
 .button {
     position: relative;
 
-    height: 4rem;
-    width: 4rem;
-    margin: 0.5rem;
+    height: 4em;
+    width: 4em;
+    margin: 0.5em;
     border-radius: 100%;
 
     background-color: var(--lightblue-bg);
-    border: 0.2rem solid rgba(56, 92, 255, 0.5);
+    border: 0.2em solid rgba(56, 92, 255, 0.5);
 
     display: flex;
     justify-content: center;
@@ -191,7 +191,7 @@ main {
 }
 
 .button:hover {
-    border: 0.5rem solid rgba(56,92,255,0.6);
+    border: 0.5em solid rgba(56,92,255,0.6);
 }
 
 .button img {
@@ -264,9 +264,9 @@ main {
     position: fixed;
     /* font-size: 16px; */
 
-    top: calc(100% - 1rem);
+    bottom: 1em;
     left: 50%;
-    transform: translate(-50%, -100%);
+    transform: translate(-50%, 0%);
 
     height: 4em;
     width: 32em;
@@ -518,6 +518,9 @@ main {
         margin: 1rem;
         height: calc(100vh - 2rem);
     }
+    .navigation-container {
+        font-size: 14px;
+    }
 }
 
 @media (max-width: 400px) {
@@ -525,6 +528,8 @@ main {
         font-size: 8px;
     }
 }
+
+/* Scale up */
 
 @media (min-width: 2000px) {
     html {

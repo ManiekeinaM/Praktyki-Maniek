@@ -249,6 +249,7 @@ const camera = {
         let y_aim_acceleration = 500;
 
         let desired_offset = get_closest_plane();
+        if (desired_offset == null) return;
         let distance_x = desired_offset.x - this.offset_x;
         let distance_y = desired_offset.y - this.offset_y;
 
@@ -355,14 +356,16 @@ function get_closest_plane() {
     let new_offset = {x: 0, y: 0};
 
     Planes.forEach(plane => {
+        if (plane.play_explosion) {
+            return;
+        }
+
         if (closest_plane == null) {
             closest_plane = plane;
             closest_to_y = plane.y;
         }
 
-        if (plane.play_explosion) {
-            return;
-        }
+        
 
         if (plane.y > closest_to_y && plane.play_explosion == false) {
             closest_plane = plane;
@@ -370,7 +373,7 @@ function get_closest_plane() {
         }
     });
 
-    console.log(closest_plane);
+    if (closest_plane == null) return null;
 
     new_offset.x = (closest_plane.x - canvasWidth / 2) * -1;
     new_offset.y = closest_plane.y - 350;
@@ -1241,12 +1244,13 @@ function game_loop(timestamp) {
 
     Planes.forEach(plane => {
         if (plane.play_explosion == true) {
+            console.log("Jebut [", Planes.indexOf(plane), "] : ", plane.play_explosion);
             if (timestamp - plane.explosion.last_animation_time > explosion_animation.frame_rate) {
                 if (plane.time_stopped == false) {
                     plane.explosion.current_frame = (plane.explosion.current_frame + 1) % plane.explosion.total_frames;    
                 }
                 plane.explosion.calc_source_position(); // Update source_x
-                plane.explosion.last_animation_time = timestamp;
+                plane.explosion.lst_animation_time = timestamp;
             }
         plane.scaling_factor = 0.0;
         plane.acceleration_y = 0;

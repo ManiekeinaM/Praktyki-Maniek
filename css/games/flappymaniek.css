@@ -10,6 +10,54 @@
     }
 }
 
+
+section.flappymaniek .tv {
+    box-sizing: border-box;
+    position: relative;
+    padding: 0.75em;
+    background-color: #444;
+    border: 0.5em solid #333;
+    border-radius: 3rem;
+}
+.antennas, .stands {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 60%;
+    transform: translate(-50%, -100%);
+    z-index: 1;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.antennas div, .stands div {
+    width: 5em;
+    height: 1em;
+    padding: 0.25em;
+    border: 0.25em solid #333;
+    background-color: #444;
+}
+.antennas div:first-child {
+    transform: rotate(45deg);
+}
+.antennas div:last-child {
+    transform: rotate(-45deg);
+}
+
+.stands {
+    transform: translate(-50%, 100%);
+    width: 90%;
+    bottom: 0;
+    top: unset;
+}
+.stands div:first-child {
+    transform: rotate(-75deg);
+}
+.stands div:last-child {
+    transform: rotate(75deg);
+}
+
 section.flappymaniek .screen {
     position: relative;
     background-color: var(--lightblue-bg);
@@ -28,7 +76,9 @@ section.flappymaniek .screen {
     animation: moveBackground 4s linear infinite;
 
     overflow: hidden;
+    z-index: 3;
 }
+
 
 @media (max-aspect-ratio: 5/4) and (min-width: 501px) {
     section.flappymaniek .screen {

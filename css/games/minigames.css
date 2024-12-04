@@ -179,8 +179,8 @@ header {
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
 
     /* border: 2rem solid var(--coolviolet); */
 
@@ -188,17 +188,18 @@ header {
     justify-content: center;
     align-items: center;
 
-    transition: backdrop-filter 0.5s;
-    background-color: rgba(194, 205, 255, 0.5);
+    background-color: rgba(50,50,50, 0.5);
     backdrop-filter: blur(2px);
 
     text-align: center;
-
     z-index: 11;
+    transition: backdrop-filter 0.25s, background-color 0.25s;
 }
 
 #game-overlay.hidden {
     backdrop-filter: blur(0px);
+    z-index: -1;
+    background-color: transparent;
     display: none;
 }
 
@@ -211,22 +212,42 @@ header {
 }
 #game-overlay > .paused > h1 {
     margin: 1rem;
-    font-size: 3rem;
+    font-size: 5rem;
     font-family: var(--maniek-font);
     font-weight: 500;
     color: var(--coolviolet);
-    text-shadow: 0 0 2px black,
-    0 0 2px black,
-    0 0 2px black,
-    0 0 2px black,
-    0 0 2px black,
-    0 0 2px black,
-    0 0 2px black;
+    text-shadow: 0 0 3px black,
+            0 0 3px black,
+            0 0 3px black,
+            0 0 3px black,
+            0 0 3px black,
+            0 0 3px black,
+            0 0 3px black;
 }
 
+#game-overlay button {
+    font-family: var(--zsp-font);
+    padding: 1rem 1.5rem;
+
+    text-align: center;
+    font-weight: bolder;
+
+    background-color: #eee;
+    border: 0.25rem solid black;
+    font-size: 1rem;
+    border-radius: 1rem;
+}
+
+/* Body changing colors whilst paused */
 body:not(:has(#game-overlay.hidden)) {
     background-color: var(--coolviolet);
 }
+
+
+
+
+
+
 
 
 

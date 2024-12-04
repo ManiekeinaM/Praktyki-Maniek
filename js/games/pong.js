@@ -299,8 +299,12 @@ const leftPaddle = new Paddle(10, height/2, sizePaddle.width, sizePaddle.height,
 const rightPaddle = new Paddle(width - 60, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle2.png');
 
 
-
+let shouldResize = false;
 function resizeCanvas() {
+    if (!isGameStillPong) {
+        shouldResize = true;
+        return;
+    }
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     width = canvas.width;
@@ -368,6 +372,7 @@ canvas.addEventListener('touchmove', e => {
 
 function movePaddles(deltaTime) {
     // leftPaddle.x = mouseX - sizePaddle.width/2;
+    console.log(leftPaddle.x, rightPaddle.x);
     leftPaddle.y = mouseY - leftPaddle.height/2;
 
     //createRocket(-1);
@@ -554,6 +559,9 @@ function animate(timestamp) {
         requestAnimationFrame(animate);
         return;
     }
+
+    if (shouldResize)
+        resizeCanvas();
     
 
     // Animations/timers

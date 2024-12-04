@@ -313,18 +313,17 @@ const camera = {
 //hydro
 
 //Buff list 
-const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "TimeStop", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow"];
-
+//const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "TimeStop", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow"];
+const buff_list = ["Aimbot", "TimeStop"];
 //Roll for plane type
 function roll_for_plane() {
-    //let roll = Math.floor(Math.random() * 5 + 1);
     let roll = 4;
+    //let roll = Math.floor(Math.random() * 5 + 1);
     //console.log("Los: ",roll);
     if (roll == 4) {
         let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
         //console.log("buff: ", rolled_buff);
-        //return rolled_buff;
-        return "Aimbot";
+        return rolled_buff;
     } else {
         return "none"
     }
@@ -355,15 +354,14 @@ function get_closest_plane() {
     let closest_to_y;
     let new_offset = {x: 0, y: 0};
 
-    let offset_to_plane = {x: 0, y: 0};
-    let distance_to_x = 0;
-    let distance_to_y = 0; 
-    let distance_to_plane = 0;
-
     Planes.forEach(plane => {
         if (closest_plane == null) {
             closest_plane = plane;
             closest_to_y = plane.y;
+        }
+
+        if (plane.play_explosion) {
+            return;
         }
 
         if (plane.y > closest_to_y && plane.play_explosion == false) {
@@ -371,6 +369,8 @@ function get_closest_plane() {
             closest_to_y = plane.y;
         }
     });
+
+    console.log(closest_plane);
 
     new_offset.x = (closest_plane.x - canvasWidth / 2) * -1;
     new_offset.y = closest_plane.y - 350;
@@ -483,6 +483,7 @@ const buff_handler = {
         
         //Chain bullets
 
+
         this.chain_bullets_timeout = setTimeout(() => {
             player_turret.is_immortal = false;
             this.chain_bullets_timeout = null;
@@ -496,9 +497,11 @@ const buff_handler = {
         }
         
         //Explosive bullets
+        player_turret.bullets_type = "explosive";
 
         this.explosive_bullets_timeout = setTimeout(() => {
             player_turret.is_immortal = false;
+            player_turret.bullets_type = "regular";
             this.explosive_bullets_timeout = null;
         }, 6000)
         current_cooldowns["ExplosiveBullets"] = 6000;
@@ -778,6 +781,34 @@ const turret_animation = {
     },
 }
 
+//Explosion effects for explosive bullets buff
+const Explosions = [];
+const explosion_effect = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    animation: 0,
+    draw: function() {
+        // Add camera wrapping for planes
+        if (this.x + camera.offset_x > MAX_CAMERA_OFFSET_X) 
+            this.x = this.x - TOTAL_GAME_WIDTH;
+        
+        if (this.x + camera.offset_x < MIN_CAMERA_OFFSET_X) 
+            this.x = this.x + TOTAL_GAME_WIDTH;
+
+        ctx.drawImage(
+            explosion_img,
+            this.animation.source_x, this.animation.source_y,
+            this.animation.frame_width, this.animation.frame_height,
+            this.x + camera.offset_x,
+            this.y - camera.offset_y,
+            this.width, this.height,
+        ); 
+        console.log(camera.offset_x);
+    }
+}
+
 //Player obj
 let turret_is_shooting = false;
 
@@ -794,6 +825,7 @@ const player_turret = {
     speed_timeout: null,
     score_timeout: null,
     is_immortal: false,
+    bullets_type: "regular",
     draw: function() {
         let x = this.x - turret_inactive_width / 2;
         let y = this.y - turret_inactive_height;
@@ -820,19 +852,83 @@ const player_turret = {
             let plane_col_x2 = plane_col_x + plane.get_col_width();
             let plane_col_y = plane.get_col_ypos();
             let plane_col_y2 = plane_col_y + plane.get_col_height();
+
+            let plane_hit = false;
+
+            //Explosive detection
+            /*
+                X Y - - - - X2
+                 |          |
+                 |          |
+                 |          |
+                 Y2 - - - - +
+
+                S > X && S < X2
+                S > Y && S < Y2
+            */
+            if (this.bullets_type == "explosive") {
+                let explosion_width = 200 * width_upscale / (camera.y_offset_scale * 0.75);
+                let explosion_height = 150 * height_upscale / (camera.y_offset_scale * 0.75);
+                let explosion_xstart = last_scope_anchor_x - explosion_width / 2;
+                let explosion_ystart = last_scope_anchor_y - explosion_height / 2;
+                let explosion_xend = last_scope_anchor_x + explosion_width / 2;
+                let explosion_yend = last_scope_anchor_y + explosion_height / 2;
+
+                let explosion =  {...explosion_effect};
+                explosion.animation = {...explosion_animation};
+                explosion.x = explosion_xstart - camera.offset_x;
+                explosion.y = explosion_ystart + camera.offset_y;
+                explosion.width = explosion_width;
+                explosion.height = explosion_height;
+
+                Explosions.push(explosion);
+
+
+            
+
+                ctx.fillStyle = "rgba('255','0','0','50')";
+                ctx.fillRect(explosion_xstart, explosion_ystart, explosion_width, explosion_height);
+                if(
+                   (
+                    explosion_xstart < plane_col_x + plane.get_col_width() &&
+                    explosion_xstart + explosion_width > plane_col_x &&
+                    explosion_ystart < plane_col_y + plane.get_col_height() &&
+                    explosion_ystart + explosion_height > plane.get_col_width()
+                   )  
+                ) {
+                    plane_hit = true;
+                }
+            }
+
+            // Regular detection
             if (
+                /*
+                X Y - - - - X2
+                 | S        |
+                 |          |
+                 |          |
+                 Y2 - - - - +
+
+                S > X && S < X2
+                S > Y && S < Y2
+                */
                 (plane.play_explosion == false) && 
                 (last_scope_anchor_x > plane_col_x) && 
                 (last_scope_anchor_x < plane_col_x2) &&
                 (last_scope_anchor_y > plane_col_y) && 
                 (last_scope_anchor_y < plane_col_y2)
             ) {
+                plane_hit = true;
+            }
+            
+            if (plane_hit) {
                 game.update_score(50 * this.score_multiplier);
                 if (plane.play_explosion == false) {
                 //console.log(plane.item);
                 plane.item.use();
                 }
                 plane.play_explosion = true;
+                plane_hit = false;
             }
         })
     },
@@ -861,7 +957,6 @@ const player_turret = {
         this.lives = 3;
     }
 }
-
 
 const scope_icon = new Image();
 scope_icon.src = "Assets/celownik.png";
@@ -1131,6 +1226,19 @@ function game_loop(timestamp) {
     ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height); 
 
     //Handle animations
+    Explosions.forEach(puff => {
+        if (timestamp - puff.animation.last_animation_time > puff.animation.frame_rate) {
+            puff.animation.current_frame = (puff.animation.current_frame + 1) % puff.animation.total_frames;
+            puff.animation.calc_source_position();
+            puff.animation.last_animation_time = timestamp;
+        }
+        puff.draw();
+
+        if (puff.animation.current_frame == 5) {
+            Explosions.splice(Explosions.indexOf(puff), 1);
+        }
+    })
+
     Planes.forEach(plane => {
         if (plane.play_explosion == true) {
             if (timestamp - plane.explosion.last_animation_time > explosion_animation.frame_rate) {

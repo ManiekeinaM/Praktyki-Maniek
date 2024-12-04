@@ -1,3 +1,5 @@
+const gameOverlay = document.querySelector('#game-overlay'); // pause menu
+
 // Set up canvas
 const canvas = document.querySelector('#game-canvas');
 const ctx = canvas.getContext('2d', {willReadFrequently: true});
@@ -20,8 +22,9 @@ function addScore(side, amount) {
     document.querySelector(`.${side}-score`).textContent = pongScores[side];
 }
 
-// QUADTREE IMPLEMENTATION
 
+
+// QUADTREE IMPLEMENTATION
 class Rectangle {
     constructor(x, y, width, height) {
         this.x = x; // center x
@@ -125,7 +128,12 @@ class Quadtree {
     }
 }
 
-
+document.addEventListener('keydown', e => {
+    if (e.key == 'p') {
+        gameOverlay.classList.toggle('hidden');
+        isGamePaused = !isGamePaused;
+    }
+})
 
 
 

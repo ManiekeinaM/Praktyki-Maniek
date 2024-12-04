@@ -79,7 +79,7 @@ body {
     font-family: var(--zsp-font);
     height: 100vh;
     background-color: rgb(230,230,230);
-    transition: background-color 1s;
+    transition: background-color 0.25s;
 }
 
 .enter-fullscreen {

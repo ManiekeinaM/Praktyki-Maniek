@@ -251,23 +251,60 @@ const camera = {
     is_shaking: false,
     shake_timeout: null,
     auto_aim: false,
+    desired_offset: 0,
     update_offset: function(mouse_x, mouse_y, delta) {
-        //if (this.auto_aim == false) {
-            this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
-            this.offset_x += mouse_x * this.acceleration_x * delta;
-            this.offset_y += mouse_y * this.acceleration_y * delta;
-            if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {
-                this.offset_y = -(GAME_WINDOW_HEIGHT - canvasHeight);
-            };
-            if (this.offset_y > 0) {
-                this.offset_y = 0;
-            } 
-            this.y_offset_scale = 1 - this.offset_y / 1000;
-        //} else {
-            get_closest_plane();
-            //player_turret.shoot();
-        //}
+        console.log(this.auto_aim); 
+        if (this.auto_aim == true) {
+            this.move_toward_plane(delta);
+            this.adjust_camera();
+            return;
+        }
+        this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
+        this.offset_x += mouse_x * this.acceleration_x * delta;
+        this.offset_y += mouse_y * this.acceleration_y * delta;
+        if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {
+            this.offset_y = -(GAME_WINDOW_HEIGHT - canvasHeight);
+        };
+        if (this.offset_y > 0) {
+            this.offset_y = 0;
+        } 
+        this.y_offset_scale = 1 - this.offset_y / 1000;
+
         this.adjust_camera();
+    },
+    move_toward_plane(delta) {
+        let x_aim_acceleration = 2000;
+        let y_aim_acceleration = 500;
+
+        let desired_offset = get_closest_plane();
+        let distance_x = desired_offset.x - this.offset_x;
+        let distance_y = desired_offset.y - this.offset_y;
+
+        let x_offset_calc = Math.sign(distance_x) * x_aim_acceleration * delta;
+        let y_offset_calc = Math.sign(distance_y) * y_aim_acceleration * delta 
+        this.offset_x += x_offset_calc;
+        this.offset_y += y_offset_calc;
+
+        //Check if next calc won't overshoot
+        if (
+            Math.sign(distance_x) == 1 && desired_offset.x - (this.offset_x + x_offset_calc) < 0 ||
+            Math.sign(distance_x) == -1 && desired_offset.x - (this.offset_x + x_offset_calc) > 0) {
+            this.offset_x = desired_offset.x;
+        } 
+        if (Math.sign(distance_y) == 1 && desired_offset.y - (this.offset_y + y_offset_calc) < 0 ||
+            Math.sign(distance_y) == -1 && desired_offset.y - (this.offset_y + y_offset_calc) > 0) {
+            this.offset_y = desired_offset.y;
+        }
+
+        //Shoot if on target
+        //console.log(distance_x <= 50, " , ", distance_x >= -50, " , ",distance_y >= 50, " , ",distance_y <= -50);
+        if (distance_x <= 50 && distance_x >= -50 && distance_y <= 80 && distance_y >= -80) {
+            turret_is_shooting = true;
+            player_turret.shoot(scope_anchor.x + scope_width / 2, scope_anchor.y + scope_height / 2);
+            //stop_animation = false;
+        } else {
+            //stop_animation = true;
+        }
     },
     adjust_camera: function() {
         if (this.offset_x > MAX_CAMERA_OFFSET_X) {
@@ -310,10 +347,10 @@ const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp"
 function roll_for_plane() {
     //let roll = Math.floor(Math.random() * 5 + 1);
     let roll = 4;
-    console.log("Los: ",roll);
+    //console.log("Los: ",roll);
     if (roll == 4) {
         let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
-        console.log("buff: ", rolled_buff);
+        //console.log("buff: ", rolled_buff);
         //return rolled_buff;
         return "Aimbot";
     } else {
@@ -342,20 +379,31 @@ function roll_for_buff() {
 // Used by aimbot
 function get_closest_plane() {
     let closest_plane = null;
+    //let closest_plane_distance = 0;
+    let closest_to_y;
+    let new_offset = {x: 0, y: 0};
+
+    let offset_to_plane = {x: 0, y: 0};
+    let distance_to_x = 0;
+    let distance_to_y = 0; 
+    let distance_to_plane = 0;
+
     Planes.forEach(plane => {
         if (closest_plane == null) {
             closest_plane = plane;
+            closest_to_y = plane.y;
         }
 
-        console.log("Samolot x: ", Math.floor(plane.x), " Kamera x: ", Math.floor(camera.offset_x));
-        console.log("Samolot y: ", Math.floor(plane.y), " Kamera y: ", Math.floor(camera.offset_y));
-        camera.offset_x = (plane.x - canvasWidth / 2) * -1;
-        camera.offset_y = plane.y - 350; 
-
-        if ((plane.x + camera.offset_x) < closest_plane.x && plane.y > 0) {
-            // In case planes are out of bounds
+        if (plane.y > closest_to_y && plane.play_explosion == false) {
+            closest_plane = plane;
+            closest_to_y = plane.y;
         }
     });
+
+    new_offset.x = (closest_plane.x - canvasWidth / 2) * -1;
+    new_offset.y = closest_plane.y - 350;
+
+    return new_offset;
 }
 
 //Buff cooldowns
@@ -485,8 +533,8 @@ const buff_handler = {
     },
 
     activate_aimbot: function() {
-        if (this.explosive_bullets_timeout) {
-            clearTimeout(this.explosive_bullets_timeout);
+        if (this.aimbot_timeout) {
+            clearTimeout(this.aimbot_timeout);
         }
         
         //Auto Aim
@@ -809,7 +857,7 @@ const player_turret = {
             ) {
                 game.update_score(50 * this.score_multiplier);
                 if (plane.play_explosion == false) {
-                console.log(plane.item);
+                //console.log(plane.item);
                 plane.item.use();
                 }
                 plane.play_explosion = true;
@@ -1030,8 +1078,8 @@ const rotationSpeed = Math.PI / 16;
 const background = new Image();
 //background.src = "Assets/shooter-background.png";
 //background.src = "Assets/Testbg.png";
-//background.src = "Assets/Sky_bg.png";
-background.src = "Assets/Calibrationbg.png";
+background.src = "Assets/Sky_bg.png";
+//background.src = "Assets/Calibrationbg.png";
 const background_width = GAME_WINDOW_WIDTH + canvasWidth * 2;
 const background_height = GAME_WINDOW_HEIGHT + canvasHeight / 2;
 const background_x = 0;

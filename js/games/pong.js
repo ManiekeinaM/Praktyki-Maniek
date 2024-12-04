@@ -292,15 +292,19 @@ class Spritesheet {
 // paddleImage.src = './assets/paddle.png';
 
 const MAX_REFLECTION_ANGLE = 75 * Math.PI / 180; // 75 degrees in radians
-const AI_SPEED = 10 * 60 * speedMultiplier;
+const AI_SPEED = 8 * 60 * speedMultiplier;
 const sizePaddle = {width: 50, height: 160};
 
 const leftPaddle = new Paddle(10, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
 const rightPaddle = new Paddle(width - 60, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle2.png');
 
 
-
+let shouldResize = false;
 function resizeCanvas() {
+    if (!isGameStillPong) {
+        shouldResize = true;
+        return;
+    }
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     width = canvas.width;
@@ -368,6 +372,7 @@ canvas.addEventListener('touchmove', e => {
 
 function movePaddles(deltaTime) {
     // leftPaddle.x = mouseX - sizePaddle.width/2;
+    console.log(leftPaddle.x, rightPaddle.x);
     leftPaddle.y = mouseY - leftPaddle.height/2;
 
     //createRocket(-1);
@@ -379,7 +384,11 @@ function movePaddles(deltaTime) {
             //console.log(nearestBall.y, rightPaddle.y, rightPaddle.y + sizePaddle.height);
             let direction = Math.sign(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
             //console.log(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
-            rightPaddle.y += Math.min(AI_SPEED, Math.floor(Math.abs(nearestBall.velocity.y))+2) * direction * deltaTime;
+            let speed = Math.floor(Math.abs(nearestBall.velocity.y))+2;
+            if (speed > AI_SPEED) speed = AI_SPEED;
+            if (speed < AI_SPEED/2) speed = AI_SPEED/2;
+            rightPaddle.y += speed * direction * deltaTime;
+            //console.log(speed);
             return;
         } else if (nearestBall.y > rightPaddle.y + rightPaddle.height/2) {
             rightPaddle.y += AI_SPEED * deltaTime;
@@ -550,6 +559,9 @@ function animate(timestamp) {
         requestAnimationFrame(animate);
         return;
     }
+
+    if (shouldResize)
+        resizeCanvas();
     
 
     // Animations/timers

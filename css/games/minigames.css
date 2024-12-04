@@ -12,7 +12,7 @@ main {
 
 .game-navigation {
     position: absolute;
-    top: 5%;
+    top: 3rem;
     left: 50%;
 
     display: flex;
@@ -70,12 +70,29 @@ main {
     flex-direction: column;
     gap: 0.5rem;
 
-    border-radius: 0px;
     margin: 0;
     height: 100%;
     position: relative;
     animation: popIn 0.25s;
     transition: transform 0.5s, width 0.25s, border 0.25s, background-color 0.25s;
+}
+
+#both-sides {
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 2rem;
+
+    z-index: 1;
+}
+.games-side > *, .maniek-side > * {
+    z-index: 2;
 }
 
 
@@ -195,6 +212,9 @@ header {
     0 0 2px black,
     0 0 2px black;
 }
+
+
+
 
 /* KOMPATYBILNOŚĆ MOBILNA */
 

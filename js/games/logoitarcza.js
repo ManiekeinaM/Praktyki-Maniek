@@ -18,17 +18,21 @@ function setManiekMood(face) {
     maniek.src = maniekFace;
 }
 
-let PLAYER_COOKIE_NAME = 'tic_winsPlayer';
-let MANIEK_COOKIE_NAME = 'tic_winsManiek'
+const TICTACTOE_COOKIE = 'tic_wins';
+let cookie = getCookie(TICTACTOE_COOKIE);
 
-let PLAYER_COOKIE = getCookie(PLAYER_COOKIE_NAME);
-let MANIEK_COOKIE = getCookie(MANIEK_COOKIE_NAME);
-
-// Set the scores here - 0 or automatically remembered thru cookies
-let scores = {
-    1: (PLAYER_COOKIE == '') ? 0 : PLAYER_COOKIE,
-    2: (MANIEK_COOKIE == '') ? 0 : MANIEK_COOKIE,
-}
+// Set the scores here - 0 or automatically remembered thru cookies (WITH BACKWARDS COMPATIBILITY)
+let scores = 
+    cookie.length>0 ? JSON.parse(cookie) : 0
+    || {
+        1: getCookie('tic_winsPlayer') || 0,
+        2: getCookie('tic_winsManiek') || 0,
+    }
+    || {
+        1: 0, 
+        2: 0
+    }
+;
 
 scores[1] = parseInt(scores[1]);
 scores[2] = parseInt(scores[2]);
@@ -36,9 +40,7 @@ updateScore(1); updateScore(2);
 
 
 function updateCookie() {
-    setCookie(PLAYER_COOKIE_NAME, scores[1], 9999);
-    setCookie(MANIEK_COOKIE_NAME, scores[2], 9999);
-    // console.log(document.cookie);
+    setCookie(TICTACTOE_COOKIE, JSON.stringify(scores), 9999);
 }
 
 

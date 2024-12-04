@@ -199,8 +199,6 @@ span.brown {
 }
 
 .score {
-    position: relative;
-
     background-color: var(--brown);
     border: 0.25rem solid var(--darkbrown);
     padding: 0.75rem;

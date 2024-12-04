@@ -173,6 +173,7 @@ header {
     display: none;
 }
 
+
 #game-overlay {
     position: absolute;
     transform: translate(-50%, -50%);
@@ -180,6 +181,8 @@ header {
     left: 50%;
     width: 100%;
     height: 100%;
+
+    /* border: 2rem solid var(--coolviolet); */
 
     display: flex;
     justify-content: center;
@@ -199,7 +202,15 @@ header {
     display: none;
 }
 
-#game-overlay > h1 {
+
+#game-overlay > .paused {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#game-overlay > .paused > h1 {
+    margin: 1rem;
     font-size: 3rem;
     font-family: var(--maniek-font);
     font-weight: 500;
@@ -213,6 +224,10 @@ header {
     0 0 2px black;
 }
 
+body:not(:has(#game-overlay.hidden)) {
+    background-color: var(--coolviolet);
+}
+
 
 
 
@@ -224,7 +239,7 @@ header {
     }
 
     .games-side:not(.wisielec), .maniek-side {
-        width: calc(100% - 2rem);
+        width: 100%;
         border-radius: 0px;
         height: 50%;
     }

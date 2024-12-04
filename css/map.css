@@ -478,3 +478,7 @@ div.reset {
 
     z-index: 0;
 }
+
+button:hover {
+    cursor: pointer;
+}

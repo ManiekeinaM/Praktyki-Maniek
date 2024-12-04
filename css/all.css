@@ -45,8 +45,8 @@
     --coolviolet-dark: rgb(141, 162, 255);
     --blandviolet: rgb(193, 199, 224);
     --blandviolet-dark: rgb(160, 166, 192);
-    --soft-violet: #8A7CA8;
-    --soft-violet-dark: #72658A;
+    --soft-violet: #9f96b3;
+    --soft-violet-dark: #7e758f;
 
     --brown: #CAB282;
     --darkbrown: #817453;
@@ -54,16 +54,8 @@
     --green: rgb(87, 172, 39);
     --lightgreen: rgb(153, 243, 101);
 
-    
-
-
     --zsp-font: 'Raleway', 'sans-serif';
     --maniek-font: 'Determination Mono', monospace;
-}
-
-body {
-    /* font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
-    font-family: var(--zsp-font);
 }
 
 .copyable {
@@ -84,8 +76,10 @@ body, html {
 
 body {
     /* height: 200vh; */
+    font-family: var(--zsp-font);
     height: 100vh;
     background-color: rgb(230,230,230);
+    transition: background-color 1s;
 }
 
 .enter-fullscreen {

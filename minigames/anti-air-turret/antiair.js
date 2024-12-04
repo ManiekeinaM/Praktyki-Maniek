@@ -106,24 +106,11 @@ function update_score_gradually() {
 
 //Highscore table
 let scores_table = document.querySelector(".highscoresList");
-let i = 0;
 
-let BestScores = [];
-let StoredScores = getCookie('airturret-bestscores'); 
-if (StoredScores) BestScores = JSON.parse(StoredScores);
+import { HighScores } from '../../js/highscores.js';
+const highscoreManager = new HighScores('airturret-bestscores');
+highscoreManager.updateHighscoresList(scores_table);
 
-BestScores.forEach(score => {
-    let p_score = document.createElement("p");
-    p_score.innerHTML = `#${i+1}: ${score} pkt`;
-    p_score.classList.add("score");
-    scores_table.appendChild(p_score);
-    i++;
-});
-
-i = 0;
-
-console.log(StoredScores);
-console.log(BestScores);
 
 
 //Game state controller
@@ -137,24 +124,9 @@ const game = {
     stop: function() {
         this.is_gameover = true;
         //console.log(this.player_score);
-        BestScores.push(this.player_score);
-        BestScores.sort((a,b) => b - a);
-        BestScores = BestScores.splice(0, 5);
-        scores_table.querySelectorAll("p").forEach(para => {
-            scores_table.removeChild(para);
-        })
-        BestScores.forEach(score => {
-            let p_score = document.createElement("p");
-            p_score.innerHTML = `#${i+1}: ${score} pkt`;
-            p_score.classList.add("score");
-            scores_table.appendChild(p_score);
-            i++;
-        });
 
-        i = 0;
-
-        console.log(BestScores);
-        setCookie('airturret-bestscores', JSON.stringify(BestScores), 365);
+        highscoreManager.addScore(this.player_score);
+        highscoreManager.updateHighscoresList(scores_table);
 
 
         //console.log(BestScores);
@@ -1020,8 +992,9 @@ function drawRadar(player, enemies, cameraAngle) {
     });
 }
 
+
 function drawRadarSight(camera_offset_y) {
-    camera_vision_percent = Math.abs(camera_offset_y) / (canvasHeight / 2);
+    const camera_vision_percent = Math.abs(camera_offset_y) / (canvasHeight / 2);
     //console.log(camera_vision_percent);
     const radarRadius = 100 * camera_vision_percent * 0.5 + 40; 
     const radarX = canvasWidth - 20;

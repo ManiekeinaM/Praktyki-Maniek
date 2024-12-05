@@ -51,18 +51,18 @@ const explosion_img = new Image();
 explosion_img.src = "Assets/explosion-sheet.png";
 
 const plane_variants = {
-    "none" : "Assets/planes/enemy.png",
-    "ShootingSpeed" : "Assets/planes/enemy-red.png",
-    "ScoreMultiplier" : "Assets/planes/enemy-violet.png",
-    "RandomBuffs"  : "Assets/planes/enemy-red.png",
-    "HealthUp"  : "Assets/planes/enemy-green.png",
-    "TimeStop" : "Assets/planes/enemy-blue.png",
-    "ChainBullets" : "Assets/planes/enemy-pink.png", 
-    "ExplosiveBullets" : "Assets/planes/enemy-orange.png",
-    "ScreenAOE" : "Assets/planes/enemy-yellow.png", 
-    "Aimbot" : "Assets/planes/enemy-purple.png",
-    "Immortality" : "Assets/planes/enemy-gray.png",
-    "Slow" : "Assets/planes/enemy-blue.png", 
+    "none" : "Assets/planes/plane_normal.png",
+    "ShootingSpeed" : "Assets/planes/plane_shoot_speed.png",
+    "ScoreMultiplier" : "Assets/planes/plane_multiplier.png",
+    "RandomBuffs"  : "Assets/planes/plane_random.png",
+    "HealthUp"  : "Assets/planes/plane_heal.png",
+    "TimeStop" : "Assets/planes/plane_timestop.png",
+    "ChainBullets" : "Assets/planes/plane_bullet_chain.png", 
+    "ExplosiveBullets" : "Assets/planes/plane_explosive.png",
+    "ScreenAOE" : "Assets/planes/plane_aoe.png", 
+    "Aimbot" : "Assets/planes/plane_aimbot.png",
+    "Immortality" : "Assets/planes/plane_immortal.png",
+    "Slow" : "Assets/planes/plane_slow.png", 
 }
 
 const plane_animation = {
@@ -874,8 +874,18 @@ const explosion_effect = {
             this.y - camera.offset_y,
             this.width, this.height,
         ); 
-        console.log(camera.offset_x);
-    }
+        //console.log(camera.offset_x);
+    },
+    draw_on_UI: function() {
+        ctx.drawImage(
+            explosion_img,
+            this.animation.source_x, this.animation.source_y,
+            this.animation.frame_width, this.animation.frame_height,
+            this.x,
+            this.y,
+            this.width, this.height,
+        ); 
+    },
 }
 
 //Player obj
@@ -1256,8 +1266,9 @@ let did_shoot = false;
 function create_explosion() {
     let explosion =  {...explosion_effect};
     explosion.animation = {...explosion_animation};
-    explosion.x = canvasWidth / 2 - turret_inactive_width * 1.25 + Math.floor(Math.random() * turret_inactive_width);
-    explosion.y = canvasHeight - 200 - Math.floor(Math.random() * turret_inactive_height / 2);
+    console.log("Width: ", canvasWidth);
+    explosion.x = canvasWidth / 2// - turret_inactive_width * 1.25 + Math.floor(Math.random() * turret_inactive_width);
+    explosion.y = canvasHeight - 200 //- Math.floor(Math.random() * turret_inactive_height / 2);
     explosion.width = 200 * width_upscale;
     explosion.height = 200 * height_upscale;
 
@@ -1307,7 +1318,7 @@ function game_loop(timestamp) {
                 puff.animation.last_animation_time = timestamp;
             }
             console.log(puff);
-            puff.draw();
+            puff.draw_on_UI();
     
             if (puff.animation.current_frame == 5) {
                 Explosions.splice(Explosions.indexOf(puff), 1);

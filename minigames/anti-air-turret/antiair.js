@@ -54,15 +54,15 @@ const plane_variants = {
     "none" : "Assets/planes/enemy.png",
     "ShootingSpeed" : "Assets/planes/enemy-red.png",
     "ScoreMultiplier" : "Assets/planes/enemy-violet.png",
-    "RandomBuffs"  : "Assets/planes/enemy-orange.png",
+    "RandomBuffs"  : "Assets/planes/enemy-red.png",
     "HealthUp"  : "Assets/planes/enemy-green.png",
     "TimeStop" : "Assets/planes/enemy-blue.png",
-    "ChainBullets" : "Assets/planes/enemy-yellow.png", 
-    "ExplosiveBullets" : "Assets/planes/enemy-yellow.png", //Missing
-    "ScreenAOE" : "Assets/planes/enemy-yellow.png", //Missing
-    "Aimbot" : "Assets/planes/enemy-brown.png",
-    "Immortality" : "Assets/planes/enemy-purple.png",
-    "Slow" : "Assets/planes/enemy-pink.png", 
+    "ChainBullets" : "Assets/planes/enemy-pink.png", 
+    "ExplosiveBullets" : "Assets/planes/enemy-orange.png",
+    "ScreenAOE" : "Assets/planes/enemy-yellow.png", 
+    "Aimbot" : "Assets/planes/enemy-purple.png",
+    "Immortality" : "Assets/planes/enemy-gray.png",
+    "Slow" : "Assets/planes/enemy-blue.png", 
 }
 
 const plane_animation = {
@@ -314,12 +314,12 @@ const camera = {
 //hydro
 
 //Buff list 
-//const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "TimeStop", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow"];
-const buff_list = ["Aimbot", "TimeStop"];
+// "TimeStop" disabled
+const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow", "ScreenAOE"];
 //Roll for plane type
 function roll_for_plane() {
-    let roll = 4;
-    //let roll = Math.floor(Math.random() * 5 + 1);
+    //let roll = 4;
+    let roll = Math.floor(Math.random() * 5 + 1);
     //console.log("Los: ",roll);
     if (roll == 4) {
         let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
@@ -336,11 +336,24 @@ function roll_for_buff() {
     return buff_list[roll];
 }
 
+// Screen below gun
+// Gun buffs: ShootingSpeed, ChainLighting, ExplosiveBullets, Aimbot
+
+// Maniek drone
+// Enemy debuffs: Slow, TimeStop, AOE, 
+
+// Side panel
+// Player buffs: ScoreMultiper, RandomBuffs, HealthUp, Immortality
+
+//Left bottom panel
+//Buff cooldowns Indicator
+
+
 //1. Shooting Speed (Cooldown)
 //2. Score multiplier (Cooldown)
 //3. Get 2 random buffs (One-shot)
 //4. Health up (One-shot)
-//5. Time stop (Cooldown)
+//5. Time stop (Cooldown) - disabled
 //6. Chain lighting bullets (Cooldown)
 //7. Explosive bullets (Cooldown)
 //8. Screen AOE (One-shot)
@@ -385,7 +398,7 @@ function get_closest_plane() {
 let current_cooldowns = {
     "ShootingSpeed" : 0,
     "ScoreMultiplier" : 0,
-    "TimeStop" : 0,
+    //"TimeStop" : 0,
     "ChainBullets" : 0,
     "ExplosiveBullets" : 0,
     "Aimbot" : 0,
@@ -399,7 +412,7 @@ const buff_action = {
     "ScoreMultiplier" : function() { buff_handler.activate_score_multiplier() },
     "RandomBuffs" : function() { buff_handler.use_roll_buffs() },
     "HealthUp" : function() { buff_handler.use_heal() },
-    "TimeStop" : function() { buff_handler.activate_time_stop() },
+    //"TimeStop" : function() { buff_handler.activate_time_stop() },
     "ChainBullets" : function() { buff_handler.activate_chain_bullets() },
     "ExplosiveBullets" : function() { buff_handler.activate_explosive_bullets() },
     "ScreenAOE" : function() { buff_handler.use_kill_all() },
@@ -411,7 +424,7 @@ const buff_action = {
 const buff_handler = {
     shooting_speed_timeout : 0,
     score_multiplier_timeout : 0,
-    time_stop_timeout: 0,
+    //time_stop_timeout: 0,
     chain_bullets_timeout : 0,
     explosive_bullets_timeout : 0,
     aimbot_timeout : 0,
@@ -426,7 +439,7 @@ const buff_handler = {
     },
     use_kill_all: function() {
         Planes.forEach(plane => {
-            plane.reset();
+            plane.play_explosion = true;
         })
     },
     activate_faster_shooting: function() {
@@ -455,7 +468,7 @@ const buff_handler = {
             }, 6000)
             current_cooldowns["ScoreMultiplier"] = 6000;
     },
-    activate_time_stop: function() {
+    /*activate_time_stop: function() {
         if (this.time_stop_timeout) {
             clearTimeout(this.time_stop_timeout);
         }
@@ -477,7 +490,7 @@ const buff_handler = {
             this.time_stop_timeout = null;
         }, 6000)
         current_cooldowns["TimeStop"] = 6000;
-    },
+    },*/
 
     activate_chain_bullets: function() {
         if (this.chain_bullets_timeout) {
@@ -576,7 +589,7 @@ const buff_icon = {
 // Cooldown icons
 const shoot_speed_icon = new Image();
 const score_multiplier_icon = new Image();
-const time_stop_icon = new Image();
+//const time_stop_icon = new Image();
 const chain_bullets_icon = new Image();
 const explosive_bullets_icon = new Image();
 const aimbot_icon = new Image();
@@ -585,7 +598,7 @@ const slow_icon = new Image();
 
 shoot_speed_icon.src = "Assets/buff_icons/shooter-speed.png";
 score_multiplier_icon.src = "Assets/buff_icons/shooter-2x.png";
-time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ;
+//time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ;
 chain_bullets_icon.src = "Assets/buff_icons/shooter-lightning.png" ;
 explosive_bullets_icon.src = "Assets/buff_icons/shooter-boomboom.png";
 aimbot_icon.src = "Assets/buff_icons/shooter-aimbot.png" ;
@@ -606,7 +619,7 @@ const buff_icons = {
     //Cooldowns
     "ShootingSpeed" : shoot_speed_icon,
     "ScoreMultiplier" : score_multiplier_icon,
-    "TimeStop" : time_stop_icon,
+    //"TimeStop" : time_stop_icon,
     "ChainBullets" : chain_bullets_icon,
     "ExplosiveBullets" : explosive_bullets_icon,
     "Aimbot" : aimbot_icon,
@@ -729,13 +742,8 @@ const enemy_plane = {
     },
     scale_up: function(delta) {
         this.scale += this.scaling_factor * delta;
-        //this.width = 40 * this.scale;
-        //this.height = 20 * this.scale;
     },
     attack_player: function() {
-        //if (this.scale > 2.3 && this.play_explosion == false) {
-        //    this.kill_self();
-        //}
         if (this.y > canvasHeight - turret_inactive_height + (0.5 * turret_inactive_height) && this.play_explosion == false) {
             this.kill_self();
         }
@@ -760,6 +768,7 @@ const enemy_plane = {
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
+        game.update_score(50 * player_turret.score_multiplier);
         game.update_killcount();
     },
 }
@@ -925,7 +934,6 @@ const player_turret = {
             }
             
             if (plane_hit) {
-                game.update_score(50 * this.score_multiplier);
                 if (plane.play_explosion == false) {
                 //console.log(plane.item);
                 plane.item.use();
@@ -1074,10 +1082,8 @@ function drawRadar(player, enemies, cameraAngle) {
         ctx.translate(point_on_radar_x + radarX, point_on_radar_y + radarY); // Move origin to plane icon
         ctx.rotate(angle_to_center);
 
-        let icon_sprite = plane_icon_normal;
-        if (enemy.item.type == "HealthUp")  icon_sprite = plane_icon_heal;
-        else if (enemy.item.type == "ShootingSpeed") icon_sprite = plane_icon_speed; 
-        else if (enemy.item.type == "ScoreMultiplier") icon_sprite = plane_icon_score;
+        let icon_sprite = new Image();
+        icon_sprite.src = radar_icons[enemy.item.type];
 
         ctx.drawImage(
             icon_sprite,
@@ -1088,6 +1094,21 @@ function drawRadar(player, enemies, cameraAngle) {
         );
         ctx.restore();
     });
+}
+
+const radar_icons = {
+    "none" : "Assets/plane_icons/plane_icon_normal.png",
+    "ShootingSpeed" : "Assets/plane_icons/plane_icon_shoot_speed.png",
+    "ScoreMultiplier" : "Assets/plane_icons/plane_icon_multiplier.png",
+    "RandomBuffs"  : "Assets/plane_icons/plane_icon_random.png",
+    "HealthUp"  : "Assets/plane_icons/plane_icon_heal.png",
+    //"TimeStop" : "Assets/plane_icons/plane_icon_timestop.png",
+    "ChainBullets" : "Assets/plane_icons/plane_icon_chain_bullets.png", 
+    "ExplosiveBullets" : "Assets/plane_icons/plane_icon_explosive.png",
+    "ScreenAOE" : "Assets/plane_icons/plane_icon_aoe.png", 
+    "Aimbot" : "Assets/plane_icons/plane_icon_aimbot.png",
+    "Immortality" : "Assets/plane_icons/plane_icon_immortal.png",
+    "Slow" : "Assets/plane_icons/plane_icon_slow.png", 
 }
 
 
@@ -1244,13 +1265,12 @@ function game_loop(timestamp) {
 
     Planes.forEach(plane => {
         if (plane.play_explosion == true) {
-            console.log("Jebut [", Planes.indexOf(plane), "] : ", plane.play_explosion);
             if (timestamp - plane.explosion.last_animation_time > explosion_animation.frame_rate) {
                 if (plane.time_stopped == false) {
                     plane.explosion.current_frame = (plane.explosion.current_frame + 1) % plane.explosion.total_frames;    
                 }
                 plane.explosion.calc_source_position(); // Update source_x
-                plane.explosion.lst_animation_time = timestamp;
+                plane.explosion.last_animation_time = timestamp;
             }
         plane.scaling_factor = 0.0;
         plane.acceleration_y = 0;

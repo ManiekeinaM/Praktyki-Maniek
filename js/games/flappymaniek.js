@@ -300,8 +300,11 @@ function death() {
     }, 1000);
 }
 
-
 function gameLoop(currentTime) {
+    const deltaTime = (currentTime - lastTime)/1000 
+                    || 1/60;
+    lastTime = currentTime;
+
     if (CURRENT_GAME != "flappymaniek") {
         requestAnimationFrame(gameLoop);
         return;
@@ -310,16 +313,6 @@ function gameLoop(currentTime) {
         requestAnimationFrame(gameLoop);
         return;
     }
-
-    const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
-    /*
-    // testing framerate cap
-    if (deltaTime < 1/10) {
-        requestAnimationFrame(gameLoop);
-        return;
-    }
-    */
-    lastTime = currentTime;
 
 
     // Update bird position

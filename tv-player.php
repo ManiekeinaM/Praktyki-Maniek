@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV Player</title>
+    <title>Maniek - TV Player</title>
     <link rel="stylesheet" href="./css/tv.css">
 
     <script src="./js/cookies.js"></script>
@@ -17,18 +17,17 @@
 
         <!-- Bell schedule with highlight -->
         <div class="bell-schedule">
-            <table>
-                <tr><th>Lekcja godz</th></tr>
-                <tr><td><span id="0">7:05 - 7:50</span></td></tr>
-                <tr><td><span id="1">8:00 - 8:45</span></td></tr>
-                <tr><td><span id="2">8:55 - 9:40</span></td></tr>
-                <tr><td><span id="3">9:50 - 10:35</span></td></tr>
-                <tr><td><span id="4">10:55 - 11:40</span></td></tr>
-                <tr><td><span id="5">11:50 - 12:35</span></td></tr>
-                <tr><td><span id="6">12:45 - 13:30</span></td></tr>
-                <tr><td><span id="7">13:40 - 14:25</span></td></tr>
-                <tr><td><span id="8">14:35 - 15:20</span></td></tr>
-                <tr><td><span id="9">15:30 - 16:15</span></td></tr>
+                <h4>lekcja / godz</h4>
+                <span id="0">7:05 - 7:50</span>
+                <span id="1">8:00 - 8:45</span>
+                <span id="2">8:55 - 9:40</span>
+                <span id="3">9:50 - 10:35</span>
+                <span id="4">10:55 - 11:40</span>
+                <span id="5">11:50 - 12:35</span>
+                <span id="6">12:45 - 13:30</span>
+                <span id="7">13:40 - 14:25</span>
+                <span id="8">14:35 - 15:20</span>
+                <span id="9">15:30 - 16:15</span>
             </table>
         </div>
     </div>
@@ -56,28 +55,25 @@
 
     <script>
         //Retrieving videos
-        let dir = '/example-videos';
-        let passed_data = document.getElementById("data-pass").innerHTML;
-        let VideosList = passed_data.split(' ');
-        VideosList.pop();
-        console.log(VideosList);
+        const dir = '/example-videos';
+        const passed_data = document.getElementById("data-pass").innerHTML;
+        let videosList = passed_data.split(' ');
+        videosList.pop();
 
         //Videos changer
-        let VideoPlayer = document.getElementById("vidplayer");
-        let VideoSource = document.getElementById("vidsource");
+        const videoPlayer = document.getElementById("vidplayer");
+        const videoSource = document.getElementById("vidsource");
 
-        VideoPlayer.addEventListener("ended", (event) => {
+        videoPlayer.addEventListener("ended", (event) => {
             let previousSource = VideoSource.src;
             let nextSource;
             do{
-                nextSource = `${dir}/${VideosList[Math.floor(Math.random()*(VideosList.length)+0)]}`;
-                console.log(`P:${previousSource}`);
-                console.log(`N:${nextSource}`); 
-            }while(previousSource.includes(nextSource));
-            VideoSource.src = "."+nextSource;
+                nextSource = `${dir}/${videosList[Math.floor(Math.random() * videosList.length)]}`;
+            } while(previousSource.includes(nextSource));
+            videoSource.src = "."+nextSource;
             
-            VideoPlayer.load();
-            VideoPlayer.play();
+            videoPlayer.load();
+            videoPlayer.play();
         });
 
         const clock = document.getElementById("clock");
@@ -140,7 +136,7 @@
                     return currentLesson;
                 }else if(currentHour == vHour) {
                     timeLeft = vMinute+10;
-                    if(currentLesson == 3) timeleft+=10;
+                    if(currentLesson == 3) timeLeft+=10;
                     timeLeft = timeLeft-currentMinute;
                     if(timeLeft<=0) {
                         timeLeft = vMinute-5-currentMinute;
@@ -164,6 +160,10 @@
                 currentLesson++;
             }while(true);
         }
+
+        document.querySelectorAll('.bell-schedule > span').forEach(lesson => {
+            lesson.innerText = `${lesson.id} / ${lesson.innerText}`;
+        })
         
     </script>
 </body>

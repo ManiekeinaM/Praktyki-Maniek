@@ -1,9 +1,7 @@
-
-
 .games-side.hardestgame, .maniek-side.hardestgame {
-    background-color: var(--coolviolet);
-    border-color: var(--coolviolet-dark);
-    border-width: 0.5rem;
+    background-color: var(--soft-violet);
+    border-color: var(--soft-violet-dark);
+    /* border-width: 0.5rem; */
 }
 
 .games-side.hardestgame {
@@ -11,4 +9,206 @@
 }
 .maniek-side.hardestgame {
     border-left-width: 0;
+}
+
+.titlescreen.hardestgame {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 0.5rem;
+
+    padding: 1rem;
+
+    border: .5rem solid var(--coolviolet-dark);
+    background-color: var(--coolviolet);
+    overflow: hidden;
+    animation: pulsateBoxShadow 2s ease-in-out infinite;
+
+    z-index: 100;
+}
+
+.titlescreen.hidden {
+    display: none;
+}
+
+.titlescreen.hardestgame > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+
+
+/* start screen animations */
+.titlescreen.hardestgame .slide h1 {
+    margin: 0 0.5rem;
+}
+.titlescreen.hardestgame .slide {
+    opacity: 0;
+}
+
+.titlescreen.hardestgame .slide:nth-child(1) {
+    animation: slideInFromLeft 1.5s ease-in-out forwards;
+}
+
+.titlescreen.hardestgame .slide:nth-child(2) {
+    animation: slideInFromTop 1.5s ease-in-out forwards;
+    animation-delay: 1s;
+}
+.titlescreen.hardestgame .slide:nth-child(2) h1 {
+    animation: pulsateText 0.5s ease-in-out infinite;
+    color:rgb(133, 0, 0);
+}
+
+.titlescreen.hardestgame .slide:nth-child(3) {
+    animation: slideInFromRight 1.5s ease-in-out forwards;
+    animation-delay: 1.5s;
+}
+
+.demon {
+    height: 15rem;
+    width: auto;
+    /* transform-origin: top center; */
+    /* animation: demonBob 1s linear infinite; */
+}
+
+.enterGame {
+    font-family: var(--zsp-font);
+    font-weight: bolder;
+    font-size: 1rem;
+
+    background-color: var(--demonred);
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    border: 0.25em dashed var(--demonred-dark);
+    box-shadow: 0 0 0.5em var(--demonred-dark);
+
+    color: #eee;
+    /* animation: pulsateBoxShadow 2s ease-in-out infinite; */
+
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.enterGame:hover {
+    transform: scale(1.1);
+}
+
+.hidden-game {
+    display: none !important;
+}
+
+
+
+
+@keyframes demonBob {
+    0% {
+        transform: translate(-5%, 0%) rotate(10deg);
+    }
+    25% {
+        transform: translate(0%, 2%) rotate(0deg) scale(.9);
+    }
+    50% {
+        transform: translate(5%, 0%) rotate(-10deg);
+    }
+    75% {
+        transform: translate(0%, 2%) rotate(0deg) scale(.9);
+    }
+    100% {
+        transform: translate(-5%, 0%) rotate(10deg);
+    }
+}
+@keyframes pulsateBoxShadow {
+    0% {
+        box-shadow: 
+            1em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
+            0 1em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
+           -1em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
+            0 -1em 2px rgba(133, 0, 0, 0.7);   /* Top */
+    }
+    25% {
+        box-shadow: 
+            0 1em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
+           -1em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
+            0 -1em 2px rgba(133, 0, 0, 0.7),   /* Top */
+            1em 0 2px rgba(255, 0, 0, 0.7);    /* Right */
+    }
+    50% {
+        box-shadow: 
+           -1em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
+            0 -1em 2px rgba(133, 0, 0, 0.7),   /* Top */
+            1em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
+            0 1em 2px rgba(133, 0, 0, 0.7);    /* Bottom */
+    }
+    75% {
+        box-shadow: 
+            0 -1em 2px rgba(133, 0, 0, 0.7),   /* Top */
+            1em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
+            0 1em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
+           -1em 0 2px rgba(0, 0, 0, 0.7);      /* Left */
+    }
+    100% {
+        box-shadow: 
+            1em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
+            0 1em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
+           -1em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
+            0 -1em 2px rgba(133, 0, 0, 0.7);   /* Top */
+    }
+}
+
+@keyframes pulsateText {
+    0% {
+        transform: rotate(2deg);
+    }
+    25% {
+        transform: rotate(-2deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(-4deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+/* Animation Keyframes */
+@keyframes slideInFromTop {
+    0% {
+        transform: scale(5) translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: scale(5) translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: scale(5) translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }

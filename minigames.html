@@ -38,18 +38,38 @@
             </div>
 
             <div class="button" data-game="hardestgame" data-name="Maniek's Hardest Game">
-                <img src="assets/maniekshardestgame.png" alt="Maniek's Hardest Game">
+                <img src="assets/demonic-maniek.png" alt="Maniek's Hardest Game">
             </div>
         </div>
 
-        <canvas id="game-canvas" class="pong hidden">
+        <canvas id="game-canvas" class="pong hardestgame hidden">
 
         </canvas>
 
         <div id="game-overlay" class="hidden">
-            <h1 class="game-overlay-title">Pauza</h1>
-                <button class="game-overlay-resume">Wznów</button>
-                <button class="game-overlay-quit">Wyjdź</button>
+            <div class="paused">
+                <h1>Pauza</h1>
+                <button>Wznów</button>
+            </div>
+        </div>
+
+        <div id="both-sides">
+            <div class="hardestgame titlescreen hidden">
+                <img src="./assets/demonic-maniek.png" alt="Demon" class="demon">
+                
+                <div>
+                    <span class="slide"><h1>MANIEK'S</h1></span>
+                    <span class="slide"><h1>HARDEST</h1></span>
+                    <span class="slide"><h1>GAME</h1></span>
+                </div>
+                <h2 class="tagline">Przygotuj się na porażkę.</h2>
+
+                <!-- TODO: Jak gra działa, canvas gry  -->
+
+                <div>
+                    <button class="enterGame">WKROCZ</button>
+                </div>
+            </div>
         </div>
 
         <!-- Lewa strona (brazowa, gierki) -->
@@ -85,13 +105,23 @@
 
             <!-- FLAPPY MANIEK -->
             <section class="flappymaniek hidden">
-                <div class="screen">
-                    <p class="titlescreen">Flappy Maniek</p>
-                    <p class="highscore playing">0</p>
-                    <p class="gameover hidden">GAME OVER</p>
+                <div class="tv">
+                    <div class="screen">
+                        <p class="titlescreen">Flappy Maniek</p>
+                        <p class="highscore playing">0</p>
+                        <p class="gameover hidden">GAME OVER</p>
+    
+                        <div class="pipes"></div>
+                    </div>
 
-                    <div class="pipes"></div>
+                    <div class="antennas">
+                        <div></div> <div></div>
+                    </div>
+                    <div class="stands">
+                        <div></div> <div></div>
+                    </div>
                 </div>
+                
             </section>
 
             <div class="score player logoitarcza">
@@ -195,7 +225,8 @@
         <div class="maniek-side">
             <div class="flappymaniek highscores hidden">
                 <p>Najlepsze wyniki</p>
-                <div class="highscoresList"></div>
+                <div class="highscoresList" data-highscoreCookie="flappy-highscores"></div>
+                <!-- TODO - highscoreCookie should be used rather than hardcoding stuff in -->
             </div>
 
             <img class="maniek logoitarcza" src="./assets/maniek-faces/thinking.gif">

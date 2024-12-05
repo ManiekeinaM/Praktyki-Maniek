@@ -206,7 +206,7 @@ header {
     backdrop-filter: blur(2px);
 
     text-align: center;
-    z-index: 11;
+    z-index: 30;
     transition: backdrop-filter 0.25s, background-color 0.25s;
 }
 

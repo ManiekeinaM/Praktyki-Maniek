@@ -12,7 +12,7 @@ main {
 
 .game-navigation {
     position: absolute;
-    top: 3rem;
+    top: 3em;
     left: 50%;
 
     display: flex;
@@ -20,8 +20,18 @@ main {
     align-items: center;
 
     transform: translate(-50%, -50%);
+    /* Button size: 4em */
+    z-index: 50;
+    transition: top 0.5s, left 0.5s, transform 0.5s, flex-direction 0.5s;
+}
 
-    z-index: 50
+.game-navigation.topLeft {
+    top: 50%;
+    left: 2em;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translate(-50%, -50%);
 }
 
 .game-navigation .button {
@@ -89,7 +99,11 @@ main {
 
     border-radius: 2rem;
 
-    z-index: 1;
+    pointer-events: none;
+    z-index: 11;
+}
+#both-sides > * {
+    pointer-events: auto;
 }
 .games-side > *, .maniek-side > * {
     z-index: 2;

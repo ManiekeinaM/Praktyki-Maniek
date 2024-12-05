@@ -544,7 +544,9 @@ let previousTime = performance.now();
 let isGamePaused = false;
 let isGameStillPong = false;
 function animate(timestamp) {
-    const deltaTime = IGNORE_NEXT_DT && 1/60 || (timestamp - previousTime)/1000 || 1/60;
+    const deltaTime = IGNORE_NEXT_DT && 1/60 
+                    || (timestamp - previousTime)/1000 
+                    || 1/60;
     previousTime = timestamp;
 
     /*if (deltaTime < interval) {
@@ -553,7 +555,6 @@ function animate(timestamp) {
     }*/
 
     if (CURRENT_GAME != 'pong') {
-        //console.log("not pong");
         if (isGameStillPong)
             ctx.clearRect(0, 0, width, height);
         

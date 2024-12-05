@@ -314,12 +314,12 @@ const camera = {
 //hydro
 
 //Buff list 
-const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "TimeStop", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow", "ScreenAOE"];
-//const buff_list = ["Aimbot", "TimeStop"];
+// "TimeStop" disabled
+const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow", "ScreenAOE"];
 //Roll for plane type
 function roll_for_plane() {
-    let roll = 4;
-    //let roll = Math.floor(Math.random() * 5 + 1);
+    //let roll = 4;
+    let roll = Math.floor(Math.random() * 5 + 1);
     //console.log("Los: ",roll);
     if (roll == 4) {
         let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
@@ -353,7 +353,7 @@ function roll_for_buff() {
 //2. Score multiplier (Cooldown)
 //3. Get 2 random buffs (One-shot)
 //4. Health up (One-shot)
-//5. Time stop (Cooldown)
+//5. Time stop (Cooldown) - disabled
 //6. Chain lighting bullets (Cooldown)
 //7. Explosive bullets (Cooldown)
 //8. Screen AOE (One-shot)
@@ -398,7 +398,7 @@ function get_closest_plane() {
 let current_cooldowns = {
     "ShootingSpeed" : 0,
     "ScoreMultiplier" : 0,
-    "TimeStop" : 0,
+    //"TimeStop" : 0,
     "ChainBullets" : 0,
     "ExplosiveBullets" : 0,
     "Aimbot" : 0,
@@ -412,7 +412,7 @@ const buff_action = {
     "ScoreMultiplier" : function() { buff_handler.activate_score_multiplier() },
     "RandomBuffs" : function() { buff_handler.use_roll_buffs() },
     "HealthUp" : function() { buff_handler.use_heal() },
-    "TimeStop" : function() { buff_handler.activate_time_stop() },
+    //"TimeStop" : function() { buff_handler.activate_time_stop() },
     "ChainBullets" : function() { buff_handler.activate_chain_bullets() },
     "ExplosiveBullets" : function() { buff_handler.activate_explosive_bullets() },
     "ScreenAOE" : function() { buff_handler.use_kill_all() },
@@ -424,7 +424,7 @@ const buff_action = {
 const buff_handler = {
     shooting_speed_timeout : 0,
     score_multiplier_timeout : 0,
-    time_stop_timeout: 0,
+    //time_stop_timeout: 0,
     chain_bullets_timeout : 0,
     explosive_bullets_timeout : 0,
     aimbot_timeout : 0,
@@ -468,7 +468,7 @@ const buff_handler = {
             }, 6000)
             current_cooldowns["ScoreMultiplier"] = 6000;
     },
-    activate_time_stop: function() {
+    /*activate_time_stop: function() {
         if (this.time_stop_timeout) {
             clearTimeout(this.time_stop_timeout);
         }
@@ -490,7 +490,7 @@ const buff_handler = {
             this.time_stop_timeout = null;
         }, 6000)
         current_cooldowns["TimeStop"] = 6000;
-    },
+    },*/
 
     activate_chain_bullets: function() {
         if (this.chain_bullets_timeout) {
@@ -589,7 +589,7 @@ const buff_icon = {
 // Cooldown icons
 const shoot_speed_icon = new Image();
 const score_multiplier_icon = new Image();
-const time_stop_icon = new Image();
+//const time_stop_icon = new Image();
 const chain_bullets_icon = new Image();
 const explosive_bullets_icon = new Image();
 const aimbot_icon = new Image();
@@ -598,7 +598,7 @@ const slow_icon = new Image();
 
 shoot_speed_icon.src = "Assets/buff_icons/shooter-speed.png";
 score_multiplier_icon.src = "Assets/buff_icons/shooter-2x.png";
-time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ;
+//time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ;
 chain_bullets_icon.src = "Assets/buff_icons/shooter-lightning.png" ;
 explosive_bullets_icon.src = "Assets/buff_icons/shooter-boomboom.png";
 aimbot_icon.src = "Assets/buff_icons/shooter-aimbot.png" ;
@@ -619,7 +619,7 @@ const buff_icons = {
     //Cooldowns
     "ShootingSpeed" : shoot_speed_icon,
     "ScoreMultiplier" : score_multiplier_icon,
-    "TimeStop" : time_stop_icon,
+    //"TimeStop" : time_stop_icon,
     "ChainBullets" : chain_bullets_icon,
     "ExplosiveBullets" : explosive_bullets_icon,
     "Aimbot" : aimbot_icon,
@@ -742,13 +742,8 @@ const enemy_plane = {
     },
     scale_up: function(delta) {
         this.scale += this.scaling_factor * delta;
-        //this.width = 40 * this.scale;
-        //this.height = 20 * this.scale;
     },
     attack_player: function() {
-        //if (this.scale > 2.3 && this.play_explosion == false) {
-        //    this.kill_self();
-        //}
         if (this.y > canvasHeight - turret_inactive_height + (0.5 * turret_inactive_height) && this.play_explosion == false) {
             this.kill_self();
         }
@@ -1107,7 +1102,7 @@ const radar_icons = {
     "ScoreMultiplier" : "Assets/plane_icons/plane_icon_multiplier.png",
     "RandomBuffs"  : "Assets/plane_icons/plane_icon_random.png",
     "HealthUp"  : "Assets/plane_icons/plane_icon_heal.png",
-    "TimeStop" : "Assets/plane_icons/plane_icon_timestop.png",
+    //"TimeStop" : "Assets/plane_icons/plane_icon_timestop.png",
     "ChainBullets" : "Assets/plane_icons/plane_icon_chain_bullets.png", 
     "ExplosiveBullets" : "Assets/plane_icons/plane_icon_explosive.png",
     "ScreenAOE" : "Assets/plane_icons/plane_icon_aoe.png", 

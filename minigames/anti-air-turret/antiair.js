@@ -439,7 +439,7 @@ const buff_handler = {
     },
     use_kill_all: function() {
         Planes.forEach(plane => {
-            plane.reset();
+            plane.play_explosion = true;
         })
     },
     activate_faster_shooting: function() {
@@ -1275,7 +1275,7 @@ function game_loop(timestamp) {
                     plane.explosion.current_frame = (plane.explosion.current_frame + 1) % plane.explosion.total_frames;    
                 }
                 plane.explosion.calc_source_position(); // Update source_x
-                plane.explosion.lst_animation_time = timestamp;
+                plane.explosion.last_animation_time = timestamp;
             }
         plane.scaling_factor = 0.0;
         plane.acceleration_y = 0;

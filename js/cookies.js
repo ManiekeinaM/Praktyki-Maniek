@@ -30,7 +30,7 @@ function getCookie(cname) {
 // Figure out whether the machine is Maniek
 function isMachineManiek() {
   if (/Mobi|Android/i.test(navigator.userAgent)) {
-    console.log("Mobilne!");
+    // console.log("Mobilne!");
     return false;
   }
 
@@ -38,12 +38,12 @@ function isMachineManiek() {
 
   // TEMPORARY DEFAULT STATE
   if (cookie == '') {
-    console.log("Temporary default - isManiek is false");
+    // console.log("Temporary default - isManiek is false");
     return false;
   }
 
   if (cookie == '' || cookie == 'false') {
-    console.log('Maszyna nie jest mańkiem');
+    // console.log('Maszyna nie jest mańkiem');
     return false;
   }
 
@@ -71,12 +71,12 @@ function isDniOtwarte() {
   }*/
 
   if (cookie == '' || cookie == 'false') {
-    console.log('Nie są dni otwarte');
+    // console.log('Nie są dni otwarte');
     return false;
   }
 
   if (cookie == 'true') {
-    console.log("Są dni otwarte!");
+    // console.log("Są dni otwarte!");
     return true;
   }
 
@@ -85,4 +85,4 @@ function isDniOtwarte() {
 }
 
 const IS_DNI_OTWARTE = isDniOtwarte();
-console.log(IS_DNI_OTWARTE);
+// console.log(IS_DNI_OTWARTE);

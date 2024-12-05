@@ -10,7 +10,7 @@ function initScreensaver() {
     let sessionCornerBounces = sessionStorage.getItem(CORNERBOUNCE_COOKIE_NAME) || 0;
     sessionCornerBounces = parseInt(sessionCornerBounces);
 
-    console.log(cornerBounces, sessionCornerBounces);
+    // console.log(cornerBounces, sessionCornerBounces);
 
     function incrementCornerBounces() {
         cornerBounces += 1;
@@ -132,7 +132,7 @@ function initScreensaver() {
         if (flipsDone == 2) {
             // It hit a corner!
 
-            console.log("HIT CORNER");
+            // console.log("HIT CORNER");
             initConfetti();
             incrementCornerBounces();
         }
@@ -182,7 +182,7 @@ function initScreensaver() {
     let INACTIVITY_TIMER = 0;
     function incrementTimer() {
         INACTIVITY_TIMER += 1;
-        console.log(INACTIVITY_TIMER);
+        // console.log(INACTIVITY_TIMER);
         updateScreensaverVisibility();
 
         setTimeout(incrementTimer, 1000);
@@ -344,7 +344,7 @@ function initScreensaver() {
         if (chattingDebounce) return;
         chattingDebounce = true;
 
-        console.log("HEY YOU! I see you moving!");
+        // console.log("HEY YOU! I see you moving!");
 
 
         let randomChat = maniekChats[Math.floor(Math.random() * maniekChats.length)];

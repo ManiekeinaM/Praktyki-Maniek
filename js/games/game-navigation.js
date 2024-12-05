@@ -22,7 +22,8 @@ games.forEach(button => {
         rightSide.classList.add(game);
         bothSides.classList.remove(LAST_GAME);
         bothSides.classList.add(game);
-
+        gamenavigation.classList.remove(LAST_GAME);
+        gamenavigation.classList.add(game);
 
 
         // Hide all last game objects, show the new game objects

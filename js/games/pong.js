@@ -155,7 +155,7 @@ class Paddle {
 
 // Ball object
 let radius = 12 * Math.sqrt(speedMultiplier);
-console.log(radius);
+// console.log(radius);
 const BALL_SPEED = 6 * 60 * speedMultiplier;
 class Ball {
     constructor(x, y, radius, velocity) {
@@ -380,7 +380,7 @@ canvas.addEventListener('touchmove', e => {
 
 function movePaddles(deltaTime) {
     // leftPaddle.x = mouseX - sizePaddle.width/2;
-    console.log(leftPaddle.x, rightPaddle.x);
+    // console.log(leftPaddle.x, rightPaddle.x);
     leftPaddle.y = mouseY - leftPaddle.height/2;
 
     //createRocket(-1);

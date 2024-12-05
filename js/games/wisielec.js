@@ -268,6 +268,7 @@ function startGame() {
     GAME_STARTED = true;
     let { category, word } = getRandomWord();
     CURRENT_WORD = word;
+    CURRENT_WORD_VISUAL = word;
     if (category === 'imiona')
         CURRENT_WORD_VISUAL = CURRENT_WORD.charAt(0).toUpperCase() + CURRENT_WORD.slice(1);
 

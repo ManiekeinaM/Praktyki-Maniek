@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV Player</title>
+    <title>Maniek - TV Player</title>
     <link rel="stylesheet" href="./css/tv.css">
 
     <script src="./js/cookies.js"></script>
@@ -55,28 +55,25 @@
 
     <script>
         //Retrieving videos
-        let dir = '/example-videos';
-        let passed_data = document.getElementById("data-pass").innerHTML;
-        let VideosList = passed_data.split(' ');
-        VideosList.pop();
-        console.log(VideosList);
+        const dir = '/example-videos';
+        const passed_data = document.getElementById("data-pass").innerHTML;
+        let videosList = passed_data.split(' ');
+        videosList.pop();
 
         //Videos changer
-        let VideoPlayer = document.getElementById("vidplayer");
-        let VideoSource = document.getElementById("vidsource");
+        const videoPlayer = document.getElementById("vidplayer");
+        const videoSource = document.getElementById("vidsource");
 
-        VideoPlayer.addEventListener("ended", (event) => {
+        videoPlayer.addEventListener("ended", (event) => {
             let previousSource = VideoSource.src;
             let nextSource;
             do{
-                nextSource = `${dir}/${VideosList[Math.floor(Math.random()*(VideosList.length)+0)]}`;
-                console.log(`P:${previousSource}`);
-                console.log(`N:${nextSource}`); 
-            }while(previousSource.includes(nextSource));
-            VideoSource.src = "."+nextSource;
+                nextSource = `${dir}/${videosList[Math.floor(Math.random() * videosList.length)]}`;
+            } while(previousSource.includes(nextSource));
+            videoSource.src = "."+nextSource;
             
-            VideoPlayer.load();
-            VideoPlayer.play();
+            videoPlayer.load();
+            videoPlayer.play();
         });
 
         const clock = document.getElementById("clock");

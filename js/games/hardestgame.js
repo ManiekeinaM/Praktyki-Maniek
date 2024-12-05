@@ -38,19 +38,20 @@ function gameLoop(currentTime) {
 
     // UPDATES FOR GAME CHANGES
     {
-        if (playingGame && isGameStillTheSame) {
-            if (shouldUpdateNavigation) {
+        if (shouldUpdateNavigation) {
+            if (playingGame && isGameStillTheSame) {
                 shouldUpdateNavigation = false;
                 gamenavigation.classList.add('topLeft');
                 titleScreen.classList.add('hidden-game')
+            } else {
+                gamenavigation.classList.remove('topLeft'); 
             }
-        } else {
-            gamenavigation.classList.remove('topLeft');
-            shouldUpdateNavigation = true;
         }
+        
         if (CURRENT_GAME != "hardestgame") {
             if (isGameStillTheSame) {
                 ctx.clearRect(0, 0, width, height);
+                shouldUpdateNavigation = true;
             }
             isGameStillTheSame = false;
             requestAnimationFrame(gameLoop);

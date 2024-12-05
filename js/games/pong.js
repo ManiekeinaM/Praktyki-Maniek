@@ -21,6 +21,10 @@ function addScore(side, amount) {
     pongScores[side] += amount;
     document.querySelector(`.${side}-score`).textContent = pongScores[side];
 }
+function updateScores() {
+    document.querySelector('.left-score').textContent = pongScores.left;
+    document.querySelector('.right-score').textContent = pongScores.right;
+}
 
 
 
@@ -128,10 +132,14 @@ class Quadtree {
     }
 }
 
+let isGameStillPong = false;
+let isGamePaused = false;
+let shouldUpdateNavigation = true;
 document.addEventListener('keydown', e => {
+    if (!isGameStillPong) return;
     if (e.key == 'p') {
-        gameOverlay.classList.toggle('hidden');
         isGamePaused = !isGamePaused;
+        shouldUpdateNavigation = true;
     }
 })
 
@@ -299,6 +307,8 @@ class Spritesheet {
 // const paddleImage = new Image();
 // paddleImage.src = './assets/paddle.png';
 
+let aiType = 0;
+
 const MAX_REFLECTION_ANGLE = 75 * Math.PI / 180; // 75 degrees in radians
 const AI_SPEED = 8 * 60 * speedMultiplier;
 const sizePaddle = {width: 50, height: 160};
@@ -326,6 +336,8 @@ window.addEventListener('resize', resizeCanvas);
 
 let balls = []
 function addBall() {
+    // console.log(pongScores);
+    updateScores();
     // Random angle between -MAX_REFLECTION_ANGLE and MAX_REFLECTION_ANGLE
     const angle = (Math.random() * 2 - 1) * MAX_REFLECTION_ANGLE;
     
@@ -341,9 +353,8 @@ function addBall() {
     let ball = new Ball(width / 2, height / 2, radius, velocity);
     balls.push(ball);
 }
-addBall();
 
-const BALL_INTERVAL = 15; // seconds
+let BALL_INTERVAL = 15; // seconds
 let BALL_TIMER = 0;
 const ANIMATION_INTERVAL = 0.06;
 let ANIMATION_TIMER = 0; // shared animation between every sprite
@@ -353,12 +364,14 @@ let ROCKET_TIMER = {left: ROCKET_INTERVAL, right: ROCKET_INTERVAL-5};
 
 // let mouseX = 10;
 let mouseY = height/2;
-canvas.addEventListener('mousemove', e => {
+document.addEventListener('mousemove', e => {
+    if (isGamePaused || !isGameStillPong) return;
     const rect = canvas.getBoundingClientRect();
     mouseY = e.clientY - rect.top;
     // mouseX = e.clientX - rect.left;
 });
-canvas.addEventListener('click', e => {
+document.addEventListener('click', e => {
+    if (isGamePaused || !isGameStillPong) return;
     setTimeout(() => {
         createRocket(1);
     }, 10)
@@ -377,46 +390,62 @@ canvas.addEventListener('touchmove', e => {
     mouseY = touchY;
 })
 
-
+let nearestBall = null;
 function movePaddles(deltaTime) {
-    // leftPaddle.x = mouseX - sizePaddle.width/2;
-    // console.log(leftPaddle.x, rightPaddle.x);
     leftPaddle.y = mouseY - leftPaddle.height/2;
 
-    //createRocket(-1);
-    createRocket(-1);
+    createRocket(-1); // enemy sends out rocket
 
     // right paddle AI
-    if (nearestBall.x > width/4 && nearestBall.velocity.x > 0) {
-        if (nearestBall.y > rightPaddle.y && nearestBall.y < rightPaddle.y + rightPaddle.height) {
-            //console.log(nearestBall.y, rightPaddle.y, rightPaddle.y + sizePaddle.height);
-            let direction = Math.sign(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
-            //console.log(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
-            let speed = Math.floor(Math.abs(nearestBall.velocity.y))+2;
-            if (speed > AI_SPEED) speed = AI_SPEED;
-            if (speed < AI_SPEED/2) speed = AI_SPEED/2;
-            rightPaddle.y += speed * direction * deltaTime;
-            //console.log(speed);
-            return;
-        } else if (nearestBall.y > rightPaddle.y + rightPaddle.height/2) {
-            rightPaddle.y += AI_SPEED * deltaTime;
-        } else if (nearestBall.y < rightPaddle.y - rightPaddle.height/2) {
-            rightPaddle.y -= AI_SPEED * deltaTime;
-        } 
-        
-    } else {
-        let difference = rightPaddle.y + rightPaddle.height/2 - height/2;
-        if (Math.abs(difference) < AI_SPEED * deltaTime) return;
 
-        if (difference < 0)
-            rightPaddle.y += AI_SPEED * deltaTime;
-        else
-            rightPaddle.y -= AI_SPEED * deltaTime;
+    // stationary
+    if (aiType == 2) {
+        rightPaddle.y = height/2 - rightPaddle.height/2;
+        return;
+    };
+
+    // normal
+    if (aiType == 0) {
         
+        
+        if (nearestBall !== null && nearestBall.x > width/4) {
+            if (nearestBall.y > rightPaddle.y + rightPaddle.height/2) {
+                // console.log(2);
+                rightPaddle.y += AI_SPEED * deltaTime;
+                return;
+            } else if (nearestBall.y < rightPaddle.y - rightPaddle.height/2) {
+                // console.log(`3, ${AI_SPEED*deltaTime},  ${rightPaddle.y}`);
+                rightPaddle.y -= AI_SPEED * deltaTime;
+                return;
+            } else {
+                const direction = Math.sign(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
+                let speed = Math.floor(Math.abs(nearestBall.velocity.y))+2;
+                if (speed > AI_SPEED) speed = AI_SPEED;
+                if (speed < AI_SPEED/2) speed = AI_SPEED/2;
+                rightPaddle.y += speed * direction * deltaTime;
+                // console.log(1);
+                return;
+            }          
+        } else {
+            // console.log('4');
+            let difference = rightPaddle.y + rightPaddle.height/2 - height/2;
+            if (Math.abs(difference) < AI_SPEED * deltaTime) return;
+    
+            if (difference < 0)
+                rightPaddle.y += AI_SPEED * deltaTime;
+            else
+                rightPaddle.y -= AI_SPEED * deltaTime;
+        }
+        // clamp to the canvas boundaries
+        rightPaddle.y = Math.max(0, Math.min(height - rightPaddle.height, rightPaddle.y));
     }
-}
 
-let nearestBall = balls[0];
+    // advanced
+    if (aiType == 1) {
+
+    }
+
+}
 
 // Collision detection
 function paddleCollision(paddle, quadtree) {
@@ -535,14 +564,51 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
+function selectGamemode(mode = 'normal') {
+    BALL_INTERVAL = 15;
+    if (mode == 'normal') {
+        aiType = 0;
+        rightPaddle.image.src = './assets/paddle2.png';
+        rightPaddle.height = sizePaddle.height;
+    } else if (mode == 'advanced') {
+        aiType = 1;
+        rightPaddle.image.src = './assets/paddle2.png';
+        rightPaddle.height = sizePaddle.height;
+    } else if (mode == 'wall') {
+        // Gain points every time a ball is spawned. Don't let Maniek beat you in score (OR, optional leaderboard, )
+        aiType = 2;
+        rightPaddle.image.src = './assets/paddle4.png';
+        rightPaddle.height = sizePaddle.height * 6;
+
+        BALL_INTERVAL = 2;
+        
+        addScore('left',1); // 1 ball to start with, your points are determined by the amount of balls on screen
+    }
+    rightPaddle.y = height/2 - rightPaddle.height/2;
+}
+function restartGame() {
+    // Reset scores
+    pongScores.left = 0;
+    pongScores.right = 0;
+    updateScores();
+    
+    balls = [];
+    rockets = [];
+    explosions = [];
+
+    leftPaddle.y = height/2 - leftPaddle.height/2;
+    rightPaddle.y = height/2 - rightPaddle.height/2;
+    selectGamemode('normal'); // default, can be changed
+
+    addBall();
+}
+
 // Animation loop
 let previousTime = performance.now();
 
 //const TARGET_FPS = 60;
 //const interval = 1 / TARGET_FPS;
 
-let isGamePaused = false;
-let isGameStillPong = false;
 function animate(timestamp) {
     const deltaTime = IGNORE_NEXT_DT && 1/60 
                     || (timestamp - previousTime)/1000 
@@ -554,44 +620,64 @@ function animate(timestamp) {
         return;
     }*/
 
-    if (CURRENT_GAME != 'pong') {
-        if (isGameStillPong)
-            ctx.clearRect(0, 0, width, height);
+    // UPDATES FOR GAME CHANGES
+    {
+        if (shouldUpdateNavigation) {
+            if (isGamePaused && isGameStillPong) {
+                shouldUpdateNavigation = false;
+                gameOverlay.classList.remove('hidden');
+            } else {
+                gameOverlay.classList.add('hidden');
+            }
+        }
         
-        isGameStillPong = false;
-        requestAnimationFrame(animate);
-        return;
-    }
-    isGameStillPong = true;
+        
 
-    if (isGamePaused) {
-        requestAnimationFrame(animate);
-        return;
-    }
-
-    if (shouldResize)
-        resizeCanvas();
+        if (CURRENT_GAME != 'pong') {
+            if (isGameStillPong) {
+                ctx.clearRect(0, 0, width, height);
+                shouldUpdateNavigation = true;
+            }
+            isGameStillPong = false;
+            requestAnimationFrame(animate);
+            return;
+        }
+        isGameStillPong = true;
     
+        if (isGamePaused) {
+            requestAnimationFrame(animate);
+            return;
+        }
+    
+        if (shouldResize)
+            resizeCanvas();
+    }
+    
+    
+    // GAME
 
     // Animations/timers
-    ROCKET_TIMER.left += deltaTime;
-    ROCKET_TIMER.right += deltaTime;
-    BALL_TIMER += deltaTime;
-    if (BALL_TIMER > BALL_INTERVAL) {
-        addBall();
-        BALL_TIMER = 0;
-    }
-
-    ANIMATION_TIMER += deltaTime;
-    if (ANIMATION_TIMER > ANIMATION_INTERVAL) {
-        ANIMATION_TIMER = 0;
-        for (let rocket of rockets) {
-            rocket.updateAnimation();
+    {
+        ROCKET_TIMER.left += deltaTime;
+        ROCKET_TIMER.right += deltaTime;
+        BALL_TIMER += deltaTime;
+        if (BALL_TIMER > BALL_INTERVAL) {
+            addBall();
+            addScore('left', 1);
+            BALL_TIMER = 0;
         }
-        for (let explosion of explosions) {
-            explosion.updateAnimation();
-            if (!explosion.active) {
-                explosions.splice(explosions.indexOf(explosion), 1);
+
+        ANIMATION_TIMER += deltaTime;
+        if (ANIMATION_TIMER > ANIMATION_INTERVAL) {
+            ANIMATION_TIMER = 0;
+            for (let rocket of rockets) {
+                rocket.updateAnimation();
+            }
+            for (let explosion of explosions) {
+                explosion.updateAnimation();
+                if (!explosion.active) {
+                    explosions.splice(explosions.indexOf(explosion), 1);
+                }
             }
         }
     }
@@ -650,8 +736,6 @@ function animate(timestamp) {
     rightPaddle.draw();
     movePaddles(deltaTime);
 
-    //console.log(quadtree.query);
-
     paddleCollision(leftPaddle, quadtree);
     paddleCollision(rightPaddle, quadtree);
 
@@ -672,11 +756,30 @@ function animate(timestamp) {
             if (ball == nearestBall) nearestBall = balls[0];
             continue;
         }
-        if (ball != nearestBall) {
-            if (ball.x > nearestBall.x || nearestBall.velocity.x < 0) {
+
+        if (nearestBall == null && ball.velocity.x > 0) {
+            nearestBall = ball;
+            console.log("setting ball");
+        }
+
+        if (nearestBall != null) {
+            // if old nearest ball is going away from ai paddle, take it
+            if (nearestBall.velocity.x > 0) {
+                console.log("ya");
+                if (ball == nearestBall)
+                    nearestBall == null;
+                else
+                    nearestBall = ball;
+            }
+        }
+
+        if (nearestBall != null && ball != nearestBall) {
+            if (ball.x > nearestBall.x) {
+                console.log("double ya");
                 nearestBall = ball;
             }
         }
+        
     
         ball.update(deltaTime);
 
@@ -694,3 +797,4 @@ function animate(timestamp) {
 }
 
 animate();
+restartGame();

@@ -773,6 +773,7 @@ const enemy_plane = {
         this.scale = 0.1;
         this.width = 40;
         this.height = 20;
+        game.update_score(50 * player_turret.score_multiplier);
         game.update_killcount();
     },
 }
@@ -938,7 +939,6 @@ const player_turret = {
             }
             
             if (plane_hit) {
-                game.update_score(50 * this.score_multiplier);
                 if (plane.play_explosion == false) {
                 //console.log(plane.item);
                 plane.item.use();

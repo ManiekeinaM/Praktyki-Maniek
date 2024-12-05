@@ -34,6 +34,21 @@ main {
     transform: translate(-50%, -50%);
 }
 
+/* @keyframes navigateToTop {
+    0% {
+        top: 50%;
+    }
+    50% {
+        top: 50%;
+        left: 50%;
+    }
+    100% {
+        flex-direction: row;
+        top: 3em;
+        left: 50%;
+    }
+} */
+
 .game-navigation .button {
     border-radius: 10px;
 }

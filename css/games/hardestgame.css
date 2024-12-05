@@ -70,8 +70,44 @@
 
 .titlescreen.hardestgame .slide:nth-child(3) {
     animation: slideInFromRight 1.5s ease-in-out forwards;
-    animation-delay: 2s;
+    animation-delay: 1.5s;
 }
+
+.demon {
+    height: 15rem;
+    width: auto;
+    /* transform-origin: top center; */
+    /* animation: demonBob 1s linear infinite; */
+}
+
+.enterGame {
+    font-family: var(--zsp-font);
+    font-weight: bolder;
+    font-size: 1rem;
+
+    background-color: var(--demonred);
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    border: 0.25em dashed var(--demonred-dark);
+    box-shadow: 0 0 0.5em var(--demonred-dark);
+
+    color: #eee;
+    /* animation: pulsateBoxShadow 2s ease-in-out infinite; */
+
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.enterGame:hover {
+    transform: scale(1.1);
+}
+
+.hidden-game {
+    display: none !important;
+}
+
+
+
 
 @keyframes demonBob {
     0% {
@@ -175,42 +211,4 @@
         transform: translateX(0);
         opacity: 1;
     }
-}
-
-.demon {
-    height: 15rem;
-    width: auto;
-    /* transform-origin: top center; */
-    /* animation: demonBob 1s linear infinite; */
-}
-
-.titlescreen > div.left {
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: 90%;
-}
-.titlescreen > div.right {
-    align-items: flex-end;
-    justify-content: flex-end;
-    width: 90%;
-}
-
-.enterGame {
-    font-family: var(--zsp-font);
-    font-weight: bolder;
-    font-size: 1rem;
-    background-color: var(--demonred);
-    padding: 0.5em 1em;
-    border-radius: 0.5em;
-    border: 0.25em dashed var(--demonred-dark);
-    color: #eee;
-    box-shadow: 0 0 0.5em var(--demonred-dark);
-    /* animation: pulsateBoxShadow 2s ease-in-out infinite; */
-
-    cursor: pointer;
-    transition: transform 0.1s;
-}
-
-.enterGame:hover {
-    transform: scale(1.1);
 }

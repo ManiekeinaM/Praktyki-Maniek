@@ -225,7 +225,6 @@ const camera = {
     auto_aim: false,
     desired_offset: 0,
     update_offset: function(mouse_x, mouse_y, delta) {
-        console.log(this.auto_aim); 
         if (this.auto_aim == true) {
             this.move_toward_plane(delta);
             this.adjust_camera();
@@ -396,7 +395,7 @@ function get_closest_plane() {
 
 //Buff cooldowns
 let current_cooldowns = {
-    "ShootingSpeed" : 0,
+    "Shooti ngSpeed" : 0,
     "ScoreMultiplier" : 0,
     //"TimeStop" : 0,
     "ChainBullets" : 0,
@@ -584,12 +583,39 @@ const sponsor_window = {
     width: 250 * width_upscale,
     height: 175 * height_upscale,
     padding: 15,
+    buff_width: 20 * width_upscale,
+    buff_height: 20 * height_upscale,
     draw: function() {
         let x = 0 - this.padding / 2;
         let y = canvasHeight - this.height + this.padding / 2;
+
+        let buffs_x = x + this.width + this.padding / 2;
+        let buffs_y = canvasHeight - this.padding - this.buff_height / 2;
         
+        // Outline box for icons
+        ctx.fillStyle = "rgba(24, 71, 19, 1)";
+        ctx.fillRect(x, y - 1, this.width + this.padding * 3, this.height);
+
+        // Inside box for icons
+        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
+        ctx.fillRect(x + this.padding / 2 + this.padding * 3, y + this.padding / 2, this.width - this.padding, this.height - this.padding);
+
+        // Buff icons
+        for (const [key, value] of Object.entries(current_cooldowns)) {
+            let icon = null;
+            if (value > 0) { 
+                icon = buff_icons[key];
+
+                let cooldowns_keys = Object.keys(current_cooldowns);
+                let current_key = cooldowns_keys.indexOf(key);
+
+                console.log(current_key);
+                ctx.drawImage(icon, buffs_x, buffs_y - 20 * (current_key - 1), this.buff_width, this.buff_height);
+            }
+        }
+
         // Outline box
-        ctx.fillStyle = "rgba(24, 71, 19, 1)"
+        ctx.fillStyle = "rgba(24, 71, 19, 1)";
         ctx.fillRect(x, y, this.width, this.height);
         
         // Inside box
@@ -1044,16 +1070,8 @@ let lastFrameResponse = 0;
 let lastAnimationTime = 0;
 let lastTurretAnimationTime = 0;
 
-//Radar
-const plane_icon_normal = new Image();
-const plane_icon_heal = new Image();
-const plane_icon_speed = new Image();
-const plane_icon_score = new Image();
 
-plane_icon_normal.src = "Assets/plane_icons/plane_icon_normal.png";
-plane_icon_heal.src = "Assets/plane_icons/plane_icon_heal.png";
-plane_icon_speed.src = "Assets/plane_icons/plane_icon_speed.png";
-plane_icon_score.src = "Assets/plane_icons/plane_icon_score.png";
+// Radar
 
 const IconHeight = 144 * 0.25;
 const IconWidth = 144 * 0.25;

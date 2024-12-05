@@ -198,7 +198,7 @@ const game = {
     draw_livesbar: function() {
         for (let i=1; i<player_turret.lives + 1; i++) {
             if (i % 6 == 0) i++;
-            ctx.drawImage(life_icon, 0 + life_icon.width*width_upscale*0.25/2 * (i % 6), canvasHeight - life_icon.height * 0.25 * height_upscale - 20 - Math.floor(15 * height_upscale * parseInt(i / 6)) , life_icon.width * 0.25 * width_upscale, life_icon.height * 0.25 * height_upscale); 
+            ctx.drawImage(life_icon, -sponsor_window.padding * 2 + life_icon.width*width_upscale*0.25/2 * (i % 6), canvasHeight - sponsor_window.height + sponsor_window.padding - life_icon.height * 0.25 * height_upscale - Math.floor(15 * height_upscale * parseInt(i / 6)) , life_icon.width * 0.25 * width_upscale, life_icon.height * 0.25 * height_upscale); 
         }
     }
 }
@@ -578,6 +578,28 @@ const buff_handler = {
 const special_item = {
     type: 0,
     use: function() {buff_action[this.type]()},
+}
+
+const sponsor_window = {
+    width: 250 * width_upscale,
+    height: 175 * height_upscale,
+    padding: 15,
+    draw: function() {
+        let x = 0 - this.padding / 2;
+        let y = canvasHeight - this.height + this.padding / 2;
+        
+        // Outline box
+        ctx.fillStyle = "rgba(24, 71, 19, 1)"
+        ctx.fillRect(x, y, this.width, this.height);
+        
+        // Inside box
+        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
+        ctx.fillRect(x + this.padding / 2, y + this.padding / 2, this.width - this.padding, this.height - this.padding);
+
+        // Maniek screen
+        ctx.fillStyle = 'rgba(5, 0, 0, 1)';
+        ctx.fillRect(x + this.padding, y + this.padding, this.width - this.padding * 2, this.height - this.padding * 2)
+    }
 }
 
 //Buffs icons
@@ -1334,6 +1356,7 @@ function game_loop(timestamp) {
     //Draw GUI
     game.draw_score();
     game.draw_livesbar();
+    sponsor_window.draw();
     buff_cooldown.draw_cooldowns();
     
     requestAnimationFrame(game_loop);

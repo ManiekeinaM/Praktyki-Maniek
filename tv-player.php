@@ -17,18 +17,17 @@
 
         <!-- Bell schedule with highlight -->
         <div class="bell-schedule">
-            <table>
-                <tr><th>Lekcja godz</th></tr>
-                <tr><td><span id="0">7:05 - 7:50</span></td></tr>
-                <tr><td><span id="1">8:00 - 8:45</span></td></tr>
-                <tr><td><span id="2">8:55 - 9:40</span></td></tr>
-                <tr><td><span id="3">9:50 - 10:35</span></td></tr>
-                <tr><td><span id="4">10:55 - 11:40</span></td></tr>
-                <tr><td><span id="5">11:50 - 12:35</span></td></tr>
-                <tr><td><span id="6">12:45 - 13:30</span></td></tr>
-                <tr><td><span id="7">13:40 - 14:25</span></td></tr>
-                <tr><td><span id="8">14:35 - 15:20</span></td></tr>
-                <tr><td><span id="9">15:30 - 16:15</span></td></tr>
+                <h4>lekcja / godz</h4>
+                <span id="0">7:05 - 7:50</span>
+                <span id="1">8:00 - 8:45</span>
+                <span id="2">8:55 - 9:40</span>
+                <span id="3">9:50 - 10:35</span>
+                <span id="4">10:55 - 11:40</span>
+                <span id="5">11:50 - 12:35</span>
+                <span id="6">12:45 - 13:30</span>
+                <span id="7">13:40 - 14:25</span>
+                <span id="8">14:35 - 15:20</span>
+                <span id="9">15:30 - 16:15</span>
             </table>
         </div>
     </div>
@@ -140,7 +139,7 @@
                     return currentLesson;
                 }else if(currentHour == vHour) {
                     timeLeft = vMinute+10;
-                    if(currentLesson == 3) timeleft+=10;
+                    if(currentLesson == 3) timeLeft+=10;
                     timeLeft = timeLeft-currentMinute;
                     if(timeLeft<=0) {
                         timeLeft = vMinute-5-currentMinute;
@@ -164,6 +163,10 @@
                 currentLesson++;
             }while(true);
         }
+
+        document.querySelectorAll('.bell-schedule > span').forEach(lesson => {
+            lesson.innerText = `${lesson.id} / ${lesson.innerText}`;
+        })
         
     </script>
 </body>

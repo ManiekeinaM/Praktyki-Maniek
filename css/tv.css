@@ -44,18 +44,26 @@ body {
 }
 
 .bell-schedule {
-    display: flex;
-    justify-content: center;
     border: 0.2rem solid green;
     border-bottom: none;
     text-wrap: nowrap;
     width: 20%;
     font-size: clamp(1rem, 2.5vw, 3rem);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
-.bell-schedule > table {
-    text-align: center;
+h4 {
+    color: rgb(98, 196, 0);
+    margin: 0;
 }
+
+/* .bell-schedule > span::before {
+    content: '1: ';
+} */
 
 .maniek-face {
     width: auto;
@@ -70,6 +78,14 @@ body {
 .light-green {
     color: lawngreen;
 }
+
+.bell-schedule > span {
+    transform: scale(0.9);
+}
+.bell-schedule > span.light-green {
+    transform: scale(1.05);
+}
+
 
 video {
     display: block;

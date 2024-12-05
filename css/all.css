@@ -48,6 +48,9 @@
     --soft-violet: #9f96b3;
     --soft-violet-dark: #7e758f;
 
+    --demonred: rgb(226, 0, 0);
+    --demonred-dark: rgb(153, 0, 0);
+
     --brown: #CAB282;
     --darkbrown: #817453;
     --darkbrown-transparent: rgba(129, 116, 83, 0.25);
@@ -62,6 +65,12 @@
     user-select: all;
     pointer-events: all;
     color: orange;
+}
+
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+    /* user-drag: none; */
 }
 
 .hidden {

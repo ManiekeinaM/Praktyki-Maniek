@@ -175,8 +175,8 @@ const game = {
         this.player_score += amount;
     },
     draw_start_screen: function() {
-        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        //ctx.fillStyle = 'rgba(33, 112, 26, 1)';
+        //ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.fillStyle = 'white';
         ctx.font = "32px Determination Mono";
         ctx.textAlign = "center";
@@ -589,6 +589,7 @@ const sponsor_window = {
         let x = 0 - this.padding / 2;
         let y = canvasHeight - this.height + this.padding / 2;
 
+        /*
         let buffs_x = x + this.width + this.padding / 2;
         let buffs_y = canvasHeight - this.padding - this.buff_height / 2;
         
@@ -613,6 +614,8 @@ const sponsor_window = {
                 ctx.drawImage(icon, buffs_x, buffs_y - 20 * (current_key - 1), this.buff_width, this.buff_height);
             }
         }
+
+        */
 
         // Outline box
         ctx.fillStyle = "rgba(24, 71, 19, 1)";
@@ -1251,6 +1254,18 @@ function game_loop(timestamp) {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     if (game.has_not_started == true) {
+
+        ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height);
+
+        player_turret.draw();
+
+        drawRadar(player_turret, Planes, cameraAngle);
+        drawRadarSight(camera.offset_y);
+
+        game.draw_livesbar();
+        sponsor_window.draw();
+        
+
         game.draw_start_screen();
         requestAnimationFrame(game_loop);
         return;

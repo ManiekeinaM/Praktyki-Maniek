@@ -51,18 +51,18 @@ const explosion_img = new Image();
 explosion_img.src = "Assets/explosion-sheet.png";
 
 const plane_variants = {
-    "none" : "Assets/planes/enemy.png",
-    "ShootingSpeed" : "Assets/planes/enemy-red.png",
-    "ScoreMultiplier" : "Assets/planes/enemy-violet.png",
-    "RandomBuffs"  : "Assets/planes/enemy-red.png",
-    "HealthUp"  : "Assets/planes/enemy-green.png",
-    "TimeStop" : "Assets/planes/enemy-blue.png",
-    "ChainBullets" : "Assets/planes/enemy-pink.png", 
-    "ExplosiveBullets" : "Assets/planes/enemy-orange.png",
-    "ScreenAOE" : "Assets/planes/enemy-yellow.png", 
-    "Aimbot" : "Assets/planes/enemy-purple.png",
-    "Immortality" : "Assets/planes/enemy-gray.png",
-    "Slow" : "Assets/planes/enemy-blue.png", 
+    "none" : "Assets/planes/plane_normal.png",
+    "ShootingSpeed" : "Assets/planes/plane_shoot_speed.png",
+    "ScoreMultiplier" : "Assets/planes/plane_multiplier.png",
+    "RandomBuffs"  : "Assets/planes/plane_random.png",
+    "HealthUp"  : "Assets/planes/plane_heal.png",
+    "TimeStop" : "Assets/planes/plane_timestop.png",
+    "ChainBullets" : "Assets/planes/plane_bullet_chain.png", 
+    "ExplosiveBullets" : "Assets/planes/plane_explosive.png",
+    "ScreenAOE" : "Assets/planes/plane_aoe.png", 
+    "Aimbot" : "Assets/planes/plane_aimbot.png",
+    "Immortality" : "Assets/planes/plane_immortal.png",
+    "Slow" : "Assets/planes/plane_slow.png", 
 }
 
 const plane_animation = {
@@ -111,7 +111,7 @@ import { HighScores } from '../../js/highscores.js';
 const highscoreManager = new HighScores('airturret-bestscores');
 highscoreManager.updateHighscoresList(scores_table);
 
-
+let random_explosions_id = 0;
 
 //Game state controller
 const score_top_margin = 25;
@@ -120,9 +120,13 @@ const game = {
     enemy_planes_amount: 1,
     kill_count: 0,
     is_gameover: false,
+    play_explosion_sequence: false,
     has_not_started: true,
     stop: function() {
-        this.is_gameover = true;
+
+        //this.is_gameover = true;
+        this.play_explosion_sequence = true;
+        random_explosions_id = setInterval(create_explosion, 1000);
         //console.log(this.player_score);
 
         highscoreManager.addScore(this.player_score);
@@ -180,11 +184,13 @@ const game = {
         ctx.fillStyle = 'white';
         ctx.font = "32px Determination Mono";
         ctx.textAlign = "center";
-        ctx.fillText("Press anything to start", canvasWidth/2, canvasHeight/2);
+        ctx.fillText("Kliknij by zagrać", canvasWidth/2, canvasHeight/2);
     },
     draw_gameover: function() {
+        // Outline box
         ctx.fillStyle = 'rgba(24, 71, 19, 1)';
         ctx.fillRect(canvasWidth / 2 - (gameover.width + 20) / 2, canvasHeight / 3 - (gameover.height + 20) / 2, (gameover.width + 20), gameover.height + 20);
+        // Inside box
         ctx.fillStyle = 'rgba(33, 112, 26, 1)';
         ctx.fillRect(canvasWidth / 2 - gameover.width / 2, canvasHeight / 3 - gameover.height / 2, gameover.width, gameover.height);
 
@@ -193,7 +199,7 @@ const game = {
         ctx.fillStyle = "white";
         ctx.fillText(this.player_score, canvasWidth/2, canvasHeight / 3 - 30);
         ctx.font = "32px Determination Mono";
-        ctx.fillText("Press anything to continue", canvasWidth/2, canvasHeight / 3 + 30);
+        ctx.fillText("Kliknij by zagrać ponownie", canvasWidth/2, canvasHeight / 3 + 30);
     },
     draw_livesbar: function() {
         for (let i=1; i<player_turret.lives + 1; i++) {
@@ -868,8 +874,18 @@ const explosion_effect = {
             this.y - camera.offset_y,
             this.width, this.height,
         ); 
-        console.log(camera.offset_x);
-    }
+        //console.log(camera.offset_x);
+    },
+    draw_on_UI: function() {
+        ctx.drawImage(
+            explosion_img,
+            this.animation.source_x, this.animation.source_y,
+            this.animation.frame_width, this.animation.frame_height,
+            this.x,
+            this.y,
+            this.width, this.height,
+        ); 
+    },
 }
 
 //Player obj
@@ -949,8 +965,8 @@ const player_turret = {
 
             
 
-                ctx.fillStyle = "rgba('255','0','0','50')";
-                ctx.fillRect(explosion_xstart, explosion_ystart, explosion_width, explosion_height);
+                //ctx.fillStyle = "rgba('255','0','0','50')";
+                //ctx.fillRect(explosion_xstart, explosion_ystart, explosion_width, explosion_height);
                 if(
                    (
                     explosion_xstart < plane_col_x + plane.get_col_width() &&
@@ -1247,6 +1263,19 @@ let did_shoot = false;
 // 6. Radar Sight
 // 7. Game score
 
+function create_explosion() {
+    let explosion =  {...explosion_effect};
+    explosion.animation = {...explosion_animation};
+    console.log("Width: ", canvasWidth);
+    explosion.x = canvasWidth / 2// - turret_inactive_width * 1.25 + Math.floor(Math.random() * turret_inactive_width);
+    explosion.y = canvasHeight - 200 //- Math.floor(Math.random() * turret_inactive_height / 2);
+    explosion.width = 200 * width_upscale;
+    explosion.height = 200 * height_upscale;
+
+    Explosions.push(explosion);
+}
+
+
 function game_loop(timestamp) {
     let delta = (timestamp - lastFrameResponse) / 1000;
     lastFrameResponse = timestamp;
@@ -1271,15 +1300,49 @@ function game_loop(timestamp) {
         return;
     }
 
+    if (game.play_explosion_sequence == true) {
+        // Stop score from updating
+        clearInterval(score_updater_id);
+
+        //Draw background
+        ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height);
+        
+        //Draw turret
+        player_turret.draw_disabled(25 * delta);
+
+        // Draw explosions
+        Explosions.forEach(puff => {
+            if (timestamp - puff.animation.last_animation_time > puff.animation.frame_rate) {
+                puff.animation.current_frame = (puff.animation.current_frame + 1) % puff.animation.total_frames;
+                puff.animation.calc_source_position();
+                puff.animation.last_animation_time = timestamp;
+            }
+            console.log(puff);
+            puff.draw_on_UI();
+    
+            if (puff.animation.current_frame == 5) {
+                Explosions.splice(Explosions.indexOf(puff), 1);
+            }
+        })
+
+        // Check if turret is offscreen
+        if (player_turret.y > canvasHeight + turret_inactive_height * 0.75) {
+            clearInterval(random_explosions_id);
+            game.is_gameover = true;
+            game.play_explosion_sequence = false;
+            Explosions.splice(0, Explosions.length);
+        }
+
+        requestAnimationFrame(game_loop);
+        return;
+    }
+
     if (game.is_gameover == true) {
         clearInterval(score_updater_id);
         
         //Draw background
         ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height);
         
-        //Draw turret
-        player_turret.draw_disabled(50 * delta);
-
         //Draw gameover
         game.draw_gameover();
         requestAnimationFrame(game_loop);

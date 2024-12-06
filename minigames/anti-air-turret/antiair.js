@@ -585,43 +585,112 @@ const special_item = {
     use: function() {buff_action[this.type]()},
 }
 
+// Maniek sprite
+const current_maniek_sprite = new Image();
+
+const maniek_sprite = {
+    "idle": "Assets/Maniek-faces/Maniek-blink.png",
+    "blink": "Assets/Maniek-faces/Maniek-blink.png",
+    "shocked": "Assets/Maniek-faces/Maniek-bigEyes",
+    "sad": "Assets/Maniek-faces/Maniek-sad",
+}
+
+const maniek_sprites_properties = {
+    state : "idle",
+    upcoming_state: "idle",
+    "idle": {
+        frame_width: 3822 / 7,
+        frame_height: 426,
+        total_frames: 1,
+    },
+    "blink": {
+        frame_width: 3822 / 7,
+        frame_height: 426,
+        total_frames: 7,
+    },
+    "shocked": {
+        frame_width: 2328 / 4,
+        frame_height: 444,
+        total_frames: 4,
+    },
+    "sad": {
+        frame_width: 1092 / 2,
+        frame_height: 420,
+        total_frames: 2,
+    },
+    current_frame: 0,
+    frame_rate: 100, 
+    source_x: 0,
+    source_y: 0,
+    last_animation_time: 0,
+    calc_source_position: function () {
+        this.source_x = this.current_frame * this[this.state].frame_width;  
+    },
+    update_state: function() {
+        maniek_sprites_properties.state = maniek_sprites_properties.upcoming_state;
+    },
+    change_state: function(state) {
+        maniek_sprites_properties.upcoming_state = state;
+        maniek_sprites_properties.update_state();
+        maniek_sprites_properties.update_sprite();
+    },
+    update_sprite: function() {
+        current_maniek_sprite.src = maniek_sprite[this.state];
+    }
+}
+
+let maniek_blink_id = setInterval(maniek_sprites_properties.change_state.bind(maniek_sprites_properties.change_state,"blink"), 7000);
+
+
+current_maniek_sprite.src = maniek_sprite["idle"];
+
+
+
 const sponsor_window = {
     width: 250 * width_upscale,
     height: 175 * height_upscale,
     padding: 15,
     buff_width: 20 * width_upscale,
     buff_height: 20 * height_upscale,
+    
+    inside_box_width: 0,
+    inside_box_height: 0,
+    inside_box_x: 0,
+    inside_box_y: 0,
+
+    maniek_screen_width: 0,
+    maniek_screen_height: 0,
+    maniek_screen_x: 0,
+    maniek_screen_y: 0,
+
+    maniek_face_width: 0,
+    maniek_face_height: 0,
+    maniek_face_x: 0,
+    maniek_face_y: 0,
+
+    init: function() {
+        let x = 0 - this.padding / 2;
+        let y = canvasHeight - this.height + this.padding / 2;
+        
+        this.inside_box_width = this.width - this.padding;
+        this.inside_box_height = this.height - this.padding;
+        this.inside_box_x = x + this.padding / 2;
+        this.inside_box_y = y + this.padding / 2;
+
+        this.maniek_screen_width = this.width - this.padding * 2;
+        this.maniek_screen_height = this.height - this.padding * 2;
+        this.maniek_screen_x = x + this.padding;
+        this.maniek_screen_y = y + this.padding;
+
+        this.maniek_face_width = this.maniek_screen_width - this.padding * 2;
+        this.maniek_face_height = this.maniek_screen_height - this.padding * 2;
+        this.maniek_face_x = Math.round(this.maniek_screen_x + this.padding);
+        this.maniek_face_y = this.maniek_screen_y + this.padding;
+    },
+
     draw: function() {
         let x = 0 - this.padding / 2;
         let y = canvasHeight - this.height + this.padding / 2;
-
-        /*
-        let buffs_x = x + this.width + this.padding / 2;
-        let buffs_y = canvasHeight - this.padding - this.buff_height / 2;
-        
-        // Outline box for icons
-        ctx.fillStyle = "rgba(24, 71, 19, 1)";
-        ctx.fillRect(x, y - 1, this.width + this.padding * 3, this.height);
-
-        // Inside box for icons
-        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
-        ctx.fillRect(x + this.padding / 2 + this.padding * 3, y + this.padding / 2, this.width - this.padding, this.height - this.padding);
-
-        // Buff icons
-        for (const [key, value] of Object.entries(current_cooldowns)) {
-            let icon = null;
-            if (value > 0) { 
-                icon = buff_icons[key];
-
-                let cooldowns_keys = Object.keys(current_cooldowns);
-                let current_key = cooldowns_keys.indexOf(key);
-
-                console.log(current_key);
-                ctx.drawImage(icon, buffs_x, buffs_y - 20 * (current_key - 1), this.buff_width, this.buff_height);
-            }
-        }
-
-        */
 
         // Outline box
         ctx.fillStyle = "rgba(24, 71, 19, 1)";
@@ -629,12 +698,23 @@ const sponsor_window = {
         
         // Inside box
         ctx.fillStyle = 'rgba(33, 112, 26, 1)';
-        ctx.fillRect(x + this.padding / 2, y + this.padding / 2, this.width - this.padding, this.height - this.padding);
+        ctx.fillRect(this.inside_box_x, this.inside_box_y, this.inside_box_width, this.inside_box_height);
 
         // Maniek screen
         ctx.fillStyle = 'rgba(5, 0, 0, 1)';
-        ctx.fillRect(x + this.padding, y + this.padding, this.width - this.padding * 2, this.height - this.padding * 2)
-    }
+        ctx.fillRect(this.maniek_screen_x, this.maniek_screen_y, this.maniek_screen_width, this.maniek_screen_height);
+    },
+    draw_maniek: function() {
+        ctx.drawImage(
+            current_maniek_sprite,
+            maniek_sprites_properties.source_x, maniek_sprites_properties.source_y,
+            maniek_sprites_properties[maniek_sprites_properties.state].frame_width, 
+            maniek_sprites_properties[maniek_sprites_properties.state].frame_height,
+            this.maniek_face_x,
+            this.maniek_face_y,
+            this.maniek_face_width , this.maniek_face_height,
+        );
+    },
 }
 
 //Buffs icons
@@ -1317,7 +1397,6 @@ function game_loop(timestamp) {
                 puff.animation.calc_source_position();
                 puff.animation.last_animation_time = timestamp;
             }
-            console.log(puff);
             puff.draw_on_UI();
     
             if (puff.animation.current_frame == 5) {
@@ -1432,6 +1511,18 @@ function game_loop(timestamp) {
         }
         turret_animation.calc_source_position();
     }
+
+    if (timestamp - maniek_sprites_properties.last_animation_time > maniek_sprites_properties.frame_rate) {
+        console.log(maniek_sprites_properties.state);
+
+        if (maniek_sprites_properties.state != "idle" && maniek_sprites_properties.current_frame == maniek_sprites_properties[maniek_sprites_properties.state].total_frames - 1) {
+            maniek_sprites_properties.change_state("idle");
+        }
+
+        maniek_sprites_properties.current_frame = (maniek_sprites_properties.current_frame + 1) % maniek_sprites_properties[maniek_sprites_properties.state].total_frames;
+        maniek_sprites_properties.calc_source_position();
+        maniek_sprites_properties.last_animation_time = timestamp;
+    }
    
     scope_anchor.draw();
 
@@ -1453,9 +1544,13 @@ function game_loop(timestamp) {
     game.draw_score();
     game.draw_livesbar();
     sponsor_window.draw();
-    buff_cooldown.draw_cooldowns();
+    sponsor_window.draw_maniek();
+
     
     requestAnimationFrame(game_loop);
 }
+
+// Initialisation zone
+sponsor_window.init();
 
 requestAnimationFrame(game_loop);

@@ -1350,10 +1350,10 @@ function create_explosion() {
     let explosion =  {...explosion_effect};
     explosion.animation = {...explosion_animation};
     console.log("Width: ", canvasWidth);
-    explosion.x = canvasWidth / 2// - turret_inactive_width * 1.25 + Math.floor(Math.random() * turret_inactive_width);
-    explosion.y = canvasHeight - 200 //- Math.floor(Math.random() * turret_inactive_height / 2);
     explosion.width = 200 * width_upscale;
     explosion.height = 200 * height_upscale;
+    explosion.x = canvasWidth / 2 - explosion.width / 2;
+    explosion.y = canvasHeight - 200;
 
     Explosions.push(explosion);
 }
@@ -1391,7 +1391,7 @@ function game_loop(timestamp) {
         ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height);
         
         //Draw turret
-        player_turret.draw_disabled(25 * delta);
+        player_turret.draw_disabled(35 * delta);
 
         // Draw explosions
         Explosions.forEach(puff => {

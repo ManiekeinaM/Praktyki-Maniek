@@ -19,7 +19,7 @@ section.wisielec {
     align-items: center;
 }
 
-section.wisielec.hidden {
+section.wisielec.gameHidden {
     display: none !important;
 }
 

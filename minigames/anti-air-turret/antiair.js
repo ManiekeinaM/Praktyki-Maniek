@@ -1548,6 +1548,7 @@ function game_loop(timestamp) {
     game.draw_livesbar();
     sponsor_window.draw();
     sponsor_window.draw_maniek();
+    buff_cooldown.draw_cooldowns();
 
     
     requestAnimationFrame(game_loop);

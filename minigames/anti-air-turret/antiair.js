@@ -50,19 +50,18 @@ life_icon.src = "Assets/turret-alive.png";
 const explosion_img = new Image();
 explosion_img.src = "Assets/explosion-sheet.png";
 
-const plane_variants = {
-    "none" : "Assets/planes/plane_normal.png",
-    "ShootingSpeed" : "Assets/planes/plane_shoot_speed.png",
-    "ScoreMultiplier" : "Assets/planes/plane_multiplier.png",
-    "RandomBuffs"  : "Assets/planes/plane_random.png",
-    "HealthUp"  : "Assets/planes/plane_heal.png",
-    "TimeStop" : "Assets/planes/plane_timestop.png",
-    "ChainBullets" : "Assets/planes/plane_bullet_chain.png", 
-    "ExplosiveBullets" : "Assets/planes/plane_explosive.png",
-    "ScreenAOE" : "Assets/planes/plane_aoe.png", 
-    "Aimbot" : "Assets/planes/plane_aimbot.png",
-    "Immortality" : "Assets/planes/plane_immortal.png",
-    "Slow" : "Assets/planes/plane_slow.png", 
+const explosion_animation = {
+    frame_width: 320,
+    frame_height: 320,
+    total_frames: 6,
+    current_frame: 0,
+    frame_rate: 100, 
+    source_x: 0,
+    source_y: 0,
+    last_animation_time: 0,
+    calc_source_position: function () {
+        this.source_x = this.current_frame * this.frame_width;  
+    },
 }
 
 const plane_animation = {
@@ -79,21 +78,25 @@ const plane_animation = {
     },  
 }
 
-const explosion_animation = {
-    frame_width: 320,
-    frame_height: 320,
-    total_frames: 6,
-    current_frame: 0,
-    frame_rate: 100, 
-    source_x: 0,
-    source_y: 0,
-    last_animation_time: 0,
-    calc_source_position: function () {
-        this.source_x = this.current_frame * this.frame_width;  
-    },
+const plane_variants = {
+    "none" : "Assets/planes/plane_normal.png",
+    "ShootingSpeed" : "Assets/planes/plane_shoot_speed.png",
+    "ScoreMultiplier" : "Assets/planes/plane_multiplier.png",
+    "RandomBuffs"  : "Assets/planes/plane_random.png",
+    "HealthUp"  : "Assets/planes/plane_heal.png",
+    "TimeStop" : "Assets/planes/plane_timestop.png",
+    "ChainBullets" : "Assets/planes/plane_bullet_chain.png", 
+    "ExplosiveBullets" : "Assets/planes/plane_explosive.png",
+    "ScreenAOE" : "Assets/planes/plane_aoe.png", 
+    "Aimbot" : "Assets/planes/plane_aimbot.png",
+    "Immortality" : "Assets/planes/plane_immortal.png",
+    "Slow" : "Assets/planes/plane_slow.png", 
 }
 
-// Waves
+
+
+
+// Plane obj array
 const Planes = [];
 
 //Update score every sec
@@ -115,6 +118,7 @@ let random_explosions_id = 0;
 
 //Game state controller
 const score_top_margin = 25;
+
 const game = {
     player_score: 0, 
     enemy_planes_amount: 1,
@@ -123,17 +127,13 @@ const game = {
     play_explosion_sequence: false,
     has_not_started: true,
     stop: function() {
-
-        //this.is_gameover = true;
+        // create explosions on player death
         this.play_explosion_sequence = true;
         random_explosions_id = setInterval(create_explosion, 1000);
-        //console.log(this.player_score);
 
+        // Refresh highscore table
         highscoreManager.addScore(this.player_score);
         highscoreManager.updateHighscoresList(scores_table);
-
-
-        //console.log(BestScores);
     },
     reset: function() {
         Planes.length = 0;
@@ -154,7 +154,7 @@ const game = {
             plane.item = {...special_item};
             plane.item.type = "none";
 
-            //Roll for type
+            //Roll for chance of getting plane containing random buff
             plane.item.type = roll_for_plane();
               
             plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
@@ -163,13 +163,14 @@ const game = {
         }
     },
     update_killcount: function() {
-        //console.log(this.kill_count);
-        //console.log(this.enemy_planes_amount);
         this.kill_count += 1;
+
+        // Spawn new planes, after killing required amount of enemies
         if (this.kill_count > this.enemy_planes_amount * this.enemy_planes_amount) {
             this.spawn_plane(1);
         }
     },
+    // Top game score
     draw_score: function() {
         ctx.font = `64px Determination Mono`;
         ctx.textAlign = "center";
@@ -179,8 +180,6 @@ const game = {
         this.player_score += amount;
     },
     draw_start_screen: function() {
-        //ctx.fillStyle = 'rgba(33, 112, 26, 1)';
-        //ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         ctx.fillStyle = 'white';
         ctx.font = "32px Determination Mono";
         ctx.textAlign = "center";
@@ -194,28 +193,30 @@ const game = {
         ctx.fillStyle = 'rgba(33, 112, 26, 1)';
         ctx.fillRect(canvasWidth / 2 - gameover.width / 2, canvasHeight / 3 - gameover.height / 2, gameover.width, gameover.height);
 
+        // Score
         ctx.font = "64px Determination Mono";
         ctx.textAlign = "center";
         ctx.fillStyle = "white";
         ctx.fillText(this.player_score, canvasWidth/2, canvasHeight / 3 - 30);
+
+        // Press again text
         ctx.font = "32px Determination Mono";
         ctx.fillText("Kliknij by zagrać ponownie", canvasWidth/2, canvasHeight / 3 + 30);
     },
+    // Draw lives in rows, above maniek window
     draw_livesbar: function() {
+        let max_amount_per_row = 6;
         for (let i=1; i<player_turret.lives + 1; i++) {
             if (i % 6 == 0) i++;
-            ctx.drawImage(life_icon, -sponsor_window.padding * 2 + life_icon.width*width_upscale*0.25/2 * (i % 6), canvasHeight - sponsor_window.height + sponsor_window.padding - life_icon.height * 0.25 * height_upscale - Math.floor(15 * height_upscale * parseInt(i / 6)) , life_icon.width * 0.25 * width_upscale, life_icon.height * 0.25 * height_upscale); 
+            ctx.drawImage(
+                life_icon,
+                -sponsor_window.padding * 2 + life_icon.width*width_upscale*0.25/2 * (i % max_amount_per_row),
+                canvasHeight - sponsor_window.height + sponsor_window.padding - life_icon.height * 0.25 * height_upscale - Math.floor(15 * height_upscale * parseInt(i / max_amount_per_row)),
+                life_icon.width * 0.25 * width_upscale,
+                life_icon.height * 0.25 * height_upscale
+            ); 
         }
     }
-}
-
-//Controls
-const controls = {
-    up_pressed: false,
-    down_pressed: false,
-    right_pressed: false,
-    left_pressed: false,
-    mouse_pressed: false,
 }
 
 //Camera
@@ -236,28 +237,40 @@ const camera = {
             this.adjust_camera();
             return;
         }
+        // Current angle camera is facing
         this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
+
+        // Move with mouse
         this.offset_x += mouse_x * this.acceleration_x * delta;
         this.offset_y += mouse_y * this.acceleration_y * delta;
+
+        // Limit camera Y-Axis movement
         if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {
             this.offset_y = -(GAME_WINDOW_HEIGHT - canvasHeight);
         };
         if (this.offset_y > 0) {
             this.offset_y = 0;
         } 
+
+        // Used to scale sprites for depth imitation
         this.y_offset_scale = 1 - this.offset_y / 1000;
 
+        // Wrap camera on X-Axis
         this.adjust_camera();
     },
     move_toward_plane(delta) {
+        // Aimbot camera speed
         let x_aim_acceleration = 2000;
         let y_aim_acceleration = 500;
 
+        // Get the offset to center camera on closest plane
         let desired_offset = get_closest_plane();
         if (desired_offset == null) return;
+        // Calc distance to the desired offset
         let distance_x = desired_offset.x - this.offset_x;
         let distance_y = desired_offset.y - this.offset_y;
 
+        // Gradually move offset to the desired point
         let x_offset_calc = Math.sign(distance_x) * x_aim_acceleration * delta;
         let y_offset_calc = Math.sign(distance_y) * y_aim_acceleration * delta 
         this.offset_x += x_offset_calc;
@@ -275,15 +288,12 @@ const camera = {
         }
 
         //Shoot if on target
-        //console.log(distance_x <= 50, " , ", distance_x >= -50, " , ",distance_y >= 50, " , ",distance_y <= -50);
         if (distance_x <= 50 && distance_x >= -50 && distance_y <= 80 && distance_y >= -80) {
             turret_is_shooting = true;
             player_turret.shoot(scope_anchor.x + scope_width / 2, scope_anchor.y + scope_height / 2);
-            //stop_animation = false;
-        } else {
-            //stop_animation = true;
         }
     },
+    // Wrap camera if needed
     adjust_camera: function() {
         if (this.offset_x > MAX_CAMERA_OFFSET_X) {
             this.offset_x = (this.offset_x * -1) + canvasWidth - (MAX_CAMERA_OFFSET_X - this.offset_x);
@@ -292,6 +302,7 @@ const camera = {
             this.offset_x = MAX_CAMERA_OFFSET_X - (MIN_CAMERA_OFFSET_X - this.offset_x);
         }
     },
+    // Shake camera
     shake: function(i) {
         if (this.shake_timeout) {
             clearTimeout(this.shake_timeout);
@@ -326,7 +337,7 @@ function roll_for_plane() {
     //let roll = 4;
     let roll = Math.floor(Math.random() * 5 + 1);
     if (roll == 4) {
-        let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
+        let rolled_buff = roll_for_buff();
         //console.log("buff: ", rolled_buff);
         return rolled_buff;
     } else {
@@ -340,19 +351,7 @@ function roll_for_buff() {
     return buff_list[roll];
 }
 
-// Screen below gun
-// Gun buffs: ShootingSpeed, ChainLighting, ExplosiveBullets, Aimbot
-
-// Maniek drone
-// Enemy debuffs: Slow, TimeStop, AOE, 
-
-// Side panel
-// Player buffs: ScoreMultiper, RandomBuffs, HealthUp, Immortality
-
-//Left bottom panel
-//Buff cooldowns Indicator
-
-
+//----- LIST OF BUFFS ------
 //1. Shooting Speed (Cooldown)
 //2. Score multiplier (Cooldown)
 //3. Get 2 random buffs (One-shot)
@@ -365,7 +364,7 @@ function roll_for_buff() {
 //10. Temporary Immortality (Cooldown)
 //11. Slow down partner (Cooldown)
 
-// Used by aimbot
+// Get closeset plane to player on y-axis
 function get_closest_plane() {
     let closest_plane = null;
     //let closest_plane_distance = 0;
@@ -373,25 +372,28 @@ function get_closest_plane() {
     let new_offset = {x: 0, y: 0};
 
     Planes.forEach(plane => {
+        // If plane is exploding skip it
         if (plane.play_explosion) {
             return;
         }
 
+        // Initialize first plane
         if (closest_plane == null) {
             closest_plane = plane;
             closest_to_y = plane.y;
         }
 
-        
-
+        // Check if plane is closer than previous one
         if (plane.y > closest_to_y && plane.play_explosion == false) {
             closest_plane = plane;
             closest_to_y = plane.y;
         }
     });
 
+    // Return null if no planes were found
     if (closest_plane == null) return null;
 
+    // Calc offset to have the plane centred on screen
     new_offset.x = (closest_plane.x - canvasWidth / 2) * -1;
     new_offset.y = closest_plane.y - 350;
 
@@ -402,7 +404,7 @@ function get_closest_plane() {
 let current_cooldowns = {
     "ShootingSpeed" : 0,
     "ScoreMultiplier" : 0,
-    //"TimeStop" : 0,
+    //"TimeStop" : 0, - disabled
     "ChainBullets" : 0,
     "ExplosiveBullets" : 0,
     "Aimbot" : 0,
@@ -410,6 +412,7 @@ let current_cooldowns = {
     "Slow" : 0,
 };
 
+// Actions to perform on each buff
 const buff_action = {
     "none" : function() { console.log("Im gay"); },
     "ShootingSpeed" : function() { buff_handler.activate_faster_shooting() },
@@ -428,24 +431,28 @@ const buff_action = {
 const buff_handler = {
     shooting_speed_timeout : 0,
     score_multiplier_timeout : 0,
-    //time_stop_timeout: 0,
+    //time_stop_timeout: 0, - disabled
     chain_bullets_timeout : 0,
     explosive_bullets_timeout : 0,
     aimbot_timeout : 0,
     immortality_timeout : 0,
     slow_timeout : 0,   
+    // Rolls two random buffs
     use_roll_buffs: function() {
         buff_action[roll_for_buff()]();
         buff_action[roll_for_buff()](); 
     },
+    // Heals
     use_heal: function() {
         player_turret.lives += 1;
     },
+    // Kills all planes in middle range
     use_kill_all: function() {
         Planes.forEach(plane => {
             if (plane.y > canvasHeight / 3) plane.play_explosion = true;
         })
     },
+    // Increases shooting speed
     activate_faster_shooting: function() {
             if (this.shooting_speed_timeout) {
                 clearTimeout(this.shooting_speed_timeout);
@@ -459,6 +466,7 @@ const buff_handler = {
             }, 6000);
             current_cooldowns["ShootingSpeed"] = 6000;
     },
+    // Multiplies incoming score by 2
     activate_score_multiplier: function() {
             if (this.score_multiplier_timeout) {
                 clearTimeout(this.score_multiplier_timeout);
@@ -472,7 +480,9 @@ const buff_handler = {
             }, 6000)
             current_cooldowns["ScoreMultiplier"] = 6000;
     },
-    /*activate_time_stop: function() {
+    /* ---- DISABLED ----
+       case: overpowered
+    activate_time_stop: function() {
         if (this.time_stop_timeout) {
             clearTimeout(this.time_stop_timeout);
         }
@@ -496,6 +506,7 @@ const buff_handler = {
         current_cooldowns["TimeStop"] = 6000;
     },*/
 
+    // Kills plane close to one another
     activate_chain_bullets: function() {
         if (this.chain_bullets_timeout) {
             clearTimeout(this.chain_bullets_timeout);
@@ -511,12 +522,12 @@ const buff_handler = {
         current_cooldowns["ChainBullets"] = 6000;
     },
 
+    // Makes bullets explosive and kills planes in the explosion radius
     activate_explosive_bullets: function() {
         if (this.explosive_bullets_timeout) {
             clearTimeout(this.explosive_bullets_timeout);
         }
         
-        //Explosive bullets
         player_turret.bullets_type = "explosive";
 
         this.explosive_bullets_timeout = setTimeout(() => {
@@ -527,12 +538,12 @@ const buff_handler = {
         current_cooldowns["ExplosiveBullets"] = 6000;
     },
 
+    // Aims towards closest plane and kills it
     activate_aimbot: function() {
         if (this.aimbot_timeout) {
             clearTimeout(this.aimbot_timeout);
         }
-        
-        //Auto Aim
+
         camera.auto_aim = true;
 
         this.aimbot_timeout = setTimeout(() => {
@@ -542,6 +553,7 @@ const buff_handler = {
         current_cooldowns["Aimbot"] = 6000;
     },
 
+    // Disables taking damage
     activate_immortality: function() {
         if (this.immortality_timeout) {
             clearTimeout(this.immortality_timeout);
@@ -555,6 +567,8 @@ const buff_handler = {
         }, 6000)
         current_cooldowns["Immortality"] = 6000;
     },
+
+    // Slows down all planes
     activate_slow: function() {
         if (this.slow_timeout) {
             clearTimeout(this.slow_timeout);
@@ -579,6 +593,7 @@ const buff_handler = {
 
 }
 
+// Used by planes
 const special_item = {
     type: 0,
     use: function() {buff_action[this.type]()},
@@ -727,7 +742,7 @@ const buff_icon = {
 // Cooldown icons
 const shoot_speed_icon = new Image();
 const score_multiplier_icon = new Image();
-//const time_stop_icon = new Image();
+//const time_stop_icon = new Image(); - disabled
 const chain_bullets_icon = new Image();
 const explosive_bullets_icon = new Image();
 const aimbot_icon = new Image();
@@ -736,7 +751,7 @@ const slow_icon = new Image();
 
 shoot_speed_icon.src = "Assets/buff_icons/shooter-speed.png";
 score_multiplier_icon.src = "Assets/buff_icons/shooter-2x.png";
-//time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ;
+//time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ; - disabled
 chain_bullets_icon.src = "Assets/buff_icons/shooter-lightning.png" ;
 explosive_bullets_icon.src = "Assets/buff_icons/shooter-boomboom.png";
 aimbot_icon.src = "Assets/buff_icons/shooter-aimbot.png" ;
@@ -757,7 +772,7 @@ const buff_icons = {
     //Cooldowns
     "ShootingSpeed" : shoot_speed_icon,
     "ScoreMultiplier" : score_multiplier_icon,
-    //"TimeStop" : time_stop_icon,
+    //"TimeStop" : time_stop_icon, - disabled
     "ChainBullets" : chain_bullets_icon,
     "ExplosiveBullets" : explosive_bullets_icon,
     "Aimbot" : aimbot_icon,
@@ -784,6 +799,7 @@ const buff_cooldown = {
             if (value > 0) { 
                 icon = buff_icons[key];
 
+                // Stack buffs next to each other, to prevent Y-axis overflow
                 if (displayed_buffs_amount == 4) {
                     this.x = 30;
                     this.y = canvasHeight / 2;
@@ -813,19 +829,14 @@ const enemy_plane = {
     acceleration_y: 40,
     scaling_factor: 0.18,
     scale: 0.1,
-    color: 'green',
-    is_on_scope: false,
     collision_box_width: 320,
     collision_box_height: 320,
     sprite: 0,
     explosion: 0,
-    death_x: 0,
-    death_y: 0,
     play_explosion: false,
-    is_special: false,
     item: 0,
     // Plane debuffs
-    time_stopped: false,
+    //time_stopped: false, - disabled
     is_slow: false,
     draw_plane: function() {
         let sprite = new Image();
@@ -871,12 +882,12 @@ const enemy_plane = {
         return this.y - camera.offset_y - this.get_col_height() / 2;
     },
     move: function(delta) {
-        if (this.time_stopped == false) {
-            this.y += this.acceleration_y * delta;
-            if (this.y > 0) {
-                this.scale_up(delta);
-            }
+        //if (this.time_stopped == false) { - disabled
+        this.y += this.acceleration_y * delta;
+        if (this.y > 0) {
+            this.scale_up(delta);
         }
+        //}
         
         // Add camera wrapping for planes
         if (this.x + camera.offset_x > MAX_CAMERA_OFFSET_X) 
@@ -905,8 +916,6 @@ const enemy_plane = {
         this.item.type = "none";
         //Roll for type
         this.item.type = roll_for_plane();
-        this.death_x = this.x + this.camera_offset_x - (plane_animation.frame_width * 0.25 * this.scale * this.y_offset_scale) / 2;
-        this.death_y = this.y - this.camera_offset_y - (plane_animation.frame_height * 0.25 * this.scale) / 2;
         this.play_explosion = false;
         this.explosion.current_frame = 0;
         this.y = 0;
@@ -1475,9 +1484,9 @@ function game_loop(timestamp) {
     Planes.forEach(plane => {
         if (plane.play_explosion == true) {
             if (timestamp - plane.explosion.last_animation_time > explosion_animation.frame_rate) {
-                if (plane.time_stopped == false) {
+                //if (plane.time_stopped == false) { - disabled
                     plane.explosion.current_frame = (plane.explosion.current_frame + 1) % plane.explosion.total_frames;    
-                }
+                //}
                 plane.explosion.calc_source_position(); // Update source_x
                 plane.explosion.last_animation_time = timestamp;
             }
@@ -1491,9 +1500,9 @@ function game_loop(timestamp) {
         }
         } else {
             if (timestamp - plane.sprite.last_animation_time > plane_animation.frame_rate + plane_animation.frame_rate * plane.is_slow) {
-                if (plane.time_stopped == false) {
+                //if (plane.time_stopped == false) { - disabled
                     plane.sprite.current_frame = (plane.sprite.current_frame + 1) % plane.sprite.total_frames;
-                }
+                //}
                 plane.sprite.calc_source_position(); // Update source_x
                 plane.sprite.last_animation_time = timestamp;
             }

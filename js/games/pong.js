@@ -406,17 +406,13 @@ function movePaddles(deltaTime) {
 
     // normal
     if (aiType == 0) {
-        
-        
         if (nearestBall !== null && nearestBall.x > width/4) {
             if (nearestBall.y > rightPaddle.y + rightPaddle.height/2) {
                 // console.log(2);
                 rightPaddle.y += AI_SPEED * deltaTime;
-                return;
             } else if (nearestBall.y < rightPaddle.y - rightPaddle.height/2) {
                 // console.log(`3, ${AI_SPEED*deltaTime},  ${rightPaddle.y}`);
                 rightPaddle.y -= AI_SPEED * deltaTime;
-                return;
             } else {
                 const direction = Math.sign(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
                 let speed = Math.floor(Math.abs(nearestBall.velocity.y))+2;
@@ -424,7 +420,6 @@ function movePaddles(deltaTime) {
                 if (speed < AI_SPEED/2) speed = AI_SPEED/2;
                 rightPaddle.y += speed * direction * deltaTime;
                 // console.log(1);
-                return;
             }          
         } else {
             // console.log('4');
@@ -757,6 +752,18 @@ function animate(timestamp) {
             continue;
         }
 
+        if (nearestBall) {
+            if (ball == nearestBall && ball.velocity.x < 0) {
+                nearestBall = null;
+            } else if (ball != nearestBall) {
+                if (ball.x > nearestBall.x && ball.velocity.x > 0)
+                    nearestBall = ball;
+            }
+        } else {
+            if (ball.velocity.x > 0) nearestBall = ball;
+        }
+        
+        /*
         if (nearestBall == null && ball.velocity.x > 0) {
             nearestBall = ball;
             console.log("setting ball");
@@ -779,7 +786,7 @@ function animate(timestamp) {
                 nearestBall = ball;
             }
         }
-        
+        */
     
         ball.update(deltaTime);
 

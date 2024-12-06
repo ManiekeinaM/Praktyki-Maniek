@@ -401,7 +401,7 @@ function get_closest_plane() {
 
 //Buff cooldowns
 let current_cooldowns = {
-    "Shooti ngSpeed" : 0,
+    "ShootingSpeed" : 0,
     "ScoreMultiplier" : 0,
     //"TimeStop" : 0,
     "ChainBullets" : 0,
@@ -777,22 +777,32 @@ const buff_cooldown = {
     width: 100 * width_upscale,
     height: 60 * height_upscale,
     draw_cooldowns: function() {
-        this.x = 0 + this.width / 2;
+        this.x = 0 + 20 * width_upscale;
 
+        let displayed_buffs_amount = 0;
         for (const [key, value] of Object.entries(current_cooldowns)) {
             let icon = null;
             if (value > 0) { 
                 icon = buff_icons[key];
 
-                ctx.drawImage(icon, this.x, this.y, buff_icon.width, buff_icon.height);
+                if (displayed_buffs_amount == 4) {
+                    this.x = 30;
+                    this.y = canvasHeight / 2;
+                }
+
+                ctx.drawImage(icon, this.x, this.y - 20 * height_upscale, buff_icon.width, buff_icon.height);
                 
                 ctx.font = "2rem Determination Mono";
                 ctx.fillStyle = "white";
                 ctx.textAlign = "center";
-                ctx.fillText(Math.round(current_cooldowns[key] / 1000, 2), this.x + 20 + buff_icon.width / 2, this.y + buff_icon.height / 2);
+                ctx.fillText(Math.round(current_cooldowns[key] / 1000, 2), this.x + 20 + buff_icon.width / 2, this.y + buff_icon.height / 2 - 20 * height_upscale);
                 this.y -= 80 * height_upscale;
+                
+
+                displayed_buffs_amount++;
             }
         }
+        displayed_buffs_amount = 0;
         this.y = canvasHeight / 2;
     }
 }

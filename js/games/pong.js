@@ -140,7 +140,7 @@ let shouldUpdateNavigation = true;
 
 
 document.addEventListener('keydown', e => {
-    if (!isGameStillPong) return;
+    if (!isGameStillPong || isInMenu) return;
     if (e.key == 'p') {
         isGamePaused = !isGamePaused;
         shouldUpdateNavigation = true;
@@ -358,7 +358,7 @@ function addBall() {
     balls.push(ball);
 }
 
-let BALL_INTERVAL = 15; // seconds
+let BALL_INTERVAL = 12; // seconds
 let BALL_TIMER = 0;
 const ANIMATION_INTERVAL = 0.06;
 let ANIMATION_TIMER = 0; // shared animation between every sprite
@@ -395,8 +395,9 @@ canvas.addEventListener('touchmove', e => {
 })
 
 function movePaddles(deltaTime) {
-    leftPaddle.y = mouseY - leftPaddle.height/2;
-    
+    leftPaddle.y = Math.max(0, Math.min(height - leftPaddle.height, 
+        mouseY - leftPaddle.height/2 // this is the position of the paddle, its just being clamped
+    ));
 
     // right paddle AI
     createRocket(-1); // enemy sends out rocket
@@ -463,6 +464,7 @@ function movePaddles(deltaTime) {
         else
             rightPaddle.y -= AI_SPEED * deltaTime;
     }
+
     // clamp to the canvas boundaries
     rightPaddle.y = Math.max(0, Math.min(height - rightPaddle.height, rightPaddle.y));
  
@@ -638,7 +640,7 @@ _modes.forEach(mode => {
 
 // Gamemodes
 function selectGamemode(mode = 'normal') {
-    BALL_INTERVAL = 15;
+    BALL_INTERVAL = 12;
     if (mode == 'normal') {
         aiType = 0;
         rightPaddle.image.src = './assets/paddle2.png';
@@ -671,6 +673,11 @@ function restartGame() {
     pongScores.left = 0;
     pongScores.right = 0;
     updateScores();
+
+    ROCKET_TIMER.left = ROCKET_INTERVAL;
+    ROCKET_TIMER.right = ROCKET_INTERVAL-5;
+    ANIMATION_TIMER = 0;
+    BALL_TIMER = 0;
     
     balls = [];
     rockets = [];
@@ -679,6 +686,7 @@ function restartGame() {
     leftPaddle.y = height/2 - leftPaddle.height/2;
     rightPaddle.y = height/2 - rightPaddle.height/2;
 
+    isGamePaused = false;
     isInMenu = true;
     shouldUpdateNavigation = true;
 }
@@ -691,10 +699,14 @@ let previousTime = performance.now();
 
 const _paused = document.querySelector('.paused');
 const _resume = _paused.querySelector('.resume');
+const _reset = _paused.querySelector('.resetGame');
 _resume.addEventListener('click', e => {
     isGamePaused = false;
     shouldUpdateNavigation = true;
 })
+_reset.addEventListener('click', e => {
+    restartGame();
+});
 
 
 const _modeHolder = document.querySelector('.pong-modes');
@@ -729,7 +741,7 @@ function animate(timestamp) {
                 gameOverlay.classList.add('hidden');
             }
 
-            if (isGamePaused) {
+            if (isGamePaused && isGameStillPong) {
                 drawOnce();
                 _paused.classList.remove('hidden');
             } else {
@@ -779,7 +791,8 @@ function animate(timestamp) {
         BALL_TIMER += deltaTime;
         if (BALL_TIMER > BALL_INTERVAL) {
             addBall();
-            addScore('left', 1);
+            if (aiType == 2)
+                addScore('left', 1);
             BALL_TIMER = 0;
         }
 
@@ -875,8 +888,10 @@ function animate(timestamp) {
         ball.update(deltaTime);
 
         // Bounce off top and bottom edges
-        if (ball.y - ball.radius < 0 || ball.y + ball.radius > height) {
-            ball.velocity.y = -ball.velocity.y;
+        if (ball.y - ball.radius < 0) {
+            ball.velocity.y = Math.abs(ball.velocity.y);
+        } else if (ball.y + ball.radius > height) {
+            ball.velocity.y = -Math.abs(ball.velocity.y);
         }
 
         ball.draw();

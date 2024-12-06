@@ -218,6 +218,7 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 0.5rem;
 
     background-color: rgba(50,50,50, 0.5);
     backdrop-filter: blur(2px);
@@ -256,7 +257,13 @@ header {
             0 0 3px black;
 }
 
-.paused > button {
+.paused > .pause-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+.pause-buttons > button {
     font-family: var(--zsp-font);
     padding: 1em 1.5em;
 
@@ -271,7 +278,12 @@ header {
     cursor: pointer;
     transition: transform 0.1s;
 }
-.paused > button:hover {
+.pause-buttons > button.resetGame {
+    background-color: var(--demonred);
+    border-color: var(--demonred-dark);
+    color: #eee;
+}
+.pause-buttons > button:hover {
     transform: scale(1.1);
 }
 

@@ -49,7 +49,11 @@
         <div id="game-overlay" class="hidden">
             <div class="paused">
                 <h1>Pauza</h1>
-                <button class="resume">Wznów</button>
+                <div class="pause-buttons">
+                    <button class="resume">Wznów</button>
+                    <button class="resetGame">Resetuj grę</button>
+                </div>
+                
             </div>
 
             <div class="pong pong-modes">
@@ -79,9 +83,26 @@
 
             <div class="pong pong-leaderboards">
                 <div class="highscores">
-                    <p>[Prosty]</p>
+                    <img src="./assets/gamemode0.png" alt="">
+                    <p>[Prosty]<br/>najwyższy wynik [1 życie]</p>
+                    <div class="highscoresList" data-highscoreCookie="pong-mode0"></div>
+                </div>
+
+                <div class="highscores">
+                    <img src="./assets/gamemode1.png" alt="">
+                    <p>[Mądry]<br/>najwyższy wynik [1 życie]</p>
                     <div class="highscoresList" data-highscoreCookie="pong-mode1"></div>
-                    <!-- TODO - highscoreCookie should be used rather than hardcoding stuff in -->
+                </div>
+
+                <div class="highscores">
+                    <img src="./assets/gamemode2.png" alt="">
+                    <p>[Ścianiek]<br/>najwyższy wynik</p>
+                    <div class="highscoresList" data-highscoreCookie="pong-mode2"></div>
+                </div>
+                <div class="highscores">
+                    <img src="./assets/gamemode2.png" alt="">
+                    <p>[Ścianiek]<br/>najwyższy wynik [1 życie]</p>
+                    <div class="highscoresList" data-highscoreCookie="pong-mode2-onelife"></div>
                 </div>
             </div>
         </div>

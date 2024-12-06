@@ -591,7 +591,7 @@ const current_maniek_sprite = new Image();
 const maniek_sprite = {
     "idle": "Assets/Maniek-faces/Maniek-blink.png",
     "blink": "Assets/Maniek-faces/Maniek-blink.png",
-    "shocked": "Assets/Maniek-faces/Maniek-bigEyes",
+    "shocked": "Assets/Maniek-faces/Maniek-wow.png",
     "sad": "Assets/Maniek-faces/Maniek-sad",
 }
 
@@ -609,9 +609,9 @@ const maniek_sprites_properties = {
         total_frames: 7,
     },
     "shocked": {
-        frame_width: 2328 / 4,
-        frame_height: 444,
-        total_frames: 4,
+        frame_width: 3420 / 6,
+        frame_height: 600,
+        total_frames: 6,
     },
     "sad": {
         frame_width: 1092 / 2,
@@ -628,8 +628,10 @@ const maniek_sprites_properties = {
     },
     update_state: function() {
         maniek_sprites_properties.state = maniek_sprites_properties.upcoming_state;
+        maniek_sprites_properties.upcoming_state = "idle";
     },
     change_state: function(state) {
+        //if (this.upcoming_state != "idle" && state == "blink") return; 
         maniek_sprites_properties.upcoming_state = state;
         maniek_sprites_properties.update_state();
         maniek_sprites_properties.update_sprite();
@@ -1084,6 +1086,7 @@ const player_turret = {
                 if (plane.play_explosion == false) {
                 //console.log(plane.item);
                 plane.item.use();
+                if (plane.item.type != "none") maniek_sprites_properties.change_state("shocked");
                 }
                 plane.play_explosion = true;
                 plane_hit = false;

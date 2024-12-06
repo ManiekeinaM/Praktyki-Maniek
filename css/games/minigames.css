@@ -53,7 +53,7 @@ main {
     border-radius: 10px;
 }
 
-.game-navigation .button.selected::after {
+.button.selected:not(.navigation-container>.button)::after {
     content: "";
     position: absolute;
     top: 85%;
@@ -136,7 +136,7 @@ main {
 .logoitarcza {
     transition: transform 0.5s;
 }
-.logoitarcza.hidden {
+.logoitarcza.gameHidden {
     display: block;
     transform: scale(0);
 }
@@ -161,10 +161,11 @@ main {
     transition: transform 0.5s;
 }
 
-.games-side section.flappymaniek.hidden {
+.games-side section.flappymaniek.gameHidden {
     display: block;
     transform: scale(0);
 }
+
 
 
 .maniek-side {
@@ -214,6 +215,7 @@ header {
     /* border: 2rem solid var(--coolviolet); */
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -254,17 +256,23 @@ header {
             0 0 3px black;
 }
 
-#game-overlay button {
+.paused > button {
     font-family: var(--zsp-font);
-    padding: 1rem 1.5rem;
+    padding: 1em 1.5em;
 
     text-align: center;
     font-weight: bolder;
 
-    background-color: #eee;
-    border: 0.25rem solid black;
+    background-color: var(--coolviolet);
+    border: 0.5em dashed var(--coolviolet-dark);
     font-size: 1rem;
-    border-radius: 1rem;
+    border-radius: 0.5em;
+
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+.paused > button:hover {
+    transform: scale(1.1);
 }
 
 /* Body changing colors whilst paused */

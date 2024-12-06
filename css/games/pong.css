@@ -65,6 +65,50 @@ h1.pong {
     display: none;
 }
 
+.pong-side-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: .25em;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 4em;
+    top: 50%;
+    font-size: 1.25rem;
+}
+
+.pong-modes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    gap: 1em;
+    /* transform: scale(1.25); */
+}
+
+.pong-leaderboards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2em;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#game-overlay > .hidden {
+    display: none;
+}
+#game-overlay > .superhidden {
+    display: none;
+}
+
+
 @media (max-width: 500px) {
     .rocket-timer-right {
         top: 1rem;

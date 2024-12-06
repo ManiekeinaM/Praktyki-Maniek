@@ -39,7 +39,7 @@ function gameLoop(currentTime) {
     // UPDATES FOR GAME CHANGES
     {
         if (shouldUpdateNavigation) {
-            if (playingGame && isGameStillTheSame) {
+            if (playingGame && isGameStillTheSame && !isDocumentHidden) {
                 shouldUpdateNavigation = false;
                 gamenavigation.classList.add('topLeft');
                 titleScreen.classList.add('hidden-game')

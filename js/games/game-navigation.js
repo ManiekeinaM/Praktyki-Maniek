@@ -8,8 +8,21 @@ const games = gamenavigation.querySelectorAll('.button');
 let LAST_GAME = "logoitarcza";
 let CURRENT_GAME = "logoitarcza";
 
+const gameNames = [];
 games.forEach(button => {
-    let game = button.dataset.game;
+    gameNames.push(button.dataset.game);
+})
+
+gameNames.forEach(gameName => {
+    if (gameName == CURRENT_GAME) return;
+    const gameElements = document.querySelectorAll(`.${gameName}:not(.button)`);
+    gameElements.forEach(element => {
+        element.classList.add('gameHidden');
+    })
+})
+
+games.forEach(button => {
+    const game = button.dataset.game;
 
     button.addEventListener('click', e => {
         if (game == CURRENT_GAME) return;
@@ -27,21 +40,21 @@ games.forEach(button => {
 
 
         // Hide all last game objects, show the new game objects
-        let lastGameObjects = document.querySelectorAll(`.${LAST_GAME}:not(.button)`);
+        const lastGameObjects = document.querySelectorAll(`.${LAST_GAME}:not(.button)`);
         lastGameObjects.forEach(object => {
             object.style.display = '';
-            object.classList.add('hidden');
+            object.classList.add('gameHidden');
         })
 
-        let newGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
+        const newGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
         newGameObjects.forEach(object => {
             object.style.display = '';
-            object.classList.remove('hidden');
+            object.classList.remove('gameHidden');
         })
 
 
         // Select this game
-        let lastButton = gamenavigation.querySelector('.selected');
+        const lastButton = gamenavigation.querySelector('.selected');
         if (lastButton)
             lastButton.classList.remove('selected');
         button.classList.add('selected');
@@ -51,12 +64,11 @@ games.forEach(button => {
 
     // Correct the display on transition end
     
-    let allGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
+    const allGameObjects = document.querySelectorAll(`.${game}:not(.button)`);
 
-
-    let fixDisplay = object => {
-        let isHidden = object.classList.contains('hidden');
-        let isRelative = window.getComputedStyle(object).position == 'static';
+    const fixDisplay = object => {
+        const isHidden = object.classList.contains('gameHidden');
+        const isRelative = window.getComputedStyle(object).position == 'static';
 
         if (isHidden && isRelative) {
             object.style.display = 'none';
@@ -71,3 +83,15 @@ games.forEach(button => {
     
 })
 
+
+
+let isDocumentHidden = false;
+let IGNORE_NEXT_DT = false;
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        isDocumentHidden = true;
+    } else {
+        isDocumentHidden = false;
+        IGNORE_NEXT_DT = true;
+    }
+});

@@ -32,6 +32,9 @@
 
     z-index: 100;
 }
+.hardestgame.gameHidden {
+    display: none;
+}
 
 .titlescreen.hidden {
     display: none;
@@ -101,6 +104,7 @@
 .enterGame:hover {
     transform: scale(1.1);
 }
+
 
 .hidden-game {
     display: none !important;

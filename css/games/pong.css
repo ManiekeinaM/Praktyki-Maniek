@@ -95,10 +95,10 @@ h1.pong {
     flex-wrap: wrap;
     gap: 2em;
 
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /* position: absolute; */
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
 }
 
 #game-overlay > .hidden {
@@ -106,6 +106,19 @@ h1.pong {
 }
 #game-overlay > .superhidden {
     display: none;
+}
+
+.pong.gameHidden {
+    display: none;
+}
+
+.pong-leaderboards > .highscores {
+    font-size: 0.75rem;
+}
+
+.pong-leaderboards > .highscores > img {
+    height: 4rem;
+    width: auto;
 }
 
 

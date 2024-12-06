@@ -325,7 +325,6 @@ const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp"
 function roll_for_plane() {
     //let roll = 4;
     let roll = Math.floor(Math.random() * 5 + 1);
-    //console.log("Los: ",roll);
     if (roll == 4) {
         let rolled_buff = buff_list[Math.floor(Math.random() * buff_list.length)] 
         //console.log("buff: ", rolled_buff);
@@ -444,7 +443,7 @@ const buff_handler = {
     },
     use_kill_all: function() {
         Planes.forEach(plane => {
-            plane.play_explosion = true;
+            if (plane.y > canvasHeight / 3) plane.play_explosion = true;
         })
     },
     activate_faster_shooting: function() {

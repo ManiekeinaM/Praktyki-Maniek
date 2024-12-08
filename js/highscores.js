@@ -1,7 +1,11 @@
 export class HighScores {
-    constructor(cookieName) {
-        this.cookieName = cookieName;
+    constructor(list, cookieName) {
+        this.list = list; // the ".highscoresList" element
+        this.cookieName = cookieName || list.dataset.highscorecookie;
+        console.log(this.cookieName, list);
+
         this.highscores = JSON.parse(this.getCookie(this.cookieName) || '[]');
+        
     }
 
     getCookie(cname) {
@@ -45,8 +49,8 @@ export class HighScores {
         this.setCookie(this.cookieName, JSON.stringify(this.highscores), 9999);
     }
 
-    updateHighscoresList(highscoresListElement) {
-        highscoresListElement.innerHTML = '';
+    updateHighscores() {
+        this.list.innerHTML = '';
 
         this.highscores.forEach((scoreEntry, i) => {
             let div = document.createElement('div');
@@ -90,7 +94,7 @@ export class HighScores {
                 div.appendChild(p);
             } 
 
-            highscoresListElement.appendChild(div);
+            this.list.appendChild(div);
         });
     }
 }

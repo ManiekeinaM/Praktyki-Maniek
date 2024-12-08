@@ -111,8 +111,8 @@ function update_score_gradually() {
 let scores_table = document.querySelector(".highscoresList");
 
 import { HighScores } from '../../js/highscores.js';
-const highscoreManager = new HighScores('airturret-bestscores');
-highscoreManager.updateHighscoresList(scores_table);
+const highscoreManager = new HighScores(scores_table, 'airturret-bestscores');
+highscoreManager.updateHighscores();
 
 let random_explosions_id = 0;
 
@@ -133,7 +133,7 @@ const game = {
 
         // Refresh highscore table
         highscoreManager.addScore(this.player_score);
-        highscoreManager.updateHighscoresList(scores_table);
+        highscoreManager.updateHighscores();
     },
     reset: function() {
         Planes.length = 0;

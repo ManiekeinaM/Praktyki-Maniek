@@ -215,13 +215,13 @@ function collisionDetection() {
 let currentScore = 0;
 
 import { HighScores } from '../highscores.js';
-const highscoresList = document.querySelector('.highscoresList');
-const highscoreManager = new HighScores('flappy-highscores');
+const highscoresList = document.querySelector('.flappymaniek.highscores > .highscoresList');
+const highscoreManager = new HighScores(highscoresList);
 
 const gameover = document.querySelector('.flappymaniek .screen .gameover');
 const highscore = document.querySelector('.flappymaniek .screen .highscore');
 
-highscoreManager.updateHighscoresList(highscoresList);
+highscoreManager.updateHighscores();
 
 function incrementScore() {
     currentScore++;
@@ -257,7 +257,7 @@ function restart() {
     // Reset highscore
     highscore.innerText = `0`;
     currentScore = 0;
-    highscoreManager.updateHighscoresList(highscoresList);
+    highscoreManager.updateHighscores();
 
     if (fallInterval) {
         // Stop falling animation
@@ -280,7 +280,7 @@ function death() {
     // Add the current score to the high scores
     highscoreManager.addScore(currentScore);
 
-    highscoreManager.updateHighscoresList(highscoresList);
+    highscoreManager.updateHighscores();
 
     // Add falling animation
     fallInterval = setInterval(() => {

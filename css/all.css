@@ -540,7 +540,7 @@ main {
 /* Scale up */
 
 @media (min-width: 2000px) {
-    html {
-        font-size: 24px;
+    .screen {
+        font-size: 22px;
     }
 }

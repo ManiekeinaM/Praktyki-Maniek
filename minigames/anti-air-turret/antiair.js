@@ -570,14 +570,14 @@ const buff_handler = {
         
         Planes.forEach(plane => {
             plane.scaling_factor = 0.09;
-            plane.acceleration_y = 20;
+            //plane.acceleration_y = 20;
             plane.is_slow = true;
         })
 
         this.slow_timeout = setTimeout(() => {
             Planes.forEach(plane => {
                 plane.scaling_factor = 0.18;
-                plane.acceleration_y = 40;
+                //plane.acceleration_y = 40;
                 plane.is_slow = false;
             })
             this.slow_timeout = null;
@@ -898,7 +898,6 @@ const enemy_plane = {
     draw_plane: function() {
         let sprite = new Image();
         sprite.src = plane_variants[this.item.type];
-        //sprite = plane_variant[this.item.type];
         //console.log(this.item.type);
         ctx.drawImage(
             sprite,
@@ -939,12 +938,10 @@ const enemy_plane = {
         return this.y - camera.offset_y - this.get_col_height() / 2;
     },
     move: function(delta) {
-        //if (this.time_stopped == false) { - disabled
-        this.y += this.acceleration_y * delta;
+        this.y += this.acceleration_y * delta * ((this.is_slow && this.acceleration_y != -Math.abs(this.acceleration_y))? 0.5 : 1);
         if (this.y > 0) {
             this.scale_up(delta);
         }
-        //}
         
         // Add camera wrapping for planes
         if (this.x + camera.offset_x > MAX_CAMERA_OFFSET_X) 
@@ -986,8 +983,6 @@ const enemy_plane = {
         game.update_killcount();
     },
 }
-
-
 
 
 //Turret animation
@@ -1242,21 +1237,19 @@ document.addEventListener('keyup', (event) => {
 });
 
 document.addEventListener("mousedown", (event) => {
-    if (event.button === 0) { // Left mouse button
+    if (event.button === 0) {
         turret_is_shooting = true;
         stop_animation = false;
     }
 });
 
 document.addEventListener("mouseup", (event) => {
-    if (event.button === 0) { // Left mouse button
+    if (event.button === 0) { 
         stop_animation = true
-        //turret_is_shooting = false;
     }
 });
 
 let lastFrameResponse = 0;
-let lastAnimationTime = 0;
 let lastTurretAnimationTime = 0;
 
 
@@ -1381,16 +1374,6 @@ function drawRadarSight(camera_offset_y) {
     ctx.fill();
 }
 
-function rotatePoint(x, y, angle) {
-    const cos = Math.cos(-angle);
-    const sin = Math.sin(-angle);
-    return {
-        x: -(x * cos - y * sin),
-        y: x * sin + y * cos,
-    };
-}
-
-
 let cameraAngle = 0;
 const rotationSpeed = Math.PI / 16;
 
@@ -1403,9 +1386,6 @@ background.src = "Assets/Sky_bg.png";
 //background.src = "Assets/Calibrationbg.png";
 const background_width = GAME_WINDOW_WIDTH + canvasWidth * 2;
 const background_height = GAME_WINDOW_HEIGHT + canvasHeight / 2;
-const background_x = 0;
-const background_y = 0;
-
 
 //Screen cover
 const screen_cover = new Image();
@@ -1425,13 +1405,31 @@ let did_shoot = false;
 
 // Main game loop
 // ** Draw order **
-// 1. Background
-// 2. Planes
-// 3. Screen cover
-// 4. Turret
-// 5. Radar
-// 6. Radar Sight
-// 7. Game score
+// * Start Screen
+// * - background
+// * - player
+// * - radar
+// * - livebar
+// * - maniek window
+// * - start screen
+// * Gameover
+// * - background
+// * - player
+// * - explosions
+// * - gameover screen, after explosion sequence
+// * Ingame
+// * - background
+// * - Explosive bullets Explosions
+// * - Planes and exploding planes
+// * - Sponsor planes
+// * - scope
+// * - player
+// * - radar
+// * - score
+// * - livebar
+// * - maniek window
+// * - maniek
+// * - buff cooldowns
 
 function create_explosion() {
     let explosion =  {...explosion_effect};

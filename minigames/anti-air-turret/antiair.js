@@ -138,7 +138,7 @@ const game = {
     reset: function() {
         Planes.length = 0;
         this.enemy_planes_amount = 0;
-        this.spawn_plane(1);
+        this.spawn_plane(300);
         player_turret.reset();
         this.has_not_started = false;
         this.is_gameover = false;
@@ -156,6 +156,10 @@ const game = {
 
             //Roll for chance of getting plane containing random buff
             plane.item.type = roll_for_plane();
+
+            let sprite = new Image();
+            sprite.src = plane_variants[plane.item.type];
+            plane.plane_img = sprite;
               
             plane.x = Math.floor(Math.random() * TOTAL_GAME_WIDTH + MIN_CAMERA_OFFSET_X);
             Planes.push(plane);
@@ -878,6 +882,7 @@ const enemy_plane = {
     scale: 0.1,
     collision_box_width: 320,
     collision_box_height: 320,
+    plane_img: 0,
     sprite: 0,
     explosion: 0,
     play_explosion: false,
@@ -886,11 +891,9 @@ const enemy_plane = {
     //time_stopped: false, - disabled
     is_slow: false,
     draw_plane: function() {
-        let sprite = new Image();
-        sprite.src = plane_variants[this.item.type];
         //console.log(this.item.type);
         ctx.drawImage(
-            sprite,
+            this.plane_img,
             this.sprite.source_x, this.sprite.source_y,
             this.sprite.frame_width, this.sprite.frame_height,
             this.x + camera.offset_x - (this.sprite.frame_width * 0.25 * this.scale * camera.y_offset_scale) / 2,
@@ -960,6 +963,7 @@ const enemy_plane = {
         this.item.type = "none";
         //Roll for type
         this.item.type = roll_for_plane();
+        this.plane_img = this.item.type;
         this.play_explosion = false;
         this.explosion.current_frame = 0;
         this.y = 0;
@@ -1414,6 +1418,8 @@ function create_explosion() {
 
 
 function game_loop(timestamp) {
+    requestAnimationFrame(game_loop);
+
     let delta = (timestamp - lastFrameResponse) / 1000;
     lastFrameResponse = timestamp;
 
@@ -1433,7 +1439,7 @@ function game_loop(timestamp) {
         
 
         game.draw_start_screen();
-        requestAnimationFrame(game_loop);
+        //requestAnimationFrame(game_loop);
         return;
     }
 
@@ -1470,7 +1476,7 @@ function game_loop(timestamp) {
             Explosions.splice(0, Explosions.length);
         }
 
-        requestAnimationFrame(game_loop);
+        //requestAnimationFrame(game_loop);
         return;
     }
 
@@ -1482,7 +1488,7 @@ function game_loop(timestamp) {
         
         //Draw gameover
         game.draw_gameover();
-        requestAnimationFrame(game_loop);
+        //requestAnimationFrame(game_loop);
         return;
     }
 
@@ -1617,7 +1623,7 @@ function game_loop(timestamp) {
     buff_cooldown.draw_cooldowns();
 
     
-    requestAnimationFrame(game_loop);
+    //requestAnimationFrame(game_loop);
 }
 
 // Initialisation zone

@@ -85,7 +85,7 @@ const plane_variants = {
     "RandomBuffs"  : "Assets/planes/plane_random.png",
     "HealthUp"  : "Assets/planes/plane_heal.png",
     "Reverse" : "Assets/planes/plane_reverse.png",
-    "ChainBullets" : "Assets/planes/plane_bullet_chain.png", 
+    //"ChainBullets" : "Assets/planes/plane_bullet_chain.png", 
     "ExplosiveBullets" : "Assets/planes/plane_explosive.png",
     "ScreenAOE" : "Assets/planes/plane_aoe.png", 
     "Aimbot" : "Assets/planes/plane_aimbot.png",
@@ -330,8 +330,8 @@ const camera = {
 //hydro
 
 //Buff list 
-// "TimeStop" disabled
-const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow", "ScreenAOE", "Reverse"];
+// "ChainBullets" disabled
+const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "ExplosiveBullets", "Aimbot", "Immortality", "Slow", "ScreenAOE", "Reverse"];
 //Roll for plane type
 function roll_for_plane() {
     //let roll = 4;
@@ -356,8 +356,8 @@ function roll_for_buff() {
 //2. Score multiplier (Cooldown)
 //3. Get 2 random buffs (One-shot)
 //4. Health up (One-shot)
-//5. Time stop (Cooldown) - disabled
-//6. Chain lighting bullets (Cooldown)
+//5. Reverse (Cooldown)
+//6. Chain lighting bullets (Cooldown) - wip
 //7. Explosive bullets (Cooldown)
 //8. Screen AOE (One-shot)
 //9. Aimbot (Cooldown)
@@ -405,7 +405,7 @@ let current_cooldowns = {
     "ShootingSpeed" : 0,
     "ScoreMultiplier" : 0,
     "Reverse" : 0,
-    "ChainBullets" : 0,
+    //"ChainBullets" : 0,
     "ExplosiveBullets" : 0,
     "Aimbot" : 0,
     "Immortality" : 0,
@@ -420,7 +420,7 @@ const buff_action = {
     "RandomBuffs" : function() { buff_handler.use_roll_buffs() },
     "HealthUp" : function() { buff_handler.use_heal() },
     "Reverse" : function() { buff_handler.activate_reverse() },
-    "ChainBullets" : function() { buff_handler.activate_chain_bullets() },
+    //"ChainBullets" : function() { buff_handler.activate_chain_bullets() },
     "ExplosiveBullets" : function() { buff_handler.activate_explosive_bullets() },
     "ScreenAOE" : function() { buff_handler.use_kill_all() },
     "Aimbot" : function() { buff_handler.activate_aimbot() },
@@ -431,8 +431,8 @@ const buff_action = {
 const buff_handler = {
     shooting_speed_timeout : 0,
     score_multiplier_timeout : 0,
-    //time_stop_timeout: 0, - disabled
-    chain_bullets_timeout : 0,
+    reverse_timeout: 0,
+    //chain_bullets_timeout : 0,
     explosive_bullets_timeout : 0,
     aimbot_timeout : 0,
     immortality_timeout : 0,
@@ -501,7 +501,7 @@ const buff_handler = {
     },
 
     // Kills plane close to one another
-    activate_chain_bullets: function() {
+    /*activate_chain_bullets: function() {
         if (this.chain_bullets_timeout) {
             clearTimeout(this.chain_bullets_timeout);
         }
@@ -514,7 +514,7 @@ const buff_handler = {
             this.chain_bullets_timeout = null;
         }, 6000)
         current_cooldowns["ChainBullets"] = 6000;
-    },
+    },*/
 
     // Makes bullets explosive and kills planes in the explosion radius
     activate_explosive_bullets: function() {
@@ -683,7 +683,6 @@ current_maniek_sprite.src = maniek_sprite["idle"];
 const sponsor_logos = {
     "Immortality": "Assets/sponsors/better-logo.png", //"BetterCollective"
     "ScoreMultiplier": "Assets/sponsors/bsh-logo.png", // "B/S/H"
-    "ScreenAOE": "Assets/sponsors/dhl-logo.png", // "DHL"
     "RandomBuffs": "Assets/sponsors/fujitsu-logo.png", // "Fujitsu"
     "HealthUp": "Assets/sponsors/hitachi-logo.png", // "Hitachi"
     "ExplosiveBullets": "Assets/sponsors/hydro-logo.png", // "Hydro"
@@ -691,7 +690,7 @@ const sponsor_logos = {
     "Slow": "Assets/sponsors/radio-logo.png", // "RadioLodz"
     "ShootingSpeed": "Assets/sponsors/tomtom-logo.png", // "TomTom"
     "Reverse": "Assets/sponsors/toya-logo.png", // "Toya"
-    "ChainBullets": "Assets/sponsors/veolia-logo.png", // "Veolia"
+    "ScreenAOE": "Assets/sponsors/veolia-logo.png", // "Veolia"
 }
 
 const SponsorPlanes = [];
@@ -801,7 +800,7 @@ const buff_icon = {
 const shoot_speed_icon = new Image();
 const score_multiplier_icon = new Image();
 const reverse_icon = new Image(); 
-const chain_bullets_icon = new Image();
+//const chain_bullets_icon = new Image();
 const explosive_bullets_icon = new Image();
 const aimbot_icon = new Image();
 const immortality_icon = new Image();
@@ -810,7 +809,7 @@ const slow_icon = new Image();
 shoot_speed_icon.src = "Assets/buff_icons/shooter-speed.png";
 score_multiplier_icon.src = "Assets/buff_icons/shooter-2x.png";
 reverse_icon.src = "Assets/buff_icons/shooter-reverse.png";
-chain_bullets_icon.src = "Assets/buff_icons/shooter-lightning.png" ;
+//chain_bullets_icon.src = "Assets/buff_icons/shooter-lightning.png" ;
 explosive_bullets_icon.src = "Assets/buff_icons/shooter-boomboom.png";
 aimbot_icon.src = "Assets/buff_icons/shooter-aimbot.png" ;
 immortality_icon.src = "Assets/buff_icons/shooter-immortal.png" ;
@@ -831,7 +830,7 @@ const buff_icons = {
     "ShootingSpeed" : shoot_speed_icon,
     "ScoreMultiplier" : score_multiplier_icon,
     "Reverse" : reverse_icon,
-    "ChainBullets" : chain_bullets_icon,
+    //"ChainBullets" : chain_bullets_icon,
     "ExplosiveBullets" : explosive_bullets_icon,
     "Aimbot" : aimbot_icon,
     "Immortality" : immortality_icon,
@@ -1333,7 +1332,7 @@ const radar_icons = {
     "RandomBuffs"  : "Assets/plane_icons/plane_icon_random.png",
     "HealthUp"  : "Assets/plane_icons/plane_icon_heal.png",
     "Reverse" : "Assets/plane_icons/plane_icon_reverse.png",
-    "ChainBullets" : "Assets/plane_icons/plane_icon_chain_bullets.png", 
+    //"ChainBullets" : "Assets/plane_icons/plane_icon_chain_bullets.png", 
     "ExplosiveBullets" : "Assets/plane_icons/plane_icon_explosive.png",
     "ScreenAOE" : "Assets/plane_icons/plane_icon_aoe.png", 
     "Aimbot" : "Assets/plane_icons/plane_icon_aimbot.png",

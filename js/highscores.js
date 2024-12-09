@@ -2,7 +2,7 @@ export class HighScores {
     constructor(list, cookieName) {
         this.list = list; // the ".highscoresList" element
         this.cookieName = cookieName || list.dataset.highscorecookie;
-        console.log(this.cookieName, list);
+        // console.log(this.cookieName, list);
 
         this.highscores = JSON.parse(this.getCookie(this.cookieName) || '[]');
         

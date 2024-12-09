@@ -176,7 +176,7 @@ main {
     /* width: 40%; */
 }
 
-.maniek-side img {
+.maniek-side .maniek {
     max-width: 85%;
     max-height: 70%;
     width: auto;
@@ -242,7 +242,7 @@ header {
     justify-content: center;
     align-items: center;
 }
-#game-overlay > .paused > h1 {
+#game-overlay > .paused > h1, #game-overlay > .endedGame > h1 {
     margin: 1rem;
     font-size: 5rem;
     font-family: var(--maniek-font);
@@ -257,7 +257,7 @@ header {
             0 0 3px black;
 }
 
-.paused > .pause-buttons {
+.pause-buttons {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -278,10 +278,15 @@ header {
     cursor: pointer;
     transition: transform 0.1s;
 }
-.pause-buttons > button.resetGame {
+.pause-buttons > .resetGame {
     background-color: var(--demonred);
     border-color: var(--demonred-dark);
     color: #eee;
+}
+.pause-buttons > .freeplay {
+    background-color: var(--lightgreen);
+    border-color: var(--green);
+    color: #333;
 }
 .pause-buttons > button:hover {
     transform: scale(1.1);

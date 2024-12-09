@@ -606,7 +606,7 @@ const maniek_sprite = {
     "idle": "Assets/Maniek-faces/Maniek-blink.png",
     "blink": "Assets/Maniek-faces/Maniek-blink.png",
     "shocked": "Assets/Maniek-faces/Maniek-wow.png",
-    "sad": "Assets/Maniek-faces/Maniek-sad",
+    "sad": "Assets/Maniek-faces/Maniek-sad.png",
 }
 
 const maniek_sprites_properties = {
@@ -632,26 +632,45 @@ const maniek_sprites_properties = {
         frame_height: 420,
         total_frames: 2,
     },
+    "display_item": {
+        frame_width: 640,
+        frame_height: 640,
+        total_frames: 12,
+        item: "none",
+    },
     current_frame: 0,
     frame_rate: 100, 
     source_x: 0,
     source_y: 0,
     last_animation_time: 0,
     calc_source_position: function () {
-        this.source_x = this.current_frame * this[this.state].frame_width;  
+        if (this.state == "display_item") {
+            this.source_x = 0;
+        } else {      
+            this.source_x = this.current_frame * this[this.state].frame_width;  
+        }
     },
     update_state: function() {
+        console.log("Updating state: ", this.state, " to: ", this.upcoming_state);
         maniek_sprites_properties.state = maniek_sprites_properties.upcoming_state;
-        maniek_sprites_properties.upcoming_state = "idle";
+        maniek_sprites_properties.update_sprite();
+
+        if (maniek_sprites_properties.upcoming_state == maniek_sprites_properties.state) maniek_sprites_properties.upcoming_state = "idle";
     },
     change_state: function(state) {
         //if (this.upcoming_state != "idle" && state == "blink") return; 
         maniek_sprites_properties.upcoming_state = state;
-        maniek_sprites_properties.update_state();
-        maniek_sprites_properties.update_sprite();
+        if (this.state == "idle") {
+            maniek_sprites_properties.update_state();
+        }
     },
     update_sprite: function() {
-        current_maniek_sprite.src = maniek_sprite[this.state];
+        if (this.state == "display_item") {
+            current_maniek_sprite.src = buff_icons[this.display_item.item].src;
+            console.log("Displaying buff: ", current_maniek_sprite.src);
+        } else {
+            current_maniek_sprite.src = maniek_sprite[this.state];
+        }
     }
 }
 
@@ -660,6 +679,45 @@ let maniek_blink_id = setInterval(maniek_sprites_properties.change_state.bind(ma
 
 current_maniek_sprite.src = maniek_sprite["idle"];
 
+
+const sponsor_logos = {
+    "Immortality": "Assets/sponsors/better-logo.png", //"BetterCollective"
+    "ScoreMultiplier": "Assets/sponsors/bsh-logo.png", // "B/S/H"
+    "ScreenAOE": "Assets/sponsors/dhl-logo.png", // "DHL"
+    "RandomBuffs": "Assets/sponsors/fujitsu-logo.png", // "Fujitsu"
+    "HealthUp": "Assets/sponsors/hitachi-logo.png", // "Hitachi"
+    "ExplosiveBullets": "Assets/sponsors/hydro-logo.png", // "Hydro"
+    "Aimbot": "Assets/sponsors/pg-logo.png", // "PG"
+    "Slow": "Assets/sponsors/radio-logo.png", // "RadioLodz"
+    "ShootingSpeed": "Assets/sponsors/tomtom-logo.png", // "TomTom"
+    "Reverse": "Assets/sponsors/toya-logo.png", // "Toya"
+    "ChainBullets": "Assets/sponsors/veolia-logo.png", // "Veolia"
+}
+
+const SponsorPlanes = [];
+
+const sponsor_logo_width = 400 * width_upscale;
+const sponsor_logo_height = 100 * height_upscale; 
+
+const sponsor_plane = {
+    x: -200,
+    speed_x: 200,
+    y: 0,
+    sponsor_logo: 0,
+    move(delta) {
+        this.x += 200 * delta; 
+        if (this.x > canvasWidth + sponsor_logo_width);
+    },
+    draw: function() {
+        ctx.drawImage(
+            this.sponsor_logo,
+            this.x,
+            this.y,
+            sponsor_logo_width,
+            sponsor_logo_height,
+        )
+    },
+}
 
 
 const sponsor_window = {
@@ -764,7 +822,7 @@ const screen_aoe_icon = new Image();
 const random_buffs_icon = new Image();
 
 health_up_icon.src = "Assets/buff_icons/shooter-heal.png";
-screen_aoe_icon.src = "Assets/buff_icons/shooter-blank.png";
+screen_aoe_icon.src = "Assets/buff_icons/shooter-nuke.png";
 random_buffs_icon.src = "Assets/buff_icons/shooter-random.png";
 
 //Buff cooldowns
@@ -1104,7 +1162,18 @@ const player_turret = {
                 if (plane.play_explosion == false) {
                 //console.log(plane.item);
                 plane.item.use();
-                if (plane.item.type != "none") maniek_sprites_properties.change_state("shocked");
+                if (plane.item.type != "none") {
+                    let new_plane = {...sponsor_plane};
+                    let logo = new Image();
+                    logo.src = sponsor_logos[plane.item.type];
+                    new_plane.sponsor_logo = logo;
+                
+                    SponsorPlanes.push(new_plane);
+
+                    maniek_sprites_properties.change_state("shocked");
+                    maniek_sprites_properties.display_item.item = plane.item.type;
+                    maniek_sprites_properties.change_state("display_item");
+                }
                 }
                 plane.play_explosion = true;
                 plane_hit = false;
@@ -1114,6 +1183,7 @@ const player_turret = {
     deal_damage: function() {
         camera.shake();
         if (this.is_immortal) return 0;
+        maniek_sprites_properties.change_state("sad");
         this.lives -= 1;
         if (this.lives == 0) {
             game.stop();
@@ -1509,6 +1579,14 @@ function game_loop(timestamp) {
             plane.draw_plane();
         }
     });
+
+
+    console.log(SponsorPlanes);
+    SponsorPlanes.forEach(plane => {
+        plane.draw();
+        plane.move(delta);
+    });
+
     if (turret_is_shooting) {
         if (timestamp - lastTurretAnimationTime > turret_animation.frame_rate) {
             if (turret_animation.current_frame == 1) player_turret.shoot(scope_anchor.x + scope_width / 2, scope_anchor.y + scope_height / 2);
@@ -1537,7 +1615,9 @@ function game_loop(timestamp) {
         console.log(maniek_sprites_properties.state);
 
         if (maniek_sprites_properties.state != "idle" && maniek_sprites_properties.current_frame == maniek_sprites_properties[maniek_sprites_properties.state].total_frames - 1) {
-            maniek_sprites_properties.change_state("idle");
+            console.log("Obecna animacja skończona");
+            maniek_sprites_properties.update_state();
+            maniek_sprites_properties.update_sprite();
         }
 
         maniek_sprites_properties.current_frame = (maniek_sprites_properties.current_frame + 1) % maniek_sprites_properties[maniek_sprites_properties.state].total_frames;

@@ -128,6 +128,18 @@ let CURRENT_CATEGORY = '';
 let lettersToGuess = {};
 let FAILS = 0; // 6 fails = lose
 
+const HANGMAN_COOKIE = 'hangman_winloss';
+let cookie = getCookie(HANGMAN_COOKIE);
+
+const WIN_LOSE = 
+    cookie.length>0 ? JSON.parse(cookie) 
+    : [0, 0];
+
+function updateScore(didWin) {
+    WIN_LOSE[didWin] += 1;
+    setCookie(HANGMAN_COOKIE, JSON.stringify(WIN_LOSE), 9999);
+}
+
 function getRandomWord() {
     const categories = Object.keys(WORDS_SEGREGATED);
     const category = categories[Math.floor(Math.random() * categories.length)];
@@ -168,6 +180,7 @@ function makeGuess(letterButton) {
     // TODO popup na wygraną
     GAME_STARTED = false;
     initConfetti();
+    updateScore(true);
     setTimeout(startGame, 5000);
 }
 
@@ -217,6 +230,7 @@ function lose() {
     explosion.classList.add('explode');
 
     result.innerText = `Słowem było: ${CURRENT_WORD_VISUAL}`;
+    updateScore(false);
     setTimeout(startGame, 5000);
 }
 

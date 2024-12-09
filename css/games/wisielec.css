@@ -17,7 +17,7 @@ section.wisielec {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1em;
+    gap: 3em;
 }
 
 section.wisielec.gameHidden {

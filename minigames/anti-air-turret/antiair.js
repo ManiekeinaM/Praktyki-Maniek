@@ -606,7 +606,7 @@ const maniek_sprite = {
     "idle": "Assets/Maniek-faces/Maniek-blink.png",
     "blink": "Assets/Maniek-faces/Maniek-blink.png",
     "shocked": "Assets/Maniek-faces/Maniek-wow.png",
-    "sad": "Assets/Maniek-faces/Maniek-sad",
+    "sad": "Assets/Maniek-faces/Maniek-sad.png",
 }
 
 const maniek_sprites_properties = {
@@ -1137,6 +1137,7 @@ const player_turret = {
     deal_damage: function() {
         camera.shake();
         if (this.is_immortal) return 0;
+        maniek_sprites_properties.change_state("sad");
         this.lives -= 1;
         if (this.lives == 0) {
             game.stop();

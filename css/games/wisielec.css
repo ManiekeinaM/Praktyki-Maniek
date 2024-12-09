@@ -17,6 +17,7 @@ section.wisielec {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 1em;
 }
 
 section.wisielec.gameHidden {
@@ -24,9 +25,10 @@ section.wisielec.gameHidden {
 }
 
 .maniek-stages {
-    flex: 1;
+    /* flex: 1; */
     position: relative;
-    min-width: 250px;
+    width: 20rem;
+    height: 20rem;
 }
 
 .maniek-stages > img {
@@ -47,7 +49,7 @@ section.wisielec.gameHidden {
 }
 
 .input-side {
-    flex: 3;
+    /* flex: 3; */
     display: flex;
     flex-direction: column;
     justify-content: center;

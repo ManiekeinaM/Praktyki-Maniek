@@ -289,7 +289,7 @@ class Ball {
 }
 
 const ROCKET_SPEED = 6 * 60 * speedMultiplier;
-const ROCKET_SIZE = {width: 61*2, height: 28*2, hitboxHeight: 28, hitboxWidth: 61*2};
+const ROCKET_SIZE = {width: 61*2, height: 28*2, hitboxHeight: 40, hitboxWidth: 61*2};
 ROCKET_SIZE.yGap = (ROCKET_SIZE.height - ROCKET_SIZE.hitboxHeight) / 2;
 class Rocket {
     constructor(x, y, direction) {
@@ -504,11 +504,12 @@ function movePaddles(deltaTime) {
     if (aiType == 0) {
         // Calculate nearestBall
         let nearestBall = null;
-        let minDistance = Infinity;
+        let minX = -Infinity;
         balls.forEach(ball => {
-            const distance = Math.hypot(ball.x - rightPaddle.x, ball.y - rightPaddle.y);
-            if (distance < minDistance) {
-                minDistance = distance;
+            if (ball.velocity.x <= 0) return;
+
+            if (ball.x > minX) {
+                minX = ball.x;
                 nearestBall = ball;
             }
         });
@@ -520,13 +521,13 @@ function movePaddles(deltaTime) {
         let nearestPredictedBall = null;
         let minTime = Infinity;
         balls.forEach(ball => {
-            if (ball.velocity.x > 0) { // only predict balls moving towards the paddle
-                const timeToPaddle = (rightPaddle.x - ball.x) / ball.velocity.x;
-                if (timeToPaddle < minTime) {
-                    minTime = timeToPaddle;
-                    nearestPredictedBall = ball;
-                }
+            if (ball.velocity.x <= 0) return; // only predict balls moving towards the paddle
+            const timeToPaddle = (rightPaddle.x - ball.x) / ball.velocity.x;
+            if (timeToPaddle < minTime) {
+                minTime = timeToPaddle;
+                nearestPredictedBall = ball;
             }
+            
         });
         targetBall = nearestPredictedBall;
     }
@@ -823,6 +824,8 @@ function animate(timestamp) {
                     || 1/60;
     previousTime = timestamp;
 
+    requestAnimationFrame(animate);
+
     /*if (deltaTime < interval) {
         requestAnimationFrame(animate);
         return;
@@ -867,7 +870,7 @@ function animate(timestamp) {
                 shouldUpdateNavigation = true;
             }
             isGameStillPong = false;
-            requestAnimationFrame(animate);
+            // requestAnimationFrame(animate);
             return;
         }
         isGameStillPong = true;
@@ -875,7 +878,7 @@ function animate(timestamp) {
         
 
         if (isGamePaused || isInMenu || isInEndState || isDocumentHidden) {
-            requestAnimationFrame(animate);
+            // requestAnimationFrame(animate);
             return;
         }
     
@@ -1001,8 +1004,8 @@ function animate(timestamp) {
 
     updateRocketTimes();
 
-    requestAnimationFrame(animate);
+    // requestAnimationFrame(animate);
 }
 
-animate();
+requestAnimationFrame(animate);
 restartGame();

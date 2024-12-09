@@ -762,7 +762,6 @@ function updateCoordString() {
     let coordString = fullString + `<br><span class='copyable' onclick='copy(this)'>"dot${iterator}": {x: ${textX}, y: ${textY}}, // ${commentString}</span>`;
     devCoords.innerHTML = coordString;
 
-
     return coordString;
 }
 
@@ -773,6 +772,8 @@ document.addEventListener("keydown", e => {
         if (!devMode) devCoords.innerHTML = ``;
     }
     if (!devMode) return;
+    console.log("dev");
+
 
     if (e.key == "F3") {
         e.preventDefault();

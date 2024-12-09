@@ -34,12 +34,20 @@ export class HighScores {
         const entry = {
             score: score,
             date: new Date(),
+            // signature: '';
         };
         this.highscores.push(entry);
         this.highscores.sort((a, b) => {
             const scoreA = a.score !== undefined ? a.score : a;
             const scoreB = b.score !== undefined ? b.score : b;
-            return scoreB - scoreA;
+            const dateA = a.date !== undefined ? new Date(a.date) : new Date(0); // default to epoch if date is undefined
+            const dateB = b.date !== undefined ? new Date(b.date) : new Date(0);
+
+            if (scoreB !== scoreA) {
+                return scoreB - scoreA; // Sort by score descending
+            } else {
+                return dateA - dateB; // Sort by date ascending
+            }
         });
         this.highscores = this.highscores.slice(0, 5);
         this.saveHighscores();

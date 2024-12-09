@@ -133,38 +133,38 @@
 @keyframes pulsateBoxShadow {
     0% {
         box-shadow: 
-            1em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
-            0 1em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
-           -1em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
-            0 -1em 2px rgba(133, 0, 0, 0.7);   /* Top */
+            2em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
+            0 2em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
+           -2em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
+            0 -2em 2px rgba(133, 0, 0, 0.7);   /* Top */
     }
     25% {
         box-shadow: 
-            0 1em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
-           -1em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
-            0 -1em 2px rgba(133, 0, 0, 0.7),   /* Top */
-            1em 0 2px rgba(255, 0, 0, 0.7);    /* Right */
+            0 2em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
+           -2em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
+            0 -2em 2px rgba(133, 0, 0, 0.7),   /* Top */
+            2em 0 2px rgba(255, 0, 0, 0.7);    /* Right */
     }
     50% {
         box-shadow: 
-           -1em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
-            0 -1em 2px rgba(133, 0, 0, 0.7),   /* Top */
-            1em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
-            0 1em 2px rgba(133, 0, 0, 0.7);    /* Bottom */
+           -2em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
+            0 -2em 2px rgba(133, 0, 0, 0.7),   /* Top */
+            2em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
+            0 2em 2px rgba(133, 0, 0, 0.7);    /* Bottom */
     }
     75% {
         box-shadow: 
-            0 -1em 2px rgba(133, 0, 0, 0.7),   /* Top */
-            1em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
-            0 1em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
-           -1em 0 2px rgba(0, 0, 0, 0.7);      /* Left */
+            0 -2em 2px rgba(133, 0, 0, 0.7),   /* Top */
+            2em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
+            0 2em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
+           -2em 0 2px rgba(0, 0, 0, 0.7);      /* Left */
     }
     100% {
         box-shadow: 
-            1em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
-            0 1em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
-           -1em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
-            0 -1em 2px rgba(133, 0, 0, 0.7);   /* Top */
+            2em 0 2px rgba(255, 0, 0, 0.7),    /* Right */
+            0 2em 2px rgba(133, 0, 0, 0.7),    /* Bottom */
+           -2em 0 2px rgba(0, 0, 0, 0.7),      /* Left */
+            0 -2em 2px rgba(133, 0, 0, 0.7);   /* Top */
     }
 }
 

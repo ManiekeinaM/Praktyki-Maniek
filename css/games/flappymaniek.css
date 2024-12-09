@@ -67,6 +67,7 @@ section.flappymaniek .screen {
 
     width: 40vw;
     height: 60vh;
+    font-size: 1.7vh;
 
     border-radius: 2rem;
     background-image: url('../../assets/flappy/flappymaniek-bg.png');
@@ -82,7 +83,7 @@ section.flappymaniek .screen {
 
 @media (max-aspect-ratio: 5/4) and (min-width: 501px) {
     section.flappymaniek .screen {
-        font-size: .9rem;
+        /* font-size: .9rem; */
         width: 58vw;
     }
 

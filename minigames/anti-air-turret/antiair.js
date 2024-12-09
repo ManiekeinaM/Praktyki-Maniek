@@ -1229,6 +1229,29 @@ let lastTurretAnimationTime = 0;
 
 
 // Radar
+const icon_types_list = ["none", "ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "ExplosiveBullets", "Aimbot", "Immortality", "Slow", "ScreenAOE", "Reverse"];
+
+const radar_icons = {
+    "none" : "Assets/plane_icons/plane_icon_normal.png",
+    "ShootingSpeed" : "Assets/plane_icons/plane_icon_shoot_speed.png",
+    "ScoreMultiplier" : "Assets/plane_icons/plane_icon_multiplier.png",
+    "RandomBuffs"  : "Assets/plane_icons/plane_icon_random.png",
+    "HealthUp"  : "Assets/plane_icons/plane_icon_heal.png",
+    "Reverse" : "Assets/plane_icons/plane_icon_reverse.png",
+    //"ChainBullets" : "Assets/plane_icons/plane_icon_chain_bullets.png", 
+    "ExplosiveBullets" : "Assets/plane_icons/plane_icon_explosive.png",
+    "ScreenAOE" : "Assets/plane_icons/plane_icon_aoe.png", 
+    "Aimbot" : "Assets/plane_icons/plane_icon_aimbot.png",
+    "Immortality" : "Assets/plane_icons/plane_icon_immortal.png",
+    "Slow" : "Assets/plane_icons/plane_icon_slow.png", 
+}
+
+const preloaded_images = {};
+icon_types_list.forEach(buffName => {
+    let image = new Image();
+    image.src = radar_icons[buffName];
+    preloaded_images[buffName] = image;
+})
 
 const IconHeight = 144 * 0.25;
 const IconWidth = 144 * 0.25;
@@ -1247,6 +1270,8 @@ function drawRadar(player, enemies, cameraAngle) {
     ctx.stroke();
 
     // Draw enemy blips
+
+
     enemies.forEach(enemy => {
         if (enemy.play_explosion == true) {
             return;
@@ -1279,8 +1304,9 @@ function drawRadar(player, enemies, cameraAngle) {
         ctx.translate(point_on_radar_x + radarX, point_on_radar_y + radarY); // Move origin to plane icon
         ctx.rotate(angle_to_center);
 
-        let icon_sprite = new Image();
-        icon_sprite.src = radar_icons[enemy.item.type];
+
+        // icon_sprite.src = radar_icons[enemy.item.type];
+        let icon_sprite = preloaded_images[enemy.item.type];
 
         ctx.drawImage(
             icon_sprite,
@@ -1293,20 +1319,6 @@ function drawRadar(player, enemies, cameraAngle) {
     });
 }
 
-const radar_icons = {
-    "none" : "Assets/plane_icons/plane_icon_normal.png",
-    "ShootingSpeed" : "Assets/plane_icons/plane_icon_shoot_speed.png",
-    "ScoreMultiplier" : "Assets/plane_icons/plane_icon_multiplier.png",
-    "RandomBuffs"  : "Assets/plane_icons/plane_icon_random.png",
-    "HealthUp"  : "Assets/plane_icons/plane_icon_heal.png",
-    "Reverse" : "Assets/plane_icons/plane_icon_reverse.png",
-    //"ChainBullets" : "Assets/plane_icons/plane_icon_chain_bullets.png", 
-    "ExplosiveBullets" : "Assets/plane_icons/plane_icon_explosive.png",
-    "ScreenAOE" : "Assets/plane_icons/plane_icon_aoe.png", 
-    "Aimbot" : "Assets/plane_icons/plane_icon_aimbot.png",
-    "Immortality" : "Assets/plane_icons/plane_icon_immortal.png",
-    "Slow" : "Assets/plane_icons/plane_icon_slow.png", 
-}
 
 
 function drawRadarSight(camera_offset_y) {

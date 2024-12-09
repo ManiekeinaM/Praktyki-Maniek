@@ -186,8 +186,8 @@ function explodeFace() {
     face.classList.add('launch');
 
     // Set random positions for the animation
-    face.style.setProperty('--rand-x', `${Math.random() * 200 - 100}px`);
-    face.style.setProperty('--rand-y', `${Math.random() * 200 - 100}px`);
+    face.style.setProperty('--rand-x', `${Math.random() * 2 - 1}em`);
+    face.style.setProperty('--rand-y', `${Math.random() * 2 - 1}em`);
 
     // Optionally, remove the animation class after it completes
     face.addEventListener('animationend', () => {

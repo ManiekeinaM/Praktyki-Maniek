@@ -653,7 +653,13 @@ const maniek_sprites_properties = {
     },
     change_state: function(state) {
         //if (this.upcoming_state != "idle" && state == "blink") return; 
+        console.log("Następna animacja: ", state);
         maniek_sprites_properties.upcoming_state = state;
+
+        if (maniek_sprites_properties.upcoming_state == "blink" && maniek_sprites_properties.state == "idle") {
+            maniek_sprites_properties.update_state();
+        }
+
         if (this.state == "idle") {
             maniek_sprites_properties.update_state();
         }
@@ -1574,8 +1580,6 @@ function game_loop(timestamp) {
         }
     });
 
-
-    console.log(SponsorPlanes);
     SponsorPlanes.forEach(plane => {
         plane.draw();
         plane.move(delta);

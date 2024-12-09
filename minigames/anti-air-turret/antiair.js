@@ -680,6 +680,45 @@ let maniek_blink_id = setInterval(maniek_sprites_properties.change_state.bind(ma
 current_maniek_sprite.src = maniek_sprite["idle"];
 
 
+const sponsor_logos = {
+    "Immortality": "Assets/sponsors/better-logo.png", //"BetterCollective"
+    "ScoreMultiplier": "Assets/sponsors/bsh-logo.png", // "B/S/H"
+    "ScreenAOE": "Assets/sponsors/dhl-logo.png", // "DHL"
+    "RandomBuffs": "Assets/sponsors/fujitsu-logo.png", // "Fujitsu"
+    "HealthUp": "Assets/sponsors/hitachi-logo.png", // "Hitachi"
+    "ExplosiveBullets": "Assets/sponsors/hydro-logo.png", // "Hydro"
+    "Aimbot": "Assets/sponsors/pg-logo.png", // "PG"
+    "Slow": "Assets/sponsors/radio-logo.png", // "RadioLodz"
+    "ShootingSpeed": "Assets/sponsors/tomtom-logo.png", // "TomTom"
+    "Reverse": "Assets/sponsors/toya-logo.png", // "Toya"
+    "ChainBullets": "Assets/sponsors/veolia-logo.png", // "Veolia"
+}
+
+const SponsorPlanes = [];
+
+const sponsor_logo_width = 400 * width_upscale;
+const sponsor_logo_height = 100 * height_upscale; 
+
+const sponsor_plane = {
+    x: -200,
+    speed_x: 200,
+    y: 0,
+    sponsor_logo: 0,
+    move(delta) {
+        this.x += 200 * delta; 
+        if (this.x > canvasWidth + sponsor_logo_width);
+    },
+    draw: function() {
+        ctx.drawImage(
+            this.sponsor_logo,
+            this.x,
+            this.y,
+            sponsor_logo_width,
+            sponsor_logo_height,
+        )
+    },
+}
+
 
 const sponsor_window = {
     width: 250 * width_upscale,
@@ -1124,6 +1163,13 @@ const player_turret = {
                 //console.log(plane.item);
                 plane.item.use();
                 if (plane.item.type != "none") {
+                    let new_plane = {...sponsor_plane};
+                    let logo = new Image();
+                    logo.src = sponsor_logos[plane.item.type];
+                    new_plane.sponsor_logo = logo;
+                
+                    SponsorPlanes.push(new_plane);
+
                     maniek_sprites_properties.change_state("shocked");
                     maniek_sprites_properties.display_item.item = plane.item.type;
                     maniek_sprites_properties.change_state("display_item");
@@ -1533,6 +1579,14 @@ function game_loop(timestamp) {
             plane.draw_plane();
         }
     });
+
+
+    console.log(SponsorPlanes);
+    SponsorPlanes.forEach(plane => {
+        plane.draw();
+        plane.move(delta);
+    });
+
     if (turret_is_shooting) {
         if (timestamp - lastTurretAnimationTime > turret_animation.frame_rate) {
             if (turret_animation.current_frame == 1) player_turret.shoot(scope_anchor.x + scope_width / 2, scope_anchor.y + scope_height / 2);

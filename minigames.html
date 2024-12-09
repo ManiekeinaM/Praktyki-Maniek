@@ -47,13 +47,21 @@
         </canvas>
 
         <div id="game-overlay" class="hidden">
+
             <div class="paused">
                 <h1>Pauza</h1>
                 <div class="pause-buttons">
                     <button class="resume">Wznów</button>
                     <button class="resetGame">Resetuj grę</button>
                 </div>
-                
+            </div>
+
+            <div class="endedGame hidden">
+                <h1 class="gameResult"></h1>
+                <div class="pause-buttons">
+                    <button class="freeplay">Graj dalej</button>
+                    <button class="resetGame">Zagraj ponownie</button>
+                </div>
             </div>
 
             <div class="pong pong-modes">
@@ -63,7 +71,7 @@
                 </div>
                 <div class="button" data-gamemode="advanced">
                     <img src="./assets/gamemode1.png" alt="Advanced">
-                    <p class="label">Mądry</p>
+                    <p class="label">Trudny</p>
                 </div>
                 <div class="button" data-gamemode="wall">
                     <img src="./assets/gamemode2.png" alt="Wall">
@@ -84,14 +92,24 @@
             <div class="pong pong-leaderboards">
                 <div class="highscores">
                     <img src="./assets/gamemode0.png" alt="">
-                    <p>[Prosty]<br/>najwyższy wynik [1 życie]</p>
+                    <p>[Prosty]<br/>najwyższy wynik</p>
                     <div class="highscoresList" data-highscorecookie="pong-mode0"></div>
+                </div>
+                <div class="highscores">
+                    <img src="./assets/gamemode0.png" alt="">
+                    <p>[Prosty] 1❤<br/>najwyższy wynik</p>
+                    <div class="highscoresList" data-highscorecookie="pong-mode0-onelife"></div>
                 </div>
 
                 <div class="highscores">
                     <img src="./assets/gamemode1.png" alt="">
-                    <p>[Mądry]<br/>najwyższy wynik [1 życie]</p>
+                    <p>[Trudny]<br/>najwyższy wynik</p>
                     <div class="highscoresList" data-highscorecookie="pong-mode1"></div>
+                </div>
+                <div class="highscores">
+                    <img src="./assets/gamemode1.png" alt="">
+                    <p>[Trudny] 1❤<br/>najwyższy wynik</p>
+                    <div class="highscoresList" data-highscorecookie="pong-mode1-onelife"></div>
                 </div>
 
                 <div class="highscores">
@@ -101,7 +119,7 @@
                 </div>
                 <div class="highscores">
                     <img src="./assets/gamemode2.png" alt="">
-                    <p>[Ścianiek]<br/>najwyższy wynik [1 życie]</p>
+                    <p>[Ścianiek] 1❤<br/>najwyższy wynik</p>
                     <div class="highscoresList" data-highscorecookie="pong-mode2-onelife"></div>
                 </div>
             </div>
@@ -268,7 +286,10 @@
             </section>
 
             <!-- PONG -->
-            <h1 class="pong left-score">0</h1>
+            <div class="pong pong-score left-score">
+                <h1>0</h1>
+                <img src="./assets/crown.png">
+            </div>
             <div class="pong rocket-timer rocket-timer-left unselectable">
                 <img src="./assets/rocket-base.png">
                 <h2 class="rocket-time">6s</h2>
@@ -297,7 +318,10 @@
                 <span>G</span>
             </div>
 
-            <h1 class="pong right-score">0</h1>
+            <div class="pong pong-score right-score">
+                <h1>0</h1>
+                <img src="./assets/crown.png">
+            </div>
             <div class="pong rocket-timer rocket-timer-right unselectable">
                 <img src="./assets/rocket-base.png">
                 <h2 class="rocket-time">6s</h2>

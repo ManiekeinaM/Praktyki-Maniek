@@ -16,16 +16,110 @@ const rocketTimes = {
     right: document.querySelector('.rocket-timer-right > .rocket-time')
 }
 
-let pongScores = {left: 0, right: 0};
+const pongScores = {left: 0, right: 0};
+const SCORE_FOR_LB = {
+    normal: 0,
+    onelife: 0,
+};
 function addScore(side, amount) {
     pongScores[side] += amount;
-    document.querySelector(`.${side}-score`).textContent = pongScores[side];
-}
-function updateScores() {
-    document.querySelector('.left-score').textContent = pongScores.left;
-    document.querySelector('.right-score').textContent = pongScores.right;
+    updateScores();
+
+    if (side == 'left') {
+        if (pongScores.right == 0)
+            SCORE_FOR_LB.onelife += amount;
+        SCORE_FOR_LB.normal += amount;
+    }
+
+    checkResults();
 }
 
+const SCORE_TEXT = {
+    'left': document.querySelector('.left-score'),
+    'lefth1': document.querySelector('.left-score > h1'),
+    'right': document.querySelector('.right-score'),
+    'righth1': document.querySelector('.right-score > h1')
+}
+function updateScores() {
+    SCORE_TEXT.lefth1.textContent = pongScores.left;
+    SCORE_TEXT.righth1.textContent = pongScores.right;
+
+    if (pongScores.left > pongScores.right) {
+        SCORE_TEXT.left.classList.add('winning');
+    } else if (pongScores.right > pongScores.left) {
+        SCORE_TEXT.right.classList.add('winning');
+    } else {
+        SCORE_TEXT.left.classList.remove('winning');
+        SCORE_TEXT.right.classList.remove('winning');
+    }
+}
+
+
+import { HighScores } from '../highscores.js';
+
+// Initialize highscore managers
+const HIGHSCORE_MANAGERS = [
+    // aiType: {normal: highscoreManagerNormal, onelife: highscoreManagerOnelife}
+];
+for (let i=0; i<3; i++) {
+    const normal = document.querySelector(`.highscoresList[data-highscorecookie="pong-mode${i}"]`);
+    const onelife = document.querySelector(`.highscoresList[data-highscorecookie="pong-mode${i}-onelife"]`);
+    // console.log(normal, onelife);
+    HIGHSCORE_MANAGERS[i] = {normal: new HighScores(normal), onelife: new HighScores(onelife)};
+    HIGHSCORE_MANAGERS[i].normal.updateHighscores();
+    HIGHSCORE_MANAGERS[i].onelife.updateHighscores();
+}
+
+let SCORE_GOAL = 50;
+let IN_FREEPLAY = false;
+function checkResults() {
+    if (IN_FREEPLAY) return;
+
+    if (pongScores.left >= SCORE_GOAL) {
+        return endGame(true);
+    } else if (pongScores.right >= SCORE_GOAL) {
+        return endGame(false);
+    }
+}
+
+//////////////////////////////////////////   IMPORTANT VARIABLES   //////////////////////////////////////////
+let isGameStillPong = false;
+let isGamePaused = false;
+let isInMenu = true; // starting menu for gamemode selection
+let isInEndState = false; // menu for restarting game or continuing
+let shouldUpdateNavigation = true;
+
+
+
+const _ENDGAME = document.querySelector('.endedGame');
+const _GAMERESULT = _ENDGAME.querySelector('.gameResult');
+const _FREEPLAY = _ENDGAME.querySelector('.pause-buttons > .freeplay');
+console.log(_ENDGAME, _GAMERESULT, _FREEPLAY)
+function endGame(didWin) {
+    isInEndState = true;
+    shouldUpdateNavigation = true;
+    if (didWin) {
+        // win
+        _GAMERESULT.textContent = `Wygrana! [${pongScores.left}:${pongScores.right}]`;
+        _GAMERESULT.style.color = 'lightgreen';
+    } else {
+        // lose
+        _GAMERESULT.textContent = `Przegrana [${pongScores.left}:${pongScores.right}]`;
+        _GAMERESULT.style.color = 'red';
+    }
+
+    const managerNormal = HIGHSCORE_MANAGERS[aiType].normal;
+    const managerOnelife = HIGHSCORE_MANAGERS[aiType].onelife;
+    managerNormal.addScore(SCORE_FOR_LB.normal);
+    managerOnelife.addScore(SCORE_FOR_LB.onelife);
+    managerNormal.updateHighscores();
+    managerOnelife.updateHighscores();
+}
+_FREEPLAY.addEventListener('click', e => {
+    IN_FREEPLAY = true;
+    isInEndState = false;
+    shouldUpdateNavigation = true;
+});
 
 
 // QUADTREE IMPLEMENTATION
@@ -133,14 +227,11 @@ class Quadtree {
 }
 
 
-let isGameStillPong = false;
-let isGamePaused = false;
-let isInMenu = true; // starting menu for gamemode selection
-let shouldUpdateNavigation = true;
+
 
 
 document.addEventListener('keydown', e => {
-    if (!isGameStillPong || isInMenu) return;
+    if (!isGameStillPong || isInMenu || isInEndState) return;
     if (e.key == 'p') {
         isGamePaused = !isGamePaused;
         shouldUpdateNavigation = true;
@@ -369,13 +460,13 @@ let ROCKET_TIMER = {left: ROCKET_INTERVAL, right: ROCKET_INTERVAL-5};
 // let mouseX = 10;
 let mouseY = height/2;
 document.addEventListener('mousemove', e => {
-    if (isGamePaused || !isGameStillPong || isInMenu) return;
+    if (isGamePaused || !isGameStillPong || isInMenu || isInEndState) return;
     const rect = canvas.getBoundingClientRect();
     mouseY = e.clientY - rect.top;
     // mouseX = e.clientX - rect.left;
 });
 document.addEventListener('click', e => {
-    if (isGamePaused || !isGameStillPong || isInMenu) return;
+    if (isGamePaused || !isGameStillPong || isInMenu || isInEndState) return;
     setTimeout(() => {
         createRocket(1);
     }, 10)
@@ -442,7 +533,7 @@ function movePaddles(deltaTime) {
 
     // move paddle towards the target ball
     if (targetBall !== null && targetBall.x > width/4) {
-        // Radius is being removed to make the ai have a "deadzone" within the middle, to track it better and not spaz out
+        // Radius is being substracted to make the ai have a "deadzone" within the middle, to track it better and not spaz out
         if (targetBall.y - radius > rightPaddle.y + rightPaddle.height/2) {
             rightPaddle.y += AI_SPEED * deltaTime;
         } else if (targetBall.y < rightPaddle.y + rightPaddle.height/2 - radius) {
@@ -672,6 +763,8 @@ function restartGame() {
     // Reset scores
     pongScores.left = 0;
     pongScores.right = 0;
+    SCORE_FOR_LB.normal = 0;
+    SCORE_FOR_LB.onelife = 0;
     updateScores();
 
     ROCKET_TIMER.left = ROCKET_INTERVAL;
@@ -686,6 +779,7 @@ function restartGame() {
     leftPaddle.y = height/2 - leftPaddle.height/2;
     rightPaddle.y = height/2 - rightPaddle.height/2;
 
+    isInEndState = false;
     isGamePaused = false;
     isInMenu = true;
     shouldUpdateNavigation = true;
@@ -699,14 +793,17 @@ let previousTime = performance.now();
 
 const _paused = document.querySelector('.paused');
 const _resume = _paused.querySelector('.resume');
-const _reset = _paused.querySelector('.resetGame');
+const _reset = gameOverlay.querySelectorAll('.resetGame');
 _resume.addEventListener('click', e => {
     isGamePaused = false;
     shouldUpdateNavigation = true;
 })
-_reset.addEventListener('click', e => {
-    restartGame();
-});
+
+_reset.forEach(reset => {
+    reset.addEventListener('click', e => {
+        restartGame();
+    })
+})
 
 
 const _modeHolder = document.querySelector('.pong-modes');
@@ -734,7 +831,7 @@ function animate(timestamp) {
     // UPDATES FOR GAME CHANGES
     {
         if (shouldUpdateNavigation) {
-            if ((isGamePaused || isInMenu) && isGameStillPong && !isDocumentHidden) {
+            if ((isGamePaused || isInMenu || isInEndState) && isGameStillPong && !isDocumentHidden) {
                 shouldUpdateNavigation = false;
                 gameOverlay.classList.remove('hidden');
             } else {
@@ -753,6 +850,11 @@ function animate(timestamp) {
             } else {
                 _modeHolder.classList.add('superhidden');
             }
+            if (isInEndState) {
+                _ENDGAME.classList.remove('hidden');
+            } else {
+                _ENDGAME.classList.add('hidden');
+            }
         }
         
         
@@ -760,7 +862,7 @@ function animate(timestamp) {
         if (CURRENT_GAME != 'pong') {
             if (isGameStillPong) {
                 ctx.clearRect(0, 0, width, height);
-                if (!isInMenu)
+                if (!isInMenu && !isInEndState)
                     isGamePaused = true;
                 shouldUpdateNavigation = true;
             }
@@ -772,7 +874,7 @@ function animate(timestamp) {
     
         
 
-        if (isGamePaused || isInMenu || isDocumentHidden) {
+        if (isGamePaused || isInMenu || isInEndState || isDocumentHidden) {
             requestAnimationFrame(animate);
             return;
         }

@@ -570,14 +570,14 @@ const buff_handler = {
         
         Planes.forEach(plane => {
             plane.scaling_factor = 0.09;
-            plane.acceleration_y = 20;
+            //plane.acceleration_y = 20;
             plane.is_slow = true;
         })
 
         this.slow_timeout = setTimeout(() => {
             Planes.forEach(plane => {
                 plane.scaling_factor = 0.18;
-                plane.acceleration_y = 40;
+                //plane.acceleration_y = 40;
                 plane.is_slow = false;
             })
             this.slow_timeout = null;
@@ -939,12 +939,10 @@ const enemy_plane = {
         return this.y - camera.offset_y - this.get_col_height() / 2;
     },
     move: function(delta) {
-        //if (this.time_stopped == false) { - disabled
-        this.y += this.acceleration_y * delta;
+        this.y += this.acceleration_y * delta * ((this.is_slow && this.acceleration_y != -Math.abs(this.acceleration_y))? 0.5 : 1);
         if (this.y > 0) {
             this.scale_up(delta);
         }
-        //}
         
         // Add camera wrapping for planes
         if (this.x + camera.offset_x > MAX_CAMERA_OFFSET_X) 

@@ -197,6 +197,11 @@ const imgPaths = {
     }
 }
 
+const maniekMachineInfo = {
+    x: 0.23700, y: 0.49882, connections: ['Wdot1'], icon: 'machine', desc: ""
+}
+imgPaths.Floor0.dots.Wdot0 = maniekMachineInfo;
+
 const mapIcons = {
     'pielegniarka': 'assets/map/icons/pielegniarka.png',
     'stairsUp': 'assets/map/icons/stairs-up.png',

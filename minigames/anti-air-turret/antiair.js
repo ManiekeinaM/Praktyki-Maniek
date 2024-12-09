@@ -317,18 +317,6 @@ const camera = {
     }
 }
 
-//Better Collective
-//B/S/H
-//DHL
-//Fujitsu
-//Hitachi
-//P&G
-//radio łódź
-//toya
-//veolia
-//tomtom
-//hydro
-
 //Buff list 
 // "ChainBullets" disabled
 const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "ExplosiveBullets", "Aimbot", "Immortality", "Slow", "ScreenAOE", "Reverse"];
@@ -674,6 +662,7 @@ const maniek_sprites_properties = {
     }
 }
 
+// Blink every 7s (only if current state == "idle")
 let maniek_blink_id = setInterval(maniek_sprites_properties.change_state.bind(maniek_sprites_properties.change_state,"blink"), 7000);
 
 
@@ -850,6 +839,7 @@ const buff_cooldown = {
     draw_cooldowns: function() {
         this.x = 0 + 20 * width_upscale;
 
+        // Draw enabled cooldowns
         let displayed_buffs_amount = 0;
         for (const [key, value] of Object.entries(current_cooldowns)) {
             let icon = null;
@@ -1102,8 +1092,6 @@ const player_turret = {
                 let explosion_height = 150 * height_upscale / (camera.y_offset_scale * 0.75);
                 let explosion_xstart = last_scope_anchor_x - explosion_width / 2;
                 let explosion_ystart = last_scope_anchor_y - explosion_height / 2;
-                let explosion_xend = last_scope_anchor_x + explosion_width / 2;
-                let explosion_yend = last_scope_anchor_y + explosion_height / 2;
 
                 let explosion =  {...explosion_effect};
                 explosion.animation = {...explosion_animation};
@@ -1113,9 +1101,6 @@ const player_turret = {
                 explosion.height = explosion_height;
 
                 Explosions.push(explosion);
-
-
-            
 
                 //ctx.fillStyle = "rgba('255','0','0','50')";
                 //ctx.fillRect(explosion_xstart, explosion_ystart, explosion_width, explosion_height);
@@ -1221,20 +1206,6 @@ const scope_anchor = {
 }
 
 let stop_animation;
-
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowUp') controls.up_pressed = true;
-    if (event.key === 'ArrowDown') controls.down_pressed = true;
-    if (event.key === 'ArrowLeft') controls.left_pressed = true;
-    if (event.key === 'ArrowRight') controls.right_pressed = true;
-});
-
-document.addEventListener('keyup', (event) => {
-    if (event.key === 'ArrowUp') controls.up_pressed = false;
-    if (event.key === 'ArrowDown') controls.down_pressed = false;
-    if (event.key === 'ArrowLeft') controls.left_pressed = false;
-    if (event.key === 'ArrowRight') controls.right_pressed = false;
-});
 
 document.addEventListener("mousedown", (event) => {
     if (event.button === 0) {
@@ -1401,8 +1372,6 @@ function logMovement(event) {
 
 document.addEventListener("mousemove", logMovement);
 
-let did_shoot = false;
-
 // Main game loop
 // ** Draw order **
 // * Start Screen
@@ -1468,6 +1437,7 @@ function game_loop(timestamp) {
         return;
     }
 
+    // Short sequence played after losing
     if (game.play_explosion_sequence == true) {
         // Stop score from updating
         clearInterval(score_updater_id);
@@ -1516,9 +1486,12 @@ function game_loop(timestamp) {
         return;
     }
 
+    // Adjust camera to mouse movement
     cameraAngle += mouse_movement_x * rotationSpeed * delta;
     cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2πY
     camera.update_offset(-mouse_movement_x, mouse_movement_y, delta);
+
+    // Update planes position
     Planes.forEach(plane => {
         plane.move(delta);
         mouse_movement_x = 0;

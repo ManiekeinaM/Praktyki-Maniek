@@ -632,26 +632,45 @@ const maniek_sprites_properties = {
         frame_height: 420,
         total_frames: 2,
     },
+    "display_item": {
+        frame_width: 640,
+        frame_height: 640,
+        total_frames: 12,
+        item: "none",
+    },
     current_frame: 0,
     frame_rate: 100, 
     source_x: 0,
     source_y: 0,
     last_animation_time: 0,
     calc_source_position: function () {
-        this.source_x = this.current_frame * this[this.state].frame_width;  
+        if (this.state == "display_item") {
+            this.source_x = 0;
+        } else {      
+            this.source_x = this.current_frame * this[this.state].frame_width;  
+        }
     },
     update_state: function() {
+        console.log("Updating state: ", this.state, " to: ", this.upcoming_state);
         maniek_sprites_properties.state = maniek_sprites_properties.upcoming_state;
-        maniek_sprites_properties.upcoming_state = "idle";
+        maniek_sprites_properties.update_sprite();
+
+        if (maniek_sprites_properties.upcoming_state == maniek_sprites_properties.state) maniek_sprites_properties.upcoming_state = "idle";
     },
     change_state: function(state) {
         //if (this.upcoming_state != "idle" && state == "blink") return; 
         maniek_sprites_properties.upcoming_state = state;
-        maniek_sprites_properties.update_state();
-        maniek_sprites_properties.update_sprite();
+        if (this.state == "idle") {
+            maniek_sprites_properties.update_state();
+        }
     },
     update_sprite: function() {
-        current_maniek_sprite.src = maniek_sprite[this.state];
+        if (this.state == "display_item") {
+            current_maniek_sprite.src = buff_icons[this.display_item.item].src;
+            console.log("Displaying buff: ", current_maniek_sprite.src);
+        } else {
+            current_maniek_sprite.src = maniek_sprite[this.state];
+        }
     }
 }
 
@@ -764,7 +783,7 @@ const screen_aoe_icon = new Image();
 const random_buffs_icon = new Image();
 
 health_up_icon.src = "Assets/buff_icons/shooter-heal.png";
-screen_aoe_icon.src = "Assets/buff_icons/shooter-blank.png";
+screen_aoe_icon.src = "Assets/buff_icons/shooter-nuke.png";
 random_buffs_icon.src = "Assets/buff_icons/shooter-random.png";
 
 //Buff cooldowns
@@ -1104,7 +1123,11 @@ const player_turret = {
                 if (plane.play_explosion == false) {
                 //console.log(plane.item);
                 plane.item.use();
-                if (plane.item.type != "none") maniek_sprites_properties.change_state("shocked");
+                if (plane.item.type != "none") {
+                    maniek_sprites_properties.change_state("shocked");
+                    maniek_sprites_properties.display_item.item = plane.item.type;
+                    maniek_sprites_properties.change_state("display_item");
+                }
                 }
                 plane.play_explosion = true;
                 plane_hit = false;
@@ -1537,7 +1560,9 @@ function game_loop(timestamp) {
         console.log(maniek_sprites_properties.state);
 
         if (maniek_sprites_properties.state != "idle" && maniek_sprites_properties.current_frame == maniek_sprites_properties[maniek_sprites_properties.state].total_frames - 1) {
-            maniek_sprites_properties.change_state("idle");
+            console.log("Obecna animacja skończona");
+            maniek_sprites_properties.update_state();
+            maniek_sprites_properties.update_sprite();
         }
 
         maniek_sprites_properties.current_frame = (maniek_sprites_properties.current_frame + 1) % maniek_sprites_properties[maniek_sprites_properties.state].total_frames;

@@ -84,7 +84,7 @@ const plane_variants = {
     "ScoreMultiplier" : "Assets/planes/plane_multiplier.png",
     "RandomBuffs"  : "Assets/planes/plane_random.png",
     "HealthUp"  : "Assets/planes/plane_heal.png",
-    "TimeStop" : "Assets/planes/plane_timestop.png",
+    "Reverse" : "Assets/planes/plane_reverse.png",
     "ChainBullets" : "Assets/planes/plane_bullet_chain.png", 
     "ExplosiveBullets" : "Assets/planes/plane_explosive.png",
     "ScreenAOE" : "Assets/planes/plane_aoe.png", 
@@ -331,7 +331,7 @@ const camera = {
 
 //Buff list 
 // "TimeStop" disabled
-const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow", "ScreenAOE"];
+const buff_list = ["ShootingSpeed", "ScoreMultiplier", "RandomBuffs", "HealthUp", "ChainBullets", "ExplosiveBullets", "Aimbot", "Immortality", "Slow", "ScreenAOE", "Reverse"];
 //Roll for plane type
 function roll_for_plane() {
     //let roll = 4;
@@ -404,7 +404,7 @@ function get_closest_plane() {
 let current_cooldowns = {
     "ShootingSpeed" : 0,
     "ScoreMultiplier" : 0,
-    //"TimeStop" : 0, - disabled
+    "Reverse" : 0,
     "ChainBullets" : 0,
     "ExplosiveBullets" : 0,
     "Aimbot" : 0,
@@ -419,7 +419,7 @@ const buff_action = {
     "ScoreMultiplier" : function() { buff_handler.activate_score_multiplier() },
     "RandomBuffs" : function() { buff_handler.use_roll_buffs() },
     "HealthUp" : function() { buff_handler.use_heal() },
-    //"TimeStop" : function() { buff_handler.activate_time_stop() },
+    "Reverse" : function() { buff_handler.activate_reverse() },
     "ChainBullets" : function() { buff_handler.activate_chain_bullets() },
     "ExplosiveBullets" : function() { buff_handler.activate_explosive_bullets() },
     "ScreenAOE" : function() { buff_handler.use_kill_all() },
@@ -480,31 +480,25 @@ const buff_handler = {
             }, 6000)
             current_cooldowns["ScoreMultiplier"] = 6000;
     },
-    /* ---- DISABLED ----
-       case: overpowered
-    activate_time_stop: function() {
-        if (this.time_stop_timeout) {
-            clearTimeout(this.time_stop_timeout);
+    activate_reverse: function() {
+        if (this.reverse_timeout) {
+            clearTimeout(this.reverse_timeout);
         }
         
         Planes.forEach(plane => {
-            plane.acceleration_y = 0;
-            plane.scaling_factor = 0;
-            plane.time_stopped = true;
+            plane.acceleration_y = -40;
+            plane.scaling_factor = -0.18;
         })
 
-        this.time_stop_timeout = setTimeout(() => {
+        this.reverse_timeout = setTimeout(() => {
             Planes.forEach(plane => {
                 plane.acceleration_y = 40;
-                plane.sprite.frame_rate = 100;
-                plane.explosion.frame_rate = 100;
                 plane.scaling_factor = 0.18;
-                plane.time_stopped = false;
             })
-            this.time_stop_timeout = null;
-        }, 6000)
-        current_cooldowns["TimeStop"] = 6000;
-    },*/
+            this.reverse_timeout = null;
+        }, 2000)
+        current_cooldowns["Reverse"] = 2000;
+    },
 
     // Kills plane close to one another
     activate_chain_bullets: function() {
@@ -800,7 +794,7 @@ const buff_icon = {
 // Cooldown icons
 const shoot_speed_icon = new Image();
 const score_multiplier_icon = new Image();
-//const time_stop_icon = new Image(); - disabled
+const reverse_icon = new Image(); 
 const chain_bullets_icon = new Image();
 const explosive_bullets_icon = new Image();
 const aimbot_icon = new Image();
@@ -809,7 +803,7 @@ const slow_icon = new Image();
 
 shoot_speed_icon.src = "Assets/buff_icons/shooter-speed.png";
 score_multiplier_icon.src = "Assets/buff_icons/shooter-2x.png";
-//time_stop_icon.src = "Assets/buff_icons/shooter-stop.png" ; - disabled
+reverse_icon.src = "Assets/buff_icons/shooter-reverse.png";
 chain_bullets_icon.src = "Assets/buff_icons/shooter-lightning.png" ;
 explosive_bullets_icon.src = "Assets/buff_icons/shooter-boomboom.png";
 aimbot_icon.src = "Assets/buff_icons/shooter-aimbot.png" ;
@@ -830,7 +824,7 @@ const buff_icons = {
     //Cooldowns
     "ShootingSpeed" : shoot_speed_icon,
     "ScoreMultiplier" : score_multiplier_icon,
-    //"TimeStop" : time_stop_icon, - disabled
+    "Reverse" : reverse_icon,
     "ChainBullets" : chain_bullets_icon,
     "ExplosiveBullets" : explosive_bullets_icon,
     "Aimbot" : aimbot_icon,
@@ -1332,7 +1326,7 @@ const radar_icons = {
     "ScoreMultiplier" : "Assets/plane_icons/plane_icon_multiplier.png",
     "RandomBuffs"  : "Assets/plane_icons/plane_icon_random.png",
     "HealthUp"  : "Assets/plane_icons/plane_icon_heal.png",
-    //"TimeStop" : "Assets/plane_icons/plane_icon_timestop.png",
+    "Reverse" : "Assets/plane_icons/plane_icon_reverse.png",
     "ChainBullets" : "Assets/plane_icons/plane_icon_chain_bullets.png", 
     "ExplosiveBullets" : "Assets/plane_icons/plane_icon_explosive.png",
     "ScreenAOE" : "Assets/plane_icons/plane_icon_aoe.png", 

@@ -539,8 +539,8 @@ main {
 
 /* Scale up */
 
-@media (min-width: 2000px) {
+/* @media (min-width: 2000px) {
     .screen {
         font-size: 22px;
     }
-}
+} */

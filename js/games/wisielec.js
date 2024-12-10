@@ -135,10 +135,22 @@ const WIN_LOSE =
     cookie.length>0 ? JSON.parse(cookie) 
     : [0, 0];
 
+const _WINS = document.querySelector('.left-side > .score.wins > span');
+const _EXPLOSIONS = document.querySelector('.left-side > .score.explosions > span');
 function updateScore(didWin) {
-    WIN_LOSE[didWin] += 1;
+    if (didWin)
+        WIN_LOSE[0] += 1;
+    else
+        WIN_LOSE[1] += 1;
     setCookie(HANGMAN_COOKIE, JSON.stringify(WIN_LOSE), 9999);
+    updateScores();
 }
+function updateScores() {
+    _WINS.innerText = `${WIN_LOSE[0]} wygranych`;
+    _EXPLOSIONS.innerText = `${WIN_LOSE[1]} wybuchów`;
+}
+updateScores();
+
 
 function getRandomWord() {
     const categories = Object.keys(WORDS_SEGREGATED);

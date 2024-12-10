@@ -478,14 +478,16 @@ const buff_handler = {
         }
         
         Planes.forEach(plane => {
-            plane.acceleration_y = -40;
-            plane.scaling_factor = -0.18;
+            plane.is_reversed = true;
+            //plane.acceleration_y = -40;
+            //plane.scaling_factor = -0.18;
         })
 
         this.reverse_timeout = setTimeout(() => {
             Planes.forEach(plane => {
-                plane.acceleration_y = 40;
-                plane.scaling_factor = 0.18;
+                plane.is_reversed = false;
+                //plane.acceleration_y = 40;
+                //plane.scaling_factor = 0.18;
             })
             this.reverse_timeout = null;
         }, 2000)
@@ -561,14 +563,14 @@ const buff_handler = {
         }
         
         Planes.forEach(plane => {
-            plane.scaling_factor = 0.09;
+            //plane.scaling_factor = 0.09;
             //plane.acceleration_y = 20;
             plane.is_slow = true;
         })
 
         this.slow_timeout = setTimeout(() => {
             Planes.forEach(plane => {
-                plane.scaling_factor = 0.18;
+                //plane.scaling_factor = 0.18;
                 //plane.acceleration_y = 40;
                 plane.is_slow = false;
             })
@@ -890,6 +892,7 @@ const enemy_plane = {
     // Plane debuffs
     //time_stopped: false, - disabled
     is_slow: false,
+    is_reversed: false,
     draw_plane: function() {
         console.log(this.plane_img);
         ctx.drawImage(
@@ -931,7 +934,16 @@ const enemy_plane = {
         return this.y - camera.offset_y - this.get_col_height() / 2;
     },
     move: function(delta) {
-        this.y += this.acceleration_y * delta * ((this.is_slow && this.acceleration_y != -Math.abs(this.acceleration_y))? 0.5 : 1);
+        //this.y += this.acceleration_y * delta * ((this.is_slow && this.acceleration_y != -Math.abs(this.acceleration_y))? 0.5 : 1);
+        if (this.is_reversed) {
+            this.y -= this.acceleration_y * delta;
+        }
+        else if (this.is_slow) {
+            this.y += this.acceleration_y * 0.5 * delta;
+        }
+        else {
+            this.y += this.acceleration_y * delta;
+        }
         if (this.y > 0) {
             this.scale_up(delta);
         }
@@ -947,7 +959,15 @@ const enemy_plane = {
         this.attack_player();
     },
     scale_up: function(delta) {
-        this.scale += this.scaling_factor * delta;
+        if (this.is_reversed) {
+            this.scale -= this.scaling_factor * delta;
+        }
+        else if (this.is_slow) {
+            this.scale += this.scaling_factor * 0.5 * delta;
+        }
+        else {
+            this.scale += this.scaling_factor * delta;
+        }    
     },
     attack_player: function() {
         if (this.y > canvasHeight - turret_inactive_height + (0.5 * turret_inactive_height) && this.play_explosion == false) {

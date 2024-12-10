@@ -11,43 +11,183 @@ let width = canvas.width;
 let height = canvas.height;
 
 ///////////////////////   Resizing   ///////////////////////
+const GRID_SIZE = 40;
 let GAME_WIDTH = 1000;
 let GAME_HEIGHT = 800;
-let scaleX = canvas.width / parseFloat(canvas.style.width);
-let scaleY = canvas.height / parseFloat(canvas.style.height);
+let scaleX = canvas.width / parseFloat(canvas.offsetWidth);
+let scaleY = canvas.height / parseFloat(canvas.offsetHeight);
 
 function resizeCanvas() {
-    const aspectRatio = GAME_WIDTH / GAME_HEIGHT;
+    //const aspectRatio = GAME_WIDTH / GAME_HEIGHT;
 
-    console.log("resizing");
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    //console.log("resizing");
+    canvas.width = GAME_WIDTH;
+    canvas.height = GAME_HEIGHT;
     width = canvas.width;
     height = canvas.height;
 }
 function updateScaleFactors() {
-    scaleX = canvas.width / parseFloat(canvas.style.width);
-    scaleY = canvas.height / parseFloat(canvas.style.height);
+    scaleX = canvas.width / parseFloat(canvas.offsetWidth);
+    scaleY = canvas.height / parseFloat(canvas.offsetHeight);
 }
 window.addEventListener('resize', () => {
+    if (!isGameStillTheSame) return;
+
     resizeCanvas();
     updateScaleFactors();
 });
 resizeCanvas();
 updateScaleFactors();
 
+
+
+const player = {
+    x: GAME_WIDTH/2,
+    y: GAME_HEIGHT/2,
+    radius: 25,
+    move: function(x, y) {
+        this.x += x;
+        if (this.x < this.radius) this.x = this.radius;
+        if (this.x > GAME_WIDTH - this.radius) this.x = GAME_WIDTH - this.radius;
+        this.y += y;
+        if (this.y < this.radius) this.y = this.radius;
+        if (this.y > GAME_HEIGHT - this.radius) this.y = GAME_HEIGHT - this.radius;
+    },
+    draw: function() {
+        ctx.fillStyle = 'blue';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+        ctx.fill();
+    }
+};
+
 canvas.addEventListener('mousemove', e => {
     const deltaX = e.movementX;
     const deltaY = e.movementY;
-    player.x += deltaX;
-    player.y += deltaY;
+    player.move(deltaX, deltaY);
 })
 
 
-
+///////////////////////   Level Grid Initialization   ///////////////////////
+// Calculate number of rows and columns based on GRID_SIZE
+const ROWS = Math.floor(GAME_HEIGHT / GRID_SIZE);
+const COLS = Math.floor(GAME_WIDTH / GRID_SIZE);
 
 // TODO - add a level creator, import it manually into the levels
-const LEVELS = [];
+const OBJECT_IDS = {0: 'empty', 1: 'wall', 2: 'goal', 3: 'kill'};
+const LEVEL_GRID = [];
+for (let row = 0; row < ROWS; row++) {
+    LEVEL_GRID[row] = [];
+    for (let col = 0; col < COLS; col++) {
+        LEVEL_GRID[row][col] = 0;
+    }
+}
+
+LEVEL_GRID[4][4] = 1;
+LEVEL_GRID[4][5] = 1;
+LEVEL_GRID[5][4] = 1;
+LEVEL_GRID[5][5] = 1;
+LEVEL_GRID[5][6] = 1;
+LEVEL_GRID[6][6] = 1;
+LEVEL_GRID[6][7] = 1;
+
+
+const _LEVEL_EDITOR_CONTROLS = document.querySelector('div.level-editor-controls');
+let LEVEL_EDITOR_ENABLED = false;
+document.addEventListener('keydown', e => {
+    if (e.key != "F2") return;
+
+    _LEVEL_EDITOR_CONTROLS.classList.toggle('hidden');
+    LEVEL_EDITOR_ENABLED = !LEVEL_EDITOR_ENABLED;
+    if (!LEVEL_EDITOR_ENABLED) return;
+
+});
+
+
+
+let mergedWalls = [];
+function greedyMeshWalls() {
+    mergedWalls = [];
+    const processed = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
+
+    for (let row = 0; row < ROWS; row++) {
+        for (let col = 0; col < COLS; col++) {
+            if (LEVEL_GRID[row][col] !== 1 || processed[row][col]) {
+                continue;
+            }
+
+            // Determine the width of the rectangle
+            let width = 1;
+            while (
+                col + width < COLS &&
+                LEVEL_GRID[row][col + width] === 1 &&
+                !processed[row][col + width]
+            ) {
+                width++;
+            }
+
+            // Determine the height of the rectangle
+            let height = 1;
+            let canExpand = true;
+            while (canExpand && row + height < ROWS) {
+                for (let i = 0; i < width; i++) {
+                    if (
+                        LEVEL_GRID[row + height][col + i] !== 1 ||
+                        processed[row + height][col + i]
+                    ) {
+                        canExpand = false;
+                        break;
+                    }
+                }
+                if (canExpand) {
+                    height++;
+                }
+            }
+
+            // Mark the cells in the rectangle as processed
+            for (let i = row; i < row + height; i++) {
+                for (let j = col; j < col + width; j++) {
+                    processed[i][j] = true;
+                }
+            }
+
+            // Add the merged rectangle to the array
+            mergedWalls.push({
+                x: col * GRID_SIZE,
+                y: row * GRID_SIZE,
+                width: width * GRID_SIZE,
+                height: height * GRID_SIZE,
+            });
+        }
+    }
+}
+greedyMeshWalls();
+
+const WALL_PADDING = 2;
+function drawWalls() {
+    // Draw purple stroke outlines for padding first
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = WALL_PADDING * 2; // Double the padding for overlap
+    ctx.lineJoin = 'bevel'; // Sharp corners
+    ctx.lineCap = 'butt'; // Default line cap
+
+    mergedWalls.forEach(rect => {
+        ctx.strokeRect(
+            rect.x - WALL_PADDING / 2,
+            rect.y - WALL_PADDING / 2,
+            rect.width + WALL_PADDING,
+            rect.height + WALL_PADDING
+        );
+    });
+
+    // Then, fill walls with black on top of the padding
+    ctx.fillStyle = 'purple';
+    mergedWalls.forEach(rect => {
+        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+    });
+}
+
+
 
 let shouldUpdateNavigation = true;
 let isGameStillTheSame = false;
@@ -61,26 +201,6 @@ enterGame.addEventListener('click', async e => {
 
 
 
-const player = {
-    x: GAME_WIDTH/2,
-    y: GAME_HEIGHT/2,
-    radius: 25,
-    move: function(x, y) {
-        this.x += x;
-        if (this.x < 0) this.x = 0;
-        if (this.x > GAME_WIDTH) this.x = GAME_WIDTH;
-        this.y += y;
-        if (this.y < 0) this.y = 0;
-        if (this.y > GAME_WIDTH) this.y = GAME_WIDTH;
-    },
-    draw: function() {
-        ctx.fillStyle = 'blue';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
-        ctx.fill();
-    }
-};
-
 
 // const MANIEK_FACE = 
 
@@ -92,6 +212,8 @@ level1.src = 'assets/hardestgame/level1-test.png';
 
 let lastTime;
 function gameLoop(currentTime) {
+    requestAnimationFrame(gameLoop);
+
     const deltaTime = (currentTime - lastTime)/1000 
                     || 1/60;
     lastTime = currentTime;
@@ -105,7 +227,6 @@ function gameLoop(currentTime) {
                 gamenavigation.classList.add('topLeft');
                 titleScreen.classList.add('hidden-game')
                 canvas.classList.add('hardestgame-active');
-                console.log("this thing");
             } else {
                 gamenavigation.classList.remove('topLeft'); 
             }
@@ -119,7 +240,6 @@ function gameLoop(currentTime) {
                 canvas.classList.remove('hardestgame-active');
             }
             isGameStillTheSame = false;
-            requestAnimationFrame(gameLoop);
             return;
         } else {
             
@@ -127,7 +247,6 @@ function gameLoop(currentTime) {
         isGameStillTheSame = true;
     
         if (!playingGame) {
-            requestAnimationFrame(gameLoop);
             return;
         }
     }
@@ -136,10 +255,10 @@ function gameLoop(currentTime) {
     // console.log("gaming");
     ctx.clearRect(0, 0, width, height);
 
-    ctx.drawImage(level1, 0, 0, GAME_WIDTH, GAME_HEIGHT);
-    player.draw();
+    drawWalls();
 
-    requestAnimationFrame(gameLoop);
+    // ctx.drawImage(level1, 0, 0, GAME_WIDTH, GAME_HEIGHT);
+    player.draw();
 }
 
 requestAnimationFrame(gameLoop);

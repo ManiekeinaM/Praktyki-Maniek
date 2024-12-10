@@ -9,7 +9,7 @@ Instrukcje użytku:
         misc/LaunchSequence.bat > plik wziąć na pulpit, ustawić na login/włączanie z małym opóźnieniem
     - BIOS:
         autostart na ok. 6:55
-    - Magiczny program na blokowanie myszki na drugi monitor (?)
+    - Program "Dual Monitor Tools" aby zablokować wyjeżdżanie na drugi ekran
     - Monitory:
         włączony jedynie monitor kioskowy, LUB jeszcze podpięty ekran TV (wtedy LaunchSequence otworzy "tv-player.php" na drugim)
     - Projekt:

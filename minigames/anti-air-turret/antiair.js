@@ -673,7 +673,6 @@ const maniek_sprites_properties = {
     update_sprite: function() {
         if (this.state == "display_item") {
             current_maniek_sprite.src = buff_icons[this.display_item.item].src;
-            console.log("Displaying buff: ", current_maniek_sprite.src);
         } else {
             current_maniek_sprite.src = maniek_sprite[this.state];
         }
@@ -906,7 +905,6 @@ const enemy_plane = {
     is_slow: false,
     is_reversed: false,
     draw_plane: function() {
-        console.log(this.plane_img);
         ctx.drawImage(
             this.plane_img,
             this.sprite.source_x, this.sprite.source_y,
@@ -1183,6 +1181,13 @@ const player_turret = {
                     let logo = new Image();
                     logo.src = sponsor_logos[plane.item.type];
                     new_plane.sponsor_logo = logo;
+                    console.log(SponsorPlanes.length);
+
+                    if (SponsorPlanes.length != 0) {
+                        if (SponsorPlanes[SponsorPlanes.length - 1].x < 0) {
+                            new_plane.x = SponsorPlanes[SponsorPlanes.length - 1].x - 600;
+                        }
+                    }
                 
                     SponsorPlanes.push(new_plane);
 

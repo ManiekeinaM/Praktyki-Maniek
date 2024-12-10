@@ -392,6 +392,18 @@ function get_closest_plane() {
     return new_offset;
 }
 
+// Time for each buff
+const cooldown_times = {
+    "ShootingSpeed" : 6 * 1000,
+    "ScoreMultiplier" : 6 * 1000,
+    "Reverse" : 2 * 1000,
+    //"ChainBullets" : 0,
+    "ExplosiveBullets" : 6 * 1000,
+    "Aimbot" : 6 * 1000,
+    "Immortality" : 6 * 1000,
+    "Slow" : 6 * 1000,
+}
+
 //Buff cooldowns
 let current_cooldowns = {
     "ShootingSpeed" : 0,
@@ -455,8 +467,8 @@ const buff_handler = {
             this.shooting_speed_timeout = setTimeout(() => {
                 turret_animation.frame_rate = 50;
                 this.shooting_speed_timeout = null;
-            }, 6000);
-            current_cooldowns["ShootingSpeed"] = 6000;
+            }, cooldown_times["ShootingSpeed"]);
+            current_cooldowns["ShootingSpeed"] = cooldown_times["ShootingSpeed"];
     },
     // Multiplies incoming score by 2
     activate_score_multiplier: function() {
@@ -469,8 +481,8 @@ const buff_handler = {
             this.score_multiplier_timeout = setTimeout(() => {
                 player_turret.score_multiplier = 1;
                 this.score_multiplier_timeout = null;
-            }, 6000)
-            current_cooldowns["ScoreMultiplier"] = 6000;
+            }, cooldown_times["ScoreMultiplier"])
+            current_cooldowns["ScoreMultiplier"] = cooldown_times["ScoreMultiplier"];
     },
     activate_reverse: function() {
         if (this.reverse_timeout) {
@@ -490,8 +502,8 @@ const buff_handler = {
                 //plane.scaling_factor = 0.18;
             })
             this.reverse_timeout = null;
-        }, 2000)
-        current_cooldowns["Reverse"] = 2000;
+        }, cooldown_times["Reverse"])
+        current_cooldowns["Reverse"] = cooldown_times["Reverse"];
     },
 
     // Kills plane close to one another
@@ -522,8 +534,8 @@ const buff_handler = {
             player_turret.is_immortal = false;
             player_turret.bullets_type = "regular";
             this.explosive_bullets_timeout = null;
-        }, 6000)
-        current_cooldowns["ExplosiveBullets"] = 6000;
+        }, cooldown_times["ExplosiveBullets"])
+        current_cooldowns["ExplosiveBullets"] = cooldown_times["ExplosiveBullets"];
     },
 
     // Aims towards closest plane and kills it
@@ -537,8 +549,8 @@ const buff_handler = {
         this.aimbot_timeout = setTimeout(() => {
             camera.auto_aim = false;
             this.aimbot_timeout = null;
-        }, 6000)
-        current_cooldowns["Aimbot"] = 6000;
+        }, cooldown_times["Aimbot"])
+        current_cooldowns["Aimbot"] = cooldown_times["Aimbot"];
     },
 
     // Disables taking damage
@@ -552,8 +564,8 @@ const buff_handler = {
         this.immortality_timeout = setTimeout(() => {
             player_turret.is_immortal = false;
             this.immortality_timeout = null;
-        }, 6000)
-        current_cooldowns["Immortality"] = 6000;
+        }, cooldown_times["Immortality"])
+        current_cooldowns["Immortality"] = cooldown_times["Immortality"];
     },
 
     // Slows down all planes
@@ -575,8 +587,8 @@ const buff_handler = {
                 plane.is_slow = false;
             })
             this.slow_timeout = null;
-        }, 6000)
-        current_cooldowns["Slow"] = 6000;
+        }, cooldown_times["Slow"])
+        current_cooldowns["Slow"] = cooldown_times["Slow"];
     }
 
 }

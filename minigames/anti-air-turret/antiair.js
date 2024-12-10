@@ -686,6 +686,20 @@ let maniek_blink_id = setInterval(maniek_sprites_properties.change_state.bind(ma
 current_maniek_sprite.src = maniek_sprite["idle"];
 
 
+const sponsor_plane_properties = {
+    frame_width: 3912 / 4,
+    frame_height: 348,
+    total_frames: 4,
+    current_frame: 0,
+    frame_rate: 100,
+    source_x: 0,
+    source_y: 0,
+    last_animation_time: 0,
+    calc_source_position: function() {
+       this.source_x = this.current_frame * this.frame_width;
+    },  
+}
+
 const sponsor_logos = {
     "Immortality": "Assets/sponsors/better-logo.png", //"BetterCollective"
     "ScoreMultiplier": "Assets/sponsors/bsh-logo.png", // "B/S/H"
@@ -701,14 +715,16 @@ const sponsor_logos = {
 
 const SponsorPlanes = [];
 
-const sponsor_logo_width = 400 * width_upscale;
-const sponsor_logo_height = 100 * height_upscale; 
+const sponsor_logo_width = 400 * 0.25 * width_upscale;
+const sponsor_logo_height = 150 * 0.25 * height_upscale; 
 
 const sponsor_plane = {
     x: -200,
     speed_x: 200,
-    y: 0,
+    y: 20,
     sponsor_logo: 0,
+    animation: 0,
+    sprite: 0,
     move(delta) {
         this.x += 200 * delta; 
         if (this.x > canvasWidth + sponsor_logo_width);
@@ -716,11 +732,23 @@ const sponsor_plane = {
     draw: function() {
         ctx.drawImage(
             this.sponsor_logo,
-            this.x,
-            this.y,
-            sponsor_logo_width,
+            this.x + 10 * width_upscale,
+            this.y + (this.animation.frame_height * 0.25 * height_upscale) / 2 - (sponsor_logo_height) / 2,
+            Math.round(sponsor_logo_width),
             sponsor_logo_height,
         )
+    },
+    draw_plane: function() {
+        ctx.drawImage(
+            this.sprite,
+            this.animation.source_x,
+            this.animation.source_y,
+            this.animation.frame_width,
+            this.animation.frame_height,
+            Math.round(this.x),
+            this.y,
+            this.animation.frame_width * 0.25 * width_upscale, this.animation.frame_height * 0.25 * height_upscale,
+        );
     },
 }
 
@@ -1179,13 +1207,22 @@ const player_turret = {
                 if (plane.item.type != "none") {
                     let new_plane = {...sponsor_plane};
                     let logo = new Image();
+                    
                     logo.src = sponsor_logos[plane.item.type];
                     new_plane.sponsor_logo = logo;
+                    
+                    let sponsor_plane_sprite = new Image();
+                    sponsor_plane_sprite.src = "Assets/plane-support.png";
+                    new_plane.sprite = sponsor_plane_sprite;
+                    new_plane.animation = {...sponsor_plane_properties};
+        
+
+                    new_plane.sprite
                     console.log(SponsorPlanes.length);
 
                     if (SponsorPlanes.length != 0) {
                         if (SponsorPlanes[SponsorPlanes.length - 1].x < 0) {
-                            new_plane.x = SponsorPlanes[SponsorPlanes.length - 1].x - 600;
+                            new_plane.x = Math.round(SponsorPlanes[SponsorPlanes.length - 1].x - 600);
                         }
                     }
                 
@@ -1564,6 +1601,14 @@ function game_loop(timestamp) {
     ctx.drawImage(background, camera.offset_x - background_width / 2, -camera.offset_y - background_height/4, background_width, background_height); 
 
     //Handle animations
+    SponsorPlanes.forEach(plane => {
+        if (timestamp - plane.animation.last_animation_time > plane.animation.frame_rate) {
+            plane.animation.current_frame = (plane.animation.current_frame + 1) % plane.animation.total_frames;
+            plane.animation.calc_source_position();
+            plane.animation.last_animation_time = timestamp;
+        }
+    })
+
     Explosions.forEach(puff => {
         if (timestamp - puff.animation.last_animation_time > puff.animation.frame_rate) {
             puff.animation.current_frame = (puff.animation.current_frame + 1) % puff.animation.total_frames;
@@ -1607,6 +1652,7 @@ function game_loop(timestamp) {
     });
 
     SponsorPlanes.forEach(plane => {
+        plane.draw_plane();
         plane.draw();
         plane.move(delta);
     });

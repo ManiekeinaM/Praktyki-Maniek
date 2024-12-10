@@ -36,11 +36,6 @@ const gameover = {
     width: 600 * width_upscale,
     height: 250 * height_upscale,
 }
-//Lifebar properties
-const lives_bar = {
-    width: 100 * width_upscale,
-    height: 100 * height_upscale,
-}
 
 //Single Live sprite
 const life_icon = new Image();
@@ -137,6 +132,7 @@ const game = {
     },
     reset: function() {
         Planes.length = 0;
+        SponsorPlanes.length = 0;
         this.enemy_planes_amount = 0;
         this.spawn_plane(1);
         player_turret.reset();
@@ -453,7 +449,7 @@ const buff_handler = {
     // Kills all planes in middle range
     use_kill_all: function() {
         Planes.forEach(plane => {
-            if (plane.y > canvasHeight / 3) plane.play_explosion = true;
+            if (plane.y > canvasHeight / 2) plane.play_explosion = true;
         })
     },
     // Increases shooting speed
@@ -701,16 +697,16 @@ const sponsor_plane_properties = {
 }
 
 const sponsor_logos = {
-    "Immortality": "Assets/sponsors/better-logo.png", //"BetterCollective"
+    "Immortality": "Assets/sponsors/tomtom-logo.png", //"TomTom"
     "ScoreMultiplier": "Assets/sponsors/bsh-logo.png", // "B/S/H"
-    "RandomBuffs": "Assets/sponsors/fujitsu-logo.png", // "Fujitsu"
-    "HealthUp": "Assets/sponsors/hitachi-logo.png", // "Hitachi"
+    "RandomBuffs": "Assets/sponsors/veolia-logo.png", // "Veolia"
+    "HealthUp": "Assets/sponsors/better-logo.png", // "BetterCollective"
     "ExplosiveBullets": "Assets/sponsors/hydro-logo.png", // "Hydro"
     "Aimbot": "Assets/sponsors/pg-logo.png", // "PG"
     "Slow": "Assets/sponsors/radio-logo.png", // "RadioLodz"
-    "ShootingSpeed": "Assets/sponsors/tomtom-logo.png", // "TomTom"
+    "ShootingSpeed": "Assets/sponsors/fujitsu-logo.png", // "Fujistu"
     "Reverse": "Assets/sponsors/toya-logo.png", // "Toya"
-    "ScreenAOE": "Assets/sponsors/veolia-logo.png", // "Veolia"
+    "ScreenAOE": "Assets/sponsors/hitachi-logo.png", // "Hitachi"
 }
 
 const SponsorPlanes = [];
@@ -751,7 +747,6 @@ const sponsor_plane = {
         );
     },
 }
-
 
 const sponsor_window = {
     width: 250 * width_upscale,

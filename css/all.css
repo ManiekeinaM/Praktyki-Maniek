@@ -76,6 +76,9 @@ img {
 .hidden {
     display: none;
 }
+.gameHidden {
+    display: none;
+}
 
 body, html {
     margin: 0;
@@ -237,8 +240,11 @@ main {
     margin: 0;
     /* color: var(--zsp-blue-dark); */
     color: white;
-    text-shadow: 1px 1px 10px black,
-                0 0 10px black;
+    text-shadow: 1px 1px 2px black,
+                0 0 2px black,
+                2px 2px 2px black,
+                -1px -1px 4px black,
+                1px 1px 2px black;
 
     line-height: 1em;
 
@@ -420,29 +426,28 @@ main {
 
 /* Highscores */
 .highscores {
-    position: absolute;
-    transition: 0.5s;
+    transition: transform 0.5s;
 
     top: 50%;
     left: 50%;
 
     background-color: var(--lightblue-bg);
-    border: 0.5rem solid var(--lightblue-bg-border);
-    padding: 0.5rem;
-    border-radius: 1rem;
+    border: 0.5em solid var(--lightblue-bg-border);
+    padding: 0.5em;
+    border-radius: 1em;
 
     text-align: center;
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
 }
 
-.highscores.hidden {
+.highscores.hidden, .highscores.gameHidden {
     display: block;
-    transform: translate(-50%, -50%) scale(0);
+    transform: scale(0);
 }
 
 .highscores p {
     font-family: var(--maniek-font);
-    font-size: 2rem;
+    font-size: 2em;
     color: white;
     margin: 0.5em;
     text-shadow: 0 0 3px black,
@@ -462,11 +467,11 @@ main {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 0.25rem 0;
+    padding: 0.25em 0;
 }
 .highscoresList > div > p {
     font-family: var(--maniek-font);
-    font-size: 2rem;
+    font-size: 2em;
     margin: 0;
 
     color: white;
@@ -480,7 +485,7 @@ main {
 }
 
 .highscoresList > div > p.scoreTime {
-    font-size: 1.25rem;
+    font-size: 1.25em;
     color: rgb(235,235,235);
     text-shadow: 0 0 2px black,
                 0 0 2px black,
@@ -534,8 +539,8 @@ main {
 
 /* Scale up */
 
-@media (min-width: 2000px) {
-    html {
-        font-size: 24px;
+/* @media (min-width: 2000px) {
+    .screen {
+        font-size: 22px;
     }
-}
+} */

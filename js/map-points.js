@@ -197,6 +197,11 @@ const imgPaths = {
     }
 }
 
+const maniekMachineInfo = {
+    x: 0.23700, y: 0.49882, connections: ['Wdot1'], icon: 'machine', desc: ""
+}
+imgPaths.Floor0.dots.Wdot0 = maniekMachineInfo;
+
 const mapIcons = {
     'pielegniarka': 'assets/map/icons/pielegniarka.png',
     'stairsUp': 'assets/map/icons/stairs-up.png',
@@ -757,7 +762,6 @@ function updateCoordString() {
     let coordString = fullString + `<br><span class='copyable' onclick='copy(this)'>"dot${iterator}": {x: ${textX}, y: ${textY}}, // ${commentString}</span>`;
     devCoords.innerHTML = coordString;
 
-
     return coordString;
 }
 
@@ -768,6 +772,8 @@ document.addEventListener("keydown", e => {
         if (!devMode) devCoords.innerHTML = ``;
     }
     if (!devMode) return;
+    console.log("dev");
+
 
     if (e.key == "F3") {
         e.preventDefault();

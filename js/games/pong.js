@@ -16,16 +16,110 @@ const rocketTimes = {
     right: document.querySelector('.rocket-timer-right > .rocket-time')
 }
 
-let pongScores = {left: 0, right: 0};
+const pongScores = {left: 0, right: 0};
+const SCORE_FOR_LB = {
+    normal: 0,
+    onelife: 0,
+};
 function addScore(side, amount) {
     pongScores[side] += amount;
-    document.querySelector(`.${side}-score`).textContent = pongScores[side];
-}
-function updateScores() {
-    document.querySelector('.left-score').textContent = pongScores.left;
-    document.querySelector('.right-score').textContent = pongScores.right;
+    updateScores();
+
+    if (side == 'left') {
+        if (pongScores.right == 0)
+            SCORE_FOR_LB.onelife += amount;
+        SCORE_FOR_LB.normal += amount;
+    }
+
+    checkResults();
 }
 
+const SCORE_TEXT = {
+    'left': document.querySelector('.left-score'),
+    'lefth1': document.querySelector('.left-score > h1'),
+    'right': document.querySelector('.right-score'),
+    'righth1': document.querySelector('.right-score > h1')
+}
+function updateScores() {
+    SCORE_TEXT.lefth1.textContent = pongScores.left;
+    SCORE_TEXT.righth1.textContent = pongScores.right;
+
+    if (pongScores.left > pongScores.right) {
+        SCORE_TEXT.left.classList.add('winning');
+    } else if (pongScores.right > pongScores.left) {
+        SCORE_TEXT.right.classList.add('winning');
+    } else {
+        SCORE_TEXT.left.classList.remove('winning');
+        SCORE_TEXT.right.classList.remove('winning');
+    }
+}
+
+
+import { HighScores } from '../highscores.js';
+
+// Initialize highscore managers
+const HIGHSCORE_MANAGERS = [
+    // aiType: {normal: highscoreManagerNormal, onelife: highscoreManagerOnelife}
+];
+for (let i=0; i<3; i++) {
+    const normal = document.querySelector(`.highscoresList[data-highscorecookie="pong-mode${i}"]`);
+    const onelife = document.querySelector(`.highscoresList[data-highscorecookie="pong-mode${i}-onelife"]`);
+    // console.log(normal, onelife);
+    HIGHSCORE_MANAGERS[i] = {normal: new HighScores(normal), onelife: new HighScores(onelife)};
+    HIGHSCORE_MANAGERS[i].normal.updateHighscores();
+    HIGHSCORE_MANAGERS[i].onelife.updateHighscores();
+}
+
+let SCORE_GOAL = 50;
+let IN_FREEPLAY = false;
+function checkResults() {
+    if (IN_FREEPLAY) return;
+
+    if (pongScores.left >= SCORE_GOAL) {
+        return endGame(true);
+    } else if (pongScores.right >= SCORE_GOAL) {
+        return endGame(false);
+    }
+}
+
+//////////////////////////////////////////   IMPORTANT VARIABLES   //////////////////////////////////////////
+let isGameStillPong = false;
+let isGamePaused = false;
+let isInMenu = true; // starting menu for gamemode selection
+let isInEndState = false; // menu for restarting game or continuing
+let shouldUpdateNavigation = true;
+
+
+
+const _ENDGAME = document.querySelector('.endedGame');
+const _GAMERESULT = _ENDGAME.querySelector('.gameResult');
+const _FREEPLAY = _ENDGAME.querySelector('.pause-buttons > .freeplay');
+console.log(_ENDGAME, _GAMERESULT, _FREEPLAY)
+function endGame(didWin) {
+    isInEndState = true;
+    shouldUpdateNavigation = true;
+    if (didWin) {
+        // win
+        _GAMERESULT.textContent = `Wygrana! [${pongScores.left}:${pongScores.right}]`;
+        _GAMERESULT.style.color = 'lightgreen';
+    } else {
+        // lose
+        _GAMERESULT.textContent = `Przegrana [${pongScores.left}:${pongScores.right}]`;
+        _GAMERESULT.style.color = 'red';
+    }
+
+    const managerNormal = HIGHSCORE_MANAGERS[aiType].normal;
+    const managerOnelife = HIGHSCORE_MANAGERS[aiType].onelife;
+    managerNormal.addScore(SCORE_FOR_LB.normal);
+    managerOnelife.addScore(SCORE_FOR_LB.onelife);
+    managerNormal.updateHighscores();
+    managerOnelife.updateHighscores();
+}
+_FREEPLAY.addEventListener('click', e => {
+    IN_FREEPLAY = true;
+    isInEndState = false;
+    shouldUpdateNavigation = true;
+});
 
 
 // QUADTREE IMPLEMENTATION
@@ -132,11 +226,12 @@ class Quadtree {
     }
 }
 
-let isGameStillPong = false;
-let isGamePaused = false;
-let shouldUpdateNavigation = true;
+
+
+
+
 document.addEventListener('keydown', e => {
-    if (!isGameStillPong) return;
+    if (!isGameStillPong || isInMenu || isInEndState) return;
     if (e.key == 'p') {
         isGamePaused = !isGamePaused;
         shouldUpdateNavigation = true;
@@ -194,7 +289,7 @@ class Ball {
 }
 
 const ROCKET_SPEED = 6 * 60 * speedMultiplier;
-const ROCKET_SIZE = {width: 61*2, height: 28*2, hitboxHeight: 28, hitboxWidth: 61*2};
+const ROCKET_SIZE = {width: 61*2, height: 28*2, hitboxHeight: 40, hitboxWidth: 61*2};
 ROCKET_SIZE.yGap = (ROCKET_SIZE.height - ROCKET_SIZE.hitboxHeight) / 2;
 class Rocket {
     constructor(x, y, direction) {
@@ -310,7 +405,7 @@ class Spritesheet {
 let aiType = 0;
 
 const MAX_REFLECTION_ANGLE = 75 * Math.PI / 180; // 75 degrees in radians
-const AI_SPEED = 8 * 60 * speedMultiplier;
+let AI_SPEED = 8 * 60 * speedMultiplier;
 const sizePaddle = {width: 50, height: 160};
 
 const leftPaddle = new Paddle(10, height/2, sizePaddle.width, sizePaddle.height, './assets/paddle.png');
@@ -354,7 +449,7 @@ function addBall() {
     balls.push(ball);
 }
 
-let BALL_INTERVAL = 15; // seconds
+let BALL_INTERVAL = 12; // seconds
 let BALL_TIMER = 0;
 const ANIMATION_INTERVAL = 0.06;
 let ANIMATION_TIMER = 0; // shared animation between every sprite
@@ -365,13 +460,13 @@ let ROCKET_TIMER = {left: ROCKET_INTERVAL, right: ROCKET_INTERVAL-5};
 // let mouseX = 10;
 let mouseY = height/2;
 document.addEventListener('mousemove', e => {
-    if (isGamePaused || !isGameStillPong) return;
+    if (isGamePaused || !isGameStillPong || isInMenu || isInEndState) return;
     const rect = canvas.getBoundingClientRect();
     mouseY = e.clientY - rect.top;
     // mouseX = e.clientX - rect.left;
 });
 document.addEventListener('click', e => {
-    if (isGamePaused || !isGameStillPong) return;
+    if (isGamePaused || !isGameStillPong || isInMenu || isInEndState) return;
     setTimeout(() => {
         createRocket(1);
     }, 10)
@@ -390,13 +485,13 @@ canvas.addEventListener('touchmove', e => {
     mouseY = touchY;
 })
 
-let nearestBall = null;
 function movePaddles(deltaTime) {
-    leftPaddle.y = mouseY - leftPaddle.height/2;
-
-    createRocket(-1); // enemy sends out rocket
+    leftPaddle.y = Math.max(0, Math.min(height - leftPaddle.height, 
+        mouseY - leftPaddle.height/2 // this is the position of the paddle, its just being clamped
+    ));
 
     // right paddle AI
+    createRocket(-1); // enemy sends out rocket
 
     // stationary
     if (aiType == 2) {
@@ -404,41 +499,68 @@ function movePaddles(deltaTime) {
         return;
     };
 
-    // normal
+    // normal & advanced
+    let targetBall;
     if (aiType == 0) {
-        if (nearestBall !== null && nearestBall.x > width/4) {
-            if (nearestBall.y > rightPaddle.y + rightPaddle.height/2) {
-                // console.log(2);
-                rightPaddle.y += AI_SPEED * deltaTime;
-            } else if (nearestBall.y < rightPaddle.y - rightPaddle.height/2) {
-                // console.log(`3, ${AI_SPEED*deltaTime},  ${rightPaddle.y}`);
-                rightPaddle.y -= AI_SPEED * deltaTime;
-            } else {
-                const direction = Math.sign(nearestBall.y - (rightPaddle.y + rightPaddle.height/2));
-                let speed = Math.floor(Math.abs(nearestBall.velocity.y))+2;
-                if (speed > AI_SPEED) speed = AI_SPEED;
-                if (speed < AI_SPEED/2) speed = AI_SPEED/2;
-                rightPaddle.y += speed * direction * deltaTime;
-                // console.log(1);
-            }          
-        } else {
-            // console.log('4');
-            let difference = rightPaddle.y + rightPaddle.height/2 - height/2;
-            if (Math.abs(difference) < AI_SPEED * deltaTime) return;
+        // Calculate nearestBall
+        let nearestBall = null;
+        let minX = -Infinity;
+        balls.forEach(ball => {
+            if (ball.velocity.x <= 0) return;
+
+            if (ball.x > minX) {
+                minX = ball.x;
+                nearestBall = ball;
+            }
+        });
+        targetBall = nearestBall;
+    }
     
-            if (difference < 0)
-                rightPaddle.y += AI_SPEED * deltaTime;
-            else
-                rightPaddle.y -= AI_SPEED * deltaTime;
-        }
-        // clamp to the canvas boundaries
-        rightPaddle.y = Math.max(0, Math.min(height - rightPaddle.height, rightPaddle.y));
-    }
-
-    // advanced
     if (aiType == 1) {
-
+        // Calculate nearestPredictedBall
+        let nearestPredictedBall = null;
+        let minTime = Infinity;
+        balls.forEach(ball => {
+            if (ball.velocity.x <= 0) return; // only predict balls moving towards the paddle
+            const timeToPaddle = (rightPaddle.x - ball.x) / ball.velocity.x;
+            if (timeToPaddle < minTime) {
+                minTime = timeToPaddle;
+                nearestPredictedBall = ball;
+            }
+            
+        });
+        targetBall = nearestPredictedBall;
     }
+
+    // move paddle towards the target ball
+    if (targetBall !== null && targetBall.x > width/4) {
+        // Radius is being substracted to make the ai have a "deadzone" within the middle, to track it better and not spaz out
+        if (targetBall.y - radius > rightPaddle.y + rightPaddle.height/2) {
+            rightPaddle.y += AI_SPEED * deltaTime;
+        } else if (targetBall.y < rightPaddle.y + rightPaddle.height/2 - radius) {
+            rightPaddle.y -= AI_SPEED * deltaTime;
+        } else {
+            const direction = Math.sign(targetBall.y - (rightPaddle.y + rightPaddle.height/2));
+            let speed = Math.floor(Math.abs(targetBall.velocity.y));
+            if (speed > AI_SPEED) speed = AI_SPEED;
+            // if (speed < AI_SPEED/2) speed = AI_SPEED/2; // removed for better tracking
+            rightPaddle.y += speed * direction * deltaTime;
+        }          
+    } else {
+        // console.log('4');
+        const difference = rightPaddle.y + rightPaddle.height/2 - height/2;
+        if (Math.abs(difference) < AI_SPEED * deltaTime) return;
+
+        if (difference < 0)
+            rightPaddle.y += AI_SPEED * deltaTime;
+        else
+            rightPaddle.y -= AI_SPEED * deltaTime;
+    }
+
+    // clamp to the canvas boundaries
+    rightPaddle.y = Math.max(0, Math.min(height - rightPaddle.height, rightPaddle.y));
+ 
+
 
 }
 
@@ -521,12 +643,12 @@ function createRocket(direction) {
     let x, y;
     if (direction == 1) {
         // left side shoots: move right
-        x = sizePaddle.width + 10 + ROCKET_SIZE.width/2;
-        y = leftPaddle.y + sizePaddle.height/2;
+        x = leftPaddle.width + 10 + ROCKET_SIZE.width/2;
+        y = leftPaddle.y + leftPaddle.height/2;
     } else {
         // right side shoots: move left
-        x = width - ROCKET_SIZE.width/2 - sizePaddle.width - 10;
-        y = rightPaddle.y + sizePaddle.height/2;
+        x = width - ROCKET_SIZE.width/2 - rightPaddle.width - 10;
+        y = rightPaddle.y + rightPaddle.height/2;
     }
     
     const rocket = new Rocket(x, y, direction);
@@ -549,26 +671,78 @@ function updateRocketTimes() {
     } else rocketTimes.right.style = '';
 }
 
-let IGNORE_NEXT_DT = false;
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        isGamePaused = true;
-    } else {
-        isGamePaused = false;
-        IGNORE_NEXT_DT = true;
-    }
-});
+// Selecting buttons (gamemodes & leaderboards)
+const _pongSideButtons = document.querySelector('.pong-side-buttons');
+const _sideButtons = _pongSideButtons.querySelectorAll('.button');
+let latestAction = 'pong-modes'; // 'pong-modes' or 'pong-leaderboards'
 
+function showActionObjects(action) {
+    if (action == latestAction) return;
+
+    const actionObjects = gameOverlay.querySelectorAll(`.${action}`);
+    const lastActionObjects = gameOverlay.querySelectorAll(`.${latestAction}`);
+
+    // hide the old action objects
+    lastActionObjects.forEach(obj => {
+        obj.classList.add('hidden')
+    })
+
+    // add the new action objects
+    actionObjects.forEach(obj => {
+        obj.classList.remove('hidden')
+    })
+    latestAction = action;
+}
+showActionObjects(latestAction);
+
+let currentButton = _pongSideButtons.querySelector('.button.selected');
+const actions = [];
+_sideButtons.forEach(button => {
+    const action = button.dataset.action;
+    actions.push(action);
+
+    button.addEventListener('click', e => {
+        showActionObjects(action);
+        currentButton.classList.remove('selected');
+        button.classList.add('selected');
+        currentButton = button;
+    })
+})
+
+// on start: hide all action objects except the latest action
+actions.forEach(action => {
+    if (action == latestAction) return;
+    const actionObjects = gameOverlay.querySelectorAll(`.${action}`);
+    actionObjects.forEach(obj => {
+        obj.classList.add('hidden')
+    })
+})
+
+
+// Selecting gamemodes
+const _modes = document.querySelectorAll('.pong-modes > .button');
+_modes.forEach(mode => {
+    mode.addEventListener('click', e => {
+        const modeName = mode.dataset.gamemode;
+        selectGamemode(modeName);
+    })
+})
+
+
+
+// Gamemodes
 function selectGamemode(mode = 'normal') {
-    BALL_INTERVAL = 15;
+    BALL_INTERVAL = 12;
     if (mode == 'normal') {
         aiType = 0;
         rightPaddle.image.src = './assets/paddle2.png';
         rightPaddle.height = sizePaddle.height;
+        AI_SPEED = 8 * 60 * speedMultiplier;
     } else if (mode == 'advanced') {
         aiType = 1;
-        rightPaddle.image.src = './assets/paddle2.png';
-        rightPaddle.height = sizePaddle.height;
+        rightPaddle.image.src = './assets/paddle3.png';
+        rightPaddle.height = sizePaddle.height * 1.25;
+        AI_SPEED = 12 * 60 * speedMultiplier;
     } else if (mode == 'wall') {
         // Gain points every time a ball is spawned. Don't let Maniek beat you in score (OR, optional leaderboard, )
         aiType = 2;
@@ -580,12 +754,24 @@ function selectGamemode(mode = 'normal') {
         addScore('left',1); // 1 ball to start with, your points are determined by the amount of balls on screen
     }
     rightPaddle.y = height/2 - rightPaddle.height/2;
+
+    isInMenu = false;
+    shouldUpdateNavigation = true;
+
+    addBall();
 }
 function restartGame() {
     // Reset scores
     pongScores.left = 0;
     pongScores.right = 0;
+    SCORE_FOR_LB.normal = 0;
+    SCORE_FOR_LB.onelife = 0;
     updateScores();
+
+    ROCKET_TIMER.left = ROCKET_INTERVAL;
+    ROCKET_TIMER.right = ROCKET_INTERVAL-5;
+    ANIMATION_TIMER = 0;
+    BALL_TIMER = 0;
     
     balls = [];
     rockets = [];
@@ -593,9 +779,11 @@ function restartGame() {
 
     leftPaddle.y = height/2 - leftPaddle.height/2;
     rightPaddle.y = height/2 - rightPaddle.height/2;
-    selectGamemode('normal'); // default, can be changed
 
-    addBall();
+    isInEndState = false;
+    isGamePaused = false;
+    isInMenu = true;
+    shouldUpdateNavigation = true;
 }
 
 // Animation loop
@@ -604,11 +792,39 @@ let previousTime = performance.now();
 //const TARGET_FPS = 60;
 //const interval = 1 / TARGET_FPS;
 
+const _paused = document.querySelector('.paused');
+const _resume = _paused.querySelector('.resume');
+const _reset = gameOverlay.querySelectorAll('.resetGame');
+_resume.addEventListener('click', e => {
+    isGamePaused = false;
+    shouldUpdateNavigation = true;
+})
+
+_reset.forEach(reset => {
+    reset.addEventListener('click', e => {
+        restartGame();
+    })
+})
+
+
+const _modeHolder = document.querySelector('.pong-modes');
+
+function drawOnce() {
+    ctx.clearRect(0, 0, width, height);
+    leftPaddle.draw();
+    rightPaddle.draw();
+    balls.forEach(ball => ball.draw());
+    rockets.forEach(rocket => rocket.draw());
+    explosions.forEach(explosion => explosion.draw());
+}
+
 function animate(timestamp) {
     const deltaTime = IGNORE_NEXT_DT && 1/60 
                     || (timestamp - previousTime)/1000 
                     || 1/60;
     previousTime = timestamp;
+
+    requestAnimationFrame(animate);
 
     /*if (deltaTime < interval) {
         requestAnimationFrame(animate);
@@ -618,11 +834,29 @@ function animate(timestamp) {
     // UPDATES FOR GAME CHANGES
     {
         if (shouldUpdateNavigation) {
-            if (isGamePaused && isGameStillPong) {
+            if ((isGamePaused || isInMenu || isInEndState) && isGameStillPong && !isDocumentHidden) {
                 shouldUpdateNavigation = false;
                 gameOverlay.classList.remove('hidden');
             } else {
                 gameOverlay.classList.add('hidden');
+            }
+
+            if (isGamePaused && isGameStillPong) {
+                drawOnce();
+                _paused.classList.remove('hidden');
+            } else {
+                _paused.classList.add('hidden');
+            }
+
+            if (isInMenu) {
+                _modeHolder.classList.remove('superhidden');
+            } else {
+                _modeHolder.classList.add('superhidden');
+            }
+            if (isInEndState) {
+                _ENDGAME.classList.remove('hidden');
+            } else {
+                _ENDGAME.classList.add('hidden');
             }
         }
         
@@ -631,16 +865,20 @@ function animate(timestamp) {
         if (CURRENT_GAME != 'pong') {
             if (isGameStillPong) {
                 ctx.clearRect(0, 0, width, height);
+                if (!isInMenu && !isInEndState)
+                    isGamePaused = true;
                 shouldUpdateNavigation = true;
             }
             isGameStillPong = false;
-            requestAnimationFrame(animate);
+            // requestAnimationFrame(animate);
             return;
         }
         isGameStillPong = true;
     
-        if (isGamePaused) {
-            requestAnimationFrame(animate);
+        
+
+        if (isGamePaused || isInMenu || isInEndState || isDocumentHidden) {
+            // requestAnimationFrame(animate);
             return;
         }
     
@@ -658,7 +896,8 @@ function animate(timestamp) {
         BALL_TIMER += deltaTime;
         if (BALL_TIMER > BALL_INTERVAL) {
             addBall();
-            addScore('left', 1);
+            if (aiType == 2)
+                addScore('left', 1);
             BALL_TIMER = 0;
         }
 
@@ -748,51 +987,16 @@ function animate(timestamp) {
             }
             addBall();
 
-            if (ball == nearestBall) nearestBall = balls[0];
             continue;
         }
-
-        if (nearestBall) {
-            if (ball == nearestBall && ball.velocity.x < 0) {
-                nearestBall = null;
-            } else if (ball != nearestBall) {
-                if (ball.x > nearestBall.x && ball.velocity.x > 0)
-                    nearestBall = ball;
-            }
-        } else {
-            if (ball.velocity.x > 0) nearestBall = ball;
-        }
-        
-        /*
-        if (nearestBall == null && ball.velocity.x > 0) {
-            nearestBall = ball;
-            console.log("setting ball");
-        }
-
-        if (nearestBall != null) {
-            // if old nearest ball is going away from ai paddle, take it
-            if (nearestBall.velocity.x > 0) {
-                console.log("ya");
-                if (ball == nearestBall)
-                    nearestBall == null;
-                else
-                    nearestBall = ball;
-            }
-        }
-
-        if (nearestBall != null && ball != nearestBall) {
-            if (ball.x > nearestBall.x) {
-                console.log("double ya");
-                nearestBall = ball;
-            }
-        }
-        */
     
         ball.update(deltaTime);
 
         // Bounce off top and bottom edges
-        if (ball.y - ball.radius < 0 || ball.y + ball.radius > height) {
-            ball.velocity.y = -ball.velocity.y;
+        if (ball.y - ball.radius < 0) {
+            ball.velocity.y = Math.abs(ball.velocity.y);
+        } else if (ball.y + ball.radius > height) {
+            ball.velocity.y = -Math.abs(ball.velocity.y);
         }
 
         ball.draw();
@@ -800,8 +1004,8 @@ function animate(timestamp) {
 
     updateRocketTimes();
 
-    requestAnimationFrame(animate);
+    // requestAnimationFrame(animate);
 }
 
-animate();
+requestAnimationFrame(animate);
 restartGame();

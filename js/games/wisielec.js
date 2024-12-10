@@ -128,6 +128,30 @@ let CURRENT_CATEGORY = '';
 let lettersToGuess = {};
 let FAILS = 0; // 6 fails = lose
 
+const HANGMAN_COOKIE = 'hangman_winloss';
+let cookie = getCookie(HANGMAN_COOKIE);
+
+const WIN_LOSE = 
+    cookie.length>0 ? JSON.parse(cookie) 
+    : [0, 0];
+
+const _WINS = document.querySelector('.left-side > .score.wins > span');
+const _EXPLOSIONS = document.querySelector('.left-side > .score.explosions > span');
+function updateScore(didWin) {
+    if (didWin)
+        WIN_LOSE[0] += 1;
+    else
+        WIN_LOSE[1] += 1;
+    setCookie(HANGMAN_COOKIE, JSON.stringify(WIN_LOSE), 9999);
+    updateScores();
+}
+function updateScores() {
+    _WINS.innerText = `${WIN_LOSE[0]} wygranych`;
+    _EXPLOSIONS.innerText = `${WIN_LOSE[1]} wybuchów`;
+}
+updateScores();
+
+
 function getRandomWord() {
     const categories = Object.keys(WORDS_SEGREGATED);
     const category = categories[Math.floor(Math.random() * categories.length)];
@@ -168,6 +192,7 @@ function makeGuess(letterButton) {
     // TODO popup na wygraną
     GAME_STARTED = false;
     initConfetti();
+    updateScore(true);
     setTimeout(startGame, 5000);
 }
 
@@ -186,8 +211,8 @@ function explodeFace() {
     face.classList.add('launch');
 
     // Set random positions for the animation
-    face.style.setProperty('--rand-x', `${Math.random() * 200 - 100}px`);
-    face.style.setProperty('--rand-y', `${Math.random() * 200 - 100}px`);
+    face.style.setProperty('--rand-x', `${Math.random() * 2 - 1}em`);
+    face.style.setProperty('--rand-y', `${Math.random() * 2 - 1}em`);
 
     // Optionally, remove the animation class after it completes
     face.addEventListener('animationend', () => {
@@ -217,6 +242,7 @@ function lose() {
     explosion.classList.add('explode');
 
     result.innerText = `Słowem było: ${CURRENT_WORD_VISUAL}`;
+    updateScore(false);
     setTimeout(startGame, 5000);
 }
 

@@ -1,6 +1,22 @@
 Instrukcje użytku:
 
-> Dodawanie punktu, lub zmiana punktu na mapie (DLA PROGRAMISTY)
+> Ustawienie dowolnej maszyny jako Maniek
+    - Pobrać: xampp, AutoHotkey V2, 
+    - Użyć: git / GitHub Desktop (do pobrania projektu)
+    
+    - w Harmonogramie Zadań (windowsa):
+        misc/AbsoluteShutdown.bat > plik wziąć na pulpit, ustawić na ok 17:00 [WYŁĄCZONA FUNKCJA "Uruchom szybko zadanie, jeśli pominięto zaplanowane uruchomienie"]
+        misc/LaunchSequence.bat > plik wziąć na pulpit, ustawić na login/włączanie z małym opóźnieniem
+    - BIOS:
+        autostart na ok. 6:55
+    - Magiczny program na blokowanie myszki na drugi monitor (?)
+    - Monitory:
+        włączony jedynie monitor kioskowy, LUB jeszcze podpięty ekran TV (wtedy LaunchSequence otworzy "tv-player.php" na drugim)
+    - Projekt:
+        Pobierz projekt w C:/xampp/htdocs, powinien być folder "maniek/Praktyki-Maniek" lub "Praktyki-Maniek" aby działał poprawnie plik LaunchSequence
+        Update za pomocą fetchów w GitHub Desktop, shift+f5 aby odświeżyć cache
+
+> Mapa (dodawanie punktu) 
     - Na górze "map-points.js" jest wielka tablica z "kropkami" dla każdego piętra.
     - Organizacyjne nazwy kropek to:
         'dot' - kropka z miejscem docelowym (niewymagana nazwa),
@@ -29,7 +45,9 @@ Instrukcje użytku:
         klawisz F3 - pokaż nazwę wszystkich kropek
 
 
-> Zablokowanie koła
+
+
+> Koło fortuny (dni otwarte)
     - Automatycznie na starcie koła są zablokowane.
         klawisz 1 - zablokuj obecnie widoczne koła
         klawisz 2 - odblokuj obecnie widoczne koła

@@ -42,19 +42,91 @@
             </div>
         </div>
 
-        <canvas id="game-canvas" class="pong hardestgame hidden">
+        <canvas id="game-canvas" class="pong hardestgame">
 
         </canvas>
 
         <div id="game-overlay" class="hidden">
+
             <div class="paused">
                 <h1>Pauza</h1>
-                <button>Wznów</button>
+                <div class="pause-buttons">
+                    <button class="resume">Wznów</button>
+                    <button class="resetGame">Resetuj grę</button>
+                </div>
+            </div>
+
+            <div class="endedGame hidden">
+                <h1 class="gameResult"></h1>
+                <div class="pause-buttons">
+                    <button class="freeplay">Graj dalej</button>
+                    <button class="resetGame">Zagraj ponownie</button>
+                </div>
+            </div>
+
+            <div class="pong pong-modes">
+                <div class="button" data-gamemode="normal">
+                    <img src="./assets/gamemode0.png" alt="Normal">
+                    <p class="label">Prosty</p>
+                </div>
+                <div class="button" data-gamemode="advanced">
+                    <img src="./assets/gamemode1.png" alt="Advanced">
+                    <p class="label">Trudny</p>
+                </div>
+                <div class="button" data-gamemode="wall">
+                    <img src="./assets/gamemode2.png" alt="Wall">
+                    <p class="label">Ścianiek</p>
+                </div>
+            </div>
+            <div class="pong pong-side-buttons">
+                <div class="button" data-action="pong-leaderboards">
+                    <img src="./assets/trophy.png" alt="Leaderboard">
+                    <p class="label">Wyniki</p>
+                </div>
+                <div class="button selected" data-action="pong-modes">
+                    <img src="./assets/ai-computer.png" alt="Gamemodes">
+                    <p class="label">AI</p>
+                </div>
+            </div>
+
+            <div class="pong pong-leaderboards">
+                <div class="highscores">
+                    <img src="./assets/gamemode0.png" alt="">
+                    <p>[Prosty]<br/>najwyższy wynik</p>
+                    <div class="highscoresList" data-highscorecookie="pong-mode0"></div>
+                </div>
+                <div class="highscores">
+                    <img src="./assets/gamemode0.png" alt="">
+                    <p>[Prosty] 1❤<br/>najwyższy wynik</p>
+                    <div class="highscoresList" data-highscorecookie="pong-mode0-onelife"></div>
+                </div>
+
+                <div class="highscores">
+                    <img src="./assets/gamemode1.png" alt="">
+                    <p>[Trudny]<br/>najwyższy wynik</p>
+                    <div class="highscoresList" data-highscorecookie="pong-mode1"></div>
+                </div>
+                <div class="highscores">
+                    <img src="./assets/gamemode1.png" alt="">
+                    <p>[Trudny] 1❤<br/>najwyższy wynik</p>
+                    <div class="highscoresList" data-highscorecookie="pong-mode1-onelife"></div>
+                </div>
+
+                <div class="highscores">
+                    <img src="./assets/gamemode2.png" alt="">
+                    <p>[Ścianiek]<br/>najwyższy wynik</p>
+                    <div class="highscoresList" data-highscorecookie="pong-mode2"></div>
+                </div>
+                <div class="highscores">
+                    <img src="./assets/gamemode2.png" alt="">
+                    <p>[Ścianiek] 1❤<br/>najwyższy wynik</p>
+                    <div class="highscoresList" data-highscorecookie="pong-mode2-onelife"></div>
+                </div>
             </div>
         </div>
 
         <div id="both-sides">
-            <div class="hardestgame titlescreen hidden">
+            <div class="hardestgame titlescreen">
                 <img src="./assets/demonic-maniek.png" alt="Demon" class="demon">
                 
                 <div>
@@ -104,7 +176,7 @@
             </section>
 
             <!-- FLAPPY MANIEK -->
-            <section class="flappymaniek hidden">
+            <section class="flappymaniek">
                 <div class="tv">
                     <div class="screen">
                         <p class="titlescreen">Flappy Maniek</p>
@@ -133,7 +205,7 @@
 
 
             <!-- WISIELEC (Nie Eksploduj Mańka) -->
-            <section class="wisielec hidden">
+            <section class="wisielec">
                 <div class="wisielec-title">
                     <div class="bg1"></div>
                     <div class="bg2"></div> <div class="bg3"></div>
@@ -142,18 +214,34 @@
                     <span class="blue">Mańka!</span>
                 </div>
 
-                <div class="maniek-stages">
-                    <div>
-                        <img src="./assets/explosion.gif" class="explosion">
-                        <p class="wordResult"></p>
+                <div class="left-side">
+
+                    <div class="score wins">
+                        <img src="./assets/crown.png">
+                        <span class="wins">0 wygranych</span>
+                        <img src="./assets/crown.png">
                     </div>
-                    <img src="./assets/maniekczesc1.png" data-id="1">
-                    <img src="./assets/maniekczesc2.png" data-id="2">
-                    <img src="./assets/maniekczesc3.png" data-id="3">
-                    <img src="./assets/maniekczesc4.png" data-id="4">
-                    <img src="./assets/maniekczesc5.png" data-id="5">
-                    <img src="./assets/maniekczesc6.png" data-id="6">
+
+                    <div class="maniek-stages">
+                        <div>
+                            <img src="./assets/explosion.gif" class="explosion">
+                            <p class="wordResult"></p>
+                        </div>
+                        <img src="./assets/maniekczesc1.png" data-id="1">
+                        <img src="./assets/maniekczesc2.png" data-id="2">
+                        <img src="./assets/maniekczesc3.png" data-id="3">
+                        <img src="./assets/maniekczesc4.png" data-id="4">
+                        <img src="./assets/maniekczesc5.png" data-id="5">
+                        <img src="./assets/maniekczesc6.png" data-id="6">
+                    </div>
+
+                    <div class="score explosions">
+                        <img src="./assets/explosion.png">
+                        <span class="explosions">0 wybuchów</span>
+                        <img src="./assets/explosion.png">
+                    </div>
                 </div>
+                
 
                 <div class="input-side">
                     <p class="category">Kategoria: </p>
@@ -214,8 +302,11 @@
             </section>
 
             <!-- PONG -->
-            <h1 class="pong left-score hidden">0</h1>
-            <div class="pong rocket-timer rocket-timer-left hidden unselectable">
+            <div class="pong pong-score left-score">
+                <h1>0</h1>
+                <img src="./assets/crown.png">
+            </div>
+            <div class="pong rocket-timer rocket-timer-left unselectable">
                 <img src="./assets/rocket-base.png">
                 <h2 class="rocket-time">6s</h2>
             </div>
@@ -223,10 +314,9 @@
     
         <!-- Prawa strona (niebieska, maniek) -->
         <div class="maniek-side">
-            <div class="flappymaniek highscores hidden">
+            <div class="flappymaniek highscores">
                 <p>Najlepsze wyniki</p>
-                <div class="highscoresList" data-highscoreCookie="flappy-highscores"></div>
-                <!-- TODO - highscoreCookie should be used rather than hardcoding stuff in -->
+                <div class="highscoresList" data-highscorecookie="flappy-highscores"></div>
             </div>
 
             <img class="maniek logoitarcza" src="./assets/maniek-faces/thinking.gif">
@@ -237,26 +327,23 @@
                 <img src="./assets/kolko.png">
             </div>
 
-            <div class="pong pongtitle unselectable hidden">
+            <div class="pong pongtitle unselectable">
                 <span>P</span>
                 <span>O</span>
                 <span>N</span>
                 <span>G</span>
             </div>
 
-            <h1 class="pong right-score hidden">0</h1>
-            <div class="pong rocket-timer rocket-timer-right hidden unselectable">
+            <div class="pong pong-score right-score">
+                <h1>0</h1>
+                <img src="./assets/crown.png">
+            </div>
+            <div class="pong rocket-timer rocket-timer-right unselectable">
                 <img src="./assets/rocket-base.png">
                 <h2 class="rocket-time">6s</h2>
             </div>
         </div>
     </main>
-    
-
-
-
-
-    
 
     <!-- Navigation button container / zakładki -->
     <nav class="navigation-container">

@@ -1,6 +1,7 @@
 const titleScreen = document.querySelector('div.titlescreen.hardestgame');
 const enterGame = document.querySelector('button.enterGame');
 
+///////////////////////   Canvas   ///////////////////////
 const canvas = document.querySelector('#game-canvas');
 const ctx = canvas.getContext('2d', {willReadFrequently: true});
 ctx.imageSmoothingEnabled = false;
@@ -8,6 +9,38 @@ canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
 let width = canvas.width;
 let height = canvas.height;
+
+///////////////////////   Resizing   ///////////////////////
+const GAME_WIDTH = 1280 - 96;
+const GAME_HEIGHT = 1024 - 96;
+
+function resizeCanvas() {
+    const aspectRatio = GAME_WIDTH / GAME_HEIGHT;
+    let newWidth = canvas.innerWidth;
+    let newHeight = canvas.innerHeight;
+
+    if (newWidth / newHeight > aspectRatio) {
+        newWidth = newHeight * aspectRatio;
+    } else {
+        newHeight = newWidth / aspectRatio;
+    }
+
+    canvas.width = `${newWidth}`;
+    canvas.height = `${newHeight}`;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// Scale factor for drawing
+let scaleX = canvas.width / parseFloat(canvas.style.width);
+let scaleY = canvas.height / parseFloat(canvas.style.height);
+
+// Update scale factors on resize
+window.addEventListener('resize', () => {
+    scaleX = canvas.width / parseFloat(canvas.style.width);
+    scaleY = canvas.height / parseFloat(canvas.style.height);
+});
+
 
 // TODO - add a level creator, import it manually into the levels
 const LEVELS = [];
@@ -39,7 +72,7 @@ function gameLoop(currentTime) {
     // UPDATES FOR GAME CHANGES
     {
         if (shouldUpdateNavigation) {
-            if (playingGame && isGameStillTheSame) {
+            if (playingGame && isGameStillTheSame && !isDocumentHidden) {
                 shouldUpdateNavigation = false;
                 gamenavigation.classList.add('topLeft');
                 titleScreen.classList.add('hidden-game')

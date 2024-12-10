@@ -16,17 +16,32 @@
     font-weight: 500;
 }
 
-h1.pong {
+.pong-score {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pong-score > h1 {
     font-family: var(--maniek-font);
     font-size: 12rem;
     color: white;
     font-weight: 500;
     margin: 0;
+}
 
+.pong-score > img {
+    display: none;
     position: absolute;
+    top: 0%;
     left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
+    height: 6rem;
+}
+
+.pong-score.winning > img {
+    display: block;
 }
 
 .rocket-timer {
@@ -65,9 +80,69 @@ h1.pong {
     display: none;
 }
 
+.pong-side-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: .25em;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 4em;
+    top: 50%;
+    font-size: 1.25rem;
+    z-index: 5;
+}
+
+.pong-modes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    gap: 1em;
+    /* transform: scale(1.25); */
+}
+
+.pong-leaderboards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2em;
+    padding-left: 8rem;
+    padding-right: 8rem;
+    
+
+    /* position: absolute; */
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+}
+
+.pong-leaderboards > .highscores {
+    font-size: 0.75rem;
+    flex: 1 0 33%;
+}
+
+.pong-leaderboards > .highscores > img {
+    height: 4rem;
+    width: auto;
+}
+
+
 @media (max-width: 500px) {
     .rocket-timer-right {
         top: 1rem;
         bottom: unset;
     }
+}
+
+#game-overlay > .hidden {
+    display: none;
+}
+#game-overlay > .superhidden {
+    display: none;
+}
+
+.pong.gameHidden {
+    display: none;
 }

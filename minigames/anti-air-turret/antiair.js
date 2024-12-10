@@ -122,6 +122,8 @@ const game = {
     play_explosion_sequence: false,
     has_not_started: true,
     stop: function() {
+        // Unlock mouse pointer
+        document.exitPointerLock();
         // create explosions on player death
         this.play_explosion_sequence = true;
         random_explosions_id = setInterval(create_explosion, 1000);

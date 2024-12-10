@@ -138,7 +138,7 @@ const game = {
     reset: function() {
         Planes.length = 0;
         this.enemy_planes_amount = 0;
-        this.spawn_plane(300);
+        this.spawn_plane(1);
         player_turret.reset();
         this.has_not_started = false;
         this.is_gameover = false;
@@ -891,7 +891,7 @@ const enemy_plane = {
     //time_stopped: false, - disabled
     is_slow: false,
     draw_plane: function() {
-        //console.log(this.item.type);
+        console.log(this.plane_img);
         ctx.drawImage(
             this.plane_img,
             this.sprite.source_x, this.sprite.source_y,
@@ -963,7 +963,8 @@ const enemy_plane = {
         this.item.type = "none";
         //Roll for type
         this.item.type = roll_for_plane();
-        this.plane_img = this.item.type;
+        this.plane_img.src = plane_variants[this.item.type];
+        
         this.play_explosion = false;
         this.explosion.current_frame = 0;
         this.y = 0;

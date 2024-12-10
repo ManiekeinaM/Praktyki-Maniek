@@ -170,6 +170,7 @@ const game = {
         // Spawn new planes, after killing required amount of enemies
         if (this.kill_count > this.enemy_planes_amount * this.enemy_planes_amount) {
             this.spawn_plane(1);
+            this.kill_count = 0;
         }
     },
     // Top game score
@@ -242,9 +243,10 @@ const camera = {
         // Current angle camera is facing
         this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
 
+        let fake_acceleration = 1.5;
         // Move with mouse
-        this.offset_x += mouse_x * this.acceleration_x * delta;
-        this.offset_y += mouse_y * this.acceleration_y * delta;
+        this.offset_x += mouse_x * this.acceleration_x * delta * fake_acceleration;
+        this.offset_y += mouse_y * this.acceleration_y * delta * fake_acceleration;
 
         // Limit camera Y-Axis movement
         if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {

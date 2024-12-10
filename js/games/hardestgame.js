@@ -101,6 +101,7 @@ document.addEventListener('keydown', e => {
     LEVEL_EDITOR_ENABLED = !LEVEL_EDITOR_ENABLED;
     if (!LEVEL_EDITOR_ENABLED) return;
 
+
 });
 
 
@@ -206,10 +207,6 @@ enterGame.addEventListener('click', async e => {
 
 
 
-
-let level1 = new Image();
-level1.src = 'assets/hardestgame/level1-test.png';
-
 let lastTime;
 function gameLoop(currentTime) {
     requestAnimationFrame(gameLoop);
@@ -252,12 +249,10 @@ function gameLoop(currentTime) {
     }
     
     // GAME
-    // console.log("gaming");
     ctx.clearRect(0, 0, width, height);
 
     drawWalls();
 
-    // ctx.drawImage(level1, 0, 0, GAME_WIDTH, GAME_HEIGHT);
     player.draw();
 }
 

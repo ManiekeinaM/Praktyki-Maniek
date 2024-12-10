@@ -5,7 +5,7 @@ main {
 }
 
 #game-canvas {
-    width: 60%;
+    width: 70%;
     height: calc(100% - 2rem);;
     border: 1rem solid rgba(24, 71, 19, 1);
     border-bottom-left-radius: 25px;
@@ -15,7 +15,7 @@ main {
 #bestscore-table {
     position: relative;
     font-family: var(--maniek-font);
-    width: 40%;
+    width: 30%;
     height: calc(100% - 2rem);
     background-color: var(--blue);
     border: 1rem solid var(--darkblue);

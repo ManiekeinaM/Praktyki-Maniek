@@ -36,11 +36,6 @@ const gameover = {
     width: 600 * width_upscale,
     height: 250 * height_upscale,
 }
-//Lifebar properties
-const lives_bar = {
-    width: 100 * width_upscale,
-    height: 100 * height_upscale,
-}
 
 //Single Live sprite
 const life_icon = new Image();
@@ -127,6 +122,8 @@ const game = {
     play_explosion_sequence: false,
     has_not_started: true,
     stop: function() {
+        // Unlock mouse pointer
+        document.exitPointerLock();
         // create explosions on player death
         this.play_explosion_sequence = true;
         random_explosions_id = setInterval(create_explosion, 1000);
@@ -137,6 +134,7 @@ const game = {
     },
     reset: function() {
         Planes.length = 0;
+        SponsorPlanes.length = 0;
         this.enemy_planes_amount = 0;
         this.spawn_plane(1);
         player_turret.reset();
@@ -172,6 +170,7 @@ const game = {
         // Spawn new planes, after killing required amount of enemies
         if (this.kill_count > this.enemy_planes_amount * this.enemy_planes_amount) {
             this.spawn_plane(1);
+            this.kill_count = 0;
         }
     },
     // Top game score
@@ -244,9 +243,10 @@ const camera = {
         // Current angle camera is facing
         this.angle = ((this.offset_x+ABS_MIN_CAMERA_OFFSET_X)*360)/ TOTAL_GAME_WIDTH;
 
+        let fake_acceleration = 1.5;
         // Move with mouse
-        this.offset_x += mouse_x * this.acceleration_x * delta;
-        this.offset_y += mouse_y * this.acceleration_y * delta;
+        this.offset_x += mouse_x * this.acceleration_x * delta * fake_acceleration;
+        this.offset_y += mouse_y * this.acceleration_y * delta * fake_acceleration;
 
         // Limit camera Y-Axis movement
         if (this.offset_y < -(GAME_WINDOW_HEIGHT - canvasHeight)) {
@@ -394,13 +394,13 @@ function get_closest_plane() {
 
 // Time for each buff
 const cooldown_times = {
-    "ShootingSpeed" : 6 * 1000,
+    "ShootingSpeed" : 8 * 1000,
     "ScoreMultiplier" : 6 * 1000,
     "Reverse" : 2 * 1000,
     //"ChainBullets" : 0,
-    "ExplosiveBullets" : 6 * 1000,
+    "ExplosiveBullets" : 8 * 1000,
     "Aimbot" : 6 * 1000,
-    "Immortality" : 6 * 1000,
+    "Immortality" : 7 * 1000,
     "Slow" : 6 * 1000,
 }
 
@@ -453,7 +453,7 @@ const buff_handler = {
     // Kills all planes in middle range
     use_kill_all: function() {
         Planes.forEach(plane => {
-            if (plane.y > canvasHeight / 3) plane.play_explosion = true;
+            if (plane.y > canvasHeight / 2) plane.play_explosion = true;
         })
     },
     // Increases shooting speed
@@ -701,16 +701,16 @@ const sponsor_plane_properties = {
 }
 
 const sponsor_logos = {
-    "Immortality": "Assets/sponsors/better-logo.png", //"BetterCollective"
+    "Immortality": "Assets/sponsors/tomtom-logo.png", //"TomTom"
     "ScoreMultiplier": "Assets/sponsors/bsh-logo.png", // "B/S/H"
-    "RandomBuffs": "Assets/sponsors/fujitsu-logo.png", // "Fujitsu"
-    "HealthUp": "Assets/sponsors/hitachi-logo.png", // "Hitachi"
+    "RandomBuffs": "Assets/sponsors/veolia-logo.png", // "Veolia"
+    "HealthUp": "Assets/sponsors/better-logo.png", // "BetterCollective"
     "ExplosiveBullets": "Assets/sponsors/hydro-logo.png", // "Hydro"
     "Aimbot": "Assets/sponsors/pg-logo.png", // "PG"
     "Slow": "Assets/sponsors/radio-logo.png", // "RadioLodz"
-    "ShootingSpeed": "Assets/sponsors/tomtom-logo.png", // "TomTom"
+    "ShootingSpeed": "Assets/sponsors/fujitsu-logo.png", // "Fujistu"
     "Reverse": "Assets/sponsors/toya-logo.png", // "Toya"
-    "ScreenAOE": "Assets/sponsors/veolia-logo.png", // "Veolia"
+    "ScreenAOE": "Assets/sponsors/hitachi-logo.png", // "Hitachi"
 }
 
 const SponsorPlanes = [];
@@ -751,7 +751,6 @@ const sponsor_plane = {
         );
     },
 }
-
 
 const sponsor_window = {
     width: 250 * width_upscale,

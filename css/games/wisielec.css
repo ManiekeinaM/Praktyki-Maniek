@@ -11,7 +11,7 @@ section.wisielec {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: calc(100% - 8em);
+    width: 100%;
     height: 100%;
 
     display: flex;
@@ -22,6 +22,29 @@ section.wisielec {
 
 section.wisielec.gameHidden {
     display: none !important;
+}
+
+.wisielec > .left-side {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.left-side > .score {
+    position: relative;
+    top: unset;
+    left: unset;
+    transform: unset;
+}
+
+.left-side > .score.explosions {
+    background-color:rgb(255, 138, 84);
+    border-color:rgb(255, 97, 57);
+}
+.left-side > .score.wins {
+    background-color: rgb(255, 212, 96);
+    border-color: rgb(255, 189, 46);
 }
 
 .maniek-stages {

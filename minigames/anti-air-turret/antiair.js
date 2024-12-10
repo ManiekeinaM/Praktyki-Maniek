@@ -394,13 +394,13 @@ function get_closest_plane() {
 
 // Time for each buff
 const cooldown_times = {
-    "ShootingSpeed" : 6 * 1000,
+    "ShootingSpeed" : 8 * 1000,
     "ScoreMultiplier" : 6 * 1000,
     "Reverse" : 2 * 1000,
     //"ChainBullets" : 0,
-    "ExplosiveBullets" : 6 * 1000,
+    "ExplosiveBullets" : 8 * 1000,
     "Aimbot" : 6 * 1000,
-    "Immortality" : 6 * 1000,
+    "Immortality" : 7 * 1000,
     "Slow" : 6 * 1000,
 }
 

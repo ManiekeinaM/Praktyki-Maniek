@@ -73,7 +73,11 @@ for (let i=0; i<3; i++) {
 let SCORE_GOAL = 50;
 let IN_FREEPLAY = false;
 function checkResults() {
-    if (IN_FREEPLAY) return;
+    if (IN_FREEPLAY) {
+        if (pongScores.right > pongScores.left)
+            return endGame(); // enemy passed player, end game
+        return;
+    };
 
     if (pongScores.left >= SCORE_GOAL) {
         return endGame(true);
@@ -88,26 +92,41 @@ let isGamePaused = false;
 let isInMenu = true; // starting menu for gamemode selection
 let isInEndState = false; // menu for restarting game or continuing
 let shouldUpdateNavigation = true;
-
+let shouldUpdateScoreboardOnRestart = false;
 
 
 const _ENDGAME = document.querySelector('.endedGame');
 const _GAMERESULT = _ENDGAME.querySelector('.gameResult');
 const _FREEPLAY = _ENDGAME.querySelector('.pause-buttons > .freeplay');
-console.log(_ENDGAME, _GAMERESULT, _FREEPLAY)
+// console.log(_ENDGAME, _GAMERESULT, _FREEPLAY)
 function endGame(didWin) {
     isInEndState = true;
     shouldUpdateNavigation = true;
-    if (didWin) {
+    if (IN_FREEPLAY) {
+        // lose in freeplay (enemy passed player)
+        _GAMERESULT.textContent = `Ostateczny wynik: [${pongScores.left}:${pongScores.right}]`;
+        _GAMERESULT.style.color = 'orange';
+        _FREEPLAY.style.display = 'none';
+        saveHighscores();
+    } else if (didWin) {
         // win
         _GAMERESULT.textContent = `Wygrana! [${pongScores.left}:${pongScores.right}]`;
         _GAMERESULT.style.color = 'lightgreen';
+        _FREEPLAY.style.display = '';
+        // Update scores on next game start
+        shouldUpdateScoreboardOnRestart = true;
     } else {
         // lose
         _GAMERESULT.textContent = `Przegrana [${pongScores.left}:${pongScores.right}]`;
         _GAMERESULT.style.color = 'red';
+        _FREEPLAY.style.display = 'none';
+        saveHighscores();
     }
 
+
+}
+
+function saveHighscores() {
     const managerNormal = HIGHSCORE_MANAGERS[aiType].normal;
     const managerOnelife = HIGHSCORE_MANAGERS[aiType].onelife;
     managerNormal.addScore(SCORE_FOR_LB.normal);
@@ -115,6 +134,7 @@ function endGame(didWin) {
     managerNormal.updateHighscores();
     managerOnelife.updateHighscores();
 }
+
 _FREEPLAY.addEventListener('click', e => {
     IN_FREEPLAY = true;
     isInEndState = false;
@@ -418,6 +438,8 @@ function resizeCanvas() {
         shouldResize = true;
         return;
     }
+
+    
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     width = canvas.width;
@@ -761,6 +783,13 @@ function selectGamemode(mode = 'normal') {
     addBall();
 }
 function restartGame() {
+    if (shouldUpdateScoreboardOnRestart) {
+        saveHighscores();
+        shouldUpdateScoreboardOnRestart = false;
+    }
+
+    _FREEPLAY.style.display = '';
+
     // Reset scores
     pongScores.left = 0;
     pongScores.right = 0;
@@ -780,6 +809,7 @@ function restartGame() {
     leftPaddle.y = height/2 - leftPaddle.height/2;
     rightPaddle.y = height/2 - rightPaddle.height/2;
 
+    IN_FREEPLAY = false;
     isInEndState = false;
     isGamePaused = false;
     isInMenu = true;

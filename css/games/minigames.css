@@ -236,11 +236,12 @@ header {
 }
 
 
-#game-overlay > .paused {
+#game-overlay > .paused, #game-overlay > .endedGame {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    animation: popIn 0.25s;
 }
 #game-overlay > .paused > h1, #game-overlay > .endedGame > h1 {
     margin: 1rem;

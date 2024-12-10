@@ -102,6 +102,7 @@
     font-size: 1.5rem;
     gap: 1em;
     /* transform: scale(1.25); */
+    animation: popIn 0.25s;
 }
 
 .pong-leaderboards {
@@ -111,6 +112,7 @@
     padding-left: 8rem;
     padding-right: 8rem;
     
+    animation: popIn 0.25s;
 
     /* position: absolute; */
     /* top: 50%; */
@@ -119,7 +121,7 @@
 }
 
 .pong-leaderboards > .highscores {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     flex: 1 0 33%;
 }
 
@@ -146,3 +148,4 @@
 .pong.gameHidden {
     display: none;
 }
+

@@ -715,8 +715,7 @@ const sponsor_logos = {
 
 const SponsorPlanes = [];
 
-const sponsor_logo_width = 400 * 0.25 * width_upscale;
-const sponsor_logo_height = 150 * 0.25 * height_upscale; 
+const wanted_height = 150 * height_upscale;
 
 const sponsor_plane = {
     x: -200,
@@ -727,15 +726,21 @@ const sponsor_plane = {
     sprite: 0,
     move(delta) {
         this.x += 200 * delta; 
-        if (this.x > canvasWidth + sponsor_logo_width);
+        if (this.x > canvasWidth + this.sponsor_logo.width / this.get_aspect_ratio() * this.get_even_scaling_factor());
+    },
+    get_aspect_ratio: function() {
+        return this.sponsor_logo.width / this.sponsor_logo.height;
+    },
+    get_even_scaling_factor: function() {
+        return wanted_height / this.sponsor_logo.height;
     },
     draw: function() {
         ctx.drawImage(
             this.sponsor_logo,
-            this.x + 10 * width_upscale,
-            this.y + (this.animation.frame_height * 0.25 * height_upscale) / 2 - (sponsor_logo_height) / 2,
-            Math.round(sponsor_logo_width),
-            sponsor_logo_height,
+            this.x + 5 * width_upscale,
+            this.y + (this.animation.frame_height * 0.325 * height_upscale) / 2 - (this.sponsor_logo.height / this.get_aspect_ratio() * this.get_even_scaling_factor()) / 2,
+            Math.round(this.sponsor_logo.width / this.get_aspect_ratio() * this.get_even_scaling_factor() * width_upscale),
+            this.sponsor_logo.height / this.get_aspect_ratio() * this.get_even_scaling_factor() * width_upscale,
         )
     },
     draw_plane: function() {
@@ -747,7 +752,7 @@ const sponsor_plane = {
             this.animation.frame_height,
             Math.round(this.x),
             this.y,
-            this.animation.frame_width * 0.25 * width_upscale, this.animation.frame_height * 0.25 * height_upscale,
+            this.animation.frame_width * 0.325 * width_upscale, this.animation.frame_height * 0.325 * height_upscale,
         );
     },
 }

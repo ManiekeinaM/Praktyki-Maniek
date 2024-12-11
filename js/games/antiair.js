@@ -806,6 +806,12 @@ const sponsor_window = {
         // Maniek screen
         ctx.fillStyle = 'rgba(5, 0, 0, 1)';
         ctx.fillRect(this.maniek_screen_x, this.maniek_screen_y, this.maniek_screen_width, this.maniek_screen_height);
+
+        ctx.beginPath();
+        ctx.arc(x + 50, y + this.height - 50, 40, Math.PI /2, Math.PI);
+        ctx.strokeStyle = "rgba(33, 112, 26, 1)";
+        ctx.lineWidth = 10;
+        ctx.stroke();
     },
     draw_maniek: function() {
         ctx.drawImage(
@@ -1430,12 +1436,7 @@ function drawRadarSight() {
     const radarX = canvasWidth - 20;
     const radarY = canvasHeight - 20;
 
-    ctx.beginPath();
-    ctx.arc(radarX - 100, radarY - 100, radarRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(130, 215, 110, 0.1)";
-    ctx.fill();
-    ctx.strokeStyle = "rgba(24, 71, 19, 1)";
-    ctx.stroke();
+    ctx.lineWidth = 4; 
 
     const line1_angle = 315 * (Math.PI / 180);
     const line2_angle = 225 * (Math.PI / 180);
@@ -1456,6 +1457,13 @@ function drawRadarSight() {
     ctx.strokeStyle = "rgba(130, 215, 110, 0.5)";
     ctx.stroke();
 
+
+    ctx.beginPath();
+    ctx.arc(radarX - 100, radarY - 100, radarRadius, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(130, 215, 110, 0.1)";
+    ctx.fill();
+    ctx.strokeStyle = "rgba(24, 71, 19, 1)";
+    ctx.stroke();
     //Draw turret on radar
     ctx.beginPath();
     ctx.arc(radarX-100, radarY-100, 5, 0, Math.PI * 2);

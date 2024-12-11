@@ -20,7 +20,7 @@ canvas.antiair {
 
     background-color: rgb(107,194,209);
     border: 1rem solid var(--antiair-bg-dark);
-    border-radius: 4rem;
+    border-radius: 64px;
 
     object-fit: contain;
 }

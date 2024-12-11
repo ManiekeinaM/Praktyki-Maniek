@@ -247,7 +247,7 @@ img[alt='Fujitsu'] {
     padding: 1rem;
   }
   main {
-    justify-content: center !important;
+    justify-content: start !important;
     gap: 1rem;
   }
 

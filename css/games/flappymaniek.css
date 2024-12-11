@@ -225,3 +225,9 @@ section.flappymaniek .screen {
     display: block;
     transform: translate(-50%, -50%) scale(0);
 }
+
+@media screen and (orientation: portrait) {
+    .screen {
+        font-size: 2vw !important;
+    }
+}

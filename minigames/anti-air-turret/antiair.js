@@ -445,7 +445,7 @@ const buff_handler = {
     // Kills all planes in middle range
     use_kill_all: function() {
         Planes.forEach(plane => {
-            if (plane.y > canvasHeight / 2) plane.play_explosion = true;
+            if (plane.y > canvasHeight / 4) plane.play_explosion = true;
         })
     },
     // Increases shooting speed

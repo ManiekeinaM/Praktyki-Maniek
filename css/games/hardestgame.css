@@ -107,8 +107,8 @@
 
 
 #game-canvas.hardestgame-active {
-    height: calc(100% - 2rem);
     width: auto;
+    height: auto;
     max-width: calc(100% - 2rem);
     max-height: calc(100% - 2rem);
     aspect-ratio: 5/4;

@@ -39,19 +39,93 @@ window.addEventListener('resize', () => {
 resizeCanvas();
 updateScaleFactors();
 
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
 
+function isCircleCollidingWithRect(circle, rect) {
+    // closest point to the circle within the rectangle
+    const closestX = clamp(circle.x, rect.x, rect.x + rect.width);
+    const closestY = clamp(circle.y, rect.y, rect.y + rect.height);
+
+    const distanceX = circle.x - closestX;
+    const distanceY = circle.y - closestY;
+
+    const distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+    return distanceSquared < (circle.radius * circle.radius);
+}
+
+function resolveCircleRectCollision(circle, rect) {
+    const closestX = clamp(circle.x, rect.x, rect.x + rect.width);
+    const closestY = clamp(circle.y, rect.y, rect.y + rect.height);
+
+    const distanceX = circle.x - closestX;
+    const distanceY = circle.y - closestY;
+
+    const distance = Math.sqrt((distanceX * distanceX) + (distanceY * distanceY));
+
+    // if the distance is less than the circle's radius, there's a collision
+    if (distance < circle.radius && distance !== 0) {
+        const overlap = circle.radius - distance;
+
+        // normalize the collision vector
+        const collisionVectorX = distanceX / distance;
+        const collisionVectorY = distanceY / distance;
+
+        // resolve the collision with unit vector * overlap
+        circle.x += collisionVectorX * overlap;
+        circle.y += collisionVectorY * overlap;
+    }
+}
+
+
+
+const MAX_STEP_SIZE = 5; // pixels
 
 const player = {
     x: GAME_WIDTH/2,
     y: GAME_HEIGHT/2,
-    radius: 25,
-    move: function(x, y) {
-        this.x += x;
-        if (this.x < this.radius) this.x = this.radius;
-        if (this.x > GAME_WIDTH - this.radius) this.x = GAME_WIDTH - this.radius;
-        this.y += y;
-        if (this.y < this.radius) this.y = this.radius;
-        if (this.y > GAME_HEIGHT - this.radius) this.y = GAME_HEIGHT - this.radius;
+    radius: 20,
+    move: function(deltaX, deltaY) {
+        const MAX_STEP_SIZE = this.radius/2;
+
+        const distance = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
+        if (distance === 0) return;
+
+        const steps = Math.ceil(distance / MAX_STEP_SIZE);
+        const stepX = deltaX / steps;
+        const stepY = deltaY / steps;
+
+        for (let i=0; i<steps; i++) {
+            const newX = this.x + stepX;
+            const newY = this.y + stepY;
+    
+            const newCircle = { x: newX, y: newY, radius: this.radius };
+
+            // theoretically if only using square walls: limit of collisions would be 2
+            let collided = false;
+            for (const rect of mergedWalls) {
+                if (isCircleCollidingWithRect(newCircle, rect)) {
+                    resolveCircleRectCollision(newCircle, rect);
+                    collided = true;
+                }
+            }
+
+    
+            if (!collided) {
+                this.x = newX;
+                this.y = newY;
+            } else {
+                this.x = newCircle.x;
+                this.y = newCircle.y;
+                break;
+            }
+        }
+        
+
+        // ensure the player stays within canvas boundaries
+        this.x = clamp(this.x, this.radius, GAME_WIDTH-this.radius);
+        this.y = clamp(this.y, this.radius, GAME_HEIGHT-this.radius);
     },
     draw: function() {
         ctx.fillStyle = 'blue';
@@ -90,6 +164,9 @@ LEVEL_GRID[5][5] = 1;
 LEVEL_GRID[5][6] = 1;
 LEVEL_GRID[6][6] = 1;
 LEVEL_GRID[6][7] = 1;
+
+LEVEL_GRID[10][10] = 1;
+LEVEL_GRID[11][11] = 1;
 
 
 const _LEVEL_EDITOR_CONTROLS = document.querySelector('div.level-editor-controls');
@@ -165,9 +242,11 @@ function greedyMeshWalls() {
 greedyMeshWalls();
 
 const WALL_PADDING = 2;
+const STROKE_COLOR = 'black';
+const WALL_COLOR = 'purple';
 function drawWalls() {
     // Draw purple stroke outlines for padding first
-    ctx.strokeStyle = 'black';
+    ctx.strokeStyle = STROKE_COLOR;
     ctx.lineWidth = WALL_PADDING * 2; // Double the padding for overlap
     ctx.lineJoin = 'bevel'; // Sharp corners
     ctx.lineCap = 'butt'; // Default line cap
@@ -182,7 +261,7 @@ function drawWalls() {
     });
 
     // Then, fill walls with black on top of the padding
-    ctx.fillStyle = 'purple';
+    ctx.fillStyle = WALL_COLOR;
     mergedWalls.forEach(rect => {
         ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
     });

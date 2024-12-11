@@ -1298,22 +1298,43 @@ icon_types_list.forEach(buffName => {
 const IconHeight = 144 * 0.25;
 const IconWidth = 144 * 0.25;
 
+/*
+  // Outline box
+        ctx.fillStyle = "rgba(24, 71, 19, 1)";
+        ctx.fillRect(x, y, this.width, this.height);
+        
+        // Inside box
+        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
+        ctx.fillRect(this.inside_box_x, this.inside_box_y, this.inside_box_width, this.inside_box_height);
+
+        // Maniek screen
+        ctx.fillStyle = 'rgba(5, 0, 0, 1)';
+        ctx.fillRect(this.maniek_screen_x, this.maniek_screen_y, this.maniek_screen_width, this.maniek_screen_height);
+*/
+
 function drawRadar(player, enemies, cameraAngle) {
     const radarRadius = 100; // Radar size
     const radarX = canvasWidth - radarRadius - 20;
     const radarY = canvasHeight - radarRadius - 20;
 
     // Draw radar background
+
     ctx.beginPath();
     ctx.arc(radarX, radarY, radarRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(130, 215, 110, 0.2)";
+    ctx.fillStyle = "rgba(5, 30, 0, 1)";
     ctx.fill();
-    ctx.strokeStyle = "white";
     ctx.stroke();
+    
+    // Draw "Sight lines" - not really accurate, but looks cool
+    drawRadarSight();
+
+    // Clip sprites around radar
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(radarX, radarY, radarRadius + 7.5, 0, Math.PI * 2);
+    ctx.clip()
 
     // Draw enemy blips
-
-
     enemies.forEach(enemy => {
         if (enemy.play_explosion == true) {
             return;
@@ -1356,14 +1377,32 @@ function drawRadar(player, enemies, cameraAngle) {
             IconWidth,
             IconHeight
         );
+
+        // Disable clipping
         ctx.restore();
     });
+    
+    // Draw outer outline
+    ctx.beginPath();
+    ctx.arc(radarX, radarY, radarRadius, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(24, 71, 19, 1)";
+    ctx.lineWidth = 15; 
+    ctx.stroke();
+
+    // Draw inner outline
+    ctx.beginPath();
+    ctx.arc(radarX, radarY, radarRadius, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(33, 112, 26, 1)";
+    ctx.lineWidth = 5; 
+    ctx.stroke();
+
+    ctx.restore();
 }
 
 
 
-function drawRadarSight(camera_offset_y) {
-    const camera_vision_percent = Math.abs(camera_offset_y) / (canvasHeight / 2);
+function drawRadarSight() {
+    const camera_vision_percent = Math.abs(camera.offset_y) / (canvasHeight / 2);
     //console.log(camera_vision_percent);
     const radarRadius = 100 * camera_vision_percent * 0.5 + 40; 
     const radarX = canvasWidth - 20;
@@ -1373,7 +1412,7 @@ function drawRadarSight(camera_offset_y) {
     ctx.arc(radarX - 100, radarY - 100, radarRadius, 0, Math.PI * 2);
     ctx.fillStyle = "rgba(130, 215, 110, 0.1)";
     ctx.fill();
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = "rgba(24, 71, 19, 1)";
     ctx.stroke();
 
     const line1_angle = 315 * (Math.PI / 180);
@@ -1485,7 +1524,6 @@ function game_loop(timestamp) {
         player_turret.draw();
 
         drawRadar(player_turret, Planes, cameraAngle);
-        drawRadarSight(camera.offset_y);
 
         game.draw_livesbar();
         sponsor_window.draw();
@@ -1658,7 +1696,6 @@ function game_loop(timestamp) {
 
     // Draw the radar with updated positions
     drawRadar(player_turret, Planes, cameraAngle);
-    drawRadarSight(camera.offset_y);
 
     for (const [key, value] of Object.entries(current_cooldowns)) {
         //console.log(key, " ", value);

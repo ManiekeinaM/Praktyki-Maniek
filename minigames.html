@@ -37,8 +37,8 @@
                 <img src="assets/pong.png" alt="Pong">
             </div>
 
-            <div class="button" data-game="planegame" data-name="Maniek Assault">
-                <img src="assets/planegame.png" alt="Maniek Assault">
+            <div class="button" data-game="antiair" data-name="Maniek Assault">
+                <img src="assets/antiair.png" alt="Maniek Assault">
             </div>
 
             <div class="button" data-game="hardestgame" data-name="Maniek's Hardest Game">
@@ -208,8 +208,6 @@
                 <span class="wins">0 wygranych</span>
                 <img src="./assets/krzyzyk.png">
             </div>
-            
-
 
             <!-- WISIELEC (Nie Eksploduj Mańka) -->
             <section class="wisielec">
@@ -317,6 +315,10 @@
                 <img src="./assets/rocket-base.png">
                 <h2 class="rocket-time">6s</h2>
             </div>
+
+            <!-- MANIEK ASSAULT -->
+            <canvas class="antiair plane-canvas" width="800" height="600">       
+            </canvas>
         </div>
     
         <!-- Prawa strona (niebieska, maniek) -->
@@ -324,6 +326,11 @@
             <div class="flappymaniek highscores">
                 <p>Najlepsze wyniki</p>
                 <div class="highscoresList" data-highscorecookie="flappy-highscores"></div>
+            </div>
+
+            <div class="antiair highscores">
+                <p>Najlepsze wyniki</p>
+                <div class="highscoresList" data-highscorecookie="airturret-bestscores"></div>
             </div>
 
             <img class="maniek logoitarcza" src="./assets/maniek-faces/thinking.gif">
@@ -392,6 +399,7 @@
             wisielec: './css/games/wisielec.css',
             pong: './css/games/pong.css',
             hardestgame: './css/games/hardestgame.css',
+            antiair: './css/games/antiair.css',
         };
 
         const gameScripts = {
@@ -400,6 +408,7 @@
             wisielec: 'js/games/wisielec.js',
             pong: 'js/games/pong.js',
             hardestgame: 'js/games/hardestgame.js',
+            antiair: 'js/games/antiair.js',
         };
 
         let gamesDone = {};

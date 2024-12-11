@@ -1,0 +1,26 @@
+:root {
+    --antiair-bg-dark: rgb(24,71,19);
+    --antiair-bg: rgb(33,112,26);
+}
+
+.games-side.antiair {
+    width: 75%;
+    background-color: var(--antiair-bg);
+    border-color: var(--antiair-bg-dark);
+}
+
+.maniek-side.antiair {
+    width: 25%;
+}
+
+canvas.antiair {
+    width: auto;
+    height: auto;
+    aspect-ratio: 4/3;
+
+    background-color: rgb(107,194,209);
+    border: 1rem solid var(--antiair-bg-dark);
+    border-radius: 4rem;
+
+    object-fit: contain;
+}

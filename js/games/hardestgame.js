@@ -29,6 +29,8 @@ function resizeCanvas() {
 function updateScaleFactors() {
     scaleX = canvas.width / parseFloat(canvas.offsetWidth);
     scaleY = canvas.height / parseFloat(canvas.offsetHeight);
+    console.log(canvas.width, canvas.offsetWidth);
+    console.log(scaleX, scaleY);
 }
 window.addEventListener('resize', () => {
     if (!isGameStillTheSame) return;
@@ -78,7 +80,8 @@ function resolveCircleRectCollision(circle, rect) {
     }
 }
 
-
+const Maniekball = new Image();
+Maniekball.src = 'assets/hardestgame/maniekball.png';
 
 const MAX_STEP_SIZE = 5; // pixels
 
@@ -128,10 +131,12 @@ const player = {
         this.y = clamp(this.y, this.radius, GAME_HEIGHT-this.radius);
     },
     draw: function() {
-        ctx.fillStyle = 'blue';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
-        ctx.fill();
+        // ctx.fillStyle = 'blue';
+        // ctx.beginPath();
+        // ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+        // ctx.fill();
+
+        ctx.drawImage(Maniekball, this.x-this.radius, this.y-this.radius, this.radius*2, this.radius*2);
     }
 };
 
@@ -147,7 +152,12 @@ canvas.addEventListener('mousemove', e => {
 const ROWS = Math.floor(GAME_HEIGHT / GRID_SIZE);
 const COLS = Math.floor(GAME_WIDTH / GRID_SIZE);
 
-// TODO - add a level creator, import it manually into the levels
+let CURRENT_LEVEL = 1;
+const LEVELS = {
+    1: [[4,4,1],[4,5,1],[5,4,1],[5,5,1],[5,6,1],[6,6,1],[6,7,1],[10,10,1],[11,11,1]],
+    2: [[0,0,1],[0,1,1],[0,2,1],[0,3,1],[0,4,1],[0,5,1],[0,6,1],[0,7,1],[0,8,1],[0,9,1],[0,10,1],[0,11,1],[0,12,1],[0,13,1],[0,14,1],[0,15,1],[0,16,1],[0,17,1],[0,18,1],[0,19,1],[0,20,1],[0,21,1],[0,22,1],[0,23,1],[0,24,1],[1,0,1],[1,24,1],[2,0,1],[2,1,1],[2,2,1],[2,3,1],[2,4,1],[2,5,1],[2,6,1],[2,12,1],[2,13,1],[2,14,1],[2,15,1],[2,16,1],[2,17,1],[2,24,1],[3,0,1],[3,1,1],[3,6,1],[3,12,1],[3,17,1],[3,24,1],[4,0,1],[4,1,1],[4,3,1],[4,4,1],[4,6,1],[4,12,1],[4,14,1],[4,15,1],[4,17,1],[4,24,1],[5,0,1],[5,1,1],[5,3,1],[5,4,1],[5,6,1],[5,12,1],[5,14,1],[5,15,1],[5,17,1],[5,24,1],[6,0,1],[6,1,1],[6,6,1],[6,12,1],[6,17,1],[6,24,1],[7,0,1],[7,1,1],[7,2,1],[7,3,1],[7,4,1],[7,5,1],[7,6,1],[7,12,1],[7,13,1],[7,14,1],[7,15,1],[7,16,1],[7,17,1],[7,24,1],[8,0,1],[8,24,1],[9,0,1],[9,24,1],[10,0,1],[10,24,1],[11,0,1],[11,1,1],[11,2,1],[11,3,1],[11,15,1],[11,16,1],[11,17,1],[11,24,1],[12,0,1],[12,1,1],[12,2,1],[12,3,1],[12,15,1],[12,16,1],[12,17,1],[12,24,1],[13,0,1],[13,1,1],[13,2,1],[13,3,1],[13,4,1],[13,5,1],[13,6,1],[13,7,1],[13,8,1],[13,9,1],[13,10,1],[13,11,1],[13,12,1],[13,13,1],[13,14,1],[13,15,1],[13,16,1],[13,17,1],[13,24,1],[14,0,1],[14,4,1],[14,5,1],[14,6,1],[14,7,1],[14,8,1],[14,9,1],[14,10,1],[14,11,1],[14,12,1],[14,13,1],[14,14,1],[14,24,1],[15,0,1],[15,4,1],[15,5,1],[15,6,1],[15,7,1],[15,8,1],[15,9,1],[15,10,1],[15,11,1],[15,12,1],[15,13,1],[15,14,1],[15,24,1],[16,0,1],[16,24,1],[17,0,1],[17,24,1],[18,0,1],[18,24,1],[19,0,1],[19,1,1],[19,2,1],[19,3,1],[19,4,1],[19,5,1],[19,6,1],[19,7,1],[19,8,1],[19,9,1],[19,10,1],[19,11,1],[19,12,1],[19,13,1],[19,14,1],[19,15,1],[19,16,1],[19,17,1],[19,18,1],[19,19,1],[19,20,1],[19,21,1],[19,22,1],[19,23,1],[19,24,1]],
+};
+
 const OBJECT_IDS = {0: 'empty', 1: 'wall', 2: 'goal', 3: 'kill'};
 const LEVEL_GRID = [];
 for (let row = 0; row < ROWS; row++) {
@@ -157,30 +167,20 @@ for (let row = 0; row < ROWS; row++) {
     }
 }
 
-LEVEL_GRID[4][4] = 1;
-LEVEL_GRID[4][5] = 1;
-LEVEL_GRID[5][4] = 1;
-LEVEL_GRID[5][5] = 1;
-LEVEL_GRID[5][6] = 1;
-LEVEL_GRID[6][6] = 1;
-LEVEL_GRID[6][7] = 1;
 
-LEVEL_GRID[10][10] = 1;
-LEVEL_GRID[11][11] = 1;
+function loadLevel(level) {
+    for (let row = 0; row < ROWS; row++) {
+        for (let col = 0; col < COLS; col++) {
+            LEVEL_GRID[row][col] = 0;
+        }
+    }
 
+    for (const wall of LEVELS[level]) {
+        LEVEL_GRID[wall[0]][wall[1]] = wall[2];
+    }
 
-const _LEVEL_EDITOR_CONTROLS = document.querySelector('div.level-editor-controls');
-let LEVEL_EDITOR_ENABLED = false;
-document.addEventListener('keydown', e => {
-    if (e.key != "F2") return;
-
-    _LEVEL_EDITOR_CONTROLS.classList.toggle('hidden');
-    LEVEL_EDITOR_ENABLED = !LEVEL_EDITOR_ENABLED;
-    if (!LEVEL_EDITOR_ENABLED) return;
-
-
-});
-
+    greedyMeshWalls();
+}
 
 
 let mergedWalls = [];
@@ -245,11 +245,10 @@ const WALL_PADDING = 2;
 const STROKE_COLOR = 'black';
 const WALL_COLOR = 'purple';
 function drawWalls() {
-    // Draw purple stroke outlines for padding first
+    // Draw stroke outlines for padding first
     ctx.strokeStyle = STROKE_COLOR;
-    ctx.lineWidth = WALL_PADDING * 2; // Double the padding for overlap
-    ctx.lineJoin = 'bevel'; // Sharp corners
-    ctx.lineCap = 'butt'; // Default line cap
+    ctx.lineWidth = WALL_PADDING * 2;
+    ctx.lineJoin = 'bevel';
 
     mergedWalls.forEach(rect => {
         ctx.strokeRect(
@@ -260,7 +259,7 @@ function drawWalls() {
         );
     });
 
-    // Then, fill walls with black on top of the padding
+    // Then, fill walls with wall color on top of the padding
     ctx.fillStyle = WALL_COLOR;
     mergedWalls.forEach(rect => {
         ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
@@ -276,13 +275,72 @@ enterGame.addEventListener('click', async e => {
     if (playingGame) return;
     playingGame = true;
     gamenavigation.classList.add('topLeft');
+    startGame();
     await canvas.requestPointerLock();
 })
 
 
+function startGame() {
+    loadLevel(2);
+}
+
+///////////////////////   Level editor   ///////////////////////
+
+function exportWalls() {
+    const wallsArray = [];
+    for (let row = 0; row < LEVEL_GRID.length; row++) {
+        for (let col = 0; col < LEVEL_GRID[row].length; col++) {
+            let objectId = LEVEL_GRID[row][col];
+            if (objectId === 0) continue;
+            wallsArray.push([row, col, objectId]);
+        }
+    }
+
+    // Convert the array of wall objects into a formatted string
+    const exportString = `${JSON.stringify(wallsArray)},`;
+    navigator.clipboard.writeText(exportString);
+
+    alert('Level exported and copied to clipboard!');
+}
+
+function toggleWall(row, col) {
+    if (LEVEL_GRID[row][col] === 1) {
+        LEVEL_GRID[row][col] = 0;
+    } else {
+        LEVEL_GRID[row][col] = 1;
+    }
+
+    greedyMeshWalls();
+}
+
+const _LEVEL_EDITOR_CONTROLS = document.querySelector('div.level-editor-controls');
+let LEVEL_EDITOR_ENABLED = false;
+document.addEventListener('keydown', e => {
+    if (e.key != "F2") return;
+
+    _LEVEL_EDITOR_CONTROLS.classList.toggle('hidden');
+    LEVEL_EDITOR_ENABLED = !LEVEL_EDITOR_ENABLED;
+    if (!LEVEL_EDITOR_ENABLED) return;
+});
+
+// left click = add/remove a wall
+canvas.addEventListener('click', (e) => {
+    if (!LEVEL_EDITOR_ENABLED) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    const mouseY = (e.clientY - rect.top) * scaleY;
+
+    const col = Math.floor(mouseX / GRID_SIZE);
+    const row = Math.floor(mouseY / GRID_SIZE);
+
+    toggleWall(row, col);
+});
+
+const _EXPORT_BUTTON = _LEVEL_EDITOR_CONTROLS.querySelector('#export-level');
+_EXPORT_BUTTON.addEventListener('click', exportWalls);
 
 
-// const MANIEK_FACE = 
 
 
 
@@ -303,6 +361,9 @@ function gameLoop(currentTime) {
                 gamenavigation.classList.add('topLeft');
                 titleScreen.classList.add('hidden-game')
                 canvas.classList.add('hardestgame-active');
+
+                resizeCanvas();
+                updateScaleFactors();
             } else {
                 gamenavigation.classList.remove('topLeft'); 
             }

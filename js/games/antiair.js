@@ -112,6 +112,25 @@ highscoreManager.updateHighscores();
 
 let random_explosions_id = 0;
 
+function drawRoundedRect(x, y, width, height, radius, fillColor) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.arcTo(x + width, y, x + width, y + radius, radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius);
+    ctx.lineTo(x + radius, y + height);
+    ctx.arcTo(x, y + height, x, y + height - radius, radius);
+    ctx.lineTo(x, y + radius);
+    ctx.arcTo(x, y, x + radius, y, radius);
+    ctx.closePath();
+    ctx.fillStyle = fillColor;
+    ctx.fill();
+    ctx.lineWidth = 10;
+    ctx.strokeStyle = 'rgb(24,71,19)';
+    ctx.stroke();
+}
+
 //Game state controller
 const score_top_margin = 25;
 
@@ -191,11 +210,12 @@ const game = {
     },
     draw_gameover: function() {
         // Outline box
-        ctx.fillStyle = 'rgba(24, 71, 19, 1)';
-        ctx.fillRect(canvasWidth / 2 - (gameover.width + 20) / 2, canvasHeight / 3 - (gameover.height + 20) / 2, (gameover.width + 20), gameover.height + 20);
+        drawRoundedRect(canvasWidth / 2 - (gameover.width + 20) / 2, canvasHeight / 3 - (gameover.height + 20) / 2, gameover.width + 20, gameover.height + 20, 64, "rgba(33, 112, 26, 1)");
+        // ctx.fillStyle = 'rgba(24, 71, 19, 1)';
+        // ctx.fillRect(canvasWidth / 2 - (gameover.width + 20) / 2, canvasHeight / 3 - (gameover.height + 20) / 2, (gameover.width + 20), gameover.height + 20);
         // Inside box
-        ctx.fillStyle = 'rgba(33, 112, 26, 1)';
-        ctx.fillRect(canvasWidth / 2 - gameover.width / 2, canvasHeight / 3 - gameover.height / 2, gameover.width, gameover.height);
+        // ctx.fillStyle = 'rgba(33, 112, 26, 1)';
+        // ctx.fillRect(canvasWidth / 2 - gameover.width / 2, canvasHeight / 3 - gameover.height / 2, gameover.width, gameover.height);
 
         // Score
         ctx.font = "64px Determination Mono";
@@ -1517,7 +1537,7 @@ function game_loop(timestamp) {
     if (CURRENT_GAME != 'antiair') {
         return;
     }
-    console.log('antiair activated');
+    // console.log('antiair activated');
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 

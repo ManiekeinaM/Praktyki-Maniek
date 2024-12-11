@@ -867,6 +867,7 @@ function animate(timestamp) {
             if ((isGamePaused || isInMenu || isInEndState) && isGameStillPong && !isDocumentHidden) {
                 shouldUpdateNavigation = false;
                 gameOverlay.classList.remove('hidden');
+                resizeCanvas();
             } else {
                 gameOverlay.classList.add('hidden');
             }

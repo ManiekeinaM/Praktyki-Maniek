@@ -200,6 +200,7 @@ const imgPaths = {
 const maniekMachineInfo = {
     x: 0.23700, y: 0.49882, connections: ['Wdot1'], icon: 'machine', desc: ""
 }
+// {x: 0.78917, y: 0.44340, connections: ['Wdot12', 'Wdot13']} // MANIEK 2
 imgPaths.Floor0.dots.Wdot0 = maniekMachineInfo;
 
 const mapIcons = {

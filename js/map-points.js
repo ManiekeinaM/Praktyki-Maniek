@@ -199,9 +199,32 @@ const imgPaths = {
 
 const maniekMachineInfo = {
     x: 0.23700, y: 0.49882, connections: ['Wdot1'], icon: 'machine', desc: ""
+    // x: 0.78833, y: 0.43042, connections: ['Wdot12', 'Wdot13'], icon: 'machine', desc: ""
 }
 // {x: 0.78917, y: 0.44340, connections: ['Wdot12', 'Wdot13']} // MANIEK 2
 imgPaths.Floor0.dots.Wdot0 = maniekMachineInfo;
+
+
+function addConnectionsBothWays() {
+    for (const [floorName, floorItems] of Object.entries(imgPaths)) {
+        for (const [dot, values] of Object.entries(floorItems.dots)) {
+            if (!values.connections) continue;
+
+            values.connections.forEach(connection => {
+                if (!floorItems.dots[connection].connections) {
+                    floorItems.dots[connection].connections = [];
+                }
+                if (!floorItems.dots[connection].connections.includes(dot)) {
+                    floorItems.dots[connection].connections.push(dot);
+                }
+            });
+        }
+    }
+}
+// console.log(imgPaths);
+addConnectionsBothWays();
+// console.log(imgPaths);
+
 
 const mapIcons = {
     'pielegniarka': 'assets/map/icons/pielegniarka.png',
@@ -292,7 +315,7 @@ function drawLine(floorName, from, path) {
 
     let floor = imgPaths[floorName];
     let lastDot = floor.dots[from];
-    // console.log(path);
+    console.log(path);
     path.forEach(dot => {
         let connectionDot = floor.dots[dot];
         // console.log(floor.dots, from);
@@ -356,17 +379,17 @@ const floorNames = {
 // PATHFIND ALL OF THE POSSIBLE DESTINATIONS - then you can draw to whichever one you like!
 function setupPathfinding() {
     for (const [floorName, floorItems] of Object.entries(imgPaths)) {
-        let floorContainer = map.querySelector(`div.${floorName}`);
+        const floorContainer = map.querySelector(`div.${floorName}`);
 
         // console.log("looping through", floorName, floorContainer);
         if (!floorContainer) continue;
 
-        let img = floorContainer.querySelector("img");
+        const img = floorContainer.querySelector("img");
 
-        let start = function () {
+        const start = function () {
             // console.log("starting map ", floorName);
 
-            let pathfind = function (startDot) {
+            const pathfind = function (startDot) {
                 // console.log(startDot);
 
                 // console.log("currently pathfinding:", startDot);
@@ -374,24 +397,17 @@ function setupPathfinding() {
                 let currentPath = [startDot];
                 let lastBranchedPath;
 
-                let checkNextConnection = function (currentPath) {
-                    // console.log(floorName);
-                    let latestDotName = currentPath[currentPath.length - 1];
+                //let i = 0;
+                const checkNextConnection = function (currentPath) {
+                    //i += 1;
+                    //console.log(`${i}: Now checking connections of ${currentPath[currentPath.length - 1]}`);
+                    const latestDotName = currentPath[currentPath.length - 1];
                     if (!latestDotName) return;
-                    let latestDot = floorItems.dots[latestDotName];
-                    // console.log(latestDotName);
-                    // console.log(latestDot);
+                    const latestDot = floorItems.dots[latestDotName];
 
                     if (!latestDot) return;
 
-                    if (!latestDot.connections || latestDot.connections && latestDot.connections.length == 0) {
-                        // No connections, end of this path
-                        allPaths[floorName][latestDotName] = currentPath;
-                        currentPath = lastBranchedPath;
-                        return;
-                    }
-
-                    let connections = latestDot.connections;
+                    const connections = latestDot.connections;
 
                     if (connections.length > 1) {
                         // Branching path
@@ -400,6 +416,16 @@ function setupPathfinding() {
 
                     // Go through the connections, and look at THEIR connections
                     connections.forEach(connection => {
+                        //console.log(`${i}: Checking connection ${connection}`);
+                        
+                        if (currentPath.includes(connection)) {
+                            if (connections.length == 1) {
+                                // no branching, end of this path
+                                allPaths[floorName][latestDotName] = currentPath;
+                            }
+                            return;
+                        };
+
                         let newPath = [...currentPath, connection];
                         checkNextConnection(newPath);
                     })
@@ -559,6 +585,7 @@ function drawPath(floorName, startDot = 'Wdot0', destinationDot, shouldntClear =
         }
 
         let stairPath = allPaths.Floor0[stairDot];
+        console.log("1");
         drawLine("Floor0", 'Wdot0', stairPath);
 
         if (floorName != "Floor1") {
@@ -568,6 +595,7 @@ function drawPath(floorName, startDot = 'Wdot0', destinationDot, shouldntClear =
                 stairDot = "Wdot13B";
                 stairDestination = "Wdot14B";
             }
+            console.log("2");
             drawLine("Floor1", stairDot, allPaths["Floor1"][stairDestination]);
         }
     }

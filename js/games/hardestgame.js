@@ -107,7 +107,7 @@ const player = {
 
             // theoretically if only using square walls: limit of collisions would be 2
             let collided = false;
-            for (const rect of mergedWalls) {
+            for (const rect of mergedObjects[1]) {
                 if (isCircleCollidingWithRect(newCircle, rect)) {
                     resolveCircleRectCollision(newCircle, rect);
                     collided = true;
@@ -154,7 +154,7 @@ const COLS = Math.floor(GAME_WIDTH / GRID_SIZE);
 
 let CURRENT_LEVEL = 1;
 const LEVELS = {
-    1: [[4,4,1],[4,5,1],[5,4,1],[5,5,1],[5,6,1],[6,6,1],[6,7,1],[10,10,1],[11,11,1]],
+    1: [[2,2,1],[2,3,1],[2,8,1],[2,9,1],[2,10,1],[2,11,1],[2,12,1],[2,13,1],[2,14,1],[2,19,1],[2,20,1],[3,3,1],[3,4,1],[3,8,1],[3,9,2],[3,10,2],[3,11,2],[3,12,2],[3,13,2],[3,14,1],[3,18,1],[3,19,1],[4,3,1],[4,4,1],[4,7,1],[4,8,1],[4,9,1],[4,10,1],[4,11,2],[4,12,1],[4,13,1],[4,14,1],[4,15,1],[4,18,1],[4,19,1],[5,4,1],[5,5,1],[5,7,1],[5,15,1],[5,17,1],[5,18,1],[6,4,1],[6,5,1],[6,6,1],[6,7,1],[6,15,1],[6,16,1],[6,17,1],[6,18,1],[7,4,1],[7,5,1],[7,6,1],[7,7,1],[7,15,1],[7,16,1],[7,17,1],[7,18,1],[8,5,1],[8,6,1],[8,7,1],[8,15,1],[8,16,1],[8,17,1],[9,5,1],[9,6,1],[9,7,1],[9,15,1],[9,16,1],[9,17,1],[10,6,1],[10,7,1],[10,15,1],[10,16,1],[11,7,1],[11,15,1],[12,7,1],[12,15,1],[13,7,1],[13,15,1],[14,7,1],[14,15,1],[15,7,1],[15,15,1],[16,7,1],[16,15,1],[17,7,1],[17,15,1],[18,7,1],[18,8,1],[18,9,1],[18,10,1],[18,11,1],[18,12,1],[18,13,1],[18,14,1],[18,15,1]],
     2: [[0,0,1],[0,1,1],[0,2,1],[0,3,1],[0,4,1],[0,5,1],[0,6,1],[0,7,1],[0,8,1],[0,9,1],[0,10,1],[0,11,1],[0,12,1],[0,13,1],[0,14,1],[0,15,1],[0,16,1],[0,17,1],[0,18,1],[0,19,1],[0,20,1],[0,21,1],[0,22,1],[0,23,1],[0,24,1],[1,0,1],[1,24,1],[2,0,1],[2,1,1],[2,2,1],[2,3,1],[2,4,1],[2,5,1],[2,6,1],[2,12,1],[2,13,1],[2,14,1],[2,15,1],[2,16,1],[2,17,1],[2,24,1],[3,0,1],[3,1,1],[3,6,1],[3,12,1],[3,17,1],[3,24,1],[4,0,1],[4,1,1],[4,3,1],[4,4,1],[4,6,1],[4,12,1],[4,14,1],[4,15,1],[4,17,1],[4,24,1],[5,0,1],[5,1,1],[5,3,1],[5,4,1],[5,6,1],[5,12,1],[5,14,1],[5,15,1],[5,17,1],[5,24,1],[6,0,1],[6,1,1],[6,6,1],[6,12,1],[6,17,1],[6,24,1],[7,0,1],[7,1,1],[7,2,1],[7,3,1],[7,4,1],[7,5,1],[7,6,1],[7,12,1],[7,13,1],[7,14,1],[7,15,1],[7,16,1],[7,17,1],[7,24,1],[8,0,1],[8,24,1],[9,0,1],[9,24,1],[10,0,1],[10,24,1],[11,0,1],[11,1,1],[11,2,1],[11,3,1],[11,15,1],[11,16,1],[11,17,1],[11,24,1],[12,0,1],[12,1,1],[12,2,1],[12,3,1],[12,15,1],[12,16,1],[12,17,1],[12,24,1],[13,0,1],[13,1,1],[13,2,1],[13,3,1],[13,4,1],[13,5,1],[13,6,1],[13,7,1],[13,8,1],[13,9,1],[13,10,1],[13,11,1],[13,12,1],[13,13,1],[13,14,1],[13,15,1],[13,16,1],[13,17,1],[13,24,1],[14,0,1],[14,4,1],[14,5,1],[14,6,1],[14,7,1],[14,8,1],[14,9,1],[14,10,1],[14,11,1],[14,12,1],[14,13,1],[14,14,1],[14,24,1],[15,0,1],[15,4,1],[15,5,1],[15,6,1],[15,7,1],[15,8,1],[15,9,1],[15,10,1],[15,11,1],[15,12,1],[15,13,1],[15,14,1],[15,24,1],[16,0,1],[16,24,1],[17,0,1],[17,24,1],[18,0,1],[18,24,1],[19,0,1],[19,1,1],[19,2,1],[19,3,1],[19,4,1],[19,5,1],[19,6,1],[19,7,1],[19,8,1],[19,9,1],[19,10,1],[19,11,1],[19,12,1],[19,13,1],[19,14,1],[19,15,1],[19,16,1],[19,17,1],[19,18,1],[19,19,1],[19,20,1],[19,21,1],[19,22,1],[19,23,1],[19,24,1]],
 };
 
@@ -167,30 +167,45 @@ for (let row = 0; row < ROWS; row++) {
     }
 }
 
+// object_id: [objects]
+// const CURRENT_OBJECTS = {};
 
 function loadLevel(level) {
+    // clear level of everything
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) {
             LEVEL_GRID[row][col] = 0;
         }
     }
 
-    for (const wall of LEVELS[level]) {
-        LEVEL_GRID[wall[0]][wall[1]] = wall[2];
+    for (const object of LEVELS[level]) {
+        LEVEL_GRID[object[0]][object[1]] = object[2];
+        // CURRENT_OBJECTS[object[2]] = object;
     }
 
-    greedyMeshWalls();
+    greedyMeshObjects();
 }
 
 
-let mergedWalls = [];
-function greedyMeshWalls() {
-    mergedWalls = [];
+const mergedObjects = {
+    1: [], // Walls
+    2: [], // Goals
+    3: []  // Kill squares
+    // Add more object types here if needed
+};
+
+function greedyMeshObjects() {
+    // Clear previous merged objects
+    for (let key in mergedObjects) {
+        mergedObjects[key] = [];
+    }
+
     const processed = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
 
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) {
-            if (LEVEL_GRID[row][col] !== 1 || processed[row][col]) {
+            const objectType = LEVEL_GRID[row][col];
+            if (objectType === 0 || processed[row][col] || !mergedObjects.hasOwnProperty(objectType)) {
                 continue;
             }
 
@@ -198,7 +213,7 @@ function greedyMeshWalls() {
             let width = 1;
             while (
                 col + width < COLS &&
-                LEVEL_GRID[row][col + width] === 1 &&
+                LEVEL_GRID[row][col + width] === objectType &&
                 !processed[row][col + width]
             ) {
                 width++;
@@ -210,7 +225,7 @@ function greedyMeshWalls() {
             while (canExpand && row + height < ROWS) {
                 for (let i = 0; i < width; i++) {
                     if (
-                        LEVEL_GRID[row + height][col + i] !== 1 ||
+                        LEVEL_GRID[row + height][col + i] !== objectType ||
                         processed[row + height][col + i]
                     ) {
                         canExpand = false;
@@ -229,8 +244,8 @@ function greedyMeshWalls() {
                 }
             }
 
-            // Add the merged rectangle to the array
-            mergedWalls.push({
+            // Add the merged rectangle to the respective subarray
+            mergedObjects[objectType].push({
                 x: col * GRID_SIZE,
                 y: row * GRID_SIZE,
                 width: width * GRID_SIZE,
@@ -239,49 +254,75 @@ function greedyMeshWalls() {
         }
     }
 }
-greedyMeshWalls();
+
+greedyMeshObjects();
 
 const WALL_PADDING = 2;
 const STROKE_COLOR = 'black';
+const COLORS = {
+    1: 'purple',                // Walls
+    2: 'rgba(0, 255, 0, 0.5)',  // Goals (Light Green)
+    3: 'rgba(255, 0, 0, 0.5)'   // Kill squares (Light Red)
+};
 const WALL_COLOR = 'purple';
-function drawWalls() {
-    // Draw stroke outlines for padding first
-    ctx.strokeStyle = STROKE_COLOR;
-    ctx.lineWidth = WALL_PADDING * 2;
-    ctx.lineJoin = 'bevel';
+function drawSolidObjects() {
+    for (const [objectType, rectangles] of Object.entries(mergedObjects)) {
+        if (objectType === '1') { // Walls
+            // Draw stroke outlines for padding first
+            ctx.strokeStyle = STROKE_COLOR;
+            ctx.lineWidth = WALL_PADDING * 2;
+            ctx.lineJoin = 'bevel';
 
-    mergedWalls.forEach(rect => {
-        ctx.strokeRect(
-            rect.x - WALL_PADDING / 2,
-            rect.y - WALL_PADDING / 2,
-            rect.width + WALL_PADDING,
-            rect.height + WALL_PADDING
-        );
-    });
+            rectangles.forEach(rect => {
+                ctx.strokeRect(
+                    rect.x - WALL_PADDING / 2,
+                    rect.y - WALL_PADDING / 2,
+                    rect.width + WALL_PADDING,
+                    rect.height + WALL_PADDING
+                );
+            });
 
-    // Then, fill walls with wall color on top of the padding
-    ctx.fillStyle = WALL_COLOR;
-    mergedWalls.forEach(rect => {
-        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-    });
+            // Then, fill walls with wall color on top of the padding
+            ctx.fillStyle = COLORS[objectType];
+            rectangles.forEach(rect => {
+                ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+            });
+        } else { // Other object types
+            ctx.fillStyle = COLORS[objectType];
+            rectangles.forEach(rect => {
+                ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+            });
+        }
+    }
 }
 
 
 const BALL_RADIUS = 10;
 class Ball {
     constructor(x, y, speed, movePoints) {
+        this.baseX = x;
+        this.baseY = y;
         this.x = x;
         this.y = y;
         this.speed = speed;
         this.movePoints = movePoints;
-        this.currentMovePoint = 0;
+        this.currentMovePoint = -1;
     }
 
     move(dt) {
         if (this.movePoints.length === 0) return;
+
         // console.log(this.currentMovePoint);
 
-        const nextPoint = this.movePoints[this.currentMovePoint];
+        let nextPoint = {x: this.baseX, y: this.baseY};
+        if (this.currentMovePoint === -1)
+            nextPoint = {x: this.baseX, y: this.baseY};
+        else {
+            nextPoint.x += this.movePoints[this.currentMovePoint].x;
+            nextPoint.y += this.movePoints[this.currentMovePoint].y;
+        }  
+
+
         const deltaX = nextPoint.x - this.x;
         const deltaY = nextPoint.y - this.y; // Corrected line
         const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -291,7 +332,7 @@ class Ball {
             this.y = nextPoint.y;
             this.currentMovePoint++;
             if (this.currentMovePoint >= this.movePoints.length) {
-                this.currentMovePoint = 0; // Loop or handle end of path
+                this.currentMovePoint = -1; // Loop
             }
         } else {
             this.x += (deltaX / distance) * this.speed * dt;
@@ -312,26 +353,29 @@ class Ball {
     }
 
     drawMovePoints() {
-        
+        ctx.fillStyle = 'pink';
+        ctx.beginPath();
+        ctx.arc(this.baseX, this.baseY, 5, 0, Math.PI*2);
+        ctx.fill();
+        // draw text of the movepoint number
+        ctx.fillStyle = 'black';
+        ctx.fillText(-1, this.baseX, this.baseY);
+
         for (const point of this.movePoints) {
             ctx.fillStyle = 'pink';
             ctx.beginPath();
-            ctx.arc(point.x, point.y, 5, 0, Math.PI*2);
+            ctx.arc(point.x + this.baseX, point.y + this.baseY, 5, 0, Math.PI*2);
             ctx.fill();
             // draw text of the movepoint number
             ctx.fillStyle = 'black';
-            ctx.fillText(this.movePoints.indexOf(point), point.x, point.y);
+            ctx.fillText(this.movePoints.indexOf(point), point.x + this.baseX, point.y + this.baseY);
         }
     }
 }
 
 const ball = new Ball(100, 100, 300, 
     [
-        {x: 100, y: 100},
-        {x: 100, y: 200},
-        {x: 200, y: 200},
-        {x: 300, y: 300},
-        {x: 300, y: 100}
+        {x: 0, y: 100},
     ]
 )
 
@@ -372,19 +416,29 @@ function exportWalls() {
     alert('Level exported and copied to clipboard!');
 }
 
-function toggleWall(row, col) {
-    if (LEVEL_GRID[row][col] === 1) {
+let CURRENT_OBJECT = 1;
+function toggleObject(row, col) {
+    if (LEVEL_GRID[row][col] === CURRENT_OBJECT) {
         LEVEL_GRID[row][col] = 0;
     } else {
-        LEVEL_GRID[row][col] = 1;
+        LEVEL_GRID[row][col] = CURRENT_OBJECT;
     }
 
-    greedyMeshWalls();
+    greedyMeshObjects();
 }
 
 const _LEVEL_EDITOR_CONTROLS = document.querySelector('div.level-editor-controls');
 let LEVEL_EDITOR_ENABLED = false;
 document.addEventListener('keydown', e => {
+    if (LEVEL_EDITOR_ENABLED) {
+        // if key is within object ids, set current object to that id
+        if (OBJECT_IDS.hasOwnProperty(e.key)) {
+            CURRENT_OBJECT = parseInt(e.key);
+            return;
+        }
+    }
+    
+
     if (e.key != "F2") return;
 
     _LEVEL_EDITOR_CONTROLS.classList.toggle('hidden');
@@ -403,7 +457,7 @@ canvas.addEventListener('click', (e) => {
     const col = Math.floor(mouseX / GRID_SIZE);
     const row = Math.floor(mouseY / GRID_SIZE);
 
-    toggleWall(row, col);
+    toggleObject(row, col);
 });
 
 const _EXPORT_BUTTON = _LEVEL_EDITOR_CONTROLS.querySelector('#export-level');
@@ -460,7 +514,7 @@ function gameLoop(currentTime) {
     // GAME
     ctx.clearRect(0, 0, width, height);
 
-    drawWalls();
+    drawSolidObjects();
 
     player.draw();
 

@@ -112,6 +112,9 @@
     max-width: calc(100% - 2rem);
     max-height: calc(100% - 2rem);
     aspect-ratio: 5/4;
+
+    border-radius: 20px;
+    border: 5px solid var(--blandviolet-dark);
 }
 
 

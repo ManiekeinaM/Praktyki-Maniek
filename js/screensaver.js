@@ -181,6 +181,7 @@ function initScreensaver() {
 
     let INACTIVITY_TIMER = 0;
     function incrementTimer() {
+        if (document.pointerLockElement) return;
         INACTIVITY_TIMER += 1;
         // console.log(INACTIVITY_TIMER);
         updateScreensaverVisibility();
@@ -226,7 +227,7 @@ function initScreensaver() {
         if (navigator.userActivation.hasBeenActive) {
             // new scope to garbage collect it faster
             let sansVoice = new Audio('./sounds/voice_sans.mp3');
-            sansVoice.volume = 0.02;
+            sansVoice.volume = 0.03;
             sansVoice.play();
         }
 
@@ -295,19 +296,19 @@ function initScreensaver() {
     let previous_frame = [];
 
     // brightness threshold to detect movement
-    let threshold = 80;
+    const threshold = 80;
 
     // sample color every X pixels [resolution]
-    let sample_size = 2;
+    const sample_size = 2;
 
     // This function gets called whenever X or more pixels change at once. Change this until it's good at detecting humans
-    let changeThreshold = 400;
+    const changeThreshold = 400;
 
-    let randomNames = ['Bartek', 'Mateusz', 'Zosia', 'Hania', 'Antoni', 'Franek', 'Janek', 'Krzysztof', 'Marysia', 'Ania', 'Andrzej', 'Wojciech', 'Michał', 'Marcin', 'Kuba', 'Patryk', 'Kamil', 'Dawid', 'Julia', 'Kacper', 'Filip', 'Mikołaj', 'Laura', 'Wiktor', 'Adam', 'Igor', 'Maciek', 'Dominik', 'Tomek'];
+    const randomNames = ['Bartek', 'Mateusz', 'Zosia', 'Hania', 'Antoni', 'Franek', 'Janek', 'Krzysztof', 'Marysia', 'Ania', 'Andrzej', 'Wojciech', 'Michał', 'Marcin', 'Kuba', 'Patryk', 'Kamil', 'Dawid', 'Julia', 'Kacper', 'Filip', 'Mikołaj', 'Laura', 'Wiktor', 'Adam', 'Igor', 'Maciek', 'Dominik', 'Tomek'];
     function getRandomName() {
         return randomNames[Math.floor(Math.random() * randomNames.length)];
     }
-    let maniekChats = [
+    const maniekChats = [
         "Widzę Ciebie! {name}!!",
         "Fajna fryzura! {name}, to ty?",
         "Przyjdź tu, NIE UCIEKAJ ODE MNIE!!!",
@@ -320,7 +321,7 @@ function initScreensaver() {
         "Guten Tag!",
     ];
 
-    let maniekNoCamChats = [
+    const maniekNoCamChats = [
         "Nie widzę nikogo..",
         "Gdzie jesteście?",
         "Czy ktoś tam jest?",
@@ -333,7 +334,7 @@ function initScreensaver() {
         if (forceDisable) return;
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
 
-        let randomChat = maniekNoCamChats[Math.floor(Math.random() * maniekNoCamChats.length)];
+        const randomChat = maniekNoCamChats[Math.floor(Math.random() * maniekNoCamChats.length)];
         setDialog(randomChat);
     }, 16000)
 
@@ -345,7 +346,13 @@ function initScreensaver() {
         chattingDebounce = true;
 
         // console.log("HEY YOU! I see you moving!");
-
+        const sawMovement = document.createElement('p');
+        sawMovement.classList.add('sawMovement');
+        sawMovement.textContent = '[Maniek widzi ruch]';
+        dialogScreen.appendChild(sawMovement);
+        setTimeout(() => {
+            sawMovement.remove();
+        }, 4000);
 
         let randomChat = maniekChats[Math.floor(Math.random() * maniekChats.length)];
         randomChat = randomChat.replace('{name}', getRandomName());

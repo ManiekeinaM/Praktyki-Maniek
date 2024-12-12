@@ -29,8 +29,8 @@ function resizeCanvas() {
 function updateScaleFactors() {
     scaleX = canvas.width / parseFloat(canvas.offsetWidth);
     scaleY = canvas.height / parseFloat(canvas.offsetHeight);
-    console.log(canvas.width, canvas.offsetWidth);
-    console.log(scaleX, scaleY);
+    // console.log(canvas.width, canvas.offsetWidth);
+    // console.log(scaleX, scaleY);
 }
 window.addEventListener('resize', () => {
     if (!isGameStillTheSame) return;
@@ -267,6 +267,75 @@ function drawWalls() {
 }
 
 
+const BALL_RADIUS = 10;
+class Ball {
+    constructor(x, y, speed, movePoints) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.movePoints = movePoints;
+        this.currentMovePoint = 0;
+    }
+
+    move(dt) {
+        if (this.movePoints.length === 0) return;
+        // console.log(this.currentMovePoint);
+
+        const nextPoint = this.movePoints[this.currentMovePoint];
+        const deltaX = nextPoint.x - this.x;
+        const deltaY = nextPoint.y - this.y; // Corrected line
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        if (distance < this.speed * dt) {
+            this.x = nextPoint.x;
+            this.y = nextPoint.y;
+            this.currentMovePoint++;
+            if (this.currentMovePoint >= this.movePoints.length) {
+                this.currentMovePoint = 0; // Loop or handle end of path
+            }
+        } else {
+            this.x += (deltaX / distance) * this.speed * dt;
+            this.y += (deltaY / distance) * this.speed * dt;
+        }
+    }
+
+    draw() {
+        ctx.fillStyle = 'rgb(230,0,0)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, BALL_RADIUS, 0, Math.PI*2);
+        ctx.fill();
+
+        // Add a small stroke
+        ctx.strokeStyle = 'rgb(100,10,10)';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+
+    drawMovePoints() {
+        
+        for (const point of this.movePoints) {
+            ctx.fillStyle = 'pink';
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 5, 0, Math.PI*2);
+            ctx.fill();
+            // draw text of the movepoint number
+            ctx.fillStyle = 'black';
+            ctx.fillText(this.movePoints.indexOf(point), point.x, point.y);
+        }
+    }
+}
+
+const ball = new Ball(100, 100, 300, 
+    [
+        {x: 100, y: 100},
+        {x: 100, y: 200},
+        {x: 200, y: 200},
+        {x: 300, y: 300},
+        {x: 300, y: 100}
+    ]
+)
+
+
 
 let shouldUpdateNavigation = true;
 let isGameStillTheSame = false;
@@ -281,7 +350,7 @@ enterGame.addEventListener('click', async e => {
 
 
 function startGame() {
-    loadLevel(2);
+    loadLevel(CURRENT_LEVEL);
 }
 
 ///////////////////////   Level editor   ///////////////////////
@@ -394,6 +463,12 @@ function gameLoop(currentTime) {
     drawWalls();
 
     player.draw();
+
+    ball.move(deltaTime);
+    ball.draw();
+    ball.drawMovePoints();
+
+    
 }
 
 requestAnimationFrame(gameLoop);

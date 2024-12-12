@@ -117,6 +117,17 @@
     border: 5px solid var(--blandviolet-dark);
 }
 
+h1.level {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+    font-size: 3rem;
+    font-family: var(--maniek-font);
+    color: white;
+    margin: 0;
+}
+
 
 .hidden-game {
     display: none !important;

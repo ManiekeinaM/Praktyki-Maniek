@@ -1,6 +1,5 @@
 //Canvas setup
 const canvas = document.querySelector('canvas.antiair.plane-canvas');
-console.log(canvas);
 const ctx = canvas.getContext('2d');
 //Visible window
 const canvasWidth = canvas.width;

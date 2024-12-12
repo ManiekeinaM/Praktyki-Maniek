@@ -373,11 +373,13 @@ class Ball {
     }
 }
 
-const ball = new Ball(370, 320, 400, 
-    [
-        {x: 260, y: 0},
-    ]
-)
+let balls = [];
+const sideToSide = [{x: 260, y: 0}];
+balls.push(new Ball(370, 320, 100, sideToSide));
+balls.push(new Ball(370, 340, 125, sideToSide));
+balls.push(new Ball(370, 360, 150, sideToSide));
+balls.push(new Ball(370, 380, 175, sideToSide));
+balls.push(new Ball(370, 400, 200, sideToSide));
 
 
 
@@ -532,7 +534,7 @@ function drawCheckeredBackground() {
     // const rows = canvas.height / GRID_SIZE;
     // const cols = canvas.width / GRID_SIZE;
     
-    // Draw one
+    // Draw first
     for (let y = 0; y < canvas.height; y += GRID_SIZE * 2) {
         for (let x = 0; x < canvas.width; x += GRID_SIZE * 2) {
             ctx.fillStyle = 'rgba(224,218,254,0.65)';
@@ -541,7 +543,7 @@ function drawCheckeredBackground() {
         }
     }
 
-    // Draw one
+    // Draw second
     for (let y = 0; y < canvas.height; y += GRID_SIZE * 2) {
         for (let x = -GRID_SIZE; x < canvas.width; x += GRID_SIZE * 2) {
             ctx.fillStyle = 'rgba(240,240,255,0.65)';
@@ -549,6 +551,13 @@ function drawCheckeredBackground() {
             ctx.fillRect(x + GRID_SIZE, y + GRID_SIZE, GRID_SIZE, GRID_SIZE);
         }
     }
+}
+
+function drawLevelText() {
+    ctx.fillStyle = 'white';
+    ctx.font = `64px Determination Mono`;
+    ctx.textAlign = "center";
+    ctx.fillText(`LEVEL ${CURRENT_LEVEL}`, width/2, 50);
 }
 
 
@@ -604,9 +613,13 @@ function gameLoop(currentTime) {
 
     player.draw();
 
-    ball.move(deltaTime);
-    ball.draw();
-    // ball.drawMovePoints();
+    for (const ball of balls) {
+        ball.move(deltaTime);
+        ball.draw();
+    }
+    
+    
+    drawLevelText();
 
     
 }

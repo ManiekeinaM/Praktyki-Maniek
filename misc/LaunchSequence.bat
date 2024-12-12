@@ -34,14 +34,16 @@ IF "%MONITOR_COUNT%"=="2" (
         --window-position=1680,0 --kiosk ^
         --user-data-dir=c:/monitor2 ^
         --use-fake-ui-for-media-stream ^
-        --autoplay-policy=no-user-gesture-required
+        --autoplay-policy=no-user-gesture-required ^
+        --disable-cache
     
     REM Launch Chrome instance on the primary monitor for Mapa
     start /B chrome --app="%BASE_URL%/index.html" ^
         --window-position=0,0 --kiosk ^
         --user-data-dir=c:/monitor1 ^
         --use-fake-ui-for-media-stream ^
-        --autoplay-policy=no-user-gesture-required
+        --autoplay-policy=no-user-gesture-required ^
+        --disable-cache
 ) ELSE (
     ECHO Less than two monitors detected. Launching Chrome on primary monitor only.
     
@@ -50,7 +52,8 @@ IF "%MONITOR_COUNT%"=="2" (
         --window-position=0,0 --kiosk ^
         --user-data-dir=c:/monitor1 ^
         --use-fake-ui-for-media-stream ^
-        --autoplay-policy=no-user-gesture-required
+        --autoplay-policy=no-user-gesture-required ^
+        --disable-cache
 )
 
 REM --- Start the AutoHotkey script to focus the windows ---

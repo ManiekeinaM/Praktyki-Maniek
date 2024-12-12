@@ -85,4 +85,16 @@ function isDniOtwarte() {
 }
 
 const IS_DNI_OTWARTE = isDniOtwarte();
-// console.log(IS_DNI_OTWARTE);
+
+function whichMachine() {
+  let cookie = getCookie('whichMachine');
+
+  if (cookie == '') {
+    return 1;
+  }
+
+  return parseInt(cookie);
+}
+
+const WHICH_MACHINE = whichMachine() || 1;
+

@@ -141,8 +141,8 @@ const player = {
 };
 
 canvas.addEventListener('mousemove', e => {
-    const deltaX = e.movementX;
-    const deltaY = e.movementY;
+    const deltaX = e.movementX * scaleX;
+    const deltaY = e.movementY * scaleY;
     player.move(deltaX, deltaY);
 })
 

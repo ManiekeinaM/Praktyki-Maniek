@@ -3,43 +3,174 @@
 
 SetTitleMatchMode(2)
 
-^w:: {
-    return
-}
-!Tab:: {
-    return
-}
-^+Esc:: {
-    return
-}
-^+t:: {
-    return
-}
-^t:: {
-    return
-}
-; ctrl+n
-^n:: {
-    return
-}
-^+Delete::{
-    return
-}
-^p:: {
-    return
-}
-; Disable Ctrl+Plus
-^+=::{
-    return
-}
+; Disable all Ctrl shortcuts
+^a::return
+^b::return
+^d::return
+^e::return
+^f::return
+^g::return
+^h::return
+^i::return
+^j::return
+^k::return
+^l::return
+^m::return
+^n::return
+^o::return
+^p::return
+^q::return
+^r::return
+^s::return
+^t::return
+^u::return
+^w::return
+^x::return
+^y::return
+^z::return
+^1::return
+^2::return
+^3::return
+^4::return
+^5::return
+^6::return
+^7::return
+^8::return
+^9::return
+^0::return
+^Esc::return
+^Tab::return
+^Enter::return
+^Space::return
+^Backspace::return
+^Delete::return
+^Insert::return
+^Home::return
+^End::return
+^PgUp::return
+^PgDn::return
+^Up::return
+^Down::return
+^Left::return
+^Right::return
 
-; Disable Ctrl+Minus
-^-::{
-    return
-}
+; Disable all Ctrl+Shift shortcuts
+^+a::return
+^+b::return
+^+c::return
+^+d::return
+^+e::return
+^+f::return
+^+g::return
+^+h::return
+^+i::return
+^+j::return
+^+k::return
+^+l::return
+^+m::return
+^+n::return
+^+o::return
+^+p::return
+^+q::return
+^+r::return
+^+s::return
+^+t::return
+^+u::return
+^+v::return
+^+w::return
+^+x::return
+^+y::return
+^+z::return
+^+1::return
+^+2::return
+^+3::return
+^+4::return
+^+5::return
+^+6::return
+^+7::return
+^+8::return
+^+9::return
+^+0::return
+^+Esc::return
+^+Tab::return
+^+Enter::return
+^+Space::return
+^+Backspace::return
+^+Delete::return
+^+Insert::return
+^+Home::return
+^+End::return
+^+PgUp::return
+^+PgDn::return
+^+Up::return
+^+Down::return
+^+Left::return
+^+Right::return
 
+; Disable all Alt shortcuts except Alt+F4
+!a::return
+!b::return
+!c::return
+!d::return
+!e::return
+!f::return
+!g::return
+!h::return
+!i::return
+!j::return
+!k::return
+!l::return
+!m::return
+!n::return
+!o::return
+!p::return
+!q::return
+!r::return
+!s::return
+!t::return
+!u::return
+!v::return
+!w::return
+!x::return
+!y::return
+!z::return
+!1::return
+!2::return
+!3::return
+!4::return
+!5::return
+!6::return
+!7::return
+!8::return
+!9::return
+!0::return
+!Esc::return
+!Tab::return
+!Enter::return
+!Space::return
+!Backspace::return
+!Delete::return
+!Insert::return
+!Home::return
+!End::return
+!PgUp::return
+!PgDn::return
+!Up::return
+!Down::return
+!Left::return
+!Right::return
 
-; Proces myślenia: jak najpierw włączy się mapa, potem TV, potem mapa ponownie - mapa zawsze będzie zfokusowana, a jak TV nie zostało włączone - zawiesi się i to również nie jest problem
+^=::return
+^-::return
+^+=::return
+^+-::return
+!+::return
+!-::return
+
+; Allow Alt+F4
+!F4::return
+
+; Procedural Logic
 WinWait("Maniek - Mapa")
 WinActivate("Maniek - Mapa")
 WinWaitActive("Maniek - Mapa")

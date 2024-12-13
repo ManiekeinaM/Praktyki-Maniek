@@ -6,7 +6,7 @@ const imgPaths = {
         dots: {
             "dot2": { x: 0.18500, y: 0.38048, desc: "Sala 2 (j. polski)", label: "2", dni_otwarte: "j. polski" }, // sala 2
             "dot3": { x: 0.25200, y: 0.46108, desc: "Sala 3 (historia, wos)", label: "3" }, // sala 3
-            "dot4": { x: 0.25100, y: 0.74882, desc: "Dyrektor, Sekretariat, Księgowość", label: "Dyrektor" }, // dyrektor
+            "dot4": { x: 0.25100, y: 0.74882, desc: "Dyrektor, sekretariat, księgowość", label: "Dyrektor" }, // dyrektor
             "dot5": { x: 0.24900, y: 0.87972, desc: "Sala 10 (j. polski)", label: "10" }, // sala 10
             "dot6": { x: 0.10200, y: 0.87972, desc: "Sala 13 (matematyka)", label: "13", dni_otwarte: "girl team" }, // sala 13
             "dot7": { x: 0.10300, y: 0.65912, desc: "Sekretariat uczniowski", label: "Sekretariat" }, // sekretariat uczniowski
@@ -29,7 +29,6 @@ const imgPaths = {
             "dot20": { x: 0.09200, y: 0.52900, desc: "SCHODY A - GÓRA", icon: "stairsUp" }, // schody a gora
 
             // W dots: walk dots
-            // You can not go back in this pathfinding system, so the connections are only one way
             "Wdot0": { x: 0.23700, y: 0.49882, connections: ['Wdot1'], icon: 'machine', desc: "" }, // maniek
             "Wdot1": { x: 0.23667, y: 0.54481, connections: ['Wdot2', 'Wdot7'] }, // maniek up
             "Wdot2": { x: 0.18500, y: 0.54481, connections: ['Wdot3', 'Wdot4', 'dot20'] }, // leftA

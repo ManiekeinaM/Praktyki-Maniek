@@ -315,7 +315,7 @@ body:not(:has(#game-overlay.hidden)) {
     }
 
     .games-side:not(.wisielec), .maniek-side {
-        width: 100%;
+        width: 100% !important;
         border-radius: 0px;
         height: 50%;
     }

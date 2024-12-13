@@ -26,3 +26,10 @@ canvas.antiair {
 
     object-fit: contain;
 }
+
+@media (max-width: 500px) {
+    canvas.antiair {
+        border-radius: 24px;
+        border-width: 0.5rem;
+    }
+}

@@ -3,6 +3,26 @@
 
 SetTitleMatchMode(2)
 
+^w:: {
+    return
+}
+!Tab:: {
+    return
+}
+^+Esc:: {
+    return
+}
+^+t:: {
+    return
+}
+^t:: {
+    return
+}
+^n:: {
+    return
+}
+
+
 ; Proces myślenia: jak najpierw włączy się mapa, potem TV, potem mapa ponownie - mapa zawsze będzie zfokusowana, a jak TV nie zostało włączone - zawiesi się i to również nie jest problem
 WinWait("Maniek - Mapa")
 WinActivate("Maniek - Mapa")

@@ -213,6 +213,9 @@ NumpadSub::return
 NumpadEnter::return
 NumpadDel::return
 
+Shift::return
+Ctrl::return
+
 ^=::return
 ^-::return
 ^+=::return

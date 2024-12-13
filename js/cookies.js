@@ -98,3 +98,19 @@ function whichMachine() {
 
 const WHICH_MACHINE = whichMachine() || 1;
 
+
+function disableMouseGames() {
+  let cookie = getCookie('disableMouseGames');
+
+  if (cookie == '' || cookie == 'false') {
+    return false;
+  }
+
+  if (cookie == 'true') {
+    return true;
+  }
+
+  return false;
+}
+
+const DISABLE_MOUSE_GAMES = disableMouseGames();

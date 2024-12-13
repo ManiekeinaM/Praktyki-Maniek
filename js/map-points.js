@@ -6,7 +6,7 @@ const imgPaths = {
         dots: {
             "dot2": { x: 0.18500, y: 0.38048, desc: "Sala 2 (j. polski)", label: "2", dni_otwarte: "j. polski" }, // sala 2
             "dot3": { x: 0.25200, y: 0.46108, desc: "Sala 3 (historia, wos)", label: "3" }, // sala 3
-            "dot4": { x: 0.25100, y: 0.74882, desc: "Dyrektor, księgowość, sekretariat", label: "Dyrektor" }, // dyrektor
+            "dot4": { x: 0.25100, y: 0.74882, desc: "Dyrektor, Sekretariat, Księgowość", label: "Dyrektor" }, // dyrektor
             "dot5": { x: 0.24900, y: 0.87972, desc: "Sala 10 (j. polski)", label: "10" }, // sala 10
             "dot6": { x: 0.10200, y: 0.87972, desc: "Sala 13 (matematyka)", label: "13", dni_otwarte: "girl team" }, // sala 13
             "dot7": { x: 0.10300, y: 0.65912, desc: "Sekretariat uczniowski", label: "Sekretariat" }, // sekretariat uczniowski
@@ -730,7 +730,7 @@ function createAllButtons() {
                     let popup = document.createElement("p");
                     popup.classList.add("popup");
                     popup.classList.add("dni-otwarte");
-                    popup.innerText = values.dni_otwarte;
+                    popup.innerHTML = values.dni_otwarte;
                     element.dataset.desc = values.dni_otwarte;
 
                     element.appendChild(popup);
@@ -742,7 +742,7 @@ function createAllButtons() {
                 if (values.desc) {
                     let popup = document.createElement("p");
                     popup.classList.add("popup");
-                    popup.innerText = values.desc;
+                    popup.innerHTML = values.desc;
                     element.dataset.desc = values.desc;
 
                     element.appendChild(popup);

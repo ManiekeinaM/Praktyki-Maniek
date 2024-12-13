@@ -82,12 +82,6 @@ img {
     /* user-drag: none; */
 }
 
-.hidden {
-    display: none;
-}
-.gameHidden {
-    display: none;
-}
 
 body, html {
     margin: 0;
@@ -565,3 +559,12 @@ main {
         font-size: 22px;
     }
 } */
+
+
+
+.hidden {
+    display: none;
+}
+.gameHidden {
+    display: none;
+}

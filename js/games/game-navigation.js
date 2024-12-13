@@ -2,16 +2,25 @@ const gamenavigation = document.querySelector('.game-navigation');
 const gamesSide = document.querySelector('.games-side');
 const rightSide = document.querySelector('.maniek-side');
 const bothSides = document.querySelector('#both-sides');
-
 const games = gamenavigation.querySelectorAll('.button');
 
 let LAST_GAME = "logoitarcza";
 let CURRENT_GAME = "logoitarcza";
 
+const mouseRequiredGames = ['hardestgame', 'antiair'];
 const gameNames = [];
 games.forEach(button => {
     gameNames.push(button.dataset.game);
 })
+
+if (DISABLE_MOUSE_GAMES) {
+    mouseRequiredGames.forEach(gameName => {
+        const gameElements = document.querySelectorAll(`.button[data-game='${gameName}']`);
+        gameElements.forEach(element => {
+            element.classList.add('hidden');
+        })
+    });
+}
 
 gameNames.forEach(gameName => {
     if (gameName == CURRENT_GAME) return;

@@ -34,6 +34,7 @@ games.forEach(button => {
     const game = button.dataset.game;
 
     button.addEventListener('click', e => {
+        if (button.querySelector('.workinprogress')) return;
         if (game == CURRENT_GAME) return;
         CURRENT_GAME = game;
 

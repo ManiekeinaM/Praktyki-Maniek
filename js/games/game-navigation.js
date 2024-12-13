@@ -7,7 +7,7 @@ const games = gamenavigation.querySelectorAll('.button');
 let LAST_GAME = "logoitarcza";
 let CURRENT_GAME = "logoitarcza";
 
-const mouseRequiredGames = ['hardestgame', 'antiair'];
+const mouseRequiredGames = ['hardestgame'];
 const gameNames = [];
 games.forEach(button => {
     gameNames.push(button.dataset.game);

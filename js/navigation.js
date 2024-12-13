@@ -26,3 +26,7 @@ buttons.forEach(button => {
     }
 
 })
+
+document.addEventListener('gesturestart', e => {
+    e.preventDefault();
+})

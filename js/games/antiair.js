@@ -25,7 +25,9 @@ console.log(height_upscale);
 
 //Configure mouse lock
 canvas.addEventListener("click", async () => {
-    await canvas.requestPointerLock();
+    if (!DISABLE_MOUSE_GAMES) {
+        await canvas.requestPointerLock();
+    }
     if (game.is_gameover || game.has_not_started) {
         game.reset();
     }
@@ -1488,12 +1490,34 @@ const background_height = GAME_WINDOW_HEIGHT + canvasHeight / 2;
 let mouse_movement_x = 0;
 let mouse_movement_y = 0;
 
+
 function logMovement(event) {
     mouse_movement_x += event.movementX;
     mouse_movement_y += event.movementY;
 }
-
 document.addEventListener("mousemove", logMovement);
+
+let lastTouchX = null;
+let lastTouchY = null;
+let touchSensMultiplier = 2;
+
+function logTouchMovement(event) {
+    if (lastTouchX !== null && lastTouchY !== null) {
+        const deltaX = event.touches[0].clientX - lastTouchX;
+        const deltaY = event.touches[0].clientY - lastTouchY;
+        mouse_movement_x += deltaX * touchSensMultiplier;
+        mouse_movement_y += deltaY * touchSensMultiplier;
+    }
+    lastTouchX = event.touches[0].clientX;
+    lastTouchY = event.touches[0].clientY;
+}
+
+document.addEventListener("touchstart", (event) => {
+    lastTouchX = event.touches[0].clientX;
+    lastTouchY = event.touches[0].clientY;
+});
+
+document.addEventListener("touchmove", logTouchMovement);
 
 // Main game loop
 // ** Draw order **
@@ -1618,11 +1642,12 @@ function game_loop(timestamp) {
     cameraAngle %= Math.PI * 2; // Keep angle between 0 and 2πY
     camera.update_offset(-mouse_movement_x, mouse_movement_y, delta);
 
+    mouse_movement_x = 0;
+    mouse_movement_y = 0;
+
     // Update planes position
     Planes.forEach(plane => {
         plane.move(delta);
-        mouse_movement_x = 0;
-        mouse_movement_y = 0;
     })
 
     //Shake camera

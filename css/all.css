@@ -257,6 +257,12 @@ main {
 
     font-family: var(--maniek-font);
 
+    user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+
     z-index: 100;
 }
 

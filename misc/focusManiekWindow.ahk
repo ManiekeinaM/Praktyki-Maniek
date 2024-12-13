@@ -18,7 +18,11 @@ SetTitleMatchMode(2)
 ^t:: {
     return
 }
+; ctrl+n
 ^n:: {
+    return
+}
+^+Delete::{
     return
 }
 

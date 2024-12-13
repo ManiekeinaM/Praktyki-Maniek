@@ -195,12 +195,23 @@ SetTitleMatchMode(2)
 ^!Right::return
 
 ; Numpad
-^NumpadAdd::return
-^NumpadSub::return
-^+NumpadAdd::return
-^+NumpadSub::return
-!NumpadAdd::return
-!NumpadSub::return
+Numpad0::return
+Numpad1::return
+Numpad2::return
+Numpad3::return
+Numpad4::return
+Numpad5::return
+Numpad6::return
+Numpad7::return
+Numpad8::return
+Numpad9::return
+NumpadDot::return
+NumpadDiv::return
+NumpadMult::return
+NumpadAdd::return
+NumpadSub::return
+NumpadEnter::return
+NumpadDel::return
 
 ^=::return
 ^-::return

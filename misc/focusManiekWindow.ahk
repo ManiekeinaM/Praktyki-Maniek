@@ -177,12 +177,44 @@ SetTitleMatchMode(2)
 +Left::return
 +Right::return
 
+; Ctrl Alt
+^!Delete::return
+^!Esc::return
+^!Tab::return
+^!Enter::return
+^!Space::return
+^!Backspace::return
+^!Insert::return
+^!Home::return
+^!End::return
+^!PgUp::return
+^!PgDn::return
+^!Up::return
+^!Down::return
+^!Left::return
+^!Right::return
+
+; Numpad
+^NumpadAdd::return
+^NumpadSub::return
+^+NumpadAdd::return
+^+NumpadSub::return
+!NumpadAdd::return
+!NumpadSub::return
+
 ^=::return
 ^-::return
 ^+=::return
 ^+-::return
 !+::return
 !-::return
+
+^NumpadAdd::return
+^NumpadSub::return
+^+NumpadAdd::return
+^+NumpadSub::return
+!NumpadAdd::return
+!NumpadSub::return
 
 ; Allow Alt+F4
 !F4::return

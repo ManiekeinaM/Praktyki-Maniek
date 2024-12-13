@@ -209,15 +209,8 @@ SetTitleMatchMode(2)
 !+::return
 !-::return
 
-^NumpadAdd::return
-^NumpadSub::return
-^+NumpadAdd::return
-^+NumpadSub::return
-!NumpadAdd::return
-!NumpadSub::return
-
 ; Allow Alt+F4
-!F4::return
+
 
 ; Procedural Logic
 WinWait("Maniek - Mapa")

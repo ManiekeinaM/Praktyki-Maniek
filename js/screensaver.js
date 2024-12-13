@@ -312,21 +312,20 @@ function initScreensaver() {
         "Widzę Ciebie! {name}!!",
         "Fajna fryzura! {name}, to ty?",
         "Przyjdź tu, NIE UCIEKAJ ODE MNIE!!!",
-        "Ładnie wyglądasz, teraz tu przyjdź!",
         "KAŻDEGO WIDZĘ. Nawet CIEBIE.",
-        "Zagraj ze mną w Ponga :D",
+        "Zagraj ze mną w Ponga :)",
         "Ja, wszechmocny Maniek, proszę Ciebie do ekranu.",
-        "Mój highscore w Flappy Mańku wynosi 634 :)",
-        "Legenda mówi, że coś się stanie, jak Maniek odbije się od rogu...",
         "Guten Tag!",
+        "Cześć, {name}!",
     ];
 
     const maniekNoCamChats = [
-        "Nie widzę nikogo..",
-        "Gdzie jesteście?",
-        "Czy ktoś tam jest?",
-        "Czy ktoś mnie słyszy?",
+        "Legenda mówi, że coś się stanie, jak Maniek odbije się od rogu...",
+        "Mój highscore w Flappy Mańku wynosi 634 :)",
         "Czy ktoś mnie widzi?",
+        "Czy jestem sam w tym świecie?",
+        "AI pożre świat!!! Ja będe pierwszy ( ͡° ͜ʖ ͡°)",
+        "<(0_0<) <(0_0)> (>0_0)> kirby taniec"
     ];
 
     let forceDisable = false;

@@ -160,6 +160,23 @@ SetTitleMatchMode(2)
 !Left::return
 !Right::return
 
+; Shift
++Esc::return
++Tab::return
++Enter::return
++Space::return
++Backspace::return
++Delete::return
++Insert::return
++Home::return
++End::return
++PgUp::return
++PgDn::return
++Up::return
++Down::return
++Left::return
++Right::return
+
 ^=::return
 ^-::return
 ^+=::return

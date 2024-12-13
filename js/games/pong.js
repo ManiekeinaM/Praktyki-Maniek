@@ -769,7 +769,7 @@ function selectGamemode(mode = 'normal') {
         // Gain points every time a ball is spawned. Don't let Maniek beat you in score (OR, optional leaderboard, )
         aiType = 2;
         rightPaddle.image.src = './assets/paddle4.png';
-        rightPaddle.height = sizePaddle.height * 6;
+        rightPaddle.height = sizePaddle.height*7.25;
 
         BALL_INTERVAL = 2;
         

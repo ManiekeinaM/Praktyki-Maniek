@@ -25,6 +25,18 @@ SetTitleMatchMode(2)
 ^+Delete::{
     return
 }
+^p:: {
+    return
+}
+; Disable Ctrl+Plus
+^+=::{
+    return
+}
+
+; Disable Ctrl+Minus
+^-::{
+    return
+}
 
 
 ; Proces myślenia: jak najpierw włączy się mapa, potem TV, potem mapa ponownie - mapa zawsze będzie zfokusowana, a jak TV nie zostało włączone - zawiesi się i to również nie jest problem

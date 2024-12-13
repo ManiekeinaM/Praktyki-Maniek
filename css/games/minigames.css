@@ -299,6 +299,19 @@ body:not(:has(#game-overlay.hidden)) {
 }
 
 
+.maniek-side .highscores {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.maniek-side .highscores.hidden, .maniek-side .highscores.gameHidden {
+    display: block;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+
 
 
 

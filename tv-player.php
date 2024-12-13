@@ -62,10 +62,11 @@
 
         //Videos changer
         const videoPlayer = document.getElementById("vidplayer");
+        // videoPlayer.playbackRate = 16;
         const videoSource = document.getElementById("vidsource");
 
         videoPlayer.addEventListener("ended", (event) => {
-            let previousSource = VideoSource.src;
+            let previousSource = videoSource.src;
             let nextSource;
             do{
                 nextSource = `${dir}/${videosList[Math.floor(Math.random() * videosList.length)]}`;

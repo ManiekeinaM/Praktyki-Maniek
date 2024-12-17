@@ -854,7 +854,7 @@ function animate(timestamp) {
                     || 1/60;
     previousTime = timestamp;
 
-    requestAnimationFrame(animate);
+    //requestAnimationFrame(animate);
 
     /*if (deltaTime < interval) {
         requestAnimationFrame(animate);
@@ -901,7 +901,7 @@ function animate(timestamp) {
                 shouldUpdateNavigation = true;
             }
             isGameStillPong = false;
-            // requestAnimationFrame(animate);
+            requestAnimationFrame(animate);
             return;
         }
         isGameStillPong = true;
@@ -909,7 +909,7 @@ function animate(timestamp) {
         
 
         if (isGamePaused || isInMenu || isInEndState || isDocumentHidden) {
-            // requestAnimationFrame(animate);
+            requestAnimationFrame(animate);
             return;
         }
     
@@ -1035,7 +1035,7 @@ function animate(timestamp) {
 
     updateRocketTimes();
 
-    // requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 }
 
 requestAnimationFrame(animate);

@@ -1560,7 +1560,7 @@ function create_explosion() {
 }
 
 function game_loop(timestamp) {
-    requestAnimationFrame(game_loop);
+    //requestAnimationFrame(game_loop);
 
     const delta = (timestamp - lastFrameResponse) / 1000;
     lastFrameResponse = timestamp;
@@ -1584,7 +1584,7 @@ function game_loop(timestamp) {
         
 
         game.draw_start_screen();
-        //requestAnimationFrame(game_loop);
+        requestAnimationFrame(game_loop);
         return;
     }
 
@@ -1621,7 +1621,7 @@ function game_loop(timestamp) {
             Explosions.splice(0, Explosions.length);
         }
 
-        //requestAnimationFrame(game_loop);
+        requestAnimationFrame(game_loop);
         return;
     }
 
@@ -1633,7 +1633,7 @@ function game_loop(timestamp) {
         
         //Draw gameover
         game.draw_gameover();
-        //requestAnimationFrame(game_loop);
+        requestAnimationFrame(game_loop);
         return;
     }
 
@@ -1767,7 +1767,7 @@ function game_loop(timestamp) {
     buff_cooldown.draw_cooldowns();
 
     
-    //requestAnimationFrame(game_loop);
+    requestAnimationFrame(game_loop);
 }
 
 // Initialisation zone

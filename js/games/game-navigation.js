@@ -4,6 +4,7 @@ const rightSide = document.querySelector('.maniek-side');
 const bothSides = document.querySelector('#both-sides');
 const games = gamenavigation.querySelectorAll('.button');
 
+const GAME_SWITCH_EVENT = "gameSwitch";
 let LAST_GAME = "logoitarcza";
 let CURRENT_GAME = "logoitarcza";
 
@@ -37,6 +38,8 @@ games.forEach(button => {
         if (button.querySelector('.workinprogress')) return;
         if (game == CURRENT_GAME) return;
         CURRENT_GAME = game;
+        const event = new CustomEvent(GAME_SWITCH_EVENT, {detail: {game}});
+        document.dispatchEvent(event);
 
         // Change the style of the gameboard
         gamesSide.classList.remove(LAST_GAME);
@@ -92,16 +95,3 @@ games.forEach(button => {
     });
     
 })
-
-
-
-let isDocumentHidden = false;
-let IGNORE_NEXT_DT = false;
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        isDocumentHidden = true;
-    } else {
-        isDocumentHidden = false;
-        IGNORE_NEXT_DT = true;
-    }
-});

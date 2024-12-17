@@ -848,11 +848,27 @@ function drawOnce() {
     explosions.forEach(explosion => explosion.draw());
 }
 
+let isDocumentHidden = false;
+let IGNORE_NEXT_DT = false;
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        isDocumentHidden = true;
+    } else {
+        isDocumentHidden = false;
+        IGNORE_NEXT_DT = true;
+    }
+});
+
+let animationRequestId;
 function animate(timestamp) {
     const deltaTime = IGNORE_NEXT_DT && 1/60 
                     || (timestamp - previousTime)/1000 
                     || 1/60;
     previousTime = timestamp;
+    
+    if (IGNORE_NEXT_DT) {
+        IGNORE_NEXT_DT = false;
+    }
 
     //requestAnimationFrame(animate);
 
@@ -1040,3 +1056,7 @@ function animate(timestamp) {
 
 requestAnimationFrame(animate);
 restartGame();
+
+document.addEventListener('gameSwitch', e => {
+    // console.log("SWITCHED GAME!");
+})

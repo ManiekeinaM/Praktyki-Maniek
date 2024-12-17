@@ -560,6 +560,16 @@ function drawLevelText() {
     ctx.fillText(`LEVEL ${CURRENT_LEVEL}`, width/2, 50);
 }
 
+let isDocumentHidden = false;
+let IGNORE_NEXT_DT = false;
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        isDocumentHidden = true;
+    } else {
+        isDocumentHidden = false;
+        IGNORE_NEXT_DT = true;
+    }
+});
 
 let lastTime;
 function gameLoop(currentTime) {

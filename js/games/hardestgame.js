@@ -572,8 +572,9 @@ document.addEventListener('visibilitychange', () => {
 });
 
 let lastTime;
+let gameLoopId;
 function gameLoop(currentTime) {
-    requestAnimationFrame(gameLoop);
+    gameLoopId = requestAnimationFrame(gameLoop);
 
     const deltaTime = (currentTime - lastTime)/1000 
                     || 1/60;
@@ -634,4 +635,14 @@ function gameLoop(currentTime) {
     
 }
 
-requestAnimationFrame(gameLoop);
+gameLoopId = requestAnimationFrame(gameLoop);
+
+document.addEventListener('gameSwitch', e => {
+    const gameName = e.detail;
+    if (gameName == "hardestgame") {
+        gameLoopId = requestAnimationFrame(animate);
+    } else {
+        cancelAnimationFrame(gameLoopId);
+        gameLoopId = null;
+    }
+})

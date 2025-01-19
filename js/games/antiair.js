@@ -1559,7 +1559,9 @@ function create_explosion() {
     Explosions.push(explosion);
 }
 
+let gameLoopId;
 function game_loop(timestamp) {
+    // console.log("air");
     //requestAnimationFrame(game_loop);
 
     const delta = (timestamp - lastFrameResponse) / 1000;
@@ -1584,7 +1586,7 @@ function game_loop(timestamp) {
         
 
         game.draw_start_screen();
-        requestAnimationFrame(game_loop);
+        gameLoopId = requestAnimationFrame(game_loop);
         return;
     }
 
@@ -1621,7 +1623,7 @@ function game_loop(timestamp) {
             Explosions.splice(0, Explosions.length);
         }
 
-        requestAnimationFrame(game_loop);
+        gameLoopId = requestAnimationFrame(game_loop);
         return;
     }
 
@@ -1633,7 +1635,7 @@ function game_loop(timestamp) {
         
         //Draw gameover
         game.draw_gameover();
-        requestAnimationFrame(game_loop);
+        gameLoopId = requestAnimationFrame(game_loop);
         return;
     }
 
@@ -1767,10 +1769,20 @@ function game_loop(timestamp) {
     buff_cooldown.draw_cooldowns();
 
     
-    requestAnimationFrame(game_loop);
+    gameLoopId = requestAnimationFrame(game_loop);
 }
 
 // Initialisation zone
 sponsor_window.init();
 
-requestAnimationFrame(game_loop);
+gameLoopId = requestAnimationFrame(game_loop);
+
+document.addEventListener('gameSwitch', e => {
+    const gameName = e.detail;
+    if (gameName == "antiair") {
+        gameLoopId = requestAnimationFrame(game_loop);
+    } else {
+        cancelAnimationFrame(gameLoopId);
+        gameLoopId = null;
+    }
+})

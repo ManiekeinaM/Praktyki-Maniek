@@ -300,17 +300,19 @@ function death() {
     }, 1000);
 }
 
+let gameLoopId;
 function gameLoop(currentTime) {
+    console.log("bird");
     const deltaTime = (currentTime - lastTime)/1000 
                     || 1/60;
     lastTime = currentTime;
 
     if (CURRENT_GAME != "flappymaniek") {
-        requestAnimationFrame(gameLoop);
+        gameLoopId = requestAnimationFrame(gameLoop);
         return;
     };
     if (!running) {
-        requestAnimationFrame(gameLoop);
+        gameLoopId = requestAnimationFrame(gameLoop);
         return;
     }
 
@@ -337,7 +339,7 @@ function gameLoop(currentTime) {
         death();
 
     // Continue the game loop
-    requestAnimationFrame(gameLoop);
+    gameLoopId = requestAnimationFrame(gameLoop);
 }
 
 
@@ -353,5 +355,14 @@ screen.addEventListener('click', e => {
 
 // Start the game loop
 lastTime = performance.now();
-requestAnimationFrame(gameLoop);
+gameLoopId = requestAnimationFrame(gameLoop);
 
+document.addEventListener('gameSwitch', e => {
+    const gameName = e.detail;
+    if (gameName == "flappymaniek") {
+        gameLoopId = requestAnimationFrame(gameLoop);
+    } else {
+        cancelAnimationFrame(gameLoopId);
+        gameLoopId = null;
+    }
+})

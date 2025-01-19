@@ -38,7 +38,7 @@ games.forEach(button => {
         if (button.querySelector('.workinprogress')) return;
         if (game == CURRENT_GAME) return;
         CURRENT_GAME = game;
-        const event = new CustomEvent(GAME_SWITCH_EVENT, {detail: {game}});
+        const event = new CustomEvent(GAME_SWITCH_EVENT, {detail: game});
         document.dispatchEvent(event);
 
         // Change the style of the gameboard

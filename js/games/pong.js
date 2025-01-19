@@ -246,6 +246,15 @@ class Quadtree {
     }
 }
 
+let quadtree;
+function initQuadtree() {
+  if (!quadtree) {
+    quadtree = new Quadtree(new Rectangle(0, 0, width, height), 4);
+  } else {
+    quadtree.clear();
+    quadtree.boundary = new Rectangle(0, 0, width, height);
+  }
+}
 
 
 
@@ -859,7 +868,7 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-let animationRequestId;
+let gameLoopId;
 function animate(timestamp) {
     const deltaTime = IGNORE_NEXT_DT && 1/60 
                     || (timestamp - previousTime)/1000 
@@ -917,7 +926,7 @@ function animate(timestamp) {
                 shouldUpdateNavigation = true;
             }
             isGameStillPong = false;
-            requestAnimationFrame(animate);
+            gameLoopId = requestAnimationFrame(animate);
             return;
         }
         isGameStillPong = true;
@@ -925,7 +934,7 @@ function animate(timestamp) {
         
 
         if (isGamePaused || isInMenu || isInEndState || isDocumentHidden) {
-            requestAnimationFrame(animate);
+            gameLoopId = requestAnimationFrame(animate);
             return;
         }
     
@@ -967,19 +976,21 @@ function animate(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Initialize Quadtree
-    let boundary = new Rectangle(width / 2, height / 2, width / 2, height / 2);
-    let quadtree = new Quadtree(boundary, 4); // capacity of 4
+    initQuadtree();
     balls.forEach(ball => quadtree.insert(ball));
 
-    // Rockets & rocket explosions
-    for (let rocket of rockets) {
-        if (rocket.x < 0 || rocket.x > width) {
-            rocket.sprite = null;
-            rockets.splice(rockets.indexOf(rocket), 1);
-            rocket = null;
-            continue;
+    for (let i = rockets.length - 1; i >= 0; i--) {
+        let rocket = rockets[i];
+        rocket.update(deltaTime);
+        rocket.draw();
+        // Remove rockets once offscreen
+        if (rocket.x < -100 || rocket.x > width + 100) {
+            rockets.splice(i, 1);
         }
+    }
 
+    // Rocket explosions
+    for (let rocket of rockets) {
         let range = new Rectangle(
             rocket.x,
             rocket.y,
@@ -1003,9 +1014,6 @@ function animate(timestamp) {
             explosion.explode(quadtree);
             continue;
         };
-
-        rocket.update(deltaTime);
-        rocket.draw();
     }
 
     explosions.forEach((explosion, index) => {
@@ -1051,12 +1059,22 @@ function animate(timestamp) {
 
     updateRocketTimes();
 
-    requestAnimationFrame(animate);
+    gameLoopId = requestAnimationFrame(animate);
 }
 
-requestAnimationFrame(animate);
+gameLoopId = requestAnimationFrame(animate);
 restartGame();
 
 document.addEventListener('gameSwitch', e => {
-    // console.log("SWITCHED GAME!");
+    const gameName = e.detail;
+    if (gameName == "pong") {
+        gameLoopId = requestAnimationFrame(animate);
+        if (isInMenu || isGamePaused || isInEndState) 
+            gameOverlay.classList.remove('hidden');
+    } else {
+        cancelAnimationFrame(gameLoopId);
+        gameLoopId = null;
+        isGamePaused = true;
+        gameOverlay.classList.add('hidden');
+    }
 })

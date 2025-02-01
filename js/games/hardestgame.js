@@ -3,7 +3,7 @@ const enterGame = document.querySelector('button.enterGame');
 
 ///////////////////////   Canvas   ///////////////////////
 const canvas = document.querySelector('#game-canvas');
-const ctx = canvas.getContext('2d', {willReadFrequently: true});
+const ctx = canvas.getContext('2d', {willReadFrequently: false});
 ctx.imageSmoothingEnabled = false;
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;

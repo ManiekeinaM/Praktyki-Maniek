@@ -2,7 +2,7 @@ const gameOverlay = document.querySelector('#game-overlay'); // pause menu
 
 // Set up canvas
 const canvas = document.querySelector('#game-canvas');
-const ctx = canvas.getContext('2d', {willReadFrequently: true});
+const ctx = canvas.getContext('2d', {willReadFrequently: false});
 ctx.imageSmoothingEnabled = false;
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetHeight;
@@ -657,14 +657,6 @@ function isRocketColliding(rocket, ball) {
             rocket.y - ROCKET_SIZE.hitboxHeight/2 < ball.y && 
             rocket.y + ROCKET_SIZE.hitboxHeight/2 > ball.y;
 }
-function isColliding(rect1, rect2) {
-    return (
-        rect1.x < rect2.x + rect2.width &&
-        rect1.x + rect1.width > rect2.x &&
-        rect1.y < rect2.y + rect2.height &&
-        rect1.y + rect1.height > rect2.y
-    );
-}
 
 function createRocket(direction) {
     let side = direction == 1 ? 'left' : 'right';
@@ -870,104 +862,76 @@ document.addEventListener('visibilitychange', () => {
 
 let gameLoopId;
 function animate(timestamp) {
-    const deltaTime = IGNORE_NEXT_DT && 1/60 
-                    || (timestamp - previousTime)/1000 
-                    || 1/60;
+    const deltaTime = (IGNORE_NEXT_DT && 1/60) || (timestamp - previousTime)/1000 || 1/60;
     previousTime = timestamp;
-    
+
     if (IGNORE_NEXT_DT) {
         IGNORE_NEXT_DT = false;
     }
 
-    //requestAnimationFrame(animate);
+    isGameStillPong = true;
 
-    /*if (deltaTime < interval) {
-        requestAnimationFrame(animate);
-        return;
-    }*/
+    if (isGamePaused || isInMenu || isInEndState || isDocumentHidden) {
+        if (shouldUpdateNavigation) { // Only update navigation UI when needed
+            shouldUpdateNavigation = false;
+            gameOverlay.classList.toggle('hidden', !(isGamePaused || isInMenu || isInEndState) || isDocumentHidden); // Use toggle for clarity
+            _paused.classList.toggle('hidden', !isGamePaused);
+            _modeHolder.classList.toggle('superhidden', !isInMenu);
+            _ENDGAME.classList.toggle('hidden', !isInEndState);
 
-    // UPDATES FOR GAME CHANGES
-    {
-        if (shouldUpdateNavigation) {
-            if ((isGamePaused || isInMenu || isInEndState) && isGameStillPong && !isDocumentHidden) {
-                shouldUpdateNavigation = false;
-                gameOverlay.classList.remove('hidden');
-                resizeCanvas();
-            } else {
-                gameOverlay.classList.add('hidden');
+            if (!gameOverlay.classList.contains('hidden')) {
+                resizeCanvas(); // Resize only when overlay is visible (and potentially when canvas size matters)
+            } else if (shouldResize) {
+                shouldResize = false; // Reset resize flag if overlay is hidden and resize was pending
             }
 
             if (isGamePaused && isGameStillPong) {
-                drawOnce();
-                _paused.classList.remove('hidden');
-            } else {
-                _paused.classList.add('hidden');
-            }
-
-            if (isInMenu) {
-                _modeHolder.classList.remove('superhidden');
-            } else {
-                _modeHolder.classList.add('superhidden');
-            }
-            if (isInEndState) {
-                _ENDGAME.classList.remove('hidden');
-            } else {
-                _ENDGAME.classList.add('hidden');
+                drawOnce(); // Keep drawing once when paused if needed for visual pause state
             }
         }
-        
-        
 
-        if (CURRENT_GAME != 'pong') {
-            if (isGameStillPong) {
-                ctx.clearRect(0, 0, width, height);
-                if (!isInMenu && !isInEndState)
-                    isGamePaused = true;
-                shouldUpdateNavigation = true;
-            }
-            isGameStillPong = false;
-            gameLoopId = requestAnimationFrame(animate);
-            return;
-        }
-        isGameStillPong = true;
-    
-        
-
-        if (isGamePaused || isInMenu || isInEndState || isDocumentHidden) {
-            gameLoopId = requestAnimationFrame(animate);
-            return;
-        }
-    
-        if (shouldResize)
-            resizeCanvas();
+        gameLoopId = requestAnimationFrame(animate);
+        return; // Exit early if paused, in menu, end state, or hidden
     }
-    
-    
-    // GAME
+
+    // --- Navigation Updates (only when game is active and not paused/menu) ---
+    if (shouldUpdateNavigation) {
+        shouldUpdateNavigation = false;
+        gameOverlay.classList.add('hidden'); // Ensure overlay is hidden during active gameplay
+        _paused.classList.add('hidden');
+        _modeHolder.classList.add('superhidden');
+        _ENDGAME.classList.add('hidden');
+
+        if (shouldResize) {
+            resizeCanvas(); // Resize canvas if needed when navigation state changes to active game
+            shouldResize = false; // Reset resize flag
+        }
+    }
+
+
+    // --- GAME UPDATES & DRAWING (only when game is active and not paused/menu) ---
 
     // Animations/timers
-    {
-        ROCKET_TIMER.left += deltaTime;
-        ROCKET_TIMER.right += deltaTime;
-        BALL_TIMER += deltaTime;
-        if (BALL_TIMER > BALL_INTERVAL) {
-            addBall();
-            if (aiType == 2)
-                addScore('left', 1);
-            BALL_TIMER = 0;
-        }
+    ROCKET_TIMER.left += deltaTime;
+    ROCKET_TIMER.right += deltaTime;
+    BALL_TIMER += deltaTime;
+    if (BALL_TIMER > BALL_INTERVAL) {
+        addBall();
+        if (aiType == 2)
+            addScore('left', 1);
+        BALL_TIMER = 0;
+    }
 
-        ANIMATION_TIMER += deltaTime;
-        if (ANIMATION_TIMER > ANIMATION_INTERVAL) {
-            ANIMATION_TIMER = 0;
-            for (let rocket of rockets) {
-                rocket.updateAnimation();
-            }
-            for (let explosion of explosions) {
-                explosion.updateAnimation();
-                if (!explosion.active) {
-                    explosions.splice(explosions.indexOf(explosion), 1);
-                }
+    ANIMATION_TIMER += deltaTime;
+    if (ANIMATION_TIMER > ANIMATION_INTERVAL) {
+        ANIMATION_TIMER = 0;
+        for (let rocket of rockets) {
+            rocket.updateAnimation();
+        }
+        for (let explosion of explosions) {
+            explosion.updateAnimation();
+            if (!explosion.active) {
+                explosions.splice(explosions.indexOf(explosion), 1);
             }
         }
     }
@@ -1001,7 +965,6 @@ function animate(timestamp) {
 
         let collided = false;
         for (let ball of possibleCollisions) {
-            //console.log(possibleCollisions);
             collided = isRocketColliding(rocket,ball);
             if (collided)
                 break;
@@ -1012,11 +975,10 @@ function animate(timestamp) {
             let explosion = new Explosion(rocket.x, rocket.y, EXPLOSION_SIZE);
             explosions.push(explosion);
             explosion.explode(quadtree);
-            continue;
         };
     }
 
-    explosions.forEach((explosion, index) => {
+    explosions.forEach((explosion) => { // Removed index if not used
         explosion.draw();
     });
 
@@ -1029,11 +991,10 @@ function animate(timestamp) {
     paddleCollision(rightPaddle, quadtree);
 
     // Balls, score & ball paddle collisions
-    for (let ball of balls) {
+    for (let i = balls.length - 1; i >= 0; i--) {
+        let ball = balls[i];
         if (ball.x < 0 || ball.x > width) {
-            balls.splice(balls.indexOf(ball), 1);
-            // delete collisionDebounce[leftPaddle][ball];
-            // delete collisionDebounce[rightPaddle][ball];
+            balls.splice(i, 1);
 
             if (ball.x < 0) {
                 addScore('right', 1);
@@ -1044,7 +1005,7 @@ function animate(timestamp) {
 
             continue;
         }
-    
+
         ball.update(deltaTime);
 
         // Bounce off top and bottom edges
@@ -1069,12 +1030,15 @@ document.addEventListener('gameSwitch', e => {
     const gameName = e.detail;
     if (gameName == "pong") {
         gameLoopId = requestAnimationFrame(animate);
-        if (isInMenu || isGamePaused || isInEndState) 
-            gameOverlay.classList.remove('hidden');
+        gameOverlay.classList.remove('hidden');
+        if (isGamePaused || isInMenu || isInEndState) { 
+            shouldUpdateNavigation = true;
+        }
     } else {
         cancelAnimationFrame(gameLoopId);
         gameLoopId = null;
-        isGamePaused = true;
+        isGamePaused = !isInMenu && !isInEndState;
+        isGameStillPong = false;
         gameOverlay.classList.add('hidden');
     }
 })

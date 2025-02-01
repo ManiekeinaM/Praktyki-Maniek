@@ -221,7 +221,6 @@ header {
     gap: 0.5rem;
 
     background-color: rgba(50,50,50, 0.5);
-    backdrop-filter: blur(2px);
 
     text-align: center;
     z-index: 30;
@@ -229,7 +228,6 @@ header {
 }
 
 #game-overlay.hidden {
-    backdrop-filter: blur(0px);
     z-index: -1;
     background-color: transparent;
     display: none;

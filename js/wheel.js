@@ -10,12 +10,17 @@ php_amounts.pop();
 var wheels = {
     1: {
         prizes: [
-            { name: "🗝️🎖️", id: 1, desc: "Brelok/Przypinka", weight: 200, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 1.5, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 2.5, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 5, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
             // { name: "🎫🏖️", id: 3, desc: "Voucher: Wycieczka integracyjna gratis", weight: 0, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
             // { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 0, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 5, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 10, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 1.5, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 2.5, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 5, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+
         ],
 
         totalWeights: 0, totalVisualWeights: 0,
@@ -24,10 +29,10 @@ var wheels = {
     },
     2: {
         prizes: [
-            { name: "🗝️🎖️", id: 1, desc: "Brelok/Przypinka", weight: 100, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 100, visualWeight: 2, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
             { name: "🎫🏖️", id: 3, desc: "Voucher: Wycieczka integracyjna gratis", weight: 10, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 20, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 10, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
             { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 40, visualWeight: 2, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
         ],
@@ -102,6 +107,8 @@ updateWheels();
 
 // Set the necessary properties for each wheel
 for (const [wheelId, wheelProperties] of Object.entries(wheels)) {
+    // To ensure only one legened entry for one id
+    let exists = {}
 
     // Create an element for the wheel legend
     let legendContainer = document.createElement("div")
@@ -117,6 +124,10 @@ for (const [wheelId, wheelProperties] of Object.entries(wheels)) {
 
         // Fill up the legend
         if (prizeValues.amount <= 0) continue;
+        // Ensure only one entry for one id
+        if ( exists[prizeValues.id] == true ) continue;
+        exists[prizeValues.id] = true;
+        
         let p = document.createElement("p");
         p.textContent = `${prizeValues.name} - ${prizeValues.desc}`;
 
@@ -280,9 +291,7 @@ function randomByWeight(wheelId, actualWheel) {
                 headers: {
                     'Content-Type': 'application/json'
                 }
-            })
-
-            .then(response => response.text())
+            }).then(response => response.text())
             .then(data => console.log(data))
             .catch(error => console.log('Error:', error));
 
@@ -294,7 +303,6 @@ function randomByWeight(wheelId, actualWheel) {
             return { prizeName };
         }
     }
-
 
     return "never go here";
 }
@@ -310,7 +318,7 @@ function spin(wheelId, prizeId, actualWheel) {
     let totalWeights = pickedWheel.totalVisualWeights;
 
     let currentDegree = parseFloat(actualWheel.dataset.currentdegree);
-    // console.log(currentDegree);
+    console.log(`Current degree: ${currentDegree}`);
 
     // Calculate the degree to stop on the winning segment
     let realDegree = (currentDegree) % 360 // get the real degree without the 360s

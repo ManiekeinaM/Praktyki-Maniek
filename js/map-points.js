@@ -24,13 +24,14 @@ const imgPaths = {
             "dot21": { x: 0.62083, y: 0.55896, desc: "Praktyka zawodowa (Ryszard Mirys)", label: "Praktyka" }, // mirys SALA
             "dot22": { x: 0.10667, y: 0.46226, desc: "Toaleta A", icon: 'toilet' }, // wc A
             "dot23": { x: 0.10250, y: 0.75236, icon: "musicNote", desc: "Muzyka!", dni_otwarte: "Muzyka" }, // nuty
+            "dot24": { x: 0.27056, y: 0.50216, icon: "musicNote", desc: "Strefa gier", dni_otwarte: "Strefa gier"},
             "dot18": { x: 0.91000, y: 0.47524, desc: "SCHODY B - GÓRA", icon: "stairsUp" }, // schody b gora
             "dot19": { x: 0.91000, y: 0.43706, desc: "SCHODY B - DÓL", icon: "stairsDown" }, // schody b dol
             "dot20": { x: 0.09200, y: 0.52900, desc: "SCHODY A - GÓRA", icon: "stairsUp" }, // schody a gora
 
             // W dots: walk dots
             "Wdot0": { x: 0.23700, y: 0.49882, connections: ['Wdot1'], icon: 'machine', desc: "" }, // maniek
-            "Wdot1": { x: 0.23667, y: 0.54481, connections: ['Wdot2', 'Wdot7'] }, // maniek up
+            "Wdot1": { x: 0.23667, y: 0.54481, connections: ['Wdot2', 'Wdot20'] }, // maniek up
             "Wdot2": { x: 0.18500, y: 0.54481, connections: ['Wdot3', 'Wdot4', 'dot20'] }, // leftA
             "Wdot3": { x: 0.18500, y: 0.46108, connections: ['dot2', 'dot3', 'dot22'] }, // up doors A
             "Wdot4": { x: 0.18500, y: 0.65920, connections: ['dot7', 'Wdot5'] }, // sekretariatSTAND
@@ -49,6 +50,7 @@ const imgPaths = {
             "Wdot17": { x: 0.83700, y: 0.21226, connections: ['dot14', 'Wdot18'] }, // sala 32 STAND
             "Wdot18": { x: 0.83700, y: 0.16038, connections: ['dot16', 'Wdot19'] }, // sala 40 STAND
             "Wdot19": { x: 0.83700, y: 0.10750, connections: ['dot15'] }, // upmost B door STAND
+            "Wdot20": { x: 0.27056, y: 0.54481, connections: ['Wdot1', 'dot24', 'Wdot7']},
 
             // "stairdot1": {x: 0.87833, y: 0.44418}, // stairdot1 floor0
             // "stairdot2": {x: 0.87833, y: 0.47484}, // stairdot2 floor0

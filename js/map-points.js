@@ -4,23 +4,23 @@ const imgPaths = {
         // List of all dot coordinates placed around the map. Scaled to the image, then converted back into pixels.
         // Each dot needs a unique name
         dots: {
-            "dot2": { x: 0.18500, y: 0.38048, desc: "Sala 2 (j. polski)", label: "2", dni_otwarte: "j. polski" }, // sala 2
-            "dot3": { x: 0.25200, y: 0.46108, desc: "Sala 3 (historia, wos)", label: "3" }, // sala 3
+            "dot2": { x: 0.18500, y: 0.38048, desc: "Sala 2 (j. polski)", label: "2", dni_otwarte: "zaplecze techniczne" }, // sala 2
+            "dot3": { x: 0.25200, y: 0.46108, desc: "Sala 3 (historia, wos)", label: "3", dni_otwarte: "historia / WOS / EDB" }, // sala 3
             "dot4": { x: 0.25100, y: 0.74882, desc: "Dyrektor, sekretariat, księgowość", label: "Dyrektor" }, // dyrektor
-            "dot5": { x: 0.24900, y: 0.87972, desc: "Sala 10 (j. polski)", label: "10" }, // sala 10
-            "dot6": { x: 0.10200, y: 0.87972, desc: "Sala 13 (matematyka)", label: "13", dni_otwarte: "girl team" }, // sala 13
+            "dot5": { x: 0.24900, y: 0.87972, desc: "Sala 10 (j. polski)", label: "10", dni_otwarte: "j. polski" }, // sala 10
+            "dot6": { x: 0.10200, y: 0.87972, desc: "Sala 13 (matematyka)", label: "13" }, // sala 13
             "dot7": { x: 0.10300, y: 0.65912, desc: "Sekretariat uczniowski", label: "Sekretariat" }, // sekretariat uczniowski
             "dot8": { x: 0.39300, y: 0.49505, desc: "Sala 22 (technik automatyk)", label: "22", dni_otwarte: "technik automatyk" }, // sala 22
-            "dot9": { x: 0.53700, y: 0.49505, desc: "Sala 24 (lekcyjno-konferencyjna)", label: "24", dni_otwarte: "roboty" }, // sala 24
-            "dot10": { x: 0.76000, y: 0.56011, desc: "Sala 46 (filozofia, religia)", label: "46", dni_otwarte: "filozofia, religia" }, // sala 46
+            "dot9": { x: 0.53700, y: 0.49505, desc: "Sala 24 (lekcyjno-konferencyjna)", label: "24", dni_otwarte: "technik energetyk" }, // sala 24
+            "dot10": { x: 0.76000, y: 0.56011, desc: "Sala 46 (filozofia, religia)", label: "46" }, // sala 46
             "dot11": { x: 0.83700, y: 0.63366, desc: "Sala 45 (j. angielski)", label: "45", dni_otwarte: "j. angielski" }, // sala 45
             "dot12": { x: 0.89100, y: 0.54173, desc: "Toaleta B", icon: 'toilet' }, // kibel meski
             // "dot12.5": {x: 0.88833, y: 0.37697, desc: "Toaleta nauczycielska (B)", icon: 'toilet'}, // Toaleta dla nauczycieli (parter B)
-            "dot13": { x: 0.75900, y: 0.36775, desc: "Psycholog, pedagog", label: "Psycholog" }, // psycholog
+            "dot13": { x: 0.75900, y: 0.36775, desc: "Psycholog, pedagog", label: "Psycholog", dni_otwarte: "psycholog, pedagog" }, // psycholog
             "dot14": { x: 0.76100, y: 0.21075, desc: "Sala 32 (chemia, biologia, fizyka)", label: "32", dni_otwarte: "chemia, biologia, fizyka" }, // sala 32
-            "dot15": { x: 0.76100, y: 0.10750, desc: "Sala 39 (technik energetyk)", label: "39", dni_otwarte: "technik energetyk" }, // sala bez numerku raz byla na niemieckim i historii
-            "dot16": { x: 0.91300, y: 0.16124, desc: "Sala 40 (technik mechatronik)", label: "40", dni_otwarte: "technik mechatronik" }, // sala 40 znak zapytania
-            "dot17": { x: 0.91100, y: 0.29562, desc: "Sala 41 (technik mechatronik)", label: "41", dni_otwarte: "technik mechatronik" }, // sala 41
+            "dot15": { x: 0.76100, y: 0.10750, desc: "Sala 39 (technik energetyk)", label: "39" }, // sala bez numerku raz byla na niemieckim i historii
+            "dot16": { x: 0.91300, y: 0.16124, desc: "Sala 40 (technik mechatronik)", label: "40", dni_otwarte: "technik mechatronik, automatyk" }, // sala 40 znak zapytania
+            "dot17": { x: 0.91100, y: 0.29562, desc: "Sala 41 (technik mechatronik)", label: "41" }, // sala 41
             "dot21": { x: 0.62083, y: 0.55896, desc: "Praktyka zawodowa (Ryszard Mirys)", label: "Praktyka" }, // mirys SALA
             "dot22": { x: 0.10667, y: 0.46226, desc: "Toaleta A", icon: 'toilet' }, // wc A
             "dot23": { x: 0.10250, y: 0.75236, icon: "musicNote", desc: "Muzyka!", dni_otwarte: "Muzyka" }, // nuty
@@ -82,17 +82,17 @@ const imgPaths = {
             "dot6A": { x: 0.45644, y: 0.49513, desc: "Sala gimnastyczna", label: "Sala gimnastyczna", dni_otwarte: "wf" }, // Sala gimnastyczna
             "dot7A": { x: 0.26750, y: 0.68868, desc: "Pielęgniarka", icon: "pielegniarka" }, // Pielegniarka A
 
-            "dot7.1A": { x: 0.26750, y: 0.75590, desc: "Sala 108 (wolontariat)", label: "108", dni_otwarte: "wolontariat" }, // wolontariat, sala 108
+            "dot7.1A": { x: 0.26750, y: 0.75590, desc: "Sala 108 (wolontariat)", label: "108" }, // wolontariat, sala 108
             "dot8A": { x: 0.10250, y: 0.92807, icon: 'disco', desc: "Dyskoteka!", dni_otwarte: "Dyskoteka!" }, // dyskoteka
             "dot7.5A": { x: 0.25083, y: 0.84552, desc: "Sala 113 (TRN)", label: "113", dni_otwarte: "TRN" }, // Sala 113
             "dot7.6A": { x: 0.24833, y: 0.92748, desc: "Pokój nauczycielski", label: "Nauczycielski" }, // Pokój nauczycielski
             "dot7.7A": { x: 0.10667, y: 0.83608, desc: "Wicedyrektor", label: "Wicedyrektor" }, // Wicedyrektor
 
 
-            "dot8B": { x: 0.76125, y: 0.55542, desc: "Sala 123 (technik mechatronik)", label: "123", dni_otwarte: "technik programista, roboty" }, // Sala 123
-            "dot9B": { x: 0.83400, y: 0.61771, desc: "Sala 122 (technik programista, roboty)", label: "122", dni_otwarte: "technik programista, roboty" }, // Sala 122
+            "dot8B": { x: 0.76125, y: 0.55542, desc: "Sala 123 (technik mechatronik)", label: "123", dni_otwarte: "technik mechatronik" }, // Sala 123
+            "dot9B": { x: 0.83400, y: 0.61771, desc: "Sala 122 (technik programista, roboty)", label: "122", dni_otwarte: "technik programista" }, // Sala 122
             "dot10B": { x: 0.90756, y: 0.37097, desc: "Toaleta B", icon: 'toilet' }, // Toaleta pracownicza B
-            "dot11B": { x: 0.90867, y: 0.25310, desc: "Sala 138 (technik elektronik)", label: "138" }, // Sala 138
+            "dot11B": { x: 0.90867, y: 0.25310, desc: "Sala 138 (technik elektronik)", label: "138", dni_otwarte: "technik elektronik" }, // Sala 138
             "dot12B": { x: 0.90867, y: 0.14152, desc: "Sala 134 (technik elektryk)", label: "134", dni_otwarte: "technik elektryk" }, // Sala 134
             "dot13B": { x: 0.76125, y: 0.14466, desc: "Sala 135 (technik elektronik)", label: "135", dni_otwarte: "technik elektronik" }, // Sala 135
             "dot13.5B": { x: 0.76125, y: 0.46108, desc: "Sala 131", label: "131" }, // Sala 131
@@ -145,10 +145,10 @@ const imgPaths = {
             "dot3": { x: 0.31250, y: 0.51692, icon: 'toilet', desc: "Toaleta 2 (żeńska)" }, // WC zenskie
             "dot4": { x: 0.74500, y: 0.28308, desc: "Sala 203 (j. angielski)", label: "203", dni_otwarte: "j. angielski" }, // Sala 203
             "dot5": { x: 0.74500, y: 0.48923, desc: "Sala 204 (j. polski)", label: "204", dni_otwarte: "j. polski" }, // Sala 204
-            "dot6": { x: 0.74500, y: 0.69077, desc: "Sala 205 (matematyka)", label: "205", dni_otwarte: "matematyka" }, // Sala 205
-            "dot7": { x: 0.74500, y: 0.79846, desc: "Sala 207 (fizyka)", label: "207" }, // Sala 207
+            "dot6": { x: 0.74500, y: 0.69077, desc: "Sala 205 (matematyka)", label: "205" }, // Sala 205
+            "dot7": { x: 0.74500, y: 0.79846, desc: "Sala 207 (fizyka)", label: "207", dni_otwarte: "robotyka" }, // Sala 207
             "dot8": { x: 0.41500, y: 0.88308, desc: "Sala 210 (matematyka)", label: "210", dni_otwarte: "matematyka" }, // Sala 210
-            "dot9": { x: 0.31250, y: 0.68923, desc: "Biblioteka", label: "Biblioteka" }, // Biblioteka
+            "dot9": { x: 0.31250, y: 0.68923, desc: "Biblioteka", label: "Biblioteka", dni_otwarte: "przegląd" }, // Biblioteka
 
             "Wdot1": { x: 0.31000, y: 0.44000, connections: ['Wdot2'], icon: 'stairsDown', desc: "SCHODY - DÓŁ" }, // Schody w dol
             "Wdot2": { x: 0.53500, y: 0.44000, connections: ['Wdot3', 'Wdot5'] }, // mid A
@@ -165,11 +165,11 @@ const imgPaths = {
     "Floor2B": {
         dots: {
             "dot1": { x: 0.50000, y: 0.89231, desc: "Sala 215 (j. niemiecki)", label: "215" }, // Sala 215
-            "dot2": { x: 0.27500, y: 0.78769, desc: "Sala 216", label: "216" }, // Sala 216
+            "dot2": { x: 0.27500, y: 0.78769, desc: "Sala 216", label: "216", dni_otwarte: "konstrukcje mechaniczne, maszyny energetyczne" }, // Sala 216
             "dot3": { x: 0.27500, y: 0.62462, desc: "Sala 219", label: "219" }, // Sala 219
-            "dot4": { x: 0.27500, y: 0.46154, desc: "Sala 221 (technik informatyk)", label: "221", dni_otwarte: "technik informatyk" }, // Sala 221
+            "dot4": { x: 0.27500, y: 0.46154, desc: "Sala 221 (technik informatyk, programista)", label: "221", dni_otwarte: "technik programista" }, // Sala 221
             "dot5": { x: 0.27500, y: 0.30615, desc: "Sala 222 (technik informatyk, programista)", label: "222", dni_otwarte: "technik informatyk" }, // Sala 222
-            "dot6": { x: 0.27500, y: 0.23385, desc: "Sala 224 (technik informatyk)", label: "224" }, // Sala 224
+            "dot6": { x: 0.27500, y: 0.23385, desc: "Sala 224 (technik informatyk)", label: "224", dni_otwarte: "strefa uczniowska" }, // Sala 224
             "dot7": { x: 0.70500, y: 0.23538, desc: "Sala 226 (technik informatyk)", label: "226", dni_otwarte: "technik informatyk" }, // Sala 226
             "dot8": { x: 0.69750, y: 0.37385, desc: "Sala 227 (j. niemiecki)", label: "227", dni_otwarte: "j. niemiecki" }, // Sala 227
             "dot9": { x: 0.70500, y: 0.56154, icon: 'toilet', desc: "Toaleta 1 (żeńska)" }, // WC zenskie

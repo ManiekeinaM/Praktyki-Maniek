@@ -24,7 +24,7 @@ const imgPaths = {
             "dot21": { x: 0.62083, y: 0.55896, desc: "Praktyka zawodowa (Ryszard Mirys)", label: "Praktyka" }, // mirys SALA
             "dot22": { x: 0.10667, y: 0.46226, desc: "Toaleta A", icon: 'toilet' }, // wc A
             "dot23": { x: 0.10250, y: 0.75236, icon: "musicNote", desc: "Muzyka!", dni_otwarte: "Muzyka" }, // nuty
-            "dot24": { x: 0.27056, y: 0.50216, icon: "musicNote", desc: "Strefa gier", dni_otwarte: "Strefa gier"},
+            "dot24": { x: 0.27056, y: 0.50383, icon: "gaming", desc: "Strefa gier", dni_otwarte: "Strefa gier"},
             "dot18": { x: 0.91000, y: 0.47524, desc: "SCHODY B - GÓRA", icon: "stairsUp" }, // schody b gora
             "dot19": { x: 0.91000, y: 0.43706, desc: "SCHODY B - DÓL", icon: "stairsDown" }, // schody b dol
             "dot20": { x: 0.09200, y: 0.52900, desc: "SCHODY A - GÓRA", icon: "stairsUp" }, // schody a gora
@@ -238,7 +238,8 @@ const mapIcons = {
     'musicNote': 'assets/map/icons/musicNote.png',
     'toilet': 'assets/map/icons/toilet.png',
     'arrowDown': 'assets/map/icons/arrowDown.png',
-    'arrowUp': 'assets/map/icons/arrowUp.png'
+    'arrowUp': 'assets/map/icons/arrowUp.png',
+    'gaming': 'assets/map/icons/gaming.png',
 }
 
 function percentToPx(percentages, relativeElement) {

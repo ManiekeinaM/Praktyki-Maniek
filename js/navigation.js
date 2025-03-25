@@ -8,7 +8,8 @@ buttons.forEach(button => {
     let name = button.dataset.name;
 
     // Hide wheel of fortune if not dni otwarte
-    if (!IS_DNI_OTWARTE && target == 'wheel.php') {
+    const machine = whichMachine();
+    if ((!IS_DNI_OTWARTE || machine === 2) && target == 'wheel.php') {
         button.style.display = 'none';
     }
 

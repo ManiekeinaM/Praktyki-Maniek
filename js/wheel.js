@@ -10,13 +10,13 @@ php_amounts.pop();
 var wheels = {
     1: {
         prizes: [
-            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 1, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 200, visualWeight: 1, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
             { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 2.5, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 5, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
             // { name: "🎫🏖️", id: 3, desc: "Voucher: Wycieczka integracyjna gratis", weight: 0, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
             // { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 0, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 1, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 200, visualWeight: 1, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
             { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 2.5, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 5, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },

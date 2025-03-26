@@ -1,3 +1,13 @@
+<?php 
+    if (isset($_COOKIE["whichMachine"]) && $_COOKIE["whichMachine"] == 2) {
+        header('Location: index.html');
+    }
+
+    if (isset($_COOKIE["isDniOtwarte"]) && $_COOKIE["isDniOtwarte"] != "true") {
+        header('Location: index.html');
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>

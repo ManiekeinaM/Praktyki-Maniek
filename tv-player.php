@@ -16,6 +16,7 @@
         </video>
 
         <!-- Bell schedule with highlight -->
+        
         <div class="bell-schedule">
                 <h4>lekcja / godz</h4>
                 <span id="0">7:05 - 7:50</span>
@@ -30,13 +31,16 @@
                 <span id="9">15:30 - 16:15</span>
             </table>
         </div>
+ 
     </div>
 
     <!-- Timer and clock -->
     <div class="bottom-controls">
+        <?php if (isset($_COOKIE["isDniOtwarte"]) && $_COOKIE["isDniOtwarte"] != true): ?>
         <div class="break">
             <p id="timer">Koniec przerwy za: <span class="light-green">10MIN</span></p>
         </div>
+        <?php endif; ?>
         <img class="maniek-face" src="./assets/maniek-faces/wink-centered.gif">
         <div class="timer">
             <p id="clock">09:46</p>

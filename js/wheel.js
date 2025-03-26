@@ -10,16 +10,16 @@ php_amounts.pop();
 var wheels = {
     1: {
         prizes: [
-            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 1, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 2.5, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 5, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 1, amount: parseInt(php_amounts[0]), color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: parseInt(php_amounts[1]), color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 2.5, visualWeight: 1, amount: parseInt(php_amounts[4]), color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 5, visualWeight: 1, amount: parseInt(php_amounts[5]), color: '#1434B4', darkcolor: '#112b95' },
             // { name: "🎫🏖️", id: 3, desc: "Voucher: Wycieczka integracyjna gratis", weight: 0, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
             // { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 0, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 1, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 2.5, visualWeight: 1, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 5, visualWeight: 1, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 1, amount: parseInt(php_amounts[0]), color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 60, visualWeight: 1, amount: parseInt(php_amounts[1]), color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 2.5, visualWeight: 1, amount: parseInt(php_amounts[4]), color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 5, visualWeight: 1, amount: parseInt(php_amounts[5]), color: '#1434B4', darkcolor: '#112b95' },
 
         ],
 
@@ -29,12 +29,12 @@ var wheels = {
     },
     2: {
         prizes: [
-            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: php_amounts[4], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 10, visualWeight: 1, amount: php_amounts[3], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 2, amount: php_amounts[0], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 100, visualWeight: 2, amount: php_amounts[1], color: '#1434B4', darkcolor: '#112b95' },
-            { name: "🎫🏖️", id: 3, desc: "Voucher: Wycieczka integracyjna gratis", weight: 10, visualWeight: 1, amount: php_amounts[2], color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 40, visualWeight: 2, amount: php_amounts[5], color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: parseInt(php_amounts[4]), color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 10, visualWeight: 1, amount: parseInt(php_amounts[3]), color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 2, amount: parseInt(php_amounts[0]), color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 100, visualWeight: 2, amount: parseInt(php_amounts[1]), color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎫🏖️", id: 3, desc: "Voucher: Wycieczka integracyjna gratis", weight: 10, visualWeight: 1, amount: parseInt(php_amounts[2]), color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 40, visualWeight: 2, amount: parseInt(php_amounts[5]), color: '#1434B4', darkcolor: '#112b95' },
         ],
         totalWeights: 0, totalVisualWeights: 0,
         // totalPrizes: 0,
@@ -44,8 +44,8 @@ var wheels = {
 
 let currentSpinningWheels = 0;
 
-wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount != 0);
-wheels[2].prizes = wheels[2].prizes.filter(prize => prize.amount != 0);
+wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount > 0);
+wheels[2].prizes = wheels[2].prizes.filter(prize => prize.amount > 0);
 console.log(wheels);
 
 let currentWheel = 1;
@@ -152,6 +152,8 @@ for (const [wheelId, wheelProperties] of Object.entries(wheels)) {
 let currentDegree = 0;
 
 let wheelAmount = 0;
+let usedPrice = [{}, {}, {}];
+
 function generateWheel(wheelId) {
     // console.log(wheelId);
     let pickedWheel = wheels[wheelId];
@@ -181,6 +183,10 @@ function generateWheel(wheelId) {
 
     let weightsUsed = 0;
     for (const [i, values] of pickedWheel.prizes.entries()) {
+        // If there is less amount than wheels then don't draw it
+        if (usedPrice[wheelId][values.id] <= values.amount) continue;
+        usedPrice[wheelId][values.id]++;
+
         // SEGMENT
         let prizeName = values.name;
 
@@ -297,8 +303,9 @@ function randomByWeight(wheelId, actualWheel) {
 
             spin(wheelId, i, actualWheel);
 
-            wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount != 0);
-            wheels[2].prizes = wheels[2].prizes.filter(prize => prize.amount != 0); 
+            wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount > 0);
+            wheels[2].prizes = wheels[2].prizes.filter(prize => prize.amount > 0); 
+            
             // result.innerHTML = prizeName;
             return { prizeName };
         }
@@ -307,7 +314,25 @@ function randomByWeight(wheelId, actualWheel) {
     return "never go here";
 }
 
-let winHistory = [];
+
+const winHistoryCookie = getCookie("winHistory");
+console.log(winHistoryCookie);
+let winHistory = JSON.parse(winHistoryCookie == "" ? "[]" : winHistoryCookie);
+console.log(winHistory);
+
+let newResult = `NOWE: `;
+
+function updateHistory() {
+    newResult = `NOWE: `;
+    for (let i=winHistory.length-1; i>winHistory.length-6 && i>=0; i--) {
+        newResult += `${winHistory[i]} <br>`;
+    }
+
+    result.innerHTML = newResult;
+}
+
+updateHistory();
+
 function spin(wheelId, prizeId, actualWheel) {
     const totalSpins = 9; // Determines how many times the wheel will spin
 
@@ -355,15 +380,8 @@ function spin(wheelId, prizeId, actualWheel) {
     
 
     winHistory.push(entry);
+    setCookie("winHistory", JSON.stringify(winHistory), 30);
     // result.innerHTML = `Winner is: ${prizeName}`;
-
-    // Display the last 5 results
-    
-    let newResult = `NOWE: `;
-    for (let i=winHistory.length-1; i>winHistory.length-6 && i>=0; i--) {
-        newResult += `${winHistory[i]} <br>`;
-    }
-    
 
     // console.log(wheels[wheelId].prizes);
     let winScreen = wheel.parentNode.querySelector('.winResult');
@@ -372,7 +390,7 @@ function spin(wheelId, prizeId, actualWheel) {
 
     setTimeout(() => {
         wheel.style.transition = '';
-        result.innerHTML = newResult;
+        updateHistory();
     
         winScreen.classList.remove("hidden");
         winScreen.innerHTML = `${prizeValues.name} - ${prizeValues.desc}`;
@@ -384,8 +402,12 @@ function spin(wheelId, prizeId, actualWheel) {
             wheel.dataset.debounce = "false";
             lockWheel(wheel);
             currentSpinningWheels -= 1;
-        }, 5000)
+        }, 5000);
     }, time * 1000); // Matches the duration of the animation
+
+    setTimeout(() => {
+        document.location.reload();
+    }, time * 1000 + 5000);
 }
 
 generateWheel(1); // Call to generate the wheel on page load

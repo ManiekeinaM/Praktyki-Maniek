@@ -29,11 +29,11 @@ var wheels = {
     },
     2: {
         prizes: [
-            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: parseInt(php_amounts[4]), color: '#CAB282', darkcolor: '#b99a5a' },
-            { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 10, visualWeight: 1, amount: parseInt(php_amounts[3]), color: '#1434B4', darkcolor: '#112b95' },
             { name: "🗝️🎖️", id: 1, desc: "Gadżet", weight: 100, visualWeight: 2, amount: parseInt(php_amounts[0]), color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "📅🤐", id: 2, desc: "Voucher: Dzień bez pytania", weight: 100, visualWeight: 2, amount: parseInt(php_amounts[1]), color: '#1434B4', darkcolor: '#112b95' },
             { name: "🎫🏖️", id: 3, desc: "Voucher: Wycieczka integracyjna gratis", weight: 10, visualWeight: 1, amount: parseInt(php_amounts[2]), color: '#CAB282', darkcolor: '#b99a5a' },
+            { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 10, visualWeight: 1, amount: parseInt(php_amounts[3]), color: '#1434B4', darkcolor: '#112b95' },
+            { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: parseInt(php_amounts[4]), color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 40, visualWeight: 2, amount: parseInt(php_amounts[5]), color: '#1434B4', darkcolor: '#112b95' },
         ],
         totalWeights: 0, totalVisualWeights: 0,
@@ -269,7 +269,6 @@ function generateWheel(wheelId) {
 
 function randomByWeight(wheelId, actualWheel) {
     // console.log("randomizin");
-
     let pickedWheel = wheels[wheelId];
     let totalWeights = pickedWheel.totalWeights;
 
@@ -278,38 +277,39 @@ function randomByWeight(wheelId, actualWheel) {
     // Prize selecting logic
     let cursor = 0;
     console.log(pickedWheel.prizes);
-    for (const [i, values] of pickedWheel.prizes.entries()) {
-        let prizeName = values.name;
-
-        cursor += values.weight;
-        // console.log(wheels);
-        console.log(cursor, random);
-        if (cursor >= random) {
-
-            values.amount--;
-            //php amount decreasing
-            // console.log(i);
-            let decreasedAmount = {id: values.id, amount: values.amount};
-
-            fetch('misc/decreaseAmount.php', {
-                method: 'POST',
-                body: JSON.stringify(decreasedAmount),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => response.text())
-            .then(data => console.log(data))
-            .catch(error => console.log('Error:', error));
-
-            spin(wheelId, i, actualWheel);
-
-            wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount > 0);
-            wheels[2].prizes = wheels[2].prizes.filter(prize => prize.amount > 0); 
-            
-            // result.innerHTML = prizeName;
-            return { prizeName };
+    let found = false;
+    do {
+        for (const [i, values] of pickedWheel.prizes.entries()) {
+            let prizeName = values.name;
+    
+            cursor += values.weight;
+            // console.log(wheels);
+            console.log(cursor, random);
+            if (cursor >= random) {
+                if (values.amount <= 0) continue;
+                found = true;
+                values.amount--;
+                //php amount decreasing
+                // console.log(i);
+                let decreasedAmount = {id: values.id, amount: values.amount};
+    
+                fetch('misc/decreaseAmount.php', {
+                    method: 'POST',
+                    body: JSON.stringify(decreasedAmount),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.log('Error:', error));
+    
+                spin(wheelId, i, actualWheel);
+                
+                // result.innerHTML = prizeName;
+                return { prizeName };
+            }
         }
-    }
+    } while(!found);
 
     return "never go here";
 }
@@ -333,7 +333,11 @@ function updateHistory() {
 
 updateHistory();
 
+let spinnedWheelId2 = 0;
 function spin(wheelId, prizeId, actualWheel) {
+    if (wheelId == 2)
+        spinnedWheelId2 += 1;
+
     const totalSpins = 9; // Determines how many times the wheel will spin
 
     let pickedWheel = wheels[wheelId];
@@ -405,9 +409,10 @@ function spin(wheelId, prizeId, actualWheel) {
         }, 5000);
     }, time * 1000); // Matches the duration of the animation
 
-    setTimeout(() => {
-        document.location.reload();
-    }, time * 1000 + 5000);
+    if (spinnedWheelId2 == 2)
+        setTimeout(() => {
+            document.location.reload();
+        }, time * 1000 + 5000 + 1000);
 }
 
 generateWheel(1); // Call to generate the wheel on page load

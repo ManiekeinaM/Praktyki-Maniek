@@ -26,7 +26,7 @@
 
     <div class="categories">
         <button data-wheelid="1">Koło Standardowe (15+ Bingo)</button>
-        <button data-wheelid="2" class="premium">Koło Premium (2x) (25 Bingo)</button>
+        <button data-wheelid="2" class="premium">Koło Premium (2x) (25 Bingo 2 Niebieskie)</button>
     </div>
 
     <div class="wheel-legend">

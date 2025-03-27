@@ -1,3 +1,14 @@
+// TODO: ładniejszy komunikat o błędzie (na spokojnie mamy czas do końca kwietnia chyba)
+function offlineError() {
+    alert("Koło fortuny jest obecnie offline, wezwij obsługę");
+    window.location.replace("index.html");
+}
+
+window.addEventListener("offline", () => offlineError());
+if (!navigator.onLine) {
+    offlineError();
+}
+
 const result = document.querySelector(".result");
 const wheelsDiv = document.querySelector(".wheels");
 const winSound = document.getElementById("win_sound");

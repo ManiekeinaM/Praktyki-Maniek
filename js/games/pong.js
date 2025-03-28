@@ -64,7 +64,6 @@ const HIGHSCORE_MANAGERS = [
 for (let i=0; i<3; i++) {
     const normal = document.querySelector(`.highscoresList[data-highscorecookie="pong-mode${i}"]`);
     const onelife = document.querySelector(`.highscoresList[data-highscorecookie="pong-mode${i}-onelife"]`);
-    // console.log(normal, onelife);
     HIGHSCORE_MANAGERS[i] = {normal: new HighScores(normal), onelife: new HighScores(onelife)};
     HIGHSCORE_MANAGERS[i].normal.updateHighscores();
     HIGHSCORE_MANAGERS[i].onelife.updateHighscores();
@@ -98,7 +97,7 @@ let shouldUpdateScoreboardOnRestart = false;
 const _ENDGAME = document.querySelector('.endedGame');
 const _GAMERESULT = _ENDGAME.querySelector('.gameResult');
 const _FREEPLAY = _ENDGAME.querySelector('.pause-buttons > .freeplay');
-// console.log(_ENDGAME, _GAMERESULT, _FREEPLAY)
+
 function endGame(didWin) {
     isInEndState = true;
     shouldUpdateNavigation = true;
@@ -287,7 +286,6 @@ class Paddle {
 
 // Ball object
 let radius = 12 * Math.sqrt(speedMultiplier);
-// console.log(radius);
 const BALL_SPEED = 6 * 60 * speedMultiplier;
 class Ball {
     constructor(x, y, radius, velocity) {
@@ -462,7 +460,6 @@ window.addEventListener('resize', resizeCanvas);
 
 let balls = []
 function addBall() {
-    // console.log(pongScores);
     updateScores();
     // Random angle between -MAX_REFLECTION_ANGLE and MAX_REFLECTION_ANGLE
     const angle = (Math.random() * 2 - 1) * MAX_REFLECTION_ANGLE;
@@ -574,11 +571,10 @@ function movePaddles(deltaTime) {
             const direction = Math.sign(targetBall.y - (rightPaddle.y + rightPaddle.height/2));
             let speed = Math.floor(Math.abs(targetBall.velocity.y));
             if (speed > AI_SPEED) speed = AI_SPEED;
-            // if (speed < AI_SPEED/2) speed = AI_SPEED/2; // removed for better tracking
+
             rightPaddle.y += speed * direction * deltaTime;
         }          
     } else {
-        // console.log('4');
         const difference = rightPaddle.y + rightPaddle.height/2 - height/2;
         if (Math.abs(difference) < AI_SPEED * deltaTime) return;
 
@@ -604,8 +600,6 @@ function paddleCollision(paddle, quadtree) {
         paddle.width,
         paddle.height
     );
-
-    //console.log(quadtree);
 
     const possibleCollisions = quadtree.query(range);
 
@@ -647,11 +641,6 @@ function paddleCollision(paddle, quadtree) {
 
 // Detect collision between two rectangles
 function isRocketColliding(rocket, ball) {
-    /*
-    return rocket.x < ball.x &&
-            rocket.x + ROCKET_SIZE.width > ball.x &&
-            rocket.y + ROCKET_SIZE.yGap < ball.y &&
-            rocket.y + ROCKET_SIZE.height - ROCKET_SIZE.yGap > ball.y;*/
     return rocket.x - ROCKET_SIZE.width/2 < ball.x && 
             rocket.x + ROCKET_SIZE.width/2 > ball.x && 
             rocket.y - ROCKET_SIZE.hitboxHeight/2 < ball.y && 

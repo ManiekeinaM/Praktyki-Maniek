@@ -46,7 +46,7 @@ let currentSpinningWheels = 0;
 
 wheels[1].prizes = wheels[1].prizes.filter(prize => prize.amount > 0);
 wheels[2].prizes = wheels[2].prizes.filter(prize => prize.amount > 0);
-console.log(wheels);
+// console.log(wheels);
 
 let currentWheel = 1;
 
@@ -251,7 +251,7 @@ function generateWheel(wheelId) {
     container.appendChild(winScreen);
 
     svg.addEventListener("click", () => {
-        console.log(svg.dataset.debounce);
+        // console.log(svg.dataset.debounce);
         if (svg.dataset.debounce == "true") return;
         if (svg.dataset.locked == "true") return;
 
@@ -276,22 +276,31 @@ function randomByWeight(wheelId, actualWheel) {
     const random = Math.ceil(Math.random() * totalWeights); // [1,total]
     // Prize selecting logic
     let cursor = 0;
-    console.log(pickedWheel.prizes);
+    // console.log(pickedWheel.prizes);
     let found = false;
     do {
+        let canSpin = false;
+        pickedWheel.prizes.forEach(element => {
+            if (element.amount > 0) canSpin = true;
+        }); 
+        
+        if (!canSpin) {
+            alert("Nie ma juz nagrod do wygrania !");
+            break;
+        }
         for (const [i, values] of pickedWheel.prizes.entries()) {
             let prizeName = values.name;
     
             cursor += values.weight;
             // console.log(wheels);
-            console.log(cursor, random);
+            // console.log(cursor, random);
             if (cursor >= random) {
                 if (values.amount <= 0) continue;
-                found = true;
+                found = true; 
                 values.amount--;
                 //php amount decreasing
                 // console.log(i);
-                let decreasedAmount = {id: values.id, amount: values.amount};
+                let decreasedAmount = {id: values.id};
     
                 fetch('misc/decreaseAmount.php', {
                     method: 'POST',
@@ -300,11 +309,12 @@ function randomByWeight(wheelId, actualWheel) {
                         'Content-Type': 'application/json'
                     }
                 }).then(response => response.text())
-                .then(data => console.log(data))
-                .catch(error => console.log('Error:', error));
-    
-                spin(wheelId, i, actualWheel);
+                .then(data => {} /*console.log(data) */)
+                .catch(error => {} /*console.log('Error:', error)*/);
                 
+                // console.log(`prize id to spin to: ${i}`);
+                spin(wheelId, i, actualWheel);
+
                 // result.innerHTML = prizeName;
                 return { prizeName };
             }
@@ -316,9 +326,9 @@ function randomByWeight(wheelId, actualWheel) {
 
 
 const winHistoryCookie = getCookie("winHistory");
-console.log(winHistoryCookie);
+// console.log(winHistoryCookie);
 let winHistory = JSON.parse(winHistoryCookie == "" ? "[]" : winHistoryCookie);
-console.log(winHistory);
+// console.log(winHistory);
 
 let newResult = `NOWE: `;
 
@@ -347,7 +357,7 @@ function spin(wheelId, prizeId, actualWheel) {
     let totalWeights = pickedWheel.totalVisualWeights;
 
     let currentDegree = parseFloat(actualWheel.dataset.currentdegree);
-    console.log(`Current degree: ${currentDegree}`);
+    // console.log(`Current degree: ${currentDegree}`);
 
     // Calculate the degree to stop on the winning segment
     let realDegree = (currentDegree) % 360 // get the real degree without the 360s
@@ -409,10 +419,17 @@ function spin(wheelId, prizeId, actualWheel) {
         }, 5000);
     }, time * 1000); // Matches the duration of the animation
 
-    if (spinnedWheelId2 == 2)
+    // Check if can reload after animation
+    const isWheel2SpinnedTwice = (wheelId == 2 && spinnedWheelId2 == 2);
+    const isSinglePrizeWithZeroAmount = (wheelId == 2 && wheels[wheelId].prizes.length == 1 && prizeValues.amount <= 0);
+    const isWheel1 = (wheelId == 1);
+
+    if (isWheel2SpinnedTwice || isSinglePrizeWithZeroAmount || isWheel1){
+        // Set timeout to reload to time it after animations !
         setTimeout(() => {
             document.location.reload();
-        }, time * 1000 + 5000 + 1000);
+        }, time * 1000 + 4500);
+    }
 }
 
 generateWheel(1); // Call to generate the wheel on page load

@@ -279,12 +279,9 @@ function randomByWeight(wheelId, actualWheel) {
     // console.log(pickedWheel.prizes);
     let found = false;
     do {
-        let canSpin = false;
-        pickedWheel.prizes.forEach(element => {
-            if (element.amount > 0) canSpin = true;
-        }); 
-        
-        if (!canSpin) {
+        let cantSpin = ( pickedWheel.prizes.length == 0 ) || ( pickedWheel.prizes.length == 1 && pickedWheel.prizes[0].amount <= 0);
+  
+        if (cantSpin) {
             alert("Nie ma juz nagrod do wygrania !");
             break;
         }

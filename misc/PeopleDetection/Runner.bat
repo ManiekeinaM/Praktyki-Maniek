@@ -1,8 +1,17 @@
 @echo off
 setlocal
 
+:: Wczytanie konfiguracji z pliku
+for /f "tokens=2 delims==" %%A in ('findstr /R "^VERSION=" config.txt') do set "VERSION=%%A"
+
+:: Sprawdzenie czy zmienna VERSION została poprawnie wczytana
+if not defined VERSION (
+    echo Blad: Nie mozna wczytac wersji z config.txt!
+    exit /b 1
+)
+
 :: Sprawdzenie czy istnieje folder zrodlowy
-set "TARGET_DIR=DetectPeople-1.0.0"
+set "TARGET_DIR=DetectPeople-%VERSION%"
 if not exist %TARGET_DIR% (
     echo Folder %TARGET_DIR% nie istnieje.
     echo Pobieranie i wypakowanie...

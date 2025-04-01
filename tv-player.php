@@ -170,7 +170,7 @@
             lesson.innerText = `${lesson.id} / ${lesson.innerText}`;
         });
         
-        const url = "localhost:8080/detect";
+        const url = "http://localhost:8080/detect";
         let readAmountOfPeopleTimeout = null;
         const getAmountOfPeopleInFrontOfTv = async () => {
             try {

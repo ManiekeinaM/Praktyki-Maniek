@@ -36,7 +36,7 @@
 
     <!-- Timer and clock -->
     <div class="bottom-controls">
-        <?php if (isset($_COOKIE["isDniOtwarte"]) && $_COOKIE["isDniOtwarte"] != true): ?>
+        <?php if (!isset($_COOKIE["isDniOtwarte"]) || ( isset($_COOKIE["isDniOtwarte"]) && $_COOKIE["isDniOtwarte"] != true) ): ?>
         <div class="break">
             <p id="timer">Koniec przerwy za: <span class="light-green">10MIN</span></p>
         </div>
@@ -168,8 +168,28 @@
 
         document.querySelectorAll('.bell-schedule > span').forEach(lesson => {
             lesson.innerText = `${lesson.id} / ${lesson.innerText}`;
-        })
+        });
         
+        const url = "localhost:8080/detect";
+        let readAmountOfPeopleTimeout = null;
+        const getAmountOfPeopleInFrontOfTv = async () => {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+
+                const json = await response.json();
+                console.log(json);
+            } catch (error) {
+                console.error(error.message);
+            }
+
+            clearTimeout(readAmountOfPeopleTimeout);
+            readAmountOfPeopleTimeout = setTimeout(getAmountOfPeopleInFrontOfTv, 1000);
+        };
+
+        readAmountOfPeopleTimeout = setTimeout(getAmountOfPeopleInFrontOfTv, 1000);
     </script>
 </body>
 </html>

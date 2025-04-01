@@ -44,6 +44,10 @@ IF "%MONITOR_COUNT%"=="2" (
         --use-fake-ui-for-media-stream ^
         --autoplay-policy=no-user-gesture-required ^
         --disable-cache
+
+    cd PeopleDetection
+    start Runner.bat
+    cd ..
 ) ELSE (
     ECHO Less than two monitors detected. Launching Chrome on primary monitor only.
     

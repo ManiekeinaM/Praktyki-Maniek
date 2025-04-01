@@ -21,11 +21,8 @@ cd %TARGET_DIR%
 if not exist Scripts (
     echo Tworzenie srodowiska wirtualnego Python...
     call py -m venv .
-    cd Scripts
-    activate 
-    cd ..
     :: Pierwsza konfiguracja wymaga zainstalowania bibliotek
-    call python -m pip install -r requirements.txt
+    call Scripts\\python -m pip install -r requirements.txt
 )
 
 :: Start serwera z flaga deploy

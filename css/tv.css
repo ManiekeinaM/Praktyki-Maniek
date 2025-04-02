@@ -128,7 +128,7 @@ video {
     transform: translate(-50%, -50%);
 }
 
-#maniek-text-container.active #maniek-text-container-img-container {
+#maniek-text-container.background #maniek-text-container-img-container {
     margin-top: 20px;
     height: auto;
     max-height: fit-content;

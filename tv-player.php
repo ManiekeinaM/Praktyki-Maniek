@@ -322,8 +322,8 @@
 
         // Maniek message 
         const positionsOfManiekTextContainer = {
-            "start": { x: 0, y: 0},
-            "end": { x: 0, y: 0}
+            "start": { top: 0, left: 0},
+            "end": { top: 0, left: 0}
         };
         const maniekFacesSrcs = {
             "normal": "./assets/maniek-faces/wink-centered.gif",
@@ -341,16 +341,16 @@
 
             if (!maniekTextContainer.classList.contains("active")) {
                 if (!startSet) {
-                    positionsOfManiekTextContainer["start"].x = rect.top;
-                    positionsOfManiekTextContainer["start"].y = rect.left;
+                    positionsOfManiekTextContainer["start"].top = rect.top;
+                    positionsOfManiekTextContainer["start"].left = rect.left;
                     startSet = true;
                 }
 
                 maniekTextConatinerImg.src = maniekFacesSrcs["bigEye"];
                 // Animacja wchodzaca
                 maniekTextContainer.style.position = "fixed";
-                maniekTextContainer.style.top = positionsOfManiekTextContainer["start"].x + "px";
-                maniekTextContainer.style.left = positionsOfManiekTextContainer["start"].y + "px";
+                maniekTextContainer.style.top = positionsOfManiekTextContainer["start"].top + "px";
+                maniekTextContainer.style.left = positionsOfManiekTextContainer["start"].left + "px";
 
                 setTimeout(() => {
                     maniekTextContainer.classList.toggle("active");
@@ -369,12 +369,12 @@
                             isDisplaying = true;
                             processDialogQueue();
                         }, 500);
-                    }, 200);
+                    }, 900);
                 }, 20);
             } else {
                 if (!endSet) {
-                    positionsOfManiekTextContainer["end"].x = rect.top + scrollY;
-                    positionsOfManiekTextContainer["end"].y = rect.left + scrollX;
+                    positionsOfManiekTextContainer["end"].top = rect.top + scrollY;
+                    positionsOfManiekTextContainer["end"].left = rect.left + scrollX;
                     endSet = true;
                 }
 
@@ -384,9 +384,9 @@
                 maniekTextContainerTextContainer.style.display = "none";
                 maniekTextContainer.classList.toggle("background");
                 setTimeout(() => {
-                    maniekTextContainer.style.top = positionsOfManiekTextContainer["end"].x + "px";
-                    maniekTextContainer.style.left = positionsOfManiekTextContainer["end"].y + "px";
-                    maniekTextContainer.style.transform = "translate(0, 0)";
+                    maniekTextContainer.style.top = (positionsOfManiekTextContainer["end"].top) + "px";
+                    maniekTextContainer.style.left = (positionsOfManiekTextContainer["end"].left) + "px";
+                    maniekTextContainer.style.transform = "translate(0px, 0px)";
 
                     setTimeout(() => {
                         maniekTextContainer.classList.toggle("active");
@@ -395,9 +395,12 @@
                         maniekTextContainer.style.removeProperty("left");
                         maniekTextContainer.style.removeProperty("transform");
                     }, 1000);
-                }, 100);
+                }, 1000);
             }
         };
+
+        toggleManiekMessage();
+        setInterval(toggleManiekMessage, 15000);
     </script>
 </body>
 </html>

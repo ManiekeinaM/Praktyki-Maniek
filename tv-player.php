@@ -41,7 +41,16 @@
             <p id="timer">Koniec przerwy za: <span class="light-green">10MIN</span></p>
         </div>
         <?php endif; ?>
-        <img class="maniek-face" src="./assets/maniek-faces/wink-centered.gif">
+
+        <div id="maniek-text-container">
+            <div id="maniek-text-container-img-container">
+                <img class="maniek-face" src="./assets/maniek-faces/wink-centered.gif">
+            </div>
+            <div id="maniek-text-container-text-container" class="big">
+                *
+            </div>
+        </div>
+
         <div class="timer">
             <p id="clock">09:46</p>
         </div>
@@ -58,6 +67,11 @@
     ?></div>
 
     <script>
+        // Maniek div where maniek text will appear 
+        const maniekTextContainer = document.querySelector("#maniek-text-container");
+        const maniekTextContainerTextContainer = maniekTextContainer.querySelector("#maniek-text-container-text-container");
+        const maniekTextConatinerImg = maniekTextContainer.querySelector('.maniek-face');
+
         //Retrieving videos
         const dir = '/example-videos';
         const passed_data = document.getElementById("data-pass").innerHTML;
@@ -170,9 +184,13 @@
             lesson.innerText = `${lesson.id} / ${lesson.innerText}`;
         });
         
+        const minimumSecDelayBetweenMessages = 8;
+        let currentDelay = 0;
         const url = "http://localhost:8080/detect";
         let readAmountOfPeopleTimeout = null;
         const getAmountOfPeopleInFrontOfTv = async () => {
+            let detected = false;
+            let peopleAmount = 0;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -180,16 +198,206 @@
                 }
 
                 const json = await response.json();
-                console.log(json);
+                detected = json["Detected"];
+                peopleAmount = json["Amount"];
             } catch (error) {
                 console.error(error.message);
             }
 
             clearTimeout(readAmountOfPeopleTimeout);
             readAmountOfPeopleTimeout = setTimeout(getAmountOfPeopleInFrontOfTv, 1000);
-        };
 
+            currentDelay += 1;
+            if (currentDelay >= minimumSecDelayBetweenMessages) {
+                if(detected) {
+                    toggleManiekMessage();
+                    currentDelay = 0;
+                }
+            }
+        };
         readAmountOfPeopleTimeout = setTimeout(getAmountOfPeopleInFrontOfTv, 1000);
+        
+        messages = [
+            "ZWOLNIJ!!",
+            "Uwaga! Nauczyciel na horyzoncie!",
+            "Powodzenia na kartkówce!",
+            "Powodzenia na sprawdzianie!",
+            "Chcesz zagrać w grę??",
+            "Dzwonek to tylko sugestia...",
+            "Lekcja zaczęła się 5 minut temu...",
+            "Uśmiechnij się! To tylko szkoła!",
+            "Kawałek czekolady poprawia koncentrację!",
+            "Pamiętaj o zadaniu domowym!",
+            "Uwaga, dyrektor w pobliżu!",
+            "Dzisiaj obiad w stołówce wygląda podejrzanie...",
+            "Szukasz ściągi? Uśmiechnij się do kolegi!",
+            "Chcesz mieć spokój? Udawaj, że się uczysz!",
+            "Nie śpij na lekcji, bo przegapisz przerwę!",
+            "Dzień bez spóźnienia to dzień stracony!",
+            "Czy już dziś powiedziałeś 'Nie było mnie na tej lekcji'?",
+            "Za pięć minut dzwonek... albo i nie!",
+            "Skoro to czytasz, to znaczy, że nie uważasz na lekcji!",
+            "Pamiętaj! Weekend jest coraz bliżej!",
+            "Matematyka? Spokojnie, kalkulator też nie wie!",
+            "Czy na pewno masz swoją legitymację?",
+            "Nie wiesz, co się dzieje? Spokojnie, nikt nie wie!",
+            "Za 20 lat będziesz to wspominać... może.",
+            "Nie stój w przejściu! Ludzie próbują przejść!",
+            "Uwaga! Nauczyciel patrzy!",
+            "Nauczyciele też kiedyś byli uczniami... podobno!",
+            "Zgadnij, kto dziś dostanie pytanie na ocenę?",
+            "Klasówka? Chyba dzisiaj, ale nie jestem pewien...",
+            "Dzisiaj dobry dzień na wagary? Nie, lepiej nie ryzykować!",
+            "Przestań gapić się w ekran, idź na lekcję!",
+            "Dzwonek nie oznacza końca lekcji... zapytaj nauczyciela!"
+        ];
+
+        let delay = 90;
+        let removeDelay = 15;
+        let isDisplaying = false;
+        let isRemoving = false;
+        let currentDialog = ""
+        function processDialogQueue(characterPos = 0, nextDelay = delay) {
+            if (!isDisplaying) {
+                isDialogRunning = false; // No more dialog strings in the queue
+                dialogQueue = []; // Clear the queue (in case dialog is halted)
+                return;
+            }
+
+            let goalString = currentDialog; // Get the first string in the queue
+            let endCharacter = goalString.length;
+
+            let newText = `${goalString.substring(0, characterPos)}`;
+            maniekTextContainerTextContainer.innerHTML = newText;
+
+            if (navigator.userActivation.hasBeenActive) {
+                // new scope to garbage collect it faster
+                let sansVoice = new Audio('./sounds/voice_sans.mp3');
+                sansVoice.volume = 0.03;
+                sansVoice.play();
+            }
+
+            // Capital letters, punctuation and spaces
+            let currentChar = goalString.charAt(characterPos);
+            let currentDelay = nextDelay || delay;
+
+            // Calculate the next letter's delay
+            nextDelay = delay;
+            // console.log(currentChar);
+            if (currentChar === ' ') {
+                nextDelay = 10;
+            } else if (currentChar === ',') {
+                nextDelay *= 3;
+            } else if (currentChar === '.') {
+                nextDelay *= 5;
+            } else if (currentChar === '?' || currentChar === '!') {
+                nextDelay *= 2;
+            } else if (currentChar === currentChar.toUpperCase()) {
+                nextDelay /= 2;
+            }
+            // console.log(currentChar, currentDelay);
+
+            if (characterPos == endCharacter) {
+                if (!isRemoving) {
+                    setTimeout(() => {
+                        isRemoving = true;
+                        processDialogQueue(characterPos - 1, removeDelay);
+                    }, 2000);
+                    return;
+                } 
+            } else if (isRemoving && characterPos == 0) {
+                isDisplaying = false;
+                isRemoving = false;
+                // Close dialog !
+                toggleManiekMessage();
+            } else {
+                setTimeout(() => {
+                    if (isRemoving)
+                        processDialogQueue(Math.max(characterPos - 1, 0), removeDelay);
+                    else 
+                        processDialogQueue(characterPos + 1, nextDelay);
+                }, currentDelay);
+            }
+        }
+
+        // Maniek message 
+        const positionsOfManiekTextContainer = {
+            "start": { x: 0, y: 0},
+            "end": { x: 0, y: 0}
+        };
+        const maniekFacesSrcs = {
+            "normal": "./assets/maniek-faces/wink-centered.gif",
+            "bigEye": "./assets/maniek-faces/big eyes.gif"
+        };
+        let startSet = false;
+        let endSet = false;
+
+        // Set width and height to px amount
+        const rect = maniekTextContainer.getBoundingClientRect();
+
+        const toggleManiekMessage = () => {
+            let scrollY = window.scrollY;
+            let scrollX = window.scrollX;
+
+            if (!maniekTextContainer.classList.contains("active")) {
+                if (!startSet) {
+                    positionsOfManiekTextContainer["start"].x = rect.top;
+                    positionsOfManiekTextContainer["start"].y = rect.left;
+                    startSet = true;
+                }
+
+                maniekTextConatinerImg.src = maniekFacesSrcs["bigEye"];
+                // Animacja wchodzaca
+                maniekTextContainer.style.position = "fixed";
+                maniekTextContainer.style.top = positionsOfManiekTextContainer["start"].x + "px";
+                maniekTextContainer.style.left = positionsOfManiekTextContainer["start"].y + "px";
+
+                setTimeout(() => {
+                    maniekTextContainer.classList.toggle("active");
+
+                    maniekTextContainer.style.removeProperty("top");
+                    maniekTextContainer.style.removeProperty("left");
+                    maniekTextContainer.style.removeProperty("position");
+
+                    setTimeout(() => {
+                        maniekTextContainer.classList.toggle("background");
+                        setTimeout(() => {
+                            maniekTextContainerTextContainer.style.display = "flex";
+
+                            // TODO: get random text from somewhere
+                            currentDialog = "Test ... ? ...";
+                            isDisplaying = true;
+                            processDialogQueue();
+                        }, 500);
+                    }, 200);
+                }, 20);
+            } else {
+                if (!endSet) {
+                    positionsOfManiekTextContainer["end"].x = rect.top + scrollY;
+                    positionsOfManiekTextContainer["end"].y = rect.left + scrollX;
+                    endSet = true;
+                }
+
+                maniekTextConatinerImg.src = maniekFacesSrcs["normal"];
+
+                // Animacja wychodzaca
+                maniekTextContainerTextContainer.style.display = "none";
+                maniekTextContainer.classList.toggle("background");
+                setTimeout(() => {
+                    maniekTextContainer.style.top = positionsOfManiekTextContainer["end"].x + "px";
+                    maniekTextContainer.style.left = positionsOfManiekTextContainer["end"].y + "px";
+                    maniekTextContainer.style.transform = "translate(0, 0)";
+
+                    setTimeout(() => {
+                        maniekTextContainer.classList.toggle("active");
+
+                        maniekTextContainer.style.removeProperty("top");
+                        maniekTextContainer.style.removeProperty("left");
+                        maniekTextContainer.style.removeProperty("transform");
+                    }, 1000);
+                }, 100);
+            }
+        };
     </script>
 </body>
 </html>

@@ -3,6 +3,14 @@
     src: url(../fonts/digital.regular.ttf);
 }
 
+@font-face {
+    font-family: 'Determination Mono';
+    /* src: url('../fonts/DeterminationMono.ttf') format('truetype'), */
+        /* url('../fonts/DeterminationMono.woff2') format('woff2'); */
+
+    src: url('../fonts/DeterminationMonoPolish.otf');
+}
+
 body {
     margin: 0;
     overflow: hidden;
@@ -41,6 +49,7 @@ body {
 .bottom-controls > * {
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .bell-schedule {
@@ -67,7 +76,7 @@ h4 {
 
 .maniek-face {
     width: auto;
-    height: 125%;
+    height: 100%;
     max-height: 12rem;
 }
 
@@ -98,3 +107,57 @@ video {
     margin: 1rem;
 }
 
+#maniek-text-container {
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    width: 160px;
+    height: 9rem;
+    border: 0px;
+    
+    transition: all 1s ease-in-out,
+    width 1s,
+    height 1s;
+}
+
+#maniek-text-container.active {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+#maniek-text-container.active #maniek-text-container-img-container {
+    margin-top: 20px;
+    height: auto;
+    max-height: fit-content;
+}
+
+#maniek-text-container.background {
+    background-color: black;
+    width: 80%;
+    height: 80%;
+    border-radius: 20px;
+    opacity: 0.9;
+    border: 0.5rem solid green;
+}
+
+#maniek-text-container-text-container {
+    position: relative;
+    display: none;
+    padding: 1rem;
+    color: white;
+    width: 80%;
+    height: fit-content;
+    word-wrap: break-word;
+    font-family: 'Determination Mono', monospace;
+    text-align: center;
+    justify-content: center;
+}
+
+#maniek-text-container-img-container {
+    height: auto;
+    display: flex;
+    justify-content: center;
+}

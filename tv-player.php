@@ -365,7 +365,7 @@
                             maniekTextContainerTextContainer.style.display = "flex";
 
                             // TODO: get random text from somewhere
-                            currentDialog = "Test ... ? ...";
+                            currentDialog = messages[Math.random() * messages.length];
                             isDisplaying = true;
                             processDialogQueue();
                         }, 500);

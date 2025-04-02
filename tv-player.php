@@ -217,7 +217,7 @@
         };
         readAmountOfPeopleTimeout = setTimeout(getAmountOfPeopleInFrontOfTv, 1000);
         
-        messages = [
+        let messages = [
             "ZWOLNIJ!!",
             "Uwaga! Nauczyciel na horyzoncie!",
             "Powodzenia na kartkówce!",
@@ -365,7 +365,7 @@
                             maniekTextContainerTextContainer.style.display = "flex";
 
                             // TODO: get random text from somewhere
-                            currentDialog = messages[Math.random() * messages.length];
+                            currentDialog = messages[Math.floor(Math.random() * messages.length)];
                             isDisplaying = true;
                             processDialogQueue();
                         }, 500);

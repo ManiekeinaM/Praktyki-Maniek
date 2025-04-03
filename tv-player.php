@@ -98,6 +98,13 @@
         const clock = document.getElementById("clock");
         const timer = document.getElementById("timer");
         let timeLeft;
+        let whatHappening = {
+            "lekcja": false,
+            "przerwa": false,
+            "matury": false,
+            "pozno": false,
+            "ludzie": 0
+        }
 
         startTime();
 
@@ -152,6 +159,10 @@
                     if(timeLeft < 0) timeLeft+=60;
                     timeLeft = `Koniec lekcji za: <span class="light-green"><span class="big">${timeLeft}</span>min</span>`;
 
+                    // For maniek conditional messages
+                    whatHappening["lekcja"] = true;
+                    whatHappening["przerwa"] = false;
+
                     return currentLesson;
                 }else if(currentHour == vHour) {
                     timeLeft = vMinute+10;
@@ -162,7 +173,15 @@
                         console.log(timeLeft);
                         if(timeLeft < 0) timeLeft+=60;
                         timeLeft = `Koniec lekcji za: <span class="light-green"><span class="big">${timeLeft}</span>min</span>`;
+                        
+                        // For maniek conditional messages
+                        whatHappening["lekcja"] = true;
+                        whatHappening["przerwa"] = false;   
                     }else{
+                        // For maniek conditional messages
+                        whatHappening["lekcja"] = false;
+                        whatHappening["przerwa"] = true;
+
                         timeLeft = `Koniec przerwy za: <span class="light-green"><span class="big">${timeLeft}</span>min</span>`;
                     }
                     return ++currentLesson;
@@ -210,6 +229,8 @@
             currentDelay += 1;
             if (currentDelay >= minimumSecDelayBetweenMessages) {
                 if(detected) {
+                    // For maniek conditional messages
+                    whatHappening["ludzie"] = peopleAmount;
                     toggleManiekMessage();
                     currentDelay = 0;
                 }
@@ -333,19 +354,20 @@
         let endSet = false;
 
         // Set width and height to px amount
-        const rect = maniekTextContainer.getBoundingClientRect();
+        let rect = maniekTextContainer.getBoundingClientRect();
 
-        const toggleManiekMessage = () => {
+        const toggleManiekMessage = (peopleAmount = 0) => {
             let scrollY = window.scrollY;
             let scrollX = window.scrollX;
 
+            
             if (!maniekTextContainer.classList.contains("active")) {
                 if (!startSet) {
                     positionsOfManiekTextContainer["start"].top = rect.top;
                     positionsOfManiekTextContainer["start"].left = rect.left;
                     startSet = true;
                 }
-
+                
                 maniekTextConatinerImg.src = maniekFacesSrcs["bigEye"];
                 // Animacja wchodzaca
                 maniekTextContainer.style.position = "fixed";
@@ -394,8 +416,8 @@
                         maniekTextContainer.style.removeProperty("top");
                         maniekTextContainer.style.removeProperty("left");
                         maniekTextContainer.style.removeProperty("transform");
-                    }, 1000);
-                }, 1000);
+                    }, 900);
+                }, 500);
             }
         };
 

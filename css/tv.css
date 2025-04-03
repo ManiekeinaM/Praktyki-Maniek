@@ -115,9 +115,12 @@ video {
     height: 9rem;
     border: 0px;
     
+    background-color: rgba(255, 255, 255, 0);
+
     transition: all 1s ease-in-out,
-    width 1s,
-    height 1s;
+    width 500ms,
+    height 500ms,
+    background-color 500ms;
 }
 
 #maniek-text-container.active {
@@ -128,9 +131,9 @@ video {
     transform: translate(-50%, -50%);
 }
 
-#maniek-text-container.background #maniek-text-container-img-container {
-    margin-top: 20px;
-    height: auto;
+#maniek-text-container.active #maniek-text-container-img-container {
+    margin-top: 20px; 
+    height: min-content;
     max-height: fit-content;
 }
 
@@ -157,7 +160,7 @@ video {
 }
 
 #maniek-text-container-img-container {
-    height: auto;
+    height: 100%;
     display: flex;
     justify-content: center;
 }

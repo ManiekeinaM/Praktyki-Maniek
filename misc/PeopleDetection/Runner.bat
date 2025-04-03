@@ -29,7 +29,7 @@ cd %TARGET_DIR%
 :: Sprawdzenie czy istnieje folder Scripts (czyli czy venv istnieje)
 if not exist Scripts (
     echo Tworzenie srodowiska wirtualnego Python...
-    call py -m venv .
+    call python -m venv .
     :: Pierwsza konfiguracja wymaga zainstalowania bibliotek
     call Scripts\\python -m pip install -r requirements.txt
 )

@@ -420,7 +420,7 @@
                 }, 500);
             }
         };
-
+        
         toggleManiekMessage();
         setInterval(toggleManiekMessage, 15000);
     </script>

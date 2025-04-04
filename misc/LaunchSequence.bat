@@ -3,7 +3,7 @@
 cd /d %~dp0%
 ECHO Working in directory: %CD%
 ECHO Blocking mouse movement
-start "" "focusManiekWindow.ahk"
+start "" "disableMouse.ahk"
 
 REM --- Start XAMPP services (Apache & MySQL) ---
 timeout /t 2 /nobreak >nul
@@ -65,8 +65,8 @@ IF "%MONITOR_COUNT%"=="2" (
 REM --- Start the AutoHotkey script to focus the windows ---
 start "" "focusManiekWindow.ahk"
 
-timeout /t 4 /nobreak >nul
-taskkill /IF AutoHotkey.exe
+timeout /t 5 /nobreak >nul
+taskkill /IM AutoHotKey64.exe
 
 exit
 cmd /k

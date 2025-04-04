@@ -247,7 +247,9 @@ const getHolidays = async() => {
         }
         
         let json = await response.json();
-        let holidays = json["swieta"];
+        let holidays = json["holidays"];
+        console.log(holidays);
+        console.log();
         holidays.forEach(holiday => {
             messagesContext['ogolne'].push(`Czy wiesz, że za niedługo ${holiday}`);
         });

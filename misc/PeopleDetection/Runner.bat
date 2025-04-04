@@ -35,6 +35,6 @@ if not exist Scripts (
 )
 
 :: Start serwera z flaga deploy
-Scripts\\python main.py --deploy 1
+Scripts\\python main.py --deploy 1 --restart 1
 
 endlocal

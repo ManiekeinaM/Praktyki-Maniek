@@ -44,7 +44,7 @@
     
     try {
         // Create database connection
-        $db_baza = new mysqli('localhost', 'root', '', 'swieta');
+        $db_baza = new mysqli('localhost', 'root', '', 'bazadanych');
 
         // Check connection
         if ($db_baza->connect_error) {

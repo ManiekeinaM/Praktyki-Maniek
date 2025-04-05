@@ -16,7 +16,7 @@ try {
     $item_id = intval($decreasedAmounts['id']);
 
     // Create database connection
-    $db_baza = new mysqli('localhost', 'root', '', 'baza_pula');
+    $db_baza = new mysqli('localhost', 'root', '', 'bazadanych');
 
     // Check connection
     if ($db_baza->connect_error) {

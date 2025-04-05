@@ -58,10 +58,11 @@
         $daysInMonth = GetMonthDaysAmount($month, $year);
 
         $stopAt = GetEndDate($day, $month, $year, $daysInMonth);
+        // Zapytanie, które pobiera swieta z wyprzedzeniem DAY_IN_THE_FUTURE dni
         $sql = "SELECT * FROM `swieta` WHERE ((startMonth = ? AND startDay BETWEEN ? AND ?) AND (forYear = ? OR forYear IS NULL)) OR ((startMonth = ? AND startDay BETWEEN ? AND ?) AND (forYear = ? OR forYear IS NULL))";
 
         $stmt = $db_baza->prepare($sql);
-        $stmt->bind_param("iiiiiiii", $month, $day, min($day + DAY_IN_THE_FUTURE, $daysInMonth), $year, $stopAt["month"], $stopAt["dayStart"], $stopAt["dayEnd"], $stopAt["year"]);
+        @$stmt->bind_param("iiiiiiii", $month, $day, min($day + DAY_IN_THE_FUTURE, $daysInMonth), $year, $stopAt["month"], $stopAt["dayStart"], $stopAt["dayEnd"], $stopAt["year"]);
         $stmt->execute();
         $result = $stmt->get_result();
 

@@ -138,6 +138,7 @@ document.querySelectorAll('.bell-schedule > span').forEach(lesson => {
     lesson.innerText = `${lesson.id} / ${lesson.innerText}`;
 });
 
+// Pobierz dane z API od kamery, który wykrywa obecność osób
 const minimumSecDelayBetweenMessages = 8;
 let currentDelay = 0;
 const url = "http://localhost:8080/detect";
@@ -172,6 +173,7 @@ const getAmountOfPeopleInFrontOfTv = async () => {
     }
 };
 readAmountOfPeopleTimeout = setTimeout(getAmountOfPeopleInFrontOfTv, 1000);
+
 
 let messagesContext = {
     duzoLudzi: [
@@ -235,9 +237,9 @@ const getHolidays = async() => {
     if (gotHolidays) return;
     // Pobierz dane z bazy o swietach !
     try {
+        // 
         let response = await fetch('./misc/getHoliday.php', {
             method: 'POST',
-            body: JSON.stringify({day: day, month: month, year: year}),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -248,10 +250,8 @@ const getHolidays = async() => {
         
         let json = await response.json();
         let holidays = json["holidays"];
-        console.log(holidays);
-        console.log();
         holidays.forEach(holiday => {
-            messagesContext['ogolne'].push(`Czy wiesz, że za niedługo ${holiday}`);
+            messagesContext['ogolne'].push(`Czy wiesz, że ${holiday["startDay"]}.${holiday["startMonth"]} jest ${holiday["nazwa"]} ?`);
         });
         gotHolidays = true;
     } catch (error) {

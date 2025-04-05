@@ -107,6 +107,7 @@ video {
     margin: 1rem;
 }
 
+/* Style dla contenera, ktory przechowuje tekst i obrazek manka*/
 #maniek-text-container {
     justify-content: center;
     flex-direction: column;
@@ -123,6 +124,7 @@ video {
     background-color 500ms;
 }
 
+/* Klasa active nadawana jest wtedy, kiedy maniek wyswietla tekst */
 #maniek-text-container.active {
     position: fixed;
     top: 50%;
@@ -137,15 +139,17 @@ video {
     max-height: fit-content;
 }
 
+/* Klasa backgroud nadawana jest wtedy, kiedy maniek wyswietla tekst */
 #maniek-text-container.background {
     background-color: black;
-    width: 80%;
-    height: 80%;
+    width: 50%;
+    height: 50%;
     border-radius: 20px;
     opacity: 0.9;
     border: 0.5rem solid green;
 }
 
+/* Kontener tekstowy w którym znajduje się tekst, ktory wyswietla maniek */
 #maniek-text-container-text-container {
     position: relative;
     display: none;
@@ -159,6 +163,7 @@ video {
     justify-content: center;
 }
 
+/* gif manka */
 #maniek-text-container-img-container {
     height: 100%;
     display: flex;

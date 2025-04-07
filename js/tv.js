@@ -275,8 +275,6 @@ const getAvailableMessages = () => {
     // Funkcja na podstawie wielu czynnikow wybiera wiadomosci pasujące do aktualnego wydarzenia w ciagu dnia, lub roku !
     let messages = messagesContext["ogolne"];
 
-    console.log(realTimeLeft);
-
     // Kiedy jest lekcja
     if (whatsHappening['lekcja']) {
         messages = messages.concat(messagesContext["lekcja"]);
@@ -306,6 +304,12 @@ const getAvailableMessages = () => {
     if (dayOfTheWeek == 5) {
         messages = messages.concat(messagesContext["weekend"]);
     }
+
+    // Kiedy duzo osob przed kamera
+    if (whatsHappening["ludzie"] >= 10) {
+        messages = messages.concat(messagesContext["duzoLudzi"]);
+    }
+
     return messages;
 };
 

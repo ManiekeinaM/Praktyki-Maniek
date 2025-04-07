@@ -41,13 +41,14 @@
             <p id="timer">Koniec przerwy za: <span class="light-green">10MIN</span></p>
         </div>
         <?php endif; ?>
-
+        
+        <!-- Tutaj wyswietlana jest wiadomosc manka ! Wiecej w tv.js -->
         <div id="maniek-text-container">
             <div id="maniek-text-container-img-container">
                 <img class="maniek-face" src="./assets/maniek-faces/wink-centered.gif">
             </div>
             <div id="maniek-text-container-text-container" class="big">
-                *
+                * Tutaj jest tekst wyswietlany przez js
             </div>
         </div>
 

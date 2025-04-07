@@ -30,7 +30,7 @@ const clock = document.getElementById("clock");
 const timer = document.getElementById("timer");
 let realTimeLeft;
 let timeLeft;
-let whatHappening = {
+let whatsHappening = {
     "lekcja": false,
     "przerwa": false,
     "matury": false,
@@ -93,8 +93,8 @@ function lessonCheck(currentHour, currentMinute) {
             timeLeft = `Koniec lekcji za: <span class="light-green"><span class="big">${timeLeft}</span>min</span>`;
 
             // For maniek conditional messages
-            whatHappening["lekcja"] = true;
-            whatHappening["przerwa"] = false;
+            whatsHappening["lekcja"] = true;
+            whatsHappening["przerwa"] = false;
 
             return currentLesson;
         }else if(currentHour == vHour) {
@@ -110,12 +110,12 @@ function lessonCheck(currentHour, currentMinute) {
                 timeLeft = `Koniec lekcji za: <span class="light-green"><span class="big">${timeLeft}</span>min</span>`;
                 
                 // For maniek conditional messages
-                whatHappening["lekcja"] = true;
-                whatHappening["przerwa"] = false;   
+                whatsHappening["lekcja"] = true;
+                whatsHappening["przerwa"] = false;   
             }else{
                 // For maniek conditional messages
-                whatHappening["lekcja"] = false;
-                whatHappening["przerwa"] = true;
+                whatsHappening["lekcja"] = false;
+                whatsHappening["przerwa"] = true;
 
                 timeLeft = `Koniec przerwy za: <span class="light-green"><span class="big">${timeLeft}</span>min</span>`;
             }
@@ -166,7 +166,7 @@ const getAmountOfPeopleInFrontOfTv = async () => {
     if (currentDelay >= minimumSecDelayBetweenMessages) {
         if(detected) {
             // For maniek conditional messages
-            whatHappening["ludzie"] = peopleAmount;
+            whatsHappening["ludzie"] = peopleAmount;
             toggleManiekMessage();
             currentDelay = 0;
         }
@@ -180,7 +180,8 @@ let messagesContext = {
         "Ooo ile was !!! Może w coś zagracie ?",
         "Nie stójcie w przejściu ludzie próbują przejść !!",
         "Czuje sie bardzo prytłoczony ilością osób :(",
-        "Zatrzymajcie się chociaż na chwile, chodzą plotki, że maniek ma nowe funkcje :O"
+        "Zatrzymajcie się chociaż na chwile, chodzą plotki, że maniek ma nowe funkcje :O",
+        "Widze was !!"
     ],
     pozno: [
         "Przepraszam czy nie pomyliły Ci się godziny ?",
@@ -190,11 +191,11 @@ let messagesContext = {
     ],
     lekcja: [
         "Przepraszam, można wiedzieć czemu nie jesteś na lekcji ?",
-        "Rozumiem, że tylko do toalety",
+        "Rozumiem, że tylko do toalety ?",
         "Wiem, że jest lekcja i tak dalej ale dawno nikt w nic nie grał . . . Może szybka rundka ?",
         "Nie śpisz podczas lekcji ? Wydarzenie roku !",
         "Uciekasz ??",
-        "Jak uciekasz zabierz mnie ze sobą !"
+        "Jak uciekasz to zabierz mnie ze sobą !"
     ],
     koniecLekcji: [
         "Nie wracaj, zaraz koniec lekcji"
@@ -222,7 +223,8 @@ let messagesContext = {
         "Mowią na mnie 'Maniek' a Ty jak masz na imię ?",
         "Pong, Air-turret, Wisielec, Kółko i Krzyżyk czekają na Ciebie ? A Ty na co czekasz ?",  
         "Nie biegamy po korytarzu !",
-        "ZWOLNIJ !!!!! Może szybka partia w kółko i krzyżyk ?"      
+        "ZWOLNIJ !!!!! Może szybka partia w kółko i krzyżyk ?",
+        "Widze Cię :))"      
     ]
 };
 
@@ -244,14 +246,22 @@ const getHolidays = async() => {
                 'Content-Type': 'application/json'
             }
         });
+        // On fetch error
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
         
         let json = await response.json();
+        // On failure
+        if (json["success"] == false)
+            throw new Error(`Failed with message: ${json["message"]}`);
+
         let holidays = json["holidays"];
         holidays.forEach(holiday => {
-            messagesContext['ogolne'].push(`Czy wiesz, że ${holiday["startDay"]}.${holiday["startMonth"]} jest ${holiday["nazwa"]} ?`);
+            if (holiday["showWithDate"] === 1)
+                messagesContext['ogolne'].push(`Czy wiesz, że ${holiday["startDay"]}.${holiday["startMonth"]} jest ${holiday["nazwa"]} ?`);
+            else 
+                messagesContext['ogolne'].push(`Za niedługo ${holiday["nazwa"]}, ach ten czas szybko leci ...`);
         });
         gotHolidays = true;
     } catch (error) {
@@ -268,7 +278,7 @@ const getAvailableMessages = () => {
     console.log(realTimeLeft);
 
     // Kiedy jest lekcja
-    if (whatHappening['lekcja']) {
+    if (whatsHappening['lekcja']) {
         messages = messages.concat(messagesContext["lekcja"]);
 
         // Kiedy zaraz koniec lekcji
@@ -278,7 +288,7 @@ const getAvailableMessages = () => {
     }
 
     // Kiedy jest przerwa
-    if (whatHappening['przerwa']) {
+    if (whatsHappening['przerwa']) {
         messages = messages.concat(messagesContext["przerwa"]);
 
         // Kiedy zaraz koniec lekcji
@@ -346,10 +356,11 @@ function processDialogQueue(characterPos = 0, nextDelay = delay) {
 
     if (characterPos == endCharacter) {
         if (!isRemoving) {
+            // This timeout determins when maniek's message will hide 
             setTimeout(() => {
                 isRemoving = true;
                 processDialogQueue(characterPos - 1, removeDelay);
-            }, 2000);
+            }, 3000);
             return;
         } 
     } else if (isRemoving && characterPos == 0) {
@@ -381,7 +392,8 @@ let endSet = false;
 
 // Set width and height to px amount
 let rect = maniekTextContainer.getBoundingClientRect();
-
+const MainTransitionTimeMS = 700;
+const OtherTransitionTimeMS = 500;
 const toggleManiekMessage = (peopleAmount = 0) => {
     let scrollY = window.scrollY;
     let scrollX = window.scrollX;
@@ -396,6 +408,7 @@ const toggleManiekMessage = (peopleAmount = 0) => {
         
         maniekTextConatinerImg.src = maniekFacesSrcs["bigEye"];
         // Animacja wchodzaca
+        maniekTextContainer.style.trans
         maniekTextContainer.style.position = "fixed";
         maniekTextContainer.style.top = positionsOfManiekTextContainer["start"].top + "px";
         maniekTextContainer.style.left = positionsOfManiekTextContainer["start"].left + "px";
@@ -417,9 +430,9 @@ const toggleManiekMessage = (peopleAmount = 0) => {
                     currentDialog = messages[Math.floor(Math.random() * messages.length)];
                     isDisplaying = true;
                     processDialogQueue();
-                }, 500);
-            }, 900);
-        }, 20);
+                }, OtherTransitionTimeMS);
+            }, MainTransitionTimeMS);
+        }, 10);
     } else {
         if (!endSet) {
             positionsOfManiekTextContainer["end"].top = rect.top + scrollY;
@@ -443,8 +456,8 @@ const toggleManiekMessage = (peopleAmount = 0) => {
                 maniekTextContainer.style.removeProperty("top");
                 maniekTextContainer.style.removeProperty("left");
                 maniekTextContainer.style.removeProperty("transform");
-            }, 900);
-        }, 500);
+            }, MainTransitionTimeMS - 20);
+        }, OtherTransitionTimeMS);
     }
 };
 

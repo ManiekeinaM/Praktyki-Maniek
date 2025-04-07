@@ -9,7 +9,7 @@
         return $monthnumber % 2 == 0 ? 30 : 31; 
     }
 
-    const DAY_IN_THE_FUTURE = 20;
+    const DAY_IN_THE_FUTURE = 28;
     function GetEndDate(int $startDay, int $startMonth, int $startYear, int $daysInMonth) : array {
         $newDate = array();
 
@@ -50,6 +50,9 @@
         if ($db_baza->connect_error) {
             throw new Exception("Blad polaczenia z baza danych: " . $db_baza->connect_error);
         }
+        
+        // Set charset
+        $db_baza->set_charset("utf8");
 
         $date = getdate();
         $day = $date["mday"];

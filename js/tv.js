@@ -99,12 +99,12 @@ function lessonCheck(currentHour, currentMinute) {
             return currentLesson;
         }else if(currentHour == vHour) {
             timeLeft = vMinute+10;
-            if(currentLesson == 3) timeLeft+=10;
             timeLeft = timeLeft-currentMinute;
             realTimeLeft = timeLeft;
             if(timeLeft<=0) {
                 timeLeft = vMinute-5-currentMinute;
                 console.log(timeLeft);
+                if(currentLesson == 3) timeLeft+=10;
                 if(timeLeft < 0) timeLeft+=60;
                 realTimeLeft = timeLeft;
                 timeLeft = `Koniec lekcji za: <span class="light-green"><span class="big">${timeLeft}</span>min</span>`;

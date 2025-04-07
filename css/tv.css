@@ -141,11 +141,11 @@ video {
 
 /* Klasa backgroud nadawana jest wtedy, kiedy maniek wyswietla tekst */
 #maniek-text-container.background {
-    background-color: black;
+    background-color: rgba(0, 0, 0, 1);
     width: 70%;
     height: 70%;
     border-radius: 20px;
-    opacity: 0.9;
+    /* opacity: 0.9; */
     border: 0.5rem solid green;
 }
 

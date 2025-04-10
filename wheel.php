@@ -49,7 +49,7 @@
     <!-- PHP -->
     <p id="php-container" style="display:none;">
     <?php
-        $db = new mysqli("localhost", "root", "", "baza_pula");
+        $db = new mysqli("localhost", "root", "", "bazadanych");
 
         if($db -> connect_error) {
             die();

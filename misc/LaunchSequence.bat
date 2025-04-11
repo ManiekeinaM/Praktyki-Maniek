@@ -46,10 +46,10 @@ IF "%MONITOR_COUNT%"=="2" (
         --use-fake-ui-for-media-stream ^
         --autoplay-policy=no-user-gesture-required ^
         --disable-cache
-
-    cd PeopleDetection
-    start Runner.bat
-    cd ..
+    @REM TODO: Wlaczyc to kiedy bedzie dzialajaca kamera !!
+    @REM cd PeopleDetection
+    @REM start Runner.bat
+    @REM cd ..
 ) ELSE (
     ECHO Less than two monitors detected. Launching Chrome on primary monitor only.
     
@@ -68,5 +68,4 @@ start "" "focusManiekWindow.ahk"
 timeout /t 5 /nobreak >nul
 taskkill /IM AutoHotKey64.exe
 
-exit
 cmd /k

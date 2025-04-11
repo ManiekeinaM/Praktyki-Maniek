@@ -201,9 +201,9 @@ let messagesContext = {
         "Nie wracaj, zaraz koniec lekcji"
     ],
     przerwa: [
-        "Wyspany ? Zaraz kolejna tura !",
+        "Wyspany ? Zaraz kolejna lekcja x} !",
         "Nie uważasz, że przerwa jest za krótka ?",
-        "Chodź pobić jakiś rekord !",
+        "Chodź pograć w jakąś grę !",
         "Zapraszam do grania w gry !",
     ],
     koniecPrzerwy: [
@@ -215,7 +215,7 @@ let messagesContext = {
         "Czujesz smak weekendu ?"
     ],
     poniedzialek: [
-        "Poczatek tygodnia jest najgorszy !",
+        "Początek tygodnia zawsze jest najgorszy !",
         "Kto lubi poniedziałki niech pierwszy rzuci kamieniem"
     ],
     ogolne: [

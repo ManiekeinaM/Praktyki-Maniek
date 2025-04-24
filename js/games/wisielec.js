@@ -117,10 +117,6 @@ const WORDS_SEGREGATED = {
     ]
 };
 
-// 657
-// console.log(WORDS.length);
-
-
 let GAME_STARTED = true;
 let CURRENT_WORD = '';
 let CURRENT_WORD_VISUAL = '';
@@ -165,11 +161,8 @@ function getRandomWord() {
 function makeGuess(letterButton) {
     letterButton.classList.add('disabled');
     const letter = letterButton.textContent.toLowerCase();
-    console.log(FAILS, letter);
 
     if (!lettersToGuess[letter]) {
-        // console.log("FAIL");
-
         FAILS += 1;
         explodeFace();
         
@@ -200,7 +193,6 @@ function makeGuess(letterButton) {
 function explodeFace() {
     if (FAILS === 6) {
         // Przegrana :(
-        console.log("Przegrana :(")
         GAME_STARTED = false;
         lose();
 
@@ -306,8 +298,6 @@ function startGame() {
     for (const letter of CURRENT_WORD) {
         lettersToGuess[letter] = true;
     }
-    console.log(CURRENT_WORD);
-
 
     setupGuessBoard();
 }

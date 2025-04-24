@@ -20,9 +20,6 @@ let height_upscale = (600 / canvasHeight);
 if (width_upscale < 1) width_upscale += 1;
 if (height_upscale < 1) height_upscale += 1;
 
-console.log(width_upscale);
-console.log(height_upscale);
-
 //Configure mouse lock
 canvas.addEventListener("click", async () => {
     if (!DISABLE_MOUSE_GAMES) {
@@ -351,7 +348,6 @@ function roll_for_plane() {
     let roll = Math.floor(Math.random() * 5 + 1);
     if (roll == 4) {
         let rolled_buff = roll_for_buff();
-        //console.log("buff: ", rolled_buff);
         return rolled_buff;
     } else {
         return "none"
@@ -435,7 +431,7 @@ let current_cooldowns = {
 
 // Actions to perform on each buff
 const buff_action = {
-    "none" : function() { console.log("Im gay"); },
+    "none" : function() { },
     "ShootingSpeed" : function() { buff_handler.activate_faster_shooting() },
     "ScoreMultiplier" : function() { buff_handler.activate_score_multiplier() },
     "RandomBuffs" : function() { buff_handler.use_roll_buffs() },
@@ -645,14 +641,12 @@ const maniek_sprites_properties = {
         }
     },
     update_state: function() {
-        console.log("Updating state: ", this.state, " to: ", this.upcoming_state);
         maniek_sprites_properties.state = maniek_sprites_properties.upcoming_state;
         maniek_sprites_properties.update_sprite();
 
         if (maniek_sprites_properties.upcoming_state == maniek_sprites_properties.state) maniek_sprites_properties.upcoming_state = "idle";
     },
     change_state: function(state) {
-        console.log("Następna animacja: ", state);
         maniek_sprites_properties.upcoming_state = state;
 
         if (maniek_sprites_properties.upcoming_state == "blink" && maniek_sprites_properties.state == "idle") {
@@ -1076,7 +1070,6 @@ const explosion_effect = {
             this.y - camera.offset_y,
             this.width, this.height,
         ); 
-        //console.log(camera.offset_x);
     },
     draw_on_UI: function() {
         ctx.drawImage(
@@ -1199,7 +1192,6 @@ const player_turret = {
             
             if (plane_hit) {
                 if (plane.play_explosion == false) {
-                //console.log(plane.item);
                 plane.item.use();
                 if (plane.item.type != "none") {
                     let new_plane = {...sponsor_plane};
@@ -1212,10 +1204,6 @@ const player_turret = {
                     sponsor_plane_sprite.src = "./assets/antiair/plane-support.png";
                     new_plane.sprite = sponsor_plane_sprite;
                     new_plane.animation = {...sponsor_plane_properties};
-        
-
-                    new_plane.sprite
-                    console.log(SponsorPlanes.length);
 
                     if (SponsorPlanes.length != 0) {
                         if (SponsorPlanes[SponsorPlanes.length - 1].x < 0) {
@@ -1432,7 +1420,6 @@ function drawRadar(player, enemies, cameraAngle) {
 
 function drawRadarSight() {
     const camera_vision_percent = Math.abs(camera.offset_y) / (canvasHeight / 2);
-    //console.log(camera_vision_percent);
     const radarRadius = 100 * camera_vision_percent * 0.5 + 40; 
     const radarX = canvasWidth - 20;
     const radarY = canvasHeight - 20;
@@ -1550,7 +1537,6 @@ document.addEventListener("touchmove", logTouchMovement);
 function create_explosion() {
     let explosion =  {...explosion_effect};
     explosion.animation = {...explosion_animation};
-    console.log("Width: ", canvasWidth);
     explosion.width = 200 * width_upscale;
     explosion.height = 200 * height_upscale;
     explosion.x = canvasWidth / 2 - explosion.width / 2;
@@ -1561,16 +1547,12 @@ function create_explosion() {
 
 let gameLoopId;
 function game_loop(timestamp) {
-    // console.log("air");
-    //requestAnimationFrame(game_loop);
-
     const delta = (timestamp - lastFrameResponse) / 1000;
     lastFrameResponse = timestamp;
 
     if (CURRENT_GAME != 'antiair') {
         return;
     }
-    // console.log('antiair activated');
 
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
@@ -1733,10 +1715,7 @@ function game_loop(timestamp) {
     }
 
     if (timestamp - maniek_sprites_properties.last_animation_time > maniek_sprites_properties.frame_rate) {
-        console.log(maniek_sprites_properties.state);
-
         if (maniek_sprites_properties.state != "idle" && maniek_sprites_properties.current_frame == maniek_sprites_properties[maniek_sprites_properties.state].total_frames - 1) {
-            console.log("Obecna animacja skończona");
             maniek_sprites_properties.update_state();
             maniek_sprites_properties.update_sprite();
         }
@@ -1755,7 +1734,6 @@ function game_loop(timestamp) {
     drawRadar(player_turret, Planes, cameraAngle);
 
     for (const [key, value] of Object.entries(current_cooldowns)) {
-        //console.log(key, " ", value);
         if (value > 0) {
             current_cooldowns[key] -= 1000 * delta;
         }

@@ -51,11 +51,6 @@ function randomizePipeGap(fromTop = 0, fromBottom = 0) {
     
 
     const gapPosition = Math.random() * ELIGIBLE_HEIGHT - ELIGIBLE_HEIGHT/2 + fromTop/2;
-    //console.log(HEIGHT_IN_EM, ELIGIBLE_HEIGHT, gapPosition);
-    //console.log(`lower bound: ${-ELIGIBLE_HEIGHT/2 + fromTop/2}, higher bound: ${ELIGIBLE_HEIGHT/2 + fromTop/2}`);
-
-    //return -ELIGIBLE_HEIGHT/2 + fromTop/2; // higher bound (pipes always spawn at top)
-    //return ELIGIBLE_HEIGHT/2 + fromTop/2; // higher bound (pipes always spawn at bottom)
     return gapPosition;
 }
 // Default pipe stats, unless specified otherwise
@@ -302,7 +297,6 @@ function death() {
 
 let gameLoopId;
 function gameLoop(currentTime) {
-    console.log("bird");
     const deltaTime = (currentTime - lastTime)/1000 
                     || 1/60;
     lastTime = currentTime;

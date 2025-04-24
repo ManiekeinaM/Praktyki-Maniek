@@ -3,6 +3,14 @@
     src: url(../fonts/digital.regular.ttf);
 }
 
+@font-face {
+    font-family: 'Determination Mono';
+    /* src: url('../fonts/DeterminationMono.ttf') format('truetype'), */
+        /* url('../fonts/DeterminationMono.woff2') format('woff2'); */
+
+    src: url('../fonts/DeterminationMonoPolish.otf');
+}
+
 body {
     margin: 0;
     overflow: hidden;
@@ -41,6 +49,7 @@ body {
 .bottom-controls > * {
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .bell-schedule {
@@ -67,7 +76,7 @@ h4 {
 
 .maniek-face {
     width: auto;
-    height: 125%;
+    height: 100%;
     max-height: 12rem;
 }
 
@@ -98,3 +107,65 @@ video {
     margin: 1rem;
 }
 
+/* Style dla contenera, ktory przechowuje tekst i obrazek manka*/
+#maniek-text-container {
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    width: 160px;
+    height: 9rem;
+    border: 0px;
+    
+    background-color: rgba(255, 255, 255, 0);
+
+    transition: all 700ms ease-in-out,
+    width 500ms,
+    height 500ms,
+    background-color 500ms;
+}
+
+/* Klasa active nadawana jest wtedy, kiedy maniek wyswietla tekst */
+#maniek-text-container.active {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+#maniek-text-container.active #maniek-text-container-img-container {
+    margin-top: 20px; 
+    height: min-content;
+    max-height: fit-content;
+}
+
+/* Klasa backgroud nadawana jest wtedy, kiedy maniek wyswietla tekst */
+#maniek-text-container.background {
+    background-color: rgba(0, 0, 0, 1);
+    width: 70%;
+    height: 70%;
+    border-radius: 20px;
+    /* opacity: 0.9; */
+    border: 0.5rem solid green;
+}
+
+/* Kontener tekstowy w którym znajduje się tekst, ktory wyswietla maniek */
+#maniek-text-container-text-container {
+    position: relative;
+    display: none;
+    padding: 1rem;
+    color: white;
+    width: 90%;
+    height: fit-content;
+    word-wrap: break-word;
+    font-family: 'Determination Mono', monospace;
+    text-align: center;
+    justify-content: center;
+}
+
+/* gif manka */
+#maniek-text-container-img-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}

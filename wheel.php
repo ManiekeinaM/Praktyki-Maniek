@@ -1,3 +1,13 @@
+<?php 
+    if (isset($_COOKIE["whichMachine"]) && $_COOKIE["whichMachine"] == 2) {
+        header('Location: index.html');
+    }
+
+    if (isset($_COOKIE["isDniOtwarte"]) && $_COOKIE["isDniOtwarte"] != "true") {
+        header('Location: index.html');
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -16,7 +26,7 @@
 
     <div class="categories">
         <button data-wheelid="1">Koło Standardowe (15+ Bingo)</button>
-        <button data-wheelid="2" class="premium">Koło Premium (2x) (25 Bingo)</button>
+        <button data-wheelid="2" class="premium">Koło Premium (2x) (25 Bingo 2 Niebieskie)</button>
     </div>
 
     <div class="wheel-legend">
@@ -39,7 +49,7 @@
     <!-- PHP -->
     <p id="php-container" style="display:none;">
     <?php
-        $db = new mysqli("localhost", "root", "", "baza_pula");
+        $db = new mysqli("localhost", "root", "", "bazadanych");
 
         if($db -> connect_error) {
             die();

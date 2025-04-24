@@ -489,7 +489,7 @@ function initScreensaver() {
         return motion;
     }
 
-    window.addEventListener("DOMContentLoaded", initializeCamera);
+    // window.addEventListener("DOMContentLoaded", initializeCamera);
 
 }
 

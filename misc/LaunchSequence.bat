@@ -1,8 +1,9 @@
 @echo off
 
-REM --- Start XAMPP ---
-timeout /t 10 /nobreak >nul
-start "" "C:\xampp\xampp-control.exe"
+cd /d %~dp0%
+ECHO Working in directory: %CD%
+ECHO Blocking mouse movement
+start "" "disableMouse.ahk"
 
 REM --- Start XAMPP services (Apache & MySQL) ---
 timeout /t 2 /nobreak >nul
@@ -35,7 +36,8 @@ IF "%MONITOR_COUNT%"=="2" (
         --user-data-dir=c:/monitor2 ^
         --use-fake-ui-for-media-stream ^
         --autoplay-policy=no-user-gesture-required ^
-        --disable-cache
+        --disable-cache ^
+        --incognito
     
     REM Launch Chrome instance on the primary monitor for Mapa
     start /B chrome --app="%BASE_URL%/index.html" ^
@@ -44,6 +46,10 @@ IF "%MONITOR_COUNT%"=="2" (
         --use-fake-ui-for-media-stream ^
         --autoplay-policy=no-user-gesture-required ^
         --disable-cache
+    @REM TODO: Wlaczyc to kiedy bedzie dzialajaca kamera !!
+    @REM cd PeopleDetection
+    @REM start Runner.bat
+    @REM cd ..
 ) ELSE (
     ECHO Less than two monitors detected. Launching Chrome on primary monitor only.
     
@@ -57,6 +63,9 @@ IF "%MONITOR_COUNT%"=="2" (
 )
 
 REM --- Start the AutoHotkey script to focus the windows ---
-start "" "%USERPROFILE%\Desktop\focusManiekWindow.ahk"
+start "" "focusManiekWindow.ahk"
+
+timeout /t 5 /nobreak >nul
+taskkill /IM AutoHotKey64.exe
 
 cmd /k

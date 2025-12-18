@@ -1,12 +1,23 @@
 # 🖥️ Instrukcja konfiguracji i użytkowania projektu **Maniek**
 
 ## 🎬 Dodawanie filmików do TV
+Filmy są domyślnie w formacie .mp4 oraz są podzielone na priorytetowe i regularne.
+Na każde dwa regularne filmy przypada jeden priorytetowy:
+**Priority1 -> Regular1 -> Regular2 -> Priority2 -> ...**
 
-1. Przejdź do folderu:  
-   `C:/xampp/htdocs/Praktyki-Maniek/example-videos`
-2. Wrzuć tam dowolny filmik `.mp4`.
-3. **Zalecane:** Zrób commit w **GitHub Desktop**, aby można było zsynchronizować zmiany na innych maszynach.
+### Lokalnie
+1. Przejdź do folderu:
+  `C:/xampp/htdocs/Praktyki-Maniek/videos`
+2. W folderze powinny się znajdywać podfoldery `priority` oraz `regular`
+3. Wrzuć do podfolderu `priority` filmy priorytetowe, a filmy regularne do `regular`
+4. Playlista odtwarzacza powinna odświeżyć się automatycznie po paru sekundach
 
+### Za pomocą dysku USB
+1. Upewnij się, że dysk USB zawiera foldery `priority` oraz `regular`, a w nich filmy
+2. Podłącz dysk USB do komputera/laptopa w Mańku
+3. Upewnij się, że Maniek (interfejs) jest włączony
+4. Playlista odtwarzacza powinna odświeżyć się automatycznie po paru sekundach
+   
 ---
 
 ## 🛠️ Ustawienie dowolnej maszyny jako **Maniek**

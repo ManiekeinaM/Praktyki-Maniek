@@ -12,7 +12,7 @@
     <div class="upper-controls">
         <!-- Video container -->
         <video id="vidplayer" autoplay muted>
-            <source id="vidsource" src="./example-videos/LEGO1.mp4" type="video/mp4">
+            <source id="vidsource" type="video/mp4">
         </video>
 
         <!-- Bell schedule with highlight -->
@@ -56,16 +56,6 @@
             <p id="clock">09:46</p>
         </div>
     </div>
-
-    <!-- Videos from file transfer -->
-    <div id="data-pass"><?php
-            $dir = './example-videos';
-            $videos = scandir($dir,1);
-            foreach ($videos as $video) {
-                if($video == ".." || $video == ".") continue;
-                echo "$video ";
-            }
-    ?></div>
 
     <script src="js/tv.js">
     </script>

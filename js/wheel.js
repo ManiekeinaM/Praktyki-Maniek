@@ -35,7 +35,9 @@ var wheels = {
             { name: "🎫💻", id: 4, desc: "Voucher: Sprzęt elektroniczny 50zł", weight: 10, visualWeight: 1, amount: parseInt(php_amounts[3]), color: '#1434B4', darkcolor: '#112b95' },
             { name: "🎟️🛒", id: 5, desc: "Voucher: Sklepik 10zł", weight: 40, visualWeight: 2, amount: parseInt(php_amounts[4]), color: '#CAB282', darkcolor: '#b99a5a' },
             { name: "🎫🛒", id: 6, desc: "Voucher: Sklepik 5zł", weight: 40, visualWeight: 2, amount: parseInt(php_amounts[5]), color: '#1434B4', darkcolor: '#112b95' },
-        ],
+            { name: "🎒😎", id: 7, desc: "Plecak Tomtom", weight: 150, visualWeight: 2, amount: parseInt(php_amounts[6]), color: '#CAB282', darkcolor: '#b99a5a' },
+	    { name: "🤳📷", id: 8, desc: "Selfie Stick", weight: 150, visualWeight: 2, amount: parseInt(php_amounts[7]), color: '#1434B4', darkcolor: '#112b95' }
+	],
         totalWeights: 0, totalVisualWeights: 0,
         // totalPrizes: 0,
         actualWheels: [],

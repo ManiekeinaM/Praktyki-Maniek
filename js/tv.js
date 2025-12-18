@@ -3,28 +3,49 @@ const maniekTextContainer = document.querySelector("#maniek-text-container");
 const maniekTextContainerTextContainer = maniekTextContainer.querySelector("#maniek-text-container-text-container");
 const maniekTextConatinerImg = maniekTextContainer.querySelector('.maniek-face');
 
-//Retrieving videos
-const dir = '/example-videos';
-const passed_data = document.getElementById("data-pass").innerHTML;
-let videosList = passed_data.split(' ');
-videosList.pop();
-
-//Videos changer
 const videoPlayer = document.getElementById("vidplayer");
-// videoPlayer.playbackRate = 16;
 const videoSource = document.getElementById("vidsource");
 
+let videosList = [];
+let currentIndex = 0;
+
+async function refreshPlaylist() {
+    try {
+        const response = await fetch("./misc/getPlaylist.php");
+        const newList = await response.json();
+
+        if (JSON.stringify(videosList) !== JSON.stringify(newList)) {
+            console.log("Aktualizacja playlisty...");
+
+            videosList = newList;
+
+            if (currentIndex >= videosList.length) currentIndex = 0;
+        }
+    } catch (err) {
+        console.error("Błąd przy odświeżeniu playlisty: ", err);
+    }
+}
+
 videoPlayer.addEventListener("ended", (event) => {
-    let previousSource = videoSource.src;
-    let nextSource;
-    do{
-        nextSource = `${dir}/${videosList[Math.floor(Math.random() * videosList.length)]}`;
-    } while(previousSource.includes(nextSource));
-    videoSource.src = "."+nextSource;
-    
+    currentIndex++;
+    if (currentIndex >= videosList.length) currentIndex = 0;
+
+    videoSource.src = videosList[currentIndex];
     videoPlayer.load();
     videoPlayer.play();
 });
+
+(async() => {
+    await refreshPlaylist();
+    
+    if (videosList.length > 0) {
+        videoSource.src = videosList[currentIndex];
+        videoPlayer.load();
+        videoPlayer.play();
+    }
+})();
+
+setInterval(refreshPlaylist, 15000);
 
 const clock = document.getElementById("clock");
 const timer = document.getElementById("timer");
@@ -103,7 +124,7 @@ function lessonCheck(currentHour, currentMinute) {
             realTimeLeft = timeLeft;
             if(timeLeft<=0) {
                 timeLeft = vMinute-5-currentMinute;
-                console.log(timeLeft);
+                // console.log(timeLeft);
                 if(currentLesson == 3) timeLeft+=10;
                 if(timeLeft < 0) timeLeft+=60;
                 realTimeLeft = timeLeft;
@@ -172,7 +193,7 @@ const getAmountOfPeopleInFrontOfTv = async () => {
         }
     }
 };
-readAmountOfPeopleTimeout = setTimeout(getAmountOfPeopleInFrontOfTv, 1000);
+// readAmountOfPeopleTimeout = setTimeout(getAmountOfPeopleInFrontOfTv, 1000);
 
 
 let messagesContext = {
@@ -269,7 +290,7 @@ const getHolidays = async() => {
     }
 };
 // Pobierz je raz
-getHolidays();
+// getHolidays();
 
 const getAvailableMessages = () => {
     // Funkcja na podstawie wielu czynnikow wybiera wiadomosci pasujące do aktualnego wydarzenia w ciagu dnia, lub roku !
@@ -465,5 +486,5 @@ const toggleManiekMessage = (peopleAmount = 0) => {
     }
 };
 
-toggleManiekMessage();
-setInterval(toggleManiekMessage, 15000);
+// toggleManiekMessage();
+// setInterval(toggleManiekMessage, 15000);
